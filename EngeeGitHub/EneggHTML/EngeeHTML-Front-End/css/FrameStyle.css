@@ -1,0 +1,184 @@
+.dropdown-menu {
+    color: black;
+    background-color: #fff;
+    list-style: none;
+}
+
+hr {
+    margin: 8px;
+}
+
+.navbar {
+    background-color: #EAD8D8;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-link:hover {
+    color: #e54862ca;
+}
+
+.nav-link {
+
+    color: black;
+
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #e54862ca;
+    transition: color 0.2s
+}
+
+.logo-size {
+    width: 90px;
+    height: 90px;
+    margin: right 8px;
+    padding: 0;
+    /* icon大小 */
+}
+
+/*----start----控制header區域----start----*/
+.headerimg {
+    /* 控制header圖片CSS */
+    position: relative;
+    height: 200px;
+    background-image: url(/images/bigframe/header.jpg);
+    background-size: cover;
+    background-position-y: 65%;
+    background-position-x: 50%;
+}
+
+.overlay {
+    /* header圖片遮罩 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.15926);
+}
+
+/*----end----控制header區域----end----*/
+
+/* ----start----網站共用顏色----start----*/
+.bg-color1 {
+    background-color: #EAD8D8;
+}
+
+.bg-color2 {
+    background-color: #e54862ca;
+}
+
+.bg-color3 {
+    background-color: rgb(223, 223, 223);
+}
+
+/*----end----網站共用顏色----end----*/
+
+
+
+/*----start----網站共用文字顏色與大小----start----*/
+.fz-color1 {
+    color: #5C4141;
+}
+
+.fz-color2 {
+    color: #946E6E;
+}
+
+.fz-color3 {
+    color: #000000;
+}
+
+.fz-size32px {
+    font-size: 32px;
+}
+
+.fz-size16px {
+    font-size: 16px;
+}
+
+/*----end----網站共用文字顏色與大小----end----*/
+
+/*----start----網站共用高度----start----*/
+.h-90px {
+    height: 90px;
+}
+
+.h-64px {
+    height: 64px;
+}
+
+.h-38px {
+    height: 38px;
+}
+
+.h-24px {
+    height: 24px;
+}
+
+.h-16px {
+    height: 16px;
+}
+
+/* ----end----網站共用高度----end----*/
+
+/*----start----網站共用寬度----start----*/
+.w-90px {
+    width: 90px;
+}
+
+.w-64px {
+    width: 64px;
+}
+
+.w-38px {
+    width: 38px;
+}
+
+.w-24px {
+    width: 24px;
+}
+
+.w-16px {
+    width: 16px;
+}
+
+/* ----end----網站共用寬度----end----*/
+
+button.btn-s {
+    background-color: #e54862ca;
+    height: 36px;
+    width: auto;
+    border: 0;
+}
+
+button.btn-m {
+    background-color: #e54862ca;
+    height: 48px;
+    width: auto;
+    border: 0;
+}
+
+button.btn-l {
+    background-color: #e54862ca;
+    height: 64px;
+    width: auto;
+    border: 0;
+}
+
+/* ----start----將footer推至底部----start----*/
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* 設置 body 最小高度為視窗高度 */
+    margin: 0;
+}
+
+main {
+    flex: 1;
+    /* 讓 main 區塊佔滿剩餘的空間，推動 Footer 到底部 */
+}
+
+/* ----end----將footer推至底部----end----*/

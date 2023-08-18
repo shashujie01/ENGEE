@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/FrameStyle.css">
+    <title>購物</title>
+    <style>
+        /*---- Categories調整start---- */
+        .cattext a:hover {
+            color: #e54862ca;
+        }
+
+        .cattext .text-decoration-none {
+            color: #000000;
+        }
+
+        .flex-container {
+            /* 調整字母排列 */
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .flex-container li {
+            /* 調整字母排列 */
+            width: 33.33%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        ul .cattext li {
+            margin-bottom: 20px;
+        }
+
+        /*---- Categories調整end--- */
+
+        /* -----card調整start---- */
+        .card .card-img {
+            max-height: 350px;
+            min-height: 200px;
+            max-width: 350px;
+            min-width: 200px;
+        }
+
+        .card .card-img-overlay {
+            display: none;
+        }
+
+        .card:hover .card-img-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .card-img-overlay i:hover {
+            color: #e54862ca;
+        }
+
+        @media (max-width: 576px) {
+
+            /* 這個寬度可以依照您的需求調整 */
+            .justify-card-center {
+                display: flex;
+                justify-content: center;
+            }
+
+            .card-body {
+                margin-left: 10px;
+            }
+        }
+
+        /* -----card調整end---- */
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md p-0 bg-color1 sticky-top">
+        <div class="container-md d-flex justify-content-between align-items-center ">
+            <a class="navbar-brand me-2 p-0" href="#">
+                <img class="icon-size " src="./images/bigframe/logo01.png" alt="icon">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav ms-3">
+                    <a href="#1" class="nav-link fz-color3 ">關於我們</a>
+                    <a href="#2" class="nav-link fz-color3">美妝討論</a>
+                    <a href="#3" class="nav-link fz-color3">捐贈專區</a>
+                    <a href="#4" class="nav-link fz-color3">買賣專區</a>
+                    <a href="#5" class="nav-link fz-color3">會員專區</a>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="d-flex justify-content-end me-3 h-30px">
+                    <div class="d-flex align-content-center">
+                        <a href="#">
+                            <i class=" me-3 mt-3 fa-solid fa-circle-user fa-xl " style="color: #e54862ca;"></i>
+                            <!-- <img class="rounded-circle h-30px me-3" src="https://randomuser.me/api/portraits/men/88.jpg" alt="user">    -->
+                        </a>
+
+                        <button class="btn bg-color2 btn-sm" type="submit">
+                            註冊
+                        </button>
+                    </div>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <div class="headerimg">
+            <div class="overlay">
+                <div class="d-flex align-items-center justify-content-center text-white fz-size32px"
+                    style="height: 100%">
+                    買賣專區
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-3">
+                    <h1 class="h2 pb-4">Categories</h1>
+                    <ul class="list-unstyled ">
+                        <li class="pb-3">
+                            <a class="h3 text-decoration-none d-flex justify-content-between " href="#"
+                                data-bs-toggle="collapse" data-bs-target="#contentOne">
+                                部位
+                                <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                            </a>
+
+                            <ul id="contentOne" class="collapse list-unstyled mb-5 cattext">
+                                <li><a class="text-decoration-none" href="#">眼部彩妝 </a></li>
+                                <li><a class="text-decoration-none" href="#">眉部彩妝</a></li>
+                                <li><a class="text-decoration-none" href="#">唇部彩妝</a></li>
+                                <li><a class="text-decoration-none " href="#">臉部彩妝</a></li>
+                                <li><a class="text-decoration-none" href="#">彩妝工具</a></li>
+                                <li><a class="text-decoration-none" href="#">其他</a></li>
+                            </ul>
+                        </li>
+                        <li class="pb-3">
+                            <a class=" h3 text-decoration-none d-flex justify-content-between " href="#"
+                                data-bs-toggle="collapse" data-bs-target="#contentTwo">
+                                品牌字首
+                                <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                            </a>
+
+                            <ul id="contentTwo" class=" collapse list-unstyled flex-container cattext ">
+                                <li><a class="text-decoration-none " href="#">A</a></li>
+                                <li><a class="text-decoration-none" href="#">B</a></li>
+                                <li><a class="text-decoration-none" href="#">C</a></li>
+                                <li><a class="text-decoration-none" href="#">D</a></li>
+                                <li><a class="text-decoration-none" href="#">E</a></li>
+                                <li><a class="text-decoration-none" href="#">F</a></li>
+                                <li><a class="text-decoration-none" href="#">G</a></li>
+                                <li><a class="text-decoration-none" href="#">H</a></li>
+                                <li><a class="text-decoration-none" href="#">I</a></li>
+                                <li><a class="text-decoration-none" href="#">J</a></li>
+                                <li><a class="text-decoration-none" href="#">K</a></li>
+                                <li><a class="text-decoration-none" href="#">L</a></li>
+                                <li><a class="text-decoration-none" href="#">M</a></li>
+                                <li><a class="text-decoration-none" href="#">N</a></li>
+                                <li><a class="text-decoration-none" href="#">O</a></li>
+                                <li><a class="text-decoration-none" href="#">P</a></li>
+                                <li><a class="text-decoration-none" href="#">Q</a></li>
+                                <li><a class="text-decoration-none" href="#">R</a></li>
+                                <li><a class="text-decoration-none" href="#">S</a></li>
+                                <li><a class="text-decoration-none" href="#">T</a></li>
+                                <li><a class="text-decoration-none" href="#">U</a></li>
+                                <li><a class="text-decoration-none" href="#">V</a></li>
+                                <li><a class="text-decoration-none" href="#">W</a></li>
+                                <li><a class="text-decoration-none" href="#">X</a></li>
+                                <li><a class="text-decoration-none" href="#">Y</a></li>
+                                <li><a class="text-decoration-none" href="#">Z</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-9 ">
+                    <div class="row border-0">
+                        <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
+                            <div class="card ">
+                                <img class="card-img img-fluid" src="./images/bigframe/logo01.png">
+                                <div class="card-img-overlay ">
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn bg-white text-black" href="shop-single.html"><i
+                                                    class="far fa-heart"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="far fa-eye"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    <a href="shop-single.html" class="h3 text-decoration-none">Oupidatat non</a>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="list-unstyled ">
+                                        <li>M/L/X/XL</li>
+                                    </ul>
+                                </div>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">$250.00</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
+                            <div class="card ">
+                                <img class="card-img img-fluid" src="./images/bigframe/logo01.png">
+                                <div class="card-img-overlay ">
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn bg-white text-black" href="shop-single.html"><i
+                                                    class="far fa-heart"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="far fa-eye"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    <a href="shop-single.html" class="h3 text-decoration-none">Oupidatat non</a>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="list-unstyled ">
+                                        <li>M/L/X/XL</li>
+                                    </ul>
+                                </div>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">$250.00</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
+                            <div class="card ">
+                                <img class="card-img img-fluid" src="./images/bigframe/logo01.png">
+                                <div class="card-img-overlay ">
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn bg-white text-black" href="shop-single.html"><i
+                                                    class="far fa-heart"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="far fa-eye"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    <a href="shop-single.html" class="h3 text-decoration-none">Oupidatat non</a>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="list-unstyled ">
+                                        <li>M/L/X/XL</li>
+                                    </ul>
+                                </div>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">$250.00</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
+                            <div class="card ">
+                                <img class="card-img img-fluid" src="./images/bigframe/logo01.png">
+                                <div class="card-img-overlay ">
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn bg-white text-black" href="shop-single.html"><i
+                                                    class="far fa-heart"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="far fa-eye"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    <a href="shop-single.html" class="h3 text-decoration-none">Oupidatat non</a>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="list-unstyled ">
+                                        <li>M/L/X/XL</li>
+                                    </ul>
+                                </div>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">$250.00</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
+                            <div class="card ">
+                                <img class="card-img img-fluid" src="./images/bigframe/logo01.png">
+                                <div class="card-img-overlay ">
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn bg-white text-black" href="shop-single.html"><i
+                                                    class="far fa-heart"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="far fa-eye"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    <a href="shop-single.html" class="h3 text-decoration-none">Oupidatat non</a>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="list-unstyled ">
+                                        <li>M/L/X/XL</li>
+                                    </ul>
+                                </div>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">$250.00</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
+                            <div class="card ">
+                                <img class="card-img img-fluid" src="./images/bigframe/logo01.png">
+                                <div class="card-img-overlay ">
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn bg-white text-black" href="shop-single.html"><i
+                                                    class="far fa-heart"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="far fa-eye"></i></a></li>
+                                        <li><a class="btn bg-white text-black mt-2" href="shop-single.html"><i
+                                                    class="fas fa-cart-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    <a href="shop-single.html" class="h3 text-decoration-none">Oupidatat non</a>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="list-unstyled ">
+                                        <li>M/L/X/XL</li>
+                                    </ul>
+                                </div>
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">$250.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div div="row">
+                        <ul class="pagination  justify-content-center">
+                            <li class="page-item ">
+                                <a class="page-link bg-color2 text-black" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item "><a class="page-link bg-color2 text-black" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link bg-color2 text-black" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link bg-color2 text-black" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link bg-color2 text-black" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+    <footer class="bg-color1">
+        <div class="h-64px d-flex align-items-center justify-content-center">
+            © Engee CO.,LTD All rights reserved.
+        </div>
+    </footer>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#contentOne, #contentTwo').on('show.bs.collapse', function () {
+                var id = $(this).attr('id');
+                $('ul .collapse').not('#' + id).collapse('hide');
+            });
+        });
+    </script>
+
+</body>
+
+</html>
