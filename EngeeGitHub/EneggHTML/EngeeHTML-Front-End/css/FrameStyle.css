@@ -40,7 +40,7 @@ hr {
     /* 控制header圖片CSS */
     position: relative;
     height: 200px;
-    background-image: url(/ENGEE/EngeeGitHub/EneggHTML/EngeeHTML-Front-End/images/bigframe/header.jpg);
+    background-image: url(/EneggHTML/EngeeHTML-Front-End/images/bigframe/header.jpg);
     background-size: cover;
     background-position-y: 65%;
     background-position-x: 50%;
