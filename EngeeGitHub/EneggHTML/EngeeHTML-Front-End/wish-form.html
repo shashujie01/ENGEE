@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="apple-touch-icon" href="./images/bigframe/logo01.png">
     <link rel="stylesheet" href="./css/templatemo.css">
@@ -24,7 +24,7 @@
     <nav class="navbar navbar-expand-md p-0 bg-color1 sticky-top">
         <div class="container-md d-flex justify-content-between align-items-center ">
             <a class="navbar-brand me-2 p-0" href="#">
-                <img class="icon-size " src="./images/bigframe/logo01.png" alt="icon">
+                <img class="logo-size " src="./images/bigframe/logo01.png" alt="icon">
             </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-3">
@@ -35,7 +35,8 @@
                         <a href="#2" class="nav-link fz-color3">美妝討論</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fz-color3 " href="#3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fz-color3 " href="#3" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             捐贈專區
                         </a>
                         <ul class="dropdown-menu">
@@ -51,7 +52,7 @@
                         <a href="#5" class="nav-link fz-color3">會員專區</a>
                     </li>
                 </ul>
-                    <!-- <a href="#3" class="nav-link fz-color3">捐贈專區</a> -->
+                <!-- <a href="#3" class="nav-link fz-color3">捐贈專區</a> -->
             </div>
             <div class="d-flex align-items-center">
                 <div class="d-flex justify-content-end me-3 ">
@@ -88,7 +89,8 @@
     <!-- Close Header -->
 
     <!-- Modal -->
-    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="w-100 pt-1 mb-5 text-right">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -114,29 +116,33 @@
                 </div>
                 <div class="form-group mb-4">
                     <label for="message" class="form-label h5 fz-color1">募集需求描述</label>
-                    <textarea id="message" class="form-control mt-1 fz-color1 scroll" placeholder="需求描述" style="resize: none;" required></textarea>
+                    <textarea id="message" class="form-control mt-1 fz-color1 scroll" placeholder="需求描述"
+                        style="resize: none;" required></textarea>
                 </div>
                 <div class="form-group mb-4">
                     <label class="form-label h5 fz-color1">募集時間</label>
                     <div class="row">
                         <div class="col-6">
                             <label for="CollectStartTime" class="form-label fz-color1">開始時間</label>
-                            <input type="date" id="CollectStartTime" class="form-control" min="1970-01-01" max="" required>
+                            <input type="date" id="CollectStartTime" class="form-control" min="1970-01-01" max=""
+                                required>
                         </div>
                         <div class="col-6">
                             <label for="CollectEndTime" class="form-label fz-color1">結束時間</label>
-                            <input type="date" id="CollectEndTime" class="form-control" min="1970-01-01" max="" required>
+                            <input type="date" id="CollectEndTime" class="form-control" min="1970-01-01" max=""
+                                required>
                         </div>
                     </div>
-                    
-                    
+
+
                 </div>
-    
+
                 <div class="form-group mb-4">
                     <label class="form-label h5 fz-color1">圖片上傳</label>
-                    <input type="file" id="file-uploader" data-target="file-uploader" accept=".jpg,.jpeg,.png" class="form-control fz-color1" multiple required>          
+                    <input type="file" id="file-uploader" data-target="file-uploader" accept=".jpg,.jpeg,.png"
+                        class="form-control fz-color1" multiple required>
                 </div>
-                <div class="form-group mb-4">  
+                <div class="form-group mb-4">
                     <label for="" class="h5 fz-color1">需求品項</label>
                     <ul class="list-group">
                         <li class="list-group-item fz-color1">
@@ -185,10 +191,10 @@
                                     <i id="minus" class="btn fa-solid fa-circle-minus fz-color2"></i>
                                     <div class="badge fz-color3" id="collectAmount">0</div>
                                     <i id="plus" class="btn fa-solid fa-circle-plus fz-color2"></i>
-                                    <i id="delete" class="btn fa-solid fa-trash-can fz-color2"></i>                       
+                                    <i id="delete" class="btn fa-solid fa-trash-can fz-color2"></i>
                                 </div>
                             </div>
-                        </li>     
+                        </li>
                         <!-- <li class="list-group-item fz-color1">
                             <div class="row p-3">
                                 <div class="col-6 d-flex align-items-center">
@@ -248,9 +254,10 @@
                     </ul>
                 </div>
                 <div class="form-group mb-4 m-auto d-flex justify-content-end">
-                    <input type="button" id="moreitem" value="+" class="btn btn-border a px-3 me-2 fw-bold fz-color2" ></button>
-                </div> 
-    
+                    <input type="button" id="moreitem" value="+"
+                        class="btn btn-border a px-3 me-2 fw-bold fz-color2"></button>
+                </div>
+
                 <!-- 寄送 -->
                 <div class="form-group mb-4">
                     <div class="row">
@@ -262,7 +269,7 @@
                             <label class="form-check-label me-3" for="shop">超取：60點</label>
                             <div class="mt-2">超商資訊：</div>
                             <div>店號110817<span class="m-1">千翔門市</span></div>
-                            
+
                         </div>
                         <div class="col-6">
                             <input class="form-check-input me-1" id="shipping" type="checkbox">
@@ -271,19 +278,19 @@
                             <div class="ms-4">台北市士林區後港街98之1號2號1樓</div>
                         </div>
                     </div>
-    
+
                 </div>
-    
+
                 <div class="form-group mb-4 m-auto d-flex justify-content-end">
                     <button type="submit" class="btn btn-border a px-3 me-2 fw-bold fz-color2">送出</button>
                     <button type="submit" class="btn btn-border a px-3 fw-bold fz-color2">取消</button>
-                </div>  
+                </div>
             </form>
         </div>
     </main>
-    
+
     <!-- End Contact -->
-    
+
     <!-- Start Footer -->
     <footer class="bg-color1">
         <div class="h-64px d-flex align-items-center justify-content-center">
@@ -299,4 +306,3 @@
 
 
 </body>
-    

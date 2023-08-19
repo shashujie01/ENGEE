@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="apple-touch-icon" href="./images/bigframe/logo01.png">
     <link rel="stylesheet" href="./css/templatemo.css">
@@ -25,7 +25,7 @@
     <nav class="navbar navbar-expand-md p-0 bg-color1 sticky-top">
         <div class="container-md d-flex justify-content-between align-items-center ">
             <a class="navbar-brand me-2 p-0" href="#">
-                <img class="icon-size " src="./images/bigframe/logo01.png" alt="icon">
+                <img class="logo-size " src="./images/bigframe/logo01.png" alt="icon">
             </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-3">
@@ -36,7 +36,8 @@
                         <a href="#2" class="nav-link fz-color3">美妝討論</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fz-color3 " href="#3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle fz-color3 " href="#3" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             捐贈專區
                         </a>
                         <ul class="dropdown-menu">
@@ -52,7 +53,7 @@
                         <a href="#5" class="nav-link fz-color3">會員專區</a>
                     </li>
                 </ul>
-                    <!-- <a href="#3" class="nav-link fz-color3">捐贈專區</a> -->
+                <!-- <a href="#3" class="nav-link fz-color3">捐贈專區</a> -->
             </div>
             <div class="d-flex align-items-center">
                 <div class="d-flex justify-content-end me-3 ">
@@ -89,7 +90,8 @@
     <!-- Close Header -->
 
     <!-- Modal -->
-    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="w-100 pt-1 mb-5 text-right">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -112,30 +114,33 @@
                 <div class="row form-group mb-4">
                     <div class="form-group col-md-6 mb-3">
                         <label for="donateName" class="form-label h5 fz-color1">捐贈人姓名</label>
-                        <input type="text" class="form-control mt-1 fz-color1" id="donateName" placeholder="姓名" required>
+                        <input type="text" class="form-control mt-1 fz-color1" id="donateName" placeholder="姓名"
+                            required>
                     </div>
                     <div class="form-group col-md-6 mb-3">
                         <label for="donatePhone" class="form-label h5 fz-color1">捐贈人電話</label>
-                        <input type="text" class="form-control mt-1 fz-color1" id="donatePhone" placeholder="電話" required>
+                        <input type="text" class="form-control mt-1 fz-color1" id="donatePhone" placeholder="電話"
+                            required>
                     </div>
                 </div>
-                <div class="form-group mb-4">  
+                <div class="form-group mb-4">
                     <label for="" class="h5 fz-color1">捐贈品項</label>
                     <ul class="list-group">
                         <li class="list-group-item fz-color1">
                             <div class="row p-3">
                                 <div class="col-6 d-flex align-items-center">
                                     <i class="fa-solid fa-hand-holding-heart me-2"></i>
-                                    <input type="text" id="itemName" class="form-control bg-white border-0" value="Make up for ever蜜粉餅" readonly disabled>
+                                    <input type="text" id="itemName" class="form-control bg-white border-0"
+                                        value="Make up for ever蜜粉餅" readonly disabled>
                                 </div>
                                 <div class="col-6 d-flex justify-content-end align-items-center ">
                                     <span class="me-2">數量</span>
                                     <i id="minus" class="btn fa-solid fa-circle-minus fz-color2"></i>
                                     <div class="badge fz-color3" id="collectAmount">0</div>
-                                    <i id="plus" class="btn fa-solid fa-circle-plus fz-color2"></i>                     
+                                    <i id="plus" class="btn fa-solid fa-circle-plus fz-color2"></i>
                                 </div>
                             </div>
-                        </li>     
+                        </li>
                         <!-- <li class="list-group-item fz-color1">
                             <div class="row p-3">
                                 <div class="col-6 d-flex align-items-center">
@@ -199,16 +204,16 @@
                         <label class="form-label h5 fz-color1">寄送方式</label>
                     </div>
                     <div class="form-check my-3">
-                            <input type="radio" class="form-check-input" id="shop" required>
-                            <label class="form-check-label" for="shop">超取：60點</label>
-                            <div class="">超商資訊：</div>
-                            <div>店號110817<span class="ms-2">千翔門市</span></div>
-                    </div>    
+                        <input type="radio" class="form-check-input" id="shop" required>
+                        <label class="form-check-label" for="shop">超取：60點</label>
+                        <div class="">超商資訊：</div>
+                        <div>店號110817<span class="ms-2">千翔門市</span></div>
+                    </div>
                     <div class="form-check">
-                            <input class="form-check-input" id="shipping" type="radio" required>
-                            <label class="form-check-label" for="shipping">宅配：150點</label>
-                            <div class="">寄件地址：</div>
-                            <div class="">台北市士林區後港街98之1號2號1樓</div>
+                        <input class="form-check-input" id="shipping" type="radio" required>
+                        <label class="form-check-label" for="shipping">宅配：150點</label>
+                        <div class="">寄件地址：</div>
+                        <div class="">台北市士林區後港街98之1號2號1樓</div>
                     </div>
                 </div>
                 <div class="form-group mb-4 m-auto d-flex justify-content-end">
@@ -218,9 +223,9 @@
             </form>
         </div>
     </main>
-    
+
     <!-- End Contact -->
-    
+
     <!-- Start Footer -->
     <footer class="bg-color1">
         <div class="h-64px d-flex align-items-center justify-content-center">
@@ -236,4 +241,3 @@
 
 
 </body>
-    
