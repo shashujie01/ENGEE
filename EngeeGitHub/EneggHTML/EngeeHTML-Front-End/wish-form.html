@@ -10,7 +10,6 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="apple-touch-icon" href="./images/bigframe/logo01.png">
     <link rel="stylesheet" href="./css/templatemo.css">
     <link rel="stylesheet" href="./css/custom.css">
 
@@ -20,7 +19,6 @@
 </head>
 
 <body>
-    <!-- Start Top Nav -->
     <nav class="navbar navbar-expand-md p-0 bg-color1 sticky-top">
         <div class="container-md d-flex justify-content-between align-items-center ">
             <a class="navbar-brand me-2 p-0" href="#">
@@ -52,7 +50,6 @@
                         <a href="#5" class="nav-link fz-color3">會員專區</a>
                     </li>
                 </ul>
-                <!-- <a href="#3" class="nav-link fz-color3">捐贈專區</a> -->
             </div>
             <div class="d-flex align-items-center">
                 <div class="d-flex justify-content-end me-3 ">
@@ -73,9 +70,6 @@
             </div>
         </div>
     </nav>
-    <!-- Close Top Nav -->
-
-    <!-- Header -->
     <header>
         <div class="headerimg">
             <div class="overlay">
@@ -86,27 +80,8 @@
             </div>
         </div>
     </header>
-    <!-- Close Header -->
 
-    <!-- Modal -->
-    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="w-100 pt-1 mb-5 text-right">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="" method="get" class="modal-content modal-body border-0 p-0">
-                <div class="input-group mb-2">
-                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
-                    <button type="submit" class="input-group-text bg-success text-light">
-                        <i class="fa fa-fw fa-search text-white"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Start Contact -->
+    
     <main>
         <div class="container py-5">
             <form id="form" method="post" class="m-auto col-md-8 g-3">
@@ -123,12 +98,12 @@
                     <label class="form-label h5 fz-color1">募集時間</label>
                     <div class="row">
                         <div class="col-6">
-                            <label for="CollectStartTime" class="form-label fz-color1">開始時間</label>
+                            <label for="CollectStartTime" class="form-label fz-color1">開始</label>
                             <input type="date" id="CollectStartTime" class="form-control" min="1970-01-01" max=""
                                 required>
                         </div>
                         <div class="col-6">
-                            <label for="CollectEndTime" class="form-label fz-color1">結束時間</label>
+                            <label for="CollectEndTime" class="form-label fz-color1">結束</label>
                             <input type="date" id="CollectEndTime" class="form-control" min="1970-01-01" max=""
                                 required>
                         </div>
@@ -195,62 +170,6 @@
                                 </div>
                             </div>
                         </li>
-                        <!-- <li class="list-group-item fz-color1">
-                            <div class="row p-3">
-                                <div class="col-6 d-flex align-items-center">
-                                    <i class="fa-solid fa-hand-holding-heart me-2"></i>
-                                    <span id="itemName">1028粉餅</sapn>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end align-items-center ">
-                                    <span class="me-2">需求數量</span>
-                                    <i id="minus" class="btn fa-solid fa-circle-minus fz-color2"></i>
-                                    <div class="badge fz-color3" id="collectAmount">0</div>
-                                    <i id="plus" class="btn fa-solid fa-circle-plus fz-color2"></i>                       
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item fz-color1">
-                            <div class="row p-3">
-                                <div class="col-6 d-flex align-items-center">
-                                    <i class="fa-solid fa-hand-holding-heart me-2"></i>
-                                    <span id="itemName">MAC唇膏</sapn>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end align-items-center ">
-                                    <span class="me-2">需求數量</span>
-                                    <i id="minus" class="btn fa-solid fa-circle-minus fz-color2"></i>
-                                    <div class="badge fz-color3" id="collectAmount">0</div>
-                                    <i id="plus" class="btn fa-solid fa-circle-plus fz-color2"></i>                       
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item fz-color1">
-                            <div class="row p-3">
-                                <div class="col-6 d-flex align-items-center">
-                                    <i class="fa-solid fa-hand-holding-heart me-2"></i>
-                                    <span id="itemName">YSL唇膏</sapn>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end align-items-center ">
-                                    <span class="me-2">需求數量</span>
-                                    <i id="minus" class="btn fa-solid fa-circle-minus fz-color2"></i>
-                                    <div class="badge fz-color3" id="collectAmount">0</div>
-                                    <i id="plus" class="btn fa-solid fa-circle-plus fz-color2"></i>                       
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item fz-color1">
-                            <div class="row p-3">
-                                <div class="col-6 d-flex align-items-center">
-                                    <i class="fa-solid fa-hand-holding-heart me-2"></i>
-                                    <span id="itemName">CLIO眼影</sapn>
-                                </div>
-                                <div class="col-6 d-flex justify-content-end align-items-center ">
-                                    <span class="me-2">需求數量</span>
-                                    <i id="minus" class="btn fa-solid fa-circle-minus fz-color2"></i>
-                                    <div class="badge fz-color3" id="collectAmount">0</div>
-                                    <i id="plus" class="btn fa-solid fa-circle-plus fz-color2"></i>                       
-                                </div>
-                            </div>
-                        </li> -->
                     </ul>
                 </div>
                 <div class="form-group mb-4 m-auto d-flex justify-content-end">
@@ -258,7 +177,6 @@
                         class="btn btn-border a px-3 me-2 fw-bold fz-color2"></button>
                 </div>
 
-                <!-- 寄送 -->
                 <div class="form-group mb-4">
                     <div class="row">
                         <label class="form-label h5 fz-color1">寄送方式</label>
@@ -267,15 +185,14 @@
                         <div class="col-6 form-check">
                             <input type="checkbox" class="form-check-input" id="shop" required>
                             <label class="form-check-label me-3" for="shop">超取：60點</label>
-                            <div class="mt-2">超商資訊：</div>
-                            <div>店號110817<span class="m-1">千翔門市</span></div>
-
+                            <input type="text" id="shopinfo1" class="form-control mt-1 fz-color1" placeholder="店號" required>
+                            <input type="text" id="shopinfo2" class="form-control mt-1 fz-color1" placeholder="門市名稱">
+                            
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 form-check">
                             <input class="form-check-input me-1" id="shipping" type="checkbox">
                             <label class="form-check-label me-2" for="shipping">宅配：150點</label>
-                            <div class="ms-4 mt-2">寄件地址：</div>
-                            <div class="ms-4">台北市士林區後港街98之1號2號1樓</div>
+                            <input type="text" id="address" class="form-control mt-1 fz-color1" placeholder="收件地址">
                         </div>
                     </div>
 
@@ -289,20 +206,15 @@
         </div>
     </main>
 
-    <!-- End Contact -->
-
-    <!-- Start Footer -->
     <footer class="bg-color1">
         <div class="h-64px d-flex align-items-center justify-content-center">
             © Engee CO.,LTD All rights reserved.
         </div>
     </footer>
-    <!-- End Footer -->
 
-    <!-- Start Script -->
+    <script src="./js/jquery-1.11.0.min.js"></script>
     <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="./js/templatemo.js"></script>
-    <!-- End Script -->
 
 
 </body>
