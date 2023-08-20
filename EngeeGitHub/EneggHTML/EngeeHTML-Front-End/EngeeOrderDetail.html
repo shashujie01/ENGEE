@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/FrameStyle.css">
+    <title>訂單明細</title>
+    <style>
+        #productName {
+            min-width: 334px;
+            ;
+        }
+
+        .orderSearch {
+            border: 2px solid black;
+            /* min-width: 600px; */
+        }
+
+        .no-wrap {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md sticky-top">
+        <div class="container-md d-flex justify-content-between align-items-center ">
+            <a href="#">
+                <img class="logo-size " src="./images/bigframe/logo01.png" alt="logo">
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#1" class="nav-link  dropdown-toggle">關於我們</a>
+                    </li>
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#2" class="nav-link dropdown-toggle">美妝討論</a>
+
+                    </li>
+
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#3" class="nav-link  dropdown-toggle" data-bs-toggle="dropdown">捐贈專區</a>
+                        <ul class="dropdown-menu">
+                            <a href="#" class="dropdown-item">
+                                <h6>
+                                    1點贈送
+                                </h6>
+                            </a>
+                            <hr class="hr-m4px">
+                            <a href="#" class="dropdown-item">
+                                <h6>
+                                    許願池
+                                </h6>
+                            </a>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#4" class="nav-link dropdown-toggle">買賣專區</a>
+                    </li>
+
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#5" class="nav-link dropdown-toggle">會員專區</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="d-flex justify-content-end me-2 align-content-center ">
+                    <a href="#">
+                        <i class=" me-3 mt-3 fa-solid fa-circle-user fa-xl " style="color: #e54862ca;"></i>
+                        <!-- <img class="rounded-circle h-30px me-3" src="https://randomuser.me/api/portraits/men/88.jpg" alt="user">    -->
+                    </a>
+                    <button class="btn btn-s" type="submit">
+                        註冊
+                    </button>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <div class="headerimg">
+            <div class="overlay">
+                <div class="d-flex align-items-center justify-content-center text-white fz-size32px"
+                    style="height: 100%">
+                    買賣專區
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1 class="my-4 ">訂單明細</h1>
+            <div class="orderSearch row mb-4 mt-4 m-0">
+                <div class=" d-flex justify-content-start align-items-center mt-2">
+                    <label class="w-auto me-1 no-wrap" for="orderDateRangeStart">開始日期:</label>
+                    <input type="date" class="orderDate form-control w-auto me-3" id="orderDateRangeStart">
+                    <label class="w-auto me-1 no-wrap" for="orderDateRangeEnd">结束日期:</label>
+                    <input type="date" class="orderDate form-control w-auto " id="orderDateRangeEnd">
+                </div>
+                <div class="d-flex justify-content-start align-items-center mt-2">
+                    <label class="me-2" for=" productName">購買商品查詢:</label>
+                    <input type="text" class="form-control w-auto" id="productName" placeholder="輸入商品名稱">
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-s btnHoverStyle2 mb-2" id="filterSearchBtn">查詢</button>
+                    <button class="btn btn-s btnHoverStyle2 mb-2" id="filterClearBtn">清除</button>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">商品名稱</th>
+                        <th scope="col">訂單日期</th>
+                        <th scope="col">數量</th>
+                        <th scope="col">訂購總額</th>
+                        <th scope="col">寄送方式</th>
+                    </tr>
+                </thead>
+                <tbody id="orderList">
+                    <!-- 從後端渲染訂單明細列表 -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 123         -->
+        <!-- public class OrderController : Controller
+        {
+            public IActionResult Index(DateTime? startDate, DateTime? endDate, string productName)
+            {
+                var orderDetails = new List<OrderDetail>();
+        
+                using (SqlConnection connection = new SqlConnection("YourConnectionString"))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM Orders WHERE (OrderDate >= @StartDate OR @StartDate IS NULL) AND (OrderDate <= @EndDate OR @EndDate IS NULL) AND (ProductName LIKE @ProductName OR @ProductName IS NULL)", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@StartDate", startDate ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@EndDate", endDate ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ProductName", $"%{productName ?? ""}%");
+        
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var orderDetail = new OrderDetail
+                                {
+                                    ProductName = reader["ProductName"].ToString(),
+                                    OrderDate = DateTime.Parse(reader["OrderDate"].ToString()),
+                                    Quantity = int.Parse(reader["Quantity"].ToString()),
+                                    TotalAmount = decimal.Parse(reader["TotalAmount"].ToString()),
+                                    DeliveryMethod = reader["DeliveryMethod"].ToString()
+                                };
+                                orderDetails.Add(orderDetail);
+                            }
+                        }
+                    }
+                }
+        
+                return View(orderDetails);
+            }
+        } -->
+
+
+
+
+        <!-- 標籤開合
+<div class="container">
+        <div class="btn btn-info collapsed" data-bs-toggle="collapse" data-bs-target="#content" aria-expanded="false">開闔</div>
+
+        <div id="content" class="collapse" style="">
+            崗位舉辦你要農業負責人繼續選擇本帖水果專門不但不少，我和錯誤圖文大部分總經理並不是帶著，加大嘉義工程面臨專利長大僅僅英語，權威一週全部，不在方面陽明山閲讀者開發，說話說法工人維修海外微微同意空間做法網易，為止堅持通知都市損失，穩定加油導航，眼前準備，多個。
+        </div>
+    </div> -->
+    </main>
+    <footer class="bg-color1">
+        <div class="h-64px d-flex align-items-center justify-content-center">
+            © Engee CO.,LTD All rights reserved.
+        </div>
+    </footer>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 获取当前日期
+        let currentDate = new Date();
+
+        // 获取6个月前的日期
+        let startDate = new Date(currentDate);
+        startDate.setMonth(startDate.getMonth() - 6);
+
+        // 将日期转换为YYYY-MM-DD格式的字符串
+        function formatDate(date) {
+            let year = date.getFullYear();
+            let month = (date.getMonth() + 1).toString().padStart(2, '0');
+            let day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // 设置输入框的默认值
+        document.getElementById('orderDateRangeEnd').value = formatDate(currentDate);
+        document.getElementById('orderDateRangeStart').value = formatDate(startDate);
+
+    </script>
+
+</body>
+
+</html>
