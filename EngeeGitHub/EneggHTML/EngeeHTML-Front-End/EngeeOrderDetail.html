@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./css/FrameStyle.css">
+
     <title>訂單明細</title>
     <style>
         #productName {
@@ -25,6 +26,47 @@
         .no-wrap {
             white-space: nowrap;
         }
+
+        /* 狀態圖 */
+        .flow-chart {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .connector {
+            height: 2px;
+            background-color: gray;
+            position: absolute;
+            top: 50%;
+            left: 12%;
+            right: 12%;
+            z-index: 0;
+        }
+
+        .img-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* 狀態圖 */
     </style>
 </head>
 
@@ -102,6 +144,7 @@
     </header>
 
     <main>
+
         <div class="container">
             <h1 class="my-4 ">訂單明細</h1>
             <div class="orderSearch row mb-4 mt-4 m-0">
@@ -131,9 +174,106 @@
                     </tr>
                 </thead>
                 <tbody id="orderList">
-                    <!-- 從後端渲染訂單明細列表 -->
+                    <tr>
+                        <td>口紅</td>
+                        <td>20230820</td>
+                        <td>1</td>
+                        <td>50</td>
+                        <td>宅配</td>
+                    </tr>
                 </tbody>
             </table>
+            <div class="container d-flex flex-column ">
+                <button class="btn btn-m btnHoverStyle2 collapsed mb-3 w-20 " data-bs-toggle="collapse"
+                    data-bs-target="#content" aria-expanded="false">配送進度</button>
+                <div id="content" class="collapse">
+                    <div class="row">
+                        <div class="flow-chart col-12">
+                            <div class="connector"></div>
+                            <div class="stage">
+                                <div class="img-placeholder">
+                                    <i class="fa-solid fa-file-circle-check fz-size40px" style="color: #e54862;"></i>
+                                </div>
+                                <div class="status">訂單成立</div>
+                            </div>
+                            <div class="stage">
+                                <div class="img-placeholder">
+                                    <i class="fa-solid fa-truck-fast fz-size40px" style="color: #e54862;"></i>
+                                </div>
+                                <div class="status">已出貨</div>
+                            </div>
+                            <div class="stage">
+                                <div class="img-placeholder">
+                                    <i class="fa-solid fa-gift fz-size40px" style="color: #e54862;"></i>
+                                </div>
+                                <div class="status">待收貨</div>
+                            </div>
+                            <div class="stage">
+                                <div class="img-placeholder">
+                                    <i class="fa-solid fa-star fz-size40px" style="color: #e54862;"></i>
+                                </div>
+                                <div class="status">完成訂單</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">商品名稱</th>
+                        <th scope="col">訂單日期</th>
+                        <th scope="col">數量</th>
+                        <th scope="col">訂購總額</th>
+                        <th scope="col">寄送方式</th>
+                    </tr>
+                </thead>
+                <tbody id="orderList">
+                    <tr>
+                        <td>口紅</td>
+                        <td>20230820</td>
+                        <td>1</td>
+                        <td>50</td>
+                        <td>宅配</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="container d-flex flex-column ">
+                <button class="btn btn-m btnHoverStyle2 collapsed mb-3 w-20 " data-bs-toggle="collapse"
+                    data-bs-target="#content" aria-expanded="false">配送進度</button>
+                <div id="content" class="collapse">
+                    <div class="row">
+                        <div class="flow-chart col-12">
+                            <div class="connector"></div>
+                            <div class="stage">
+                                <div class="img-placeholder">
+                                    <i class="fa-solid fa-file-circle-check fz-size40px" style="color: #e54862;"></i>
+                                </div>
+                                <div class="status">訂單成立</div>
+                            </div>
+                            <div class="stage">
+                                <div class="img-placeholder">
+                                    <i class="fa-solid fa-truck-fast fz-size40px" style="color: #e54862;"></i>
+                                </div>
+                                <div class="status">已出貨</div>
+                            </div>
+                            <div class="stage">
+                                <div class="img-placeholder">
+                                    <i class="fa-solid fa-gift fz-size40px" style="color: #e54862;"></i>
+                                </div>
+                                <div class="status">待收貨</div>
+                            </div>
+                            <div class="stage">
+                                <div class="img-placeholder">
+                                    <i class="fa-solid fa-star fz-size40px" style="color: #e54862;"></i>
+                                </div>
+                                <div class="status">完成訂單</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- 123         -->
@@ -173,18 +313,6 @@
                 return View(orderDetails);
             }
         } -->
-
-
-
-
-        <!-- 標籤開合
-<div class="container">
-        <div class="btn btn-info collapsed" data-bs-toggle="collapse" data-bs-target="#content" aria-expanded="false">開闔</div>
-
-        <div id="content" class="collapse" style="">
-            崗位舉辦你要農業負責人繼續選擇本帖水果專門不但不少，我和錯誤圖文大部分總經理並不是帶著，加大嘉義工程面臨專利長大僅僅英語，權威一週全部，不在方面陽明山閲讀者開發，說話說法工人維修海外微微同意空間做法網易，為止堅持通知都市損失，穩定加油導航，眼前準備，多個。
-        </div>
-    </div> -->
     </main>
     <footer class="bg-color1">
         <div class="h-64px d-flex align-items-center justify-content-center">

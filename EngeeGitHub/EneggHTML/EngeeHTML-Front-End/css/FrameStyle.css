@@ -146,6 +146,22 @@ a {
     width: 16px;
 }
 
+.w-15 {
+    width: 15% !important;
+}
+
+.w-20 {
+    width: 20% !important;
+}
+
+.w-30 {
+    width: 30% !important;
+}
+
+.w-45 {
+    width: 40% !important;
+}
+
 /* ----end----共用寬度----end----*/
 
 /* ----start----共用分隔線----start----*/
@@ -221,14 +237,7 @@ button.btn-rong-l {
     /* #e5486288 */
 }
 
-.btnHoverStyle2:hover {
-    /* 舊名btnHoverColor1 */
-    color: black;
-    background-color: #e0687ca2;
-    /* #e5486288 */
-}
-
-.btnHoverStyle2:hover {
+.btnHoverStyle3:hover {
     /* 取代custom->.a:hover  */
     color: #e54862ca;
     border: 2px dashed #aa8282;
@@ -238,7 +247,33 @@ button.btn-rong-l {
 
 /* ----end----共用按鈕----end----*/
 
-/* ----start---網站共用超連結----start----*/
+/* ----start---共用頁碼切換----start----*/
+/* 程式碼參考下面 */
+/* <div div="row">
+    <ul class="pagination justify-content-end">
+        <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+</div> */
+.pagination .page-link {
+    color: #4b3030;
+}
+
+.pagination .page-link:hover {
+    background-color: #9f6666;
+    color: #fff;
+}
+
+/* ----end----共用頁碼切換----end----*/
+
+/* ----start---共用超連結----start----*/
 
 .hrefstyle {
     color: #000000;
@@ -251,7 +286,7 @@ button.btn-rong-l {
     color: #e54862ca;
 }
 
-/* ----end----網站共用超連結----end----*/
+/* ----end----共用超連結----end----*/
 
 /*----start----控制Navbar區域----start----*/
 
