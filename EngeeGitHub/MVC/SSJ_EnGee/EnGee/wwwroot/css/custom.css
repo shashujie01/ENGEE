@@ -1,0 +1,78 @@
+
+.a:hover {
+    color: #e54862ca;
+    border: 2px dashed #aa8282;
+    border-radius: 6px;
+}
+.btn-border{
+    border: 2px dashed #aa8282;
+    border-radius: 6px;
+}
+.down-arrow{
+    color:#dda6b1;
+    
+}
+.p-caption{
+    line-height: 30px;
+}
+.icon-style{
+    color: #dda6b1;
+}
+.input-text{
+    text-align: end;
+}
+.textarea-text{
+    height: 25px;
+    line-height:25px;
+}
+.bar{
+    background-color: #cd9e9e;
+}
+.submit-sytle{
+    background-color: #c97a7a;
+    color: #eadfdf;
+}
+
+/* scroll bar：可以改寫成SCSS */
+.scroll::-webkit-scrollbar {
+
+    width: 7px;
+
+  }
+
+.scroll::-webkit-scrollbar-button {
+
+    background: transparent;
+
+    border-radius: 4px;
+
+  }
+
+.scroll::-webkit-scrollbar-track-piece {
+
+    background: transparent;
+
+  }
+
+.scroll::-webkit-scrollbar-thumb {
+
+    border-radius: 4px;
+
+    background-color: rgba(0, 0, 0, 0.4);
+
+    border: 1px solid slategrey;
+
+  }
+
+.scroll::-webkit-scrollbar-track {
+
+    box-shadow: transparent;
+
+  }
+
+.pagination .page-link {color: #4b3030;}
+.pagination .page-link:hover {color: #4b3030;}
+.pagination .page-link:hover, .pagination .page-link.active {
+  background-color: #9f6666;
+  color: #fff;
+} 

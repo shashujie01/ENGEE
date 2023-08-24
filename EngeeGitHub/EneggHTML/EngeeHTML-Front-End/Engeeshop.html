@@ -514,7 +514,14 @@
             </div>
         </div>
 
-
+        <script>
+            $(document).ready(function () {
+                $('#contentOne, #contentTwo').on('show.bs.collapse', function () {
+                    var id = $(this).attr('id');
+                    $('ul .collapse').not('#' + id).collapse('hide');
+                });
+            });
+        </script>
     </main>
     <footer class="bg-color1">
         <div class="h-64px d-flex align-items-center justify-content-center">
@@ -522,14 +529,7 @@
         </div>
     </footer>
     <script src="./js/bootstrap.bundle.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#contentOne, #contentTwo').on('show.bs.collapse', function () {
-                var id = $(this).attr('id');
-                $('ul .collapse').not('#' + id).collapse('hide');
-            });
-        });
-    </script>
+
 
 </body>
 
