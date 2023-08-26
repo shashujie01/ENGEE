@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
           crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>@ViewBag.Title</title>
    <link rel="stylesheet" href="@Url.Content("~/css/FrameStyle.css")">
 
@@ -38,7 +39,10 @@
                     </li>
 
                     <li class="nav-item dropdown nav-item-1">
-                        <a href="#4" class="nav-link dropdown-toggle">買賣專區</a>
+                        <a href="#4" class="nav-link  dropdown-toggle" data-bs-toggle="dropdown">買賣專區</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Index", "Product")" class="dropdown-item">買賣專區</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item dropdown nav-item-1">

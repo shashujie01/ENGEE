@@ -126,7 +126,7 @@ EngeeContext db = new EngeeContext();
                 DeliveryTypeName = product.DeliveryType?.DeliveryType,
                 DeliveryFee = product.DeliveryType?.DeliveryFee ?? 0,
                 //SellerName = product.Seller?.MemberName,
-                ProductSaleStatus = product.ProductSaleStatus
+                ProductSaleStatus = product.ProductSaleStatus,
             };
 
             return View(PDviewModel);

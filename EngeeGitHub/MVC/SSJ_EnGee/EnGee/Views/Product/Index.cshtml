@@ -93,6 +93,11 @@
 
                         <ul id="contentOne" class="collapse list-unstyled mb-5 cattext">
                             <li>
+                                <a class="text-decoration-none" href="@Url.Action("Index", "Product")" >
+                                    分類全選
+                                </a>
+                            </li>
+                            <li>
                                 <a class="text-decoration-none" href="#" data-bs-toggle="collapse"
                                    data-bs-target="#collapseOne">
                                     眼部彩妝
@@ -169,6 +174,13 @@
                         </a>
 
                         <ul id="contentTwo" class=" collapse list-unstyled flex-container cattext ">
+                            <li class:" d-flex">
+                                <a class="text-decoration-none" href="@Url.Action("Index", "Product")">
+                                    自首全選
+                                </a>
+                            </li>
+                            <li class="spacer" style="list-style: none;"></li>
+                            <li class="spacer"></li>
                             <li><a class="text-decoration-none" href="@Url.Action("FilterByBrandId", "Product", new { BrandId = 1 })">A</a></li>
                             <li><a class="text-decoration-none" href="@Url.Action("FilterByBrandId", "Product", new { BrandId = 2 })">B</a></li>
                             <li><a class="text-decoration-none" href="@Url.Action("FilterByBrandId", "Product", new { BrandId = 3 })">C</a></li>
