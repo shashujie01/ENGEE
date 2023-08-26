@@ -1,4 +1,4 @@
-﻿namespace Engee.ViewModel
+﻿namespace EnGee.ViewModel
 {
     public class SSJ_ProductDetailsViewModel
     {

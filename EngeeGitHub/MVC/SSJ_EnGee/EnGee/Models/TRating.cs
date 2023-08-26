@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Engee.Models;
+namespace EnGee.Models;
 
 public partial class TRating
 {

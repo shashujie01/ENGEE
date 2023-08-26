@@ -1,10 +1,10 @@
-﻿using Engee.Models;
-using Engee.ViewModel;
+﻿using EnGee.Models;
+using EnGee.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Engee.Controllers
+namespace EnGee.Controllers
 {
     public class ProductController : Controller
     {

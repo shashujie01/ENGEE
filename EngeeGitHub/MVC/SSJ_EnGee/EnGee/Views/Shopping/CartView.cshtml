@@ -1,0 +1,307 @@
+﻿@model List<EnGee.Models.SSJ_CShoppingCarItem>
+
+@{
+    ViewData["Title"] = "我的購物車";
+}
+@{
+    Layout = "_Layout";
+}
+@{
+    ViewBag.HeaderTitle = "我的購物車";
+}
+<style>
+    /* 購物車網頁專用start */
+    .nav-tabs .nav-link.active {
+        background-color: #e54862ca;
+        transition: color 0.2s
+        /* 頁籤切換 */
+    }
+
+    .shopcartList {
+        display: inline-block;
+        margin: 0px 0px 10px 0px;
+        padding-top: 24px;
+        border-bottom: 2px solid #e1e1e1;
+        width: 100%;
+        box-sizing: border-box;
+        /* 購物車頁面調整 */
+    }
+
+    .cartcontent .card-footer {
+        background-color: white;
+    }
+
+    .cartcontent .cartimg img {
+        height: 160px;
+        width: auto;
+    }
+
+    .selected {
+        background-color: #e54862ca;
+    }
+
+    .payInfoBox {
+        margin-top: 16px;
+        background-color: white;
+        border-radius: 6px;
+    }
+
+    /* 購物車網頁專用end */
+</style>
+<main class="bg-color3">
+    <div class="container p-0">
+        <div class="shopcartList">
+            <nav>
+                <div class="nav nav-tabs" id=" nav-tab" role="tablist">
+                    <button class="nav-link active " id="nav-home-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                            aria-selected="true">
+                        超商/i郵箱/myfone門市取貨
+                    </button>
+                    <button class="nav-link " id="nav-profile-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+                            aria-selected="false">
+                        宅配
+                    </button>
+                </div>
+                <hr class="hr-m4px">
+            </nav>
+            <div class="tab-content " id="nav-tabContent">
+                    <!-- 超商頁面 -->
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    @{
+                        int count = 0;
+                        decimal pay = 0;
+                        foreach (var item in Model)
+                        {
+                            count++;
+                            pay += item.小計;
+                            <div class="card p-2">
+                            <div class="cartcontent">
+                                <div class="row m-0 ">
+                                    <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                        <div class="form-check">
+                                            <input class="cartcheckout form-check-input" type="checkbox" value=""
+                                                   id="flexCheckDefault1">
+                                        </div>
+                                        <div class="cartimg d-flex">
+                                            <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                        <div class="card-body p-0">
+                                            <h5 class="card-title">
+                                                    @Html.DisplayFor(modelItem => item.tproduct.ProductName)
+                                            </h5>
+                                            <p class="card-text">
+                                                //其他資訊擺放位置
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                        <label class="me-1 mb-2" for="">點數:</label>
+                                            <label for="">@Html.DisplayFor(modelItem => item.point)</label><br>
+                                        <label class="me-1 mb-2" for="">數量:</label>
+                                            <label class="me-2" for="">@Html.DisplayFor(modelItem => item.count)</label>
+                                        <i id="minus"
+                                           class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
+                                        <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i><br>
+                                            <label class="me-1 mb-2" for="">小計:</label>
+                                            <label class="me-2" for="">@Html.DisplayFor(modelItem => item.小計)</label>
+                                        <a class="hrefstyle mb-2" href="#">修改配送方式</a>
+                                        <a class=" hrefstyle" href="#">刪除</a>
+                                    </div>
+                                </div>
+                            </div>
+                             <hr class="hr-m4px">
+                            </div>
+                         }
+                     
+                        <div class="container p-0 ">
+                            <div class="row m-0 p-0">
+                                <div class="payInfoBox d-flex align-items-center justify-content-end">
+                                    <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
+                                        <input class="cartcheckout form-check-input select-all-checkbox" type="checkbox"
+                                               data-target=".cartcheckout" id="selectAll1">
+                                        <label class="form-check-label" for="selectAll1">全選</label>
+                                    </div>
+
+                                    <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
+                                    結帳總點數：<span> $ </span><span> @pay.ToString() </span>
+                                    </div>
+
+                                    <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
+                                        <button class="btn btn-m btnHoverStyle2 m-1" type="submit">結帳</button>
+                                    </div>
+
+                                </div>
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <a class="hrefstyle mt-2" href="@Url.Action("Index", "Product")">繼續購物</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <!-- 宅配頁面 -->
+                    @{
+                        count = 0;
+                        pay = 0;
+                        foreach (var item in Model)
+                        {
+                            count++;
+                            pay += item.小計;
+                            <div class="card p-2">
+                                <div class="cartcontent">
+                                    <div class="row m-0 ">
+                                        <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                            <div class="form-check">
+                                                <input class="cartcheckout form-check-input" type="checkbox" value=""
+                                                       id="flexCheckDefault1">
+                                            </div>
+                                            <div class="cartimg d-flex">
+                                                <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                            <div class="card-body p-0">
+                                                <h5 class="card-title">
+                                                    @Html.DisplayFor(modelItem => item.tproduct.ProductName)
+                                                </h5>
+                                                <p class="card-text">
+                                                    //其他資訊擺放位置
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                            <label class="me-1 mb-2" for="">點數:</label>
+                                            <label for="">@Html.DisplayFor(modelItem => item.point)</label><br>
+                                            <label class="me-1 mb-2" for="">數量:</label>
+                                            <label class="me-2" for="">@Html.DisplayFor(modelItem => item.count)</label>
+                                            <i id="minus"
+                                               class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
+                                            <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i>
+                                            <label class="me-1 mb-2" for="">小計:</label>
+                                            <label class="me-2" for="">@Html.DisplayFor(modelItem => item.小計)</label>
+                                            <a class="hrefstyle mb-2" href="#">修改配送方式</a>
+                                            <a class=" hrefstyle" href="#">刪除</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="hr-m4px">
+                            </div>
+                        }
+
+                        <div class="container p-0 ">
+                            <div class="row m-0 p-0">
+                                <div class="payInfoBox d-flex align-items-center justify-content-end">
+                                    <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
+                                        <input class="cartcheckout form-check-input select-all-checkbox" type="checkbox"
+                                               data-target=".cartcheckout" id="selectAll1">
+                                        <label class="form-check-label" for="selectAll1">全選</label>
+                                    </div>
+
+                                    <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
+                                        結帳總點數：<span> $ </span><span> @pay.ToString() </span>
+                                    </div>
+
+                                    <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
+                                        <button class="btn btn-m btnHoverStyle2 m-2" type="submit">繼續購物</button>
+                                        <button class="btn btn-m btnHoverStyle2 mt-2" type="submit">結帳</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                        @*<div class="card p-2">
+                            <div class="cartcontent">
+                                <div class="row m-0 ">
+                                    <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                        <div class="form-check">
+                                            <input class="cartcheckout form-check-input" type="checkbox" value=""
+                                                   id="flexCheckDefault1">
+                                        </div>
+                                        <div class="cartimg d-flex">
+                                            <img src="./images/bigframe/logo01.png" alt="...">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                        <div class="card-body p-0">
+                                            <h5 class="card-title">
+                                                ColourPop x Disney Loves First Kiss Lipstick Snow
+                                                White
+                                            </h5>
+                                            <p class="card-text">
+                                                ColourPop x Disney Loves First Kiss Lipstick Snow White
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                        <label class="me-1 mb-2" for="">點數:</label>
+                                        <label for="">588</label><br>
+                                        <label class="me-1 mb-2" for="">數量:</label>
+                                        <label class="me-2" for="">1</label>
+                                        <i id="minus"
+                                           class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
+                                        <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i>
+                                        <a class="hrefstyle mb-2" href="#">修改配送方式</a>
+                                        <a class=" hrefstyle" href="#">刪除</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-m4px">
+                        </div>
+                    </div>*@
+                     </div>
+        </div>
+</main>
+<script src="./js/bootstrap.bundle.min.js"></script>
+<script>
+    // 全選checkbox使用
+    document.addEventListener("DOMContentLoaded", function ()
+    {
+        const selectAllCheckboxes = document.querySelectorAll(".select-all-checkbox");
+
+        selectAllCheckboxes.forEach(selectAllCheckbox =>
+        {
+            const targetCheckboxes = document.querySelectorAll(selectAllCheckbox.getAttribute("data-target"));
+
+            selectAllCheckbox.addEventListener("change", function ()
+            {
+                const isChecked = selectAllCheckbox.checked;
+
+                targetCheckboxes.forEach(checkbox =>
+                {
+                    checkbox.checked = isChecked;
+                });
+            });
+
+            // 處理頁面切換時保持獨立的全選狀態
+            document.addEventListener("visibilitychange", function ()
+            {
+                if (!document.hidden)
+                {
+                    const areAllChecked = Array.from(targetCheckboxes).every(checkbox => checkbox.checked);
+                    selectAllCheckbox.checked = areAllChecked;
+                }
+            });
+
+            // 處理頁面切換時重置前一頁面的全選狀態
+            document.querySelectorAll(".nav-link").forEach(link =>
+            {
+                link.addEventListener("click", function ()
+                {
+                    targetCheckboxes.forEach(checkbox =>
+                    {
+                        checkbox.checked = false;
+                    });
+                    selectAllCheckbox.checked = false;
+                });
+            });
+        });
+    });
+ // 全選checkbox使用
+</script>

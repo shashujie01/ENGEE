@@ -1,8 +1,9 @@
-﻿@model Engee.ViewModel.SSJ_ProductPageViewModel
-
+﻿@model EnGee.ViewModel.SSJ_ProductPageViewModel
 
 @{ Layout = "_Layout";}
-@{ViewBag.Title = "Engee買賣專區";}
+@{
+    ViewBag.Title = "Engee買賣專區";
+}
 @{
     ViewBag.HeaderTitle = "買賣專區";
 }
@@ -214,13 +215,14 @@
                                             <i class="far fa-heart"></i>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="btn bg-white text-black mt-2" href="shop-single.html">
+                                    <li> 
+
+                                         <a class="btn bg-white text-black mt-2" href="@Url.Action("Details", "Product", new { id = products.ProductId })">
                                             <i class="far fa-eye"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="btn bg-white text-black mt-2" href="shop-single.html">
+                                            <a class="btn bg-white text-black mt-2" href="@Url.Action("AddToCart", "Shopping", new { id = products.ProductId })">
                                             <i class="fas fa-cart-plus"></i>
                                         </a>
                                     </li>

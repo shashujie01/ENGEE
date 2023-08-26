@@ -282,8 +282,48 @@ button.btn-rong-l {
 
 }
 
+.hrefstyle1-s {
+    background-color: #e54862ca;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    height: 36px;
+    width: auto;
+    border: 0;
+    border-radius: 6px;
+}
+
+.hrefstyle1-m {
+    background-color: #e54862ca;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    width: auto;
+    border: 0;
+    border-radius: 6px;
+}
+
+.hrefstyle1-l {
+    background-color: #e54862ca;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    height: 64px;
+    width: auto;
+    border: 0;
+    border-radius: 6px;
+}
+
 .hrefstyle:hover {
     color: #e54862ca;
+}
+
+.hrefstyle1:hover {
+    /* 舊名btnHoverColor1 */
+    color: black;
+    background-color: #e0687ca2;
+    /* #e5486288 */
 }
 
 /* ----end----共用超連結----end----*/

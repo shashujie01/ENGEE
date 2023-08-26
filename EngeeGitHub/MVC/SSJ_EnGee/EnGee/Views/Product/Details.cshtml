@@ -1,4 +1,4 @@
-﻿@model Engee.ViewModel.SSJ_ProductDetailsViewModel
+﻿@model EnGee.ViewModel.SSJ_ProductDetailsViewModel
 
 @{
     ViewBag.Title = Model.ProductName + " Details";
@@ -40,7 +40,7 @@
                                 <p class="product-delivery-fee">運費: NT$ @Model.DeliveryFee</p>
                                 <p class="product-seller-name">賣家: @Model.SellerName</p>
                             </div>
-                            <div class="product-action-section">
+                            <div class="product-action-section d-flex ">
                                 <button class="add-to-cart-button btn btn-m btnHoverStyle2">加入購物車</button>
                                 <button class="buy-now-button btn btn-m btnHoverStyle2">立即購買</button>
                             </div>
@@ -48,5 +48,7 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
 </main>

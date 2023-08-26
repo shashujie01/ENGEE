@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Engee.Models;
+namespace EnGee.Models;
 
 public partial class EngeeContext : DbContext
 {

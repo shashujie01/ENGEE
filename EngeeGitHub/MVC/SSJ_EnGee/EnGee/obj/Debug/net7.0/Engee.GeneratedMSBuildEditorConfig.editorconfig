@@ -32,16 +32,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/jay087511/Documents/1.ENGEE/EngeeGitHub/MVC/SSJ_EnGee/Engee/Views/Product/List.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxMaXN0LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/jay087511/Documents/1.ENGEE/EngeeGitHub/MVC/SSJ_EnGee/Engee/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/jay087511/Documents/1.ENGEE/EngeeGitHub/MVC/SSJ_EnGee/Engee/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jay087511/Documents/1.ENGEE/EngeeGitHub/MVC/SSJ_EnGee/Engee/Views/Shopping/AddToCart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdcQWRkVG9DYXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jay087511/Documents/1.ENGEE/EngeeGitHub/MVC/SSJ_EnGee/Engee/Views/Shopping/CartView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdcQ2FydFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/jay087511/Documents/1.ENGEE/EngeeGitHub/MVC/SSJ_EnGee/Engee/Views/Shopping/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdcTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/jay087511/Documents/1.ENGEE/EngeeGitHub/MVC/SSJ_EnGee/Engee/Views/_ViewImports.cshtml]

@@ -1,4 +1,4 @@
-namespace Engee.Models
+namespace EnGee.Models
 {
     public class ErrorViewModel
     {

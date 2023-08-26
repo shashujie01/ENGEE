@@ -1,0 +1,57 @@
+﻿@model IEnumerable<EnGee.Models.SSJ_CProductWrap>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<p>
+    <a asp-action="CartView">檢視購物車</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+              序號
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductRemainingQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductUnitPoint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductImagePath)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductRemainingQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductUnitPoint)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductImagePath)
+            </td>
+            <td>
+                    @Html.ActionLink("加入購物車", "AddToCart", new { id=item.ProductId}) ;
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

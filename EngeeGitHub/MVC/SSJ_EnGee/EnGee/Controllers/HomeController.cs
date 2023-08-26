@@ -1,8 +1,8 @@
-﻿using Engee.Models;
+﻿using EnGee.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Engee.Controllers
+namespace EnGee.Controllers
 {
     public class HomeController : Controller
     {
