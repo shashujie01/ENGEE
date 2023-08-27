@@ -102,7 +102,7 @@
                                                 <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i><br>
                                                 <label class="me-1 mb-2" for="">小計:</label>
                                                 <label class="me-2" for="">@Html.DisplayFor(modelItem => item.小計)</label> <br>
-                                                <label class="me-1 mb-2">選擇的配送方式::</label>
+                                                <label class="me-1 mb-2">選擇的配送方式:</label>
                                                 <label class="me-2 mb-2" for="">@Html.DisplayFor(modelItem => item.DeliveryOption)</label>
                                                 <a class="hrefstyle mb-2" href="#">修改配送方式</a>
                                                 <a class=" hrefstyle" href="#">刪除</a>
@@ -132,7 +132,7 @@
                                     </div>
                                 </div>
                             </div>
-                            //隱藏超取表單
+                            //隱藏宅配表單
                             <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
                                 <div class="container mt-5">
                                     <div class="input-group mb-2 d-flex  align-items-end">
@@ -146,65 +146,49 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">姓名</span>
-                                        <input type="form-text" class="form-control">
-                                    </div>
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">Email</span>
-                                        <input type="form-text" class="form-control">
-                                    </div>
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">手機</span>
-                                        <input type="form-text" class="form-control">
-                                    </div>
-                                    <div class="input-group mt-2 convenientExtract">
-                                        <ul class="mb-2 d-flex">
-                                            <li>
-                                                <label for="store_type_711">
-                                                    <input class="radio" type="radio" value="711" name="store_type"id="store_type_711" checked="checked"><img height="65" width="65" alt=""src="~/images/logo/7-11_logo_hd.png">
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label for="store_type_fami">
-                                                    <input class="radio" type="radio" value="Fami" name="store_type" id="store_type_fami"><img height="65" width="65" alt="" src="~/images/logo/Family.png">
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label for="store_type_ibox">
-                                                    <input class="radio" type="radio" value="BOX" name="store_type" id="store_type_ibox"><img height="65" width="65" alt=""src="~/images/logo/ibox_logo.png">
-                                                </label>
-                                            </li>
-                                        </ul>
-                                        <div class="input-group mb-2 ">
-                                            <span class="input-group-text">門市名稱：</span>
-                                            <input class="form-control " name="storename" type="form-text" id="storename" value="" readonly="">
-                                            <a href="#" id="iSeven" class="hrefstyle ms-2">
-                                                修改取貨門市
-                                            </a>
+                                    <form method="post" action="@Url.Action("ConfirmPurchase", "Shopping")">
+                                        <input type="hidden" name="OrderTotalUsagePoints" value="@pay.ToString()" />
+
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">姓名</span>
+                                            <input type="form-text" class="form-control" name="Fullname">
                                         </div>
-                                        <div class="input-group mb-2 ">
-                                            <span class="input-group-text">門市地址：</span>
-                                            <input class="form-control" name="address" type="form-text" id="address" value="" readonly="">
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">Email</span>
+                                            <input type="form-text" class="form-control" name="Email">
                                         </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">手機</span>
+                                            <input type="form-text" class="form-control" name="Phone">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text" >地址</span>
+                                            <input type="form-text" class="form-control" name="Address">
+                                        </div>
+                                    
+                                    @{
+                                        decimal memberPoints = 0; // 初始化会员点数为0
+                                    }
+                                    <div class="container mt-4">
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">商品總點數</span>
+                                            <input type="form-text" class="form-control" readonly value="@pay.ToString()">
+                                            <span class="input-group-text">會員點數</span>
+                                            <input type="form-text" class="form-control" readonly value="@memberPoints.ToString()">
+                                            <span class="input-group-text">購買後剩餘點數</span>
+                                            <input type="form-text" class="form-control" readonly value="@((memberPoints - pay).ToString())">
+                                        </div>
+                                        <div class="d-flex justify-content-center ">
+                                            <a class=" hrefstyle1-m  m-2 px-3 py-2">儲值</a>
+                                            <button class="btn btn-m btnHoverStyle2 m-2" type="submit">確認結帳</button>
+                                            <a class=" hrefstyle1-m  m-2 px-3 py-2" href="@Url.Action("Index", "Product")">取消</a>
+                                        </div>
+
+                                        </div>
+                                    </form>
                                     </div>
                                 </div>
-                                <div class="container mt-4">
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">商品總點數</span>
-                                        <input type="form-text" class="form-control" readonly>
-                                        <span class="input-group-text">會員點數</span>
-                                        <input type="form-text" class="form-control" readonly>
-                                        <span class="input-group-text">購買後剩餘點數</span>
-                                        <input type="form-text" class="form-control" readonly>
-                                    </div>
-                                    <div class="d-flex justify-content-center ">
-                                        <a class=" hrefstyle1-m  m-2 px-3 py-2">儲值</a>
-                                        <button class="btn btn-m btnHoverStyle2 m-2" type="submit">確認結帳</button>
-                                        <a class=" hrefstyle1-m  m-2 px-3 py-2" href="@Url.Action("Index", "Product")">取消</a>
-                                    </div>
-                                </div>
-                            </div>
+                                
                         }
                         else
                         {
@@ -212,8 +196,9 @@
                         }
                     }
                 </div>
-                <!-- 宅配頁面 -->
-                @*                <div class="tab-pane fade" id="nav-homeDelivery-content" role="tabpanel" aria-labelledby="nav-homeDelivery-tab">
+                <!-- 超取頁面 -->
+                @*                
+                    <div class="tab-pane fade" id="nav-homeDelivery-content" role="tabpanel" aria-labelledby="nav-homeDelivery-tab">
                 @{
                 count = 0;
                 pay = 0;
@@ -286,7 +271,7 @@
                 </div>
                 </div>
                 </div>
-                //隱藏宅配表單
+                //隱藏超取表單
                 <div class="CheckoutHomeDelivery" id="CheckoutHomeDelivery" style="display: none;">
                 <div class="container mt-5">
                 <div class="input-group mb-2 d-flex align-items-end">
@@ -304,24 +289,47 @@
 
                 <div class="input-group mb-2">
                 <span class="input-group-text">姓名</span>
-                <input type="form-text" class="form-control">
+                <input type="form-text" class="form-control" name="">
                 </div>
                 <div class="input-group mb-2">
                 <span class="input-group-text">Email</span>
-                <input type="form-text" class="form-control">
+                <input type="form-text" class="form-control name=" "">
                 </div>
                 <div class="input-group mb-2">
                 <span class="input-group-text">手機</span>
                 <input type="form-text" class="form-control">
                 </div>
-                <div class="input-group mb-2">
-                <span class="input-group-text">郵遞區號</span>
-                <input type="form-text" class="form-control">
+                <div class="input-group mt-2 convenientExtract">
+                <ul class="mb-2 d-flex">
+                <li>
+                <label for="store_type_711">
+                <input class="radio" type="radio" value="711" name="store_type"id="store_type_711" checked="checked"><img height="65" width="65" alt=""src="~/images/logo/7-11_logo_hd.png">
+                </label>
+                </li>
+                <li>
+                <label for="store_type_fami">
+                <input class="radio" type="radio" value="Fami" name="store_type" id="store_type_fami"><img height="65" width="65" alt="" src="~/images/logo/Family.png">
+                </label>
+                </li>
+                <li>
+                <label for="store_type_ibox">
+                <input class="radio" type="radio" value="BOX" name="store_type" id="store_type_ibox"><img height="65" width="65" alt=""src="~/images/logo/ibox_logo.png">
+                </label>
+                </li>
+                </ul>
+                <div class="input-group mb-2 ">
+                <span class="input-group-text">門市名稱：</span>
+                <input class="form-control " name="storename" type="form-text" id="storename" value="" readonly="">
+                <a href="#" id="iSeven" class="hrefstyle ms-2">
+                修改取貨門市
+                </a>
                 </div>
-                <div class="input-group mb-2">
-                <span class="input-group-text">地址</span>
-                <input type="form-text" class="form-control">
+                <div class="input-group mb-2 ">
+                <span class="input-group-text">門市地址：</span>
+                <input class="form-control" name="address" type="form-text" id="address" value="" readonly="">
                 </div>
+                </div>
+
                 </div>
                 <div class="container mt-4">
                 <div class="input-group mb-2">
@@ -470,6 +478,7 @@
             // 更新總點數顯示
             $(".totalPriceMoney span:nth-child(2)").text(total.toFixed(2));
         }
+
     });
                 //TODO 切換頁面無法隱藏
 </script>

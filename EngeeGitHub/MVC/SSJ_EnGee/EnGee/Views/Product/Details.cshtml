@@ -39,7 +39,7 @@
                                 <p class="product-seller-name">賣家: @Model.SellerName</p>
                             </div>
                             <div>
-                                <form id="productForm" asp-controller="Shopping" asp-action="AddToCart" method="post">
+                                <form id="productForm" asp-controller="Shopping" asp-action="CartView" method="post">
                                     <!-- Product ID (Hidden) -->
                                     <input type="hidden" name="txtProductId" value="@Model.ProductId" />
                                     <input type="hidden" name="deliveryOption" value="" class="deliveryOptionInput" />
@@ -56,8 +56,11 @@
                                     <div class="choose-product-delivery-section d-flex">
                                         <div id="delyTitle">配送方式:</div>
                                         <div class="shippingList">
-                                            <label><input name="deliveryType" delytype="宅配" type="radio" id="homeDelivery" checked="">宅配</label>
-                                            <label><input name="deliveryType" delytype="超商/i郵箱/myfone門市取貨" type="radio" id="StorePickup">超商/i郵箱/myfone門市取貨</label>
+@*                                            <label><input type ="radio" name="deliveryType" delytype="宅配" id="homeDelivery" checked="">宅配</label>
+                                            <label><input type="radio" name="deliveryType" delytype="超商/i郵箱/myfone門市取貨" id="StorePickup">超商/i郵箱/myfone門市取貨</label>*@
+                                            <label><input type="radio" name="deliveryType" delytype="宅配" value="1" id="homeDelivery" checked="">宅配</label>
+<label><input type="radio" name="deliveryType" delytype="超商/i郵箱/myfone門市取貨" value="2" id="StorePickup">超商/i郵箱/myfone門市取貨</label>
+
                                         </div>
                                     </div>
 

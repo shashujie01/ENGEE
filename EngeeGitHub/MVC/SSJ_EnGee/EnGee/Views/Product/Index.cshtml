@@ -236,9 +236,9 @@
                                         </a>
                                     </li>
                                     <li>
-                                            <a class="btn bg-white text-black mt-2" href="@Url.Action("AddToCart", "Shopping", new { id = products.ProductId })">
-                                            <i class="fas fa-cart-plus"></i>
-                                        </a>
+                                            <a href="@Url.Action("QuickAddToCart", "Shopping", new { productId = products.ProductId })" class="btn bg-white text-black mt-2 h3 text-decoration-none">
+                                                <i class="fas fa-cart-plus"></i>
+                                            </a>
                                     </li>
                                 </ul>
                             </div>

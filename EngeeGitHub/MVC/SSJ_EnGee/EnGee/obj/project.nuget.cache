@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fkdCRSAqgmZPGvdQvrUXh7HBFgxZdcBzcg2TWppXugw/7zCpyErRTPkSWHHFlFRTOsSZNx+uIJMSRTbkiGcKig==",
+  "dgSpecHash": "WZhxrftK05WDZcu4T/aGH6d9EbckPkqAGvciYD1w1RhBRzO7JIyaZGo3pOKtaXUICZCAzXxsQQr94iTBbXdTdA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jay087511\\Documents\\2.EngeeGitHub備份\\EngeeGitHub20230827-1(未改SSJ前綴)\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
+  "projectFilePath": "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jay087511\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\jay087511\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

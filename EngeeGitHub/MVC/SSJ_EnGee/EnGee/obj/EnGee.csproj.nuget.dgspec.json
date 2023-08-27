@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jay087511\\Documents\\2.EngeeGitHub備份\\EngeeGitHub20230827-1(未改SSJ前綴)\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj": {}
+    "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jay087511\\Documents\\2.EngeeGitHub備份\\EngeeGitHub20230827-1(未改SSJ前綴)\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj": {
+    "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jay087511\\Documents\\2.EngeeGitHub備份\\EngeeGitHub20230827-1(未改SSJ前綴)\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
+        "projectUniqueName": "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
         "projectName": "EnGee",
-        "projectPath": "C:\\Users\\jay087511\\Documents\\2.EngeeGitHub備份\\EngeeGitHub20230827-1(未改SSJ前綴)\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
+        "projectPath": "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
         "packagesPath": "C:\\Users\\jay087511\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jay087511\\Documents\\2.EngeeGitHub備份\\EngeeGitHub20230827-1(未改SSJ前綴)\\MVC\\SSJ_EnGee\\Engee\\obj\\",
+        "outputPath": "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jay087511\\AppData\\Roaming\\NuGet\\NuGet.Config",
