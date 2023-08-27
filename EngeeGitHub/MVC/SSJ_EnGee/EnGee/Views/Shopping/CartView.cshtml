@@ -32,9 +32,13 @@
         background-color: white;
     }
 
+
+ 
     .cartcontent .cartimg img {
-        height: 160px;
-        width: auto;
+        width: 160px;
+        height: 100%;
+        object-fit: contain;
+        max-height:160px;
     }
 
     .selected {
@@ -90,7 +94,7 @@
                                     <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
                                         <div class="form-check">
                                             <input class="cartcheckout form-check-input" type="checkbox" value=""
-                                                           id="flexCheckDefault1" onchange="checkAllSelected()">
+                                                           data-pay="@item.小計">
                                         </div>
                                         <div class="cartimg d-flex">
                                             <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
@@ -116,10 +120,9 @@
                                            class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
                                         <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i><br>
                                             <label class="me-1 mb-2" for="">小計:</label>
-                                            <label class="me-2" for="">@Html.DisplayFor(modelItem => item.小計)</label>
-                                             <label class="me-1 mb-2" >選擇的配送方式: :</label>
-                                                <label class="me-2 mb-2" for="">@Html.DisplayFor(modelItem => item.DeliveryOption)</label>
-                                             
+                                            <label class="me-2" for="">@Html.DisplayFor(modelItem => item.小計)</label> <br>
+                                             <label class="me-1 mb-2" >選擇的配送方式::</label>
+                                              <label class="me-2 mb-2" for="">@Html.DisplayFor(modelItem => item.DeliveryOption)</label>
                                         <a class="hrefstyle mb-2" href="#">修改配送方式</a>
                                         <a class=" hrefstyle" href="#">刪除</a>
                                     </div>
@@ -143,8 +146,8 @@
                                     </div>
 
                                     <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
-                                            <button class="btn btn-m btnHoverStyle2 m-1" id="CheckoutStorePickup"  type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
-                                    </div>
+                                            <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
+                                        </div>
 
                                 </div>
                                 <div class="d-flex align-items-center justify-content-end">
@@ -153,7 +156,7 @@
                             </div>
                         </div>
                         //隱藏超取表單
-                            <div class="CheckoutStorePickup" id="CheckoutStorePickup" style="display: none;">
+                            <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
                                 <div class="container mt-5">
                                     <div class="input-group mb-2 d-flex  align-items-end">
                                         <div class="fz-size32px">
@@ -390,82 +393,134 @@
 </main>
 <script src="./js/bootstrap.bundle.min.js"></script>
 <script>
+ //結帳按鈕顯示表單使用
 
-     //全選checkbox使用
+    // 啟動時，為所有商品checkbox添加事件監聽器
+    var formDisplayed = false;
+
+    // 啟動時，為所有商品checkbox添加事件監聽器
     document.addEventListener("DOMContentLoaded", function ()
     {
-        const selectAllCheckboxes = document.querySelectorAll(".select-all-checkbox");
+        var checkboxes = document.querySelectorAll('.cartcheckout');
 
-        selectAllCheckboxes.forEach(selectAllCheckbox =>
+        checkboxes.forEach(function (checkbox)
         {
-            const targetCheckboxes = document.querySelectorAll(selectAllCheckbox.getAttribute("data-target"));
-
-            selectAllCheckbox.addEventListener("change", function ()
+            checkbox.addEventListener('change', function ()
             {
-                const isChecked = selectAllCheckbox.checked;
-
-                targetCheckboxes.forEach(checkbox =>
+                if (formDisplayed)
                 {
-                    checkbox.checked = isChecked;
-                });
-            });
-
-            // 處理頁面切換時保持獨立的全選狀態
-            document.addEventListener("visibilitychange", function ()
-            {
-                if (!document.hidden)
-                {
-                    const areAllChecked = Array.from(targetCheckboxes).every(checkbox => checkbox.checked);
-                    selectAllCheckbox.checked = areAllChecked;
+                    toggleFormVisibility();
                 }
-            });
-
-             //處理頁面切換時重置前一頁面的全選狀態
-            document.querySelectorAll(".nav-link").forEach(link =>
-            {
-                link.addEventListener("click", function ()
-                {
-                    targetCheckboxes.forEach(checkbox =>
-                    {
-                        checkbox.checked = false;
-                    });
-                    selectAllCheckbox.checked = false;
-                });
             });
         });
     });
-  //全選checkbox使用
 
+    function toggleFormVisibility()
+    {
+        var isChecked = false;
+        var checkboxes = document.querySelectorAll('.cartcheckout');
 
- //結帳按鈕顯示表單使用
+        for (var i = 0; i < checkboxes.length; i++)
+        {
+            if (checkboxes[i].checked)
+            {
+                isChecked = true;
+                break;
+            }
+        }
+
+        var element = document.getElementById('CheckoutStorePickup');
+        if (isChecked)
+        {
+            element.style.display = "block";
+        } else
+        {
+            element.style.display = "none";
+        }
+        formDisplayed = isChecked;
+    }
 
     function toggleCheckout(elementId)
     {
-        // 檢查已選擇的商品數量
-        let selectedCount = $('.cartcheckout:checkbox:checked').length;
+        var isChecked = false;
+        var checkboxes = document.querySelectorAll('.cartcheckout');
 
-        // 如果沒有選擇商品，彈出提示窗口
-        if (selectedCount === 0)
+        for (var i = 0; i < checkboxes.length; i++)
         {
-            alert("請先勾選商品再進行結帳");
-            document.getElementById(elementId).style.display = 'none';
-            return;
-        }
-        else
-        {
-            const table = document.getElementById(elementId);
-
-            if (table.style.display === 'none')
+            if (checkboxes[i].checked)
             {
-                table.style.display = 'block';
-            } else
-            {
-                table.style.display = 'none';
+                isChecked = true;
+                break;
             }
         }
+
+        var element = document.getElementById(elementId);
+        if (isChecked)
+        {
+            if (formDisplayed)
+            {
+                element.focus(); // 當表單已顯示且再次按下結帳，聚焦於表單
+            } else
+            {
+                element.style.display = "block";
+                formDisplayed = true;
+            }
+        } else
+        {
+            alert('請先選擇至少一件商品！');
+            element.style.display = "none";
+            formDisplayed = false;
+        }
     }
-         //結帳按鈕顯示表單使用
+    $(document).ready(function ()
+    {
+        // 監聽全選checkbox的改變事件
+        $("#storePickupSelectAll").change(function ()
+        {
+            // 根據全選checkbox的選擇狀態來設置所有商品checkbox的選擇狀態
+            let isChecked = $(this).prop('checked');
+            $(".cartcheckout").prop('checked', isChecked);
 
+            // 若全選checkbox取消勾選，則隱藏表單
+            if (!isChecked)
+            {
+                toggleFormVisibility();
+            }
 
-    TODO 切換頁面無法隱藏
+            // 更新總點數
+            updateTotalPrice();
+        });
+
+        // 監聽每個商品checkbox的改變事件
+        $(".cartcheckout").change(function ()
+        {
+            // 如果所有商品checkbox都被選擇，全選checkbox應該也被選擇，否則取消選擇
+            if ($(".cartcheckout:checked").length === $(".cartcheckout").length)
+            {
+                $("#storePickupSelectAll").prop('checked', true);
+            } else
+            {
+                $("#storePickupSelectAll").prop('checked', false);
+            }
+
+            updateTotalPrice();
+        });
+
+        // 更新總點數函數
+        function updateTotalPrice()
+        {
+            let total = 0;
+
+            // 對於已勾選的商品，加上它的小計到總點數
+            $(".cartcheckout:checked").each(function ()
+            {
+                total += parseFloat($(this).data("pay"));
+            });
+
+            // 更新總點數顯示
+            $(".totalPriceMoney span:nth-child(2)").text(total.toFixed(2));
+        }
+
+    });
+    //TODO 切換頁面無法隱藏
 </script>
