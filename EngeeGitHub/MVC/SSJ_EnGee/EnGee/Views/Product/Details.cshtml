@@ -6,39 +6,53 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
  <style>
         .product-image-section img {
-            width: auto;
-            height: 426px;
-            object-fit: cover;
+        width: 250px;
+        height: 100%;
+        object-fit: contain;
+        max-height: 250px;
         }
+
+    .product-Detail-section
+
+    {
+     
+    }
     </style>
 <main>
     <div class="container py-5">
         <div class="row border-0 ">
-            <div class="product-details-container d-flex">
-                <div class="product-image-section col-l-4 col-md-4 col-sm-6 col-xs-8 col-8 d-flex align-items-center justify-content-center">
+            <div class="product-details-container d-flex justify-content-center m-2">
+                    <div class="product-image-section col-l-6 col-md-6 col-sm-6 col-xs-4 col-2 d-flex align-items-center justify-content-center">
                     <img src="@Model.ProductImagePath" alt="@Model.ProductName Image">
+                    </div>
+                    <div class="product-details-container col-md-4 col-4  d-flex align-items justify-content-center ms-5">
+                        <div class="product-Detail-section fz-size28px">
 
-                    <div class="product-details-container col-md-4 col-4  d-flex align-items justify-content-start ms-5">
-                        <div class="product-info-section">
-                            <h1 class="product-title">@Model.ProductName</h1>
-                            <p class="product-brand">品牌: @Model.BrandName</p>
-                            <p class="product-category">主分類: @Model.MainCategoryName</p>
-                            <p class="product-subcategory">子分類: @Model.SubcategoryName</p>
-                            <p class="product-description">商品詳情:@Model.ProductDescribe</p>
-                            <p class="product-price">單價: @Model.ProductUnitPoint 點</p>
-                            <p class="product-remaining-quantity">剩餘數量: @Model.ProductRemainingQuantity</p>
-                            <p class="product-expiration-date">
-                                過期日期:
-                                @Model.ProductExpirationDate.ToShortDateString()
-                            </p>
-                            <p class="product-usage-status">使用狀態: @Model.ProductUsageStatus</p>
-
-                            <div class="delivery-seller-section">
-                                <p class="product-delivery-type">送貨方式: @Model.DeliveryTypeName</p>
-                                <p class="product-delivery-fee">運費: NT$ @Model.DeliveryFee</p>
-                                <p class="product-seller-name">賣家: @Model.SellerName</p>
+                        <div class="product-info-section d-flex flex-column">
+                            <div class="product-info-row">
+                                <h1 class="product-title">@Model.ProductName</h1>
                             </div>
-                            <div>
+                            <div class="product-info-row">
+                                <div class="product-brand">品牌: @Model.BrandName</div>
+                                <div class="product-category">主分類: @Model.MainCategoryName</div>
+                                <div class="product-subcategory">子分類: @Model.SubcategoryName</div>
+                                <div class="product-description">商品詳情: @Model.ProductDescribe</div>
+                                <!-- 其他資訊行... -->
+                            </div>
+                            <div class="product-info-row">
+                                <div class="product-price">單價: @Model.ProductUnitPoint 點</div>
+                                <div class="product-remaining-quantity">剩餘數量: @Model.ProductRemainingQuantity</div>
+                                <div class="product-expiration-date">過期日期 @Model.ProductExpirationDate.ToShortDateString()</div>
+                                <div class="product-usage-status">使用狀態: @Model.ProductUsageStatus</div>
+                            </div>
+                            <div class="product-info-row">
+                                <div class="product-delivery-type">送貨方式: @Model.DeliveryTypeName</div>
+                                <div class="product-delivery-fee">運費: NT$ @Model.DeliveryFee</div>
+                                <div class="product-seller-name">賣家: @Model.SellerName</div>
+                            </div>
+                        </div>
+
+                        <div>
                                 <form id="productForm" asp-controller="Shopping" asp-action="CartView" method="post">
                                     <!-- Product ID (Hidden) -->
                                     <input type="hidden" name="txtProductId" value="@Model.ProductId" />
@@ -46,21 +60,24 @@
 
                                     <!-- 數量 -->
                                     <div class="Purchase-quantity-section d-flex">
-                                        <label for="txtCount">數量</label>
-                                        <div class="col-md-10">
+                                        <label class="" for="txtCount">數量</label>
+                                        <div class="col-md-10 w-64px">
                                             @Html.TextBox("txtCount", "1", new { @class = "form-control" })
                                         </div>
                                     </div>
-
+                                <div class="quantity-control d-flex">
+                                    <button class="btn btn-outline-secondary" type="button" id="btnMinus">-</button>
+                                    <input type="text" id="txtCount" name="txtCount" value="1" class="form-control w-64px" aria-label="Quantity">
+                                    <button class="btn btn-outline-secondary" type="button" id="btnPlus">+</button>
+                                </div>
                                     <!-- 配送方式 -->
-                                    <div class="choose-product-delivery-section d-flex">
-                                        <div id="delyTitle">配送方式:</div>
+                                <div class="choose-product-delivery-section d-flex flex-wrap">
+                                        <div id="delyTitle">配送方式:</div>  
                                         <div class="shippingList">
 @*                                            <label><input type ="radio" name="deliveryType" delytype="宅配" id="homeDelivery" checked="">宅配</label>
                                             <label><input type="radio" name="deliveryType" delytype="超商/i郵箱/myfone門市取貨" id="StorePickup">超商/i郵箱/myfone門市取貨</label>*@
                                             <label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="">宅配</label>
-                                            <label><input type="radio" name="deliverytypeid" delytype="超商/i郵箱/myfone門市取貨" value="2" id="StorePickup">超商/i郵箱/myfone門市取貨</label>
-
+                                        <label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>
                                         </div>
                                     </div>
 
@@ -70,17 +87,22 @@
                                         <button class="btn btn-m btnHoverStyle2 m-2" type="submit" name="actionType" value="buyNow" class="buy-now">立即購買</button>
                                     </div>
                                 </form>
-                            </div>
+                        </div>
 
 
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
 </main>
 <script>
+
+        $("#txtCount").spinner({
+            min: 1, // 最小值
+            step: 1, // 增減的步數
+        });
+
     $(document).ready(function ()
     {
 
