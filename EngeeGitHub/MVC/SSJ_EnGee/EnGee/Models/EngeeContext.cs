@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EnGee.Models;
 
@@ -59,8 +61,8 @@ public partial class EngeeContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-KCLL746\\MSSQLSERVER_2022;Initial Catalog=Engee;Integrated Security=True;Trust Server Certificate=True");
-
+        => optionsBuilder.UseSqlServer("Data Source =.; Initial Catalog = Engee; Integrated Security = True; Trust Server Certificate=True");
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TBrand>(entity =>

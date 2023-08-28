@@ -103,7 +103,7 @@
                                                 <label class="me-1 mb-2" for="">小計:</label>
                                                 <label class="me-2" for="">@Html.DisplayFor(modelItem => item.小計)</label> <br>
                                                 <label class="me-1 mb-2">選擇的配送方式:</label>
-                                                <label class="me-2 mb-2" for="">@Html.DisplayFor(modelItem => item.DeliveryOption)</label>
+                                                <label class="me-2 mb-2" for="">@item.DeliveryType</label>
                                                 <a class="hrefstyle mb-2" href="#">修改配送方式</a>
                                                 <a class=" hrefstyle" href="#">刪除</a>
                                             </div>
@@ -151,19 +151,19 @@
 
                                         <div class="input-group mb-2">
                                             <span class="input-group-text">姓名</span>
-                                            <input type="form-text" class="form-control" name="Fullname">
+                                            <input type="text" class="form-control" name="Fullname">
                                         </div>
                                         <div class="input-group mb-2">
                                             <span class="input-group-text">Email</span>
-                                            <input type="form-text" class="form-control" name="Email">
+                                            <input type="text" class="form-control" name="Email">
                                         </div>
                                         <div class="input-group mb-2">
                                             <span class="input-group-text">手機</span>
-                                            <input type="form-text" class="form-control" name="Phone">
+                                            <input type="text" class="form-control" name="Phone">
                                         </div>
                                         <div class="input-group mb-2">
                                             <span class="input-group-text" >地址</span>
-                                            <input type="form-text" class="form-control" name="Address">
+                                            <input type="text" class="form-control" name="DeliveryAddress">
                                         </div>
                                     
                                     @{

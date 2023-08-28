@@ -42,11 +42,11 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public ActionResult CartView(SSJ_CAddToCartViewModel vm, int? deliveryType)
+        public ActionResult CartView(SSJ_CAddToCartViewModel vm, int? deliverytypeid)
         {
-            if (deliveryType.HasValue)
+            if (deliverytypeid.HasValue)
             {
-                HttpContext.Session.SetInt32("DeliveryType", deliveryType.Value);
+                HttpContext.Session.SetInt32("DeliveryType", deliverytypeid.Value);
             }
             if (vm == null)
             {
@@ -89,7 +89,7 @@ namespace EnGee.Controllers
                 item.count = vm.txtCount;
                 item.tproduct = p;
                 item.ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}";
-                item.DeliveryOption = (int)deliveryType; // 設定選擇的配送方式
+                item.DeliveryTypeID = (int)deliverytypeid; // 設定選擇的配送方式
                 cart.Add(item);
             }
 
@@ -142,7 +142,7 @@ namespace EnGee.Controllers
                 item.count = defaultCount; // 使用預設數量
                 item.tproduct = p;
                 item.ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}";
-                item.DeliveryOption = defaultDeliveryOption; // 使用預設的配送方式
+                item.DeliveryTypeID = defaultDeliveryOption; // 使用預設的配送方式
                 cart.Add(item);
             }
 
@@ -195,7 +195,7 @@ namespace EnGee.Controllers
                 item.count = vm.txtCount;
                 item.tproduct = p;
                 item.ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}";
-                item.DeliveryOption = deliveryOption; // 設定選擇的配送方式
+                item.DeliveryTypeID = deliveryOption; // 設定選擇的配送方式
                 cart.Add(item);
             }
             json = JsonSerializer.Serialize(cart);
@@ -203,6 +203,20 @@ namespace EnGee.Controllers
 
             return Json(new { success = true, message = "已加入購物車" });
         }
+        private int GetDeliveryFee(int deliveryTypeId)
+        {
+            using (var db = new EngeeContext())
+            {
+                var deliveryType = db.TDeliveryTypes.FirstOrDefault(dt => dt.DeliveryTypeId == deliveryTypeId);
+                if (deliveryType != null)
+                {
+                    return (int)deliveryType.DeliveryFee;
+                }
+                // Default value if the delivery type is not found
+                return 0;
+            }
+        }
+
 
         [HttpPost]
         public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm)
@@ -234,15 +248,15 @@ namespace EnGee.Controllers
                 {
                     OrderDate = DateTime.Now,
                     DeliveryTypeId = vm.DeliveryType,
-                    DeliveryAddress = vm.DeliveryAddress ?? "預設地址",
+                    DeliveryAddress = vm.DeliveryAddress,
                     OrderTotalUsagePoints = vm.OrderTotalUsagePoints, // Use vm instead of model
-                    BuyerId = 10,
-                    SellerId = 11,
-                    OrderStatus = "3",
-                    OrderCatagory = 1,
-                    ConvienenNum = "0",
-                    DeliveryFee = 100
-            };
+                    BuyerId = 10,//尚未串接
+                    SellerId = 11,//尚未串接
+                    OrderStatus = "3",//結帳後為3
+                    OrderCatagory = 1,//買賣為1
+                    ConvienenNum = "0",//超商尚未串接
+                    DeliveryFee = GetDeliveryFee(vm.DeliveryType)//用含式尋找DeliveryFee
+                };
                 db.TOrders.Add(order);
                 db.SaveChanges();
                 // 對於購物車中的每一項商品，都在TOrderDetail表中新增一個詳細資料行
@@ -267,6 +281,7 @@ namespace EnGee.Controllers
             }
             return RedirectToAction("CartView");
         }
+
     }
 }
 // 重新導向到訂單確認視圖，並傳遞訂單ID

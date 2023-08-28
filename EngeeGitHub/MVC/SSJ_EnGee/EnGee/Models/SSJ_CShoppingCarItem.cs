@@ -9,7 +9,25 @@ public class SSJ_CShoppingCarItem
     public int count { get; set; }
     public int point { get; set; }
     public string ProductImagePath { get; set; } = null!;
-    public int DeliveryOption { get; set; }
+    public int DeliveryTypeID { get; set; }
+    public string DeliveryType
+    {
+        get
+        {
+            if (DeliveryTypeID == 1)
+            {
+                return "宅配";
+            }
+            else if (DeliveryTypeID == 2)
+            {
+                return "超商 / i郵箱 / myfone門市取貨";
+            }
+            else
+            {
+                return "未知"; // 或其他預設值
+            }
+        }
+    }
     public TProduct tproduct { get; set; }
     public decimal 小計
     {

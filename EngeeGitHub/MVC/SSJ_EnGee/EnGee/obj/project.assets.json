@@ -11484,19 +11484,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jay087511\\.nuget\\packages\\": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
       "projectName": "EnGee",
-      "projectPath": "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
-      "packagesPath": "C:\\Users\\jay087511\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jay087511\\Documents\\1.ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\obj\\",
+      "projectPath": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\EnGee.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jay087511\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11504,7 +11504,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11577,7 +11577,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
       }
     }
   }
