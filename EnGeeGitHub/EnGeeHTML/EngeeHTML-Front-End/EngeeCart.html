@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/FrameStyle.css">
+    <title>購物車</title>
+    <style>
+        /* 購物車網頁專用start */
+        .nav-tabs .nav-link.active {
+            background-color: #e54862ca;
+            transition: color 0.2s
+                /* 頁籤切換 */
+        }
+
+        .shopcartList {
+            display: inline-block;
+            margin: 0px 0px 10px 0px;
+            padding-top: 24px;
+            border-bottom: 2px solid #e1e1e1;
+            width: 100%;
+            box-sizing: border-box;
+            /* 購物車頁面調整 */
+        }
+
+        .cartcontent .card-footer {
+            background-color: white;
+        }
+
+        .cartcontent .cartimg img {
+            height: 160px;
+            width: auto;
+        }
+
+        .selected {
+            background-color: #e54862ca;
+        }
+
+        .payInfoBox {
+            margin-top: 16px;
+            background-color: white;
+            border-radius: 6px;
+        }
+
+        /* 購物車網頁專用end */
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md sticky-top">
+        <div class="container-md d-flex justify-content-between align-items-center ">
+            <a href="#">
+                <img class="logo-size " src="./images/bigframe/logo01.png" alt="logo">
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#1" class="nav-link  dropdown-toggle">關於我們</a>
+                    </li>
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#2" class="nav-link dropdown-toggle">美妝討論</a>
+
+                    </li>
+
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#3" class="nav-link  dropdown-toggle" data-bs-toggle="dropdown">捐贈專區</a>
+                        <ul class="dropdown-menu">
+                            <a href="#" class="dropdown-item">
+                                <h6>
+                                    1點贈送
+                                </h6>
+                            </a>
+                            <hr class="hr-m4px">
+                            <a href="#" class="dropdown-item">
+                                <h6>
+                                    許願池
+                                </h6>
+                            </a>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#4" class="nav-link dropdown-toggle">買賣專區</a>
+                    </li>
+
+                    <li class="nav-item dropdown nav-item-1">
+                        <a href="#5" class="nav-link dropdown-toggle">會員專區</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="d-flex justify-content-end me-2 align-content-center ">
+                    <a href="#">
+                        <i class=" me-3 mt-3 fa-solid fa-circle-user fa-xl " style="color: #e54862ca;"></i>
+                        <!-- <img class="rounded-circle h-30px me-3" src="https://randomuser.me/api/portraits/men/88.jpg" alt="user">    -->
+                    </a>
+                    <button class="btn btn-s" type="submit">
+                        註冊
+                    </button>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <div class="headerimg">
+            <div class="overlay">
+                <div class="d-flex align-items-center justify-content-center text-white fz-size32px"
+                    style="height: 100%">
+                    買賣專區
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="bg-color3">
+        <div class="container p-0">
+            <div class="shopcartList">
+                <nav>
+                    <div class="nav nav-tabs" id=" nav-tab" role="tablist">
+                        <button class="nav-link active " id="nav-home-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
+                            aria-selected="true">
+                            超商/i郵箱/myfone門市取貨
+                        </button>
+                        <button class="nav-link " id="nav-profile-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
+                            aria-selected="false">
+                            宅配
+                        </button>
+                    </div>
+                    <hr class="hr-m4px">
+                </nav>
+                <div class="tab-content " id="nav-tabContent">
+                    <!-- 超商頁面 -->
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        <div class="card p-2">
+                            <div class="cartcontent">
+                                <div class="row m-0 ">
+                                    <div
+                                        class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                        <div class="form-check">
+                                            <input class="cartcheckout form-check-input" type="checkbox" value=""
+                                                id="flexCheckDefault1">
+                                        </div>
+                                        <div class="cartimg d-flex">
+                                            <img src="./images/bigframe/logo01.png" alt="...">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                        <div class="card-body p-0">
+                                            <h5 class="card-title">ColourPop x Disney Loves First Kiss Lipstick Snow
+                                                White
+                                            </h5>
+                                            <p class="card-text">ColourPop x Disney Loves First Kiss Lipstick Snow White
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                        <label class="me-1 mb-2" for="">點數:</label>
+                                        <label for="">588</label><br>
+                                        <label class="me-1 mb-2" for="">數量:</label>
+                                        <label class="me-2" for="">1</label>
+                                        <i id="minus"
+                                            class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
+                                        <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i>
+                                        <a class="hrefstyle mb-2" href="#">修改配送方式</a>
+                                        <a class=" hrefstyle" href="#">刪除</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-m4px">
+                            <div class="cartcontent">
+                                <div class="row m-0 ">
+                                    <div
+                                        class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                        <div class="form-check">
+                                            <input class="cartcheckout form-check-input" type="checkbox" value=""
+                                                id="flexCheckDefault1">
+                                        </div>
+                                        <div class="cartimg d-flex">
+                                            <img src="./images/bigframe/logo01.png" alt="...">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                        <div class="card-body p-0">
+                                            <h5 class="card-title">ColourPop x Disney Loves First Kiss Lipstick Snow
+                                                White
+                                            </h5>
+                                            <p class="card-text">ColourPop x Disney Loves First Kiss Lipstick Snow White
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                        <label class="me-1 mb-2" for="">點數:</label>
+                                        <label for="">588</label><br>
+                                        <label class="me-1 mb-2" for="">數量:</label>
+                                        <label class="me-2" for="">1</label>
+                                        <i id="minus"
+                                            class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
+                                        <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i>
+                                        <a class="hrefstyle mb-2" href="#">修改配送方式</a>
+                                        <a class=" hrefstyle" href="#">刪除</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-m4px">
+                        </div>
+                        <div class="container p-0 ">
+                            <div class="row m-0 p-0">
+                                <div class="payInfoBox d-flex align-items-center justify-content-end">
+                                    <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
+                                        <input class="cartcheckout form-check-input select-all-checkbox" type="checkbox"
+                                            data-target=".cartcheckout" id="selectAll1">
+                                        <label class="form-check-label" for="selectAll1">全選</label>
+                                    </div>
+
+                                    <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
+                                        結帳總點數：<span> $ </span><span> 588 </span>
+                                    </div>
+
+                                    <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
+                                        <button class="btn btn-m btnHoverStyle2 m-2" type="submit">繼續購物</button>
+                                        <button class="btn btn-m btnHoverStyle2 mt-2" type="submit">結帳</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 宅配頁面 -->
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="card p-2">
+                            <div class="cartcontent">
+                                <div class="row m-0 ">
+                                    <div
+                                        class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                        <div class="form-check">
+                                            <input class="cartcheckout form-check-input" type="checkbox" value=""
+                                                id="flexCheckDefault1">
+                                        </div>
+                                        <div class="cartimg d-flex">
+                                            <img src="./images/bigframe/logo01.png" alt="...">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                        <div class="card-body p-0">
+                                            <h5 class="card-title">ColourPop x Disney Loves First Kiss Lipstick Snow
+                                                White
+                                            </h5>
+                                            <p class="card-text">ColourPop x Disney Loves First Kiss Lipstick Snow White
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                        <label class="me-1 mb-2" for="">點數:</label>
+                                        <label for="">588</label><br>
+                                        <label class="me-1 mb-2" for="">數量:</label>
+                                        <label class="me-2" for="">1</label>
+                                        <i id="minus"
+                                            class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
+                                        <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i>
+                                        <a class="hrefstyle mb-2" href="#">修改配送方式</a>
+                                        <a class=" hrefstyle" href="#">刪除</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-m4px">
+                            <div class="cartcontent">
+                                <div class="row m-0 ">
+                                    <div
+                                        class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                        <div class="form-check">
+                                            <input class="cartcheckout form-check-input" type="checkbox" value=""
+                                                id="flexCheckDefault1">
+                                        </div>
+                                        <div class="cartimg d-flex">
+                                            <img src="./images/bigframe/logo01.png" alt="...">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                        <div class="card-body p-0">
+                                            <h5 class="card-title">ColourPop x Disney Loves First Kiss Lipstick Snow
+                                                White
+                                            </h5>
+                                            <p class="card-text">ColourPop x Disney Loves First Kiss Lipstick Snow White
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                        <label class="me-1 mb-2" for="">點數:</label>
+                                        <label for="">588</label><br>
+                                        <label class="me-1 mb-2" for="">數量:</label>
+                                        <label class="me-2" for="">1</label>
+                                        <i id="minus"
+                                            class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
+                                        <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i>
+                                        <a class="hrefstyle mb-2" href="#">修改配送方式</a>
+                                        <a class=" hrefstyle" href="#">刪除</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="hr-m4px">
+                        </div>
+                        <div class="container p-0 ">
+                            <div class="row m-0 p-0">
+                                <div class="payInfoBox d-flex align-items-center justify-content-end">
+                                    <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
+                                        <input class="cartcheckout form-check-input select-all-checkbox" type="checkbox"
+                                            data-target=".homecheckout" id="selectAll2">
+                                        <label class="form-check-label" for="selectAll2">
+                                            全選
+                                        </label>
+                                    </div>
+                                    <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
+                                        結帳總點數：<span> $ </span><span> 588 </span>
+                                    </div>
+
+                                    <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
+                                        <button class="btn btn-m btnHoverStyle2 m-2" type="submit">繼續購物</button>
+                                        <button class="btn btn-m btnHoverStyle2 mt-2" type="submit">結帳</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+    <footer class="bg-color1">
+        <div class="h-64px d-flex align-items-center justify-content-center">
+            © Engee CO.,LTD All rights reserved.
+        </div>
+    </footer>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 全選checkbox使用
+        document.addEventListener("DOMContentLoaded", function () {
+            const selectAllCheckboxes = document.querySelectorAll(".select-all-checkbox");
+
+            selectAllCheckboxes.forEach(selectAllCheckbox => {
+                const targetCheckboxes = document.querySelectorAll(selectAllCheckbox.getAttribute("data-target"));
+
+                selectAllCheckbox.addEventListener("change", function () {
+                    const isChecked = selectAllCheckbox.checked;
+
+                    targetCheckboxes.forEach(checkbox => {
+                        checkbox.checked = isChecked;
+                    });
+                });
+
+                // 處理頁面切換時保持獨立的全選狀態
+                document.addEventListener("visibilitychange", function () {
+                    if (!document.hidden) {
+                        const areAllChecked = Array.from(targetCheckboxes).every(checkbox => checkbox.checked);
+                        selectAllCheckbox.checked = areAllChecked;
+                    }
+                });
+
+                // 處理頁面切換時重置前一頁面的全選狀態
+                document.querySelectorAll(".nav-link").forEach(link => {
+                    link.addEventListener("click", function () {
+                        targetCheckboxes.forEach(checkbox => {
+                            checkbox.checked = false;
+                        });
+                        selectAllCheckbox.checked = false;
+                    });
+                });
+            });
+        });
+
+
+        // 全選checkbox使用
+
+    </script>
+</body>
+
+</html>
