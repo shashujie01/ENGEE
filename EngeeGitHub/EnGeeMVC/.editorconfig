@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0114: 成員隱藏所繼承的成員; 遺漏 override 關鍵字
+dotnet_diagnostic.CS0114.severity = silent
