@@ -1,0 +1,625 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\EnGee.bundle.scp.css",
+      "PackagePath": "staticwebassets\\EnGee.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\css\\FrameStyle.css",
+      "PackagePath": "staticwebassets\\css\\FrameStyle.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\css\\custom.css",
+      "PackagePath": "staticwebassets\\css\\custom.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\css\\templatemo.css",
+      "PackagePath": "staticwebassets\\css\\templatemo.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\css\\templatemo.min.css",
+      "PackagePath": "staticwebassets\\css\\templatemo.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\1-1-EyeShadow眼影\\EyeShadow1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\1-1-EyeShadow眼影\\EyeShadow1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\1-1-EyeShadow眼影\\EyeShadow2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\1-1-EyeShadow眼影\\EyeShadow2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\1-2Eyeliner眼線液眼線筆\\Eyeliner1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\1-2Eyeliner眼線液眼線筆\\Eyeliner1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\1-2Eyeliner眼線液眼線筆\\Eyeliner2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\1-2Eyeliner眼線液眼線筆\\Eyeliner2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\1-3-Mascara睫毛膏\\Mascara1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\1-3-Mascara睫毛膏\\Mascara1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\1-3-Mascara睫毛膏\\Mascara2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\1-3-Mascara睫毛膏\\Mascara2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\2-4-EyebrowPencil眉筆\\EyebrowPencil1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\2-4-EyebrowPencil眉筆\\EyebrowPencil1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\2-4-EyebrowPencil眉筆\\EyebrowPencil2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\2-4-EyebrowPencil眉筆\\EyebrowPencil2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\2-5-EyebrowPowder眉粉\\EyebrowPowder1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\2-5-EyebrowPowder眉粉\\EyebrowPowder1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\2-5-EyebrowPowder眉粉\\EyebrowPowder2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\2-5-EyebrowPowder眉粉\\EyebrowPowder2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\3-6-Lipstick唇膏\\Lipstick1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\3-6-Lipstick唇膏\\Lipstick1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\3-6-Lipstick唇膏\\Lipstick2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\3-6-Lipstick唇膏\\Lipstick2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\3-7-LipGloss唇蜜\\LipGloss1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\3-7-LipGloss唇蜜\\LipGloss1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\3-7-LipGloss唇蜜\\LipGloss2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\3-7-LipGloss唇蜜\\LipGloss2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\3-8-LipPencil唇筆\\LipPencil1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\3-8-LipPencil唇筆\\LipPencil1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\3-8-LipPencil唇筆\\LipPencil2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\3-8-LipPencil唇筆\\LipPencil2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-10-Concealer遮瑕膏\\Concealer1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-10-Concealer遮瑕膏\\Concealer1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-12-LiquidFoundation粉底液\\LiquidFoundation1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-12-LiquidFoundation粉底液\\LiquidFoundation1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-12-LiquidFoundation粉底液\\LiquidFoundation2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-12-LiquidFoundation粉底液\\LiquidFoundation2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-13PowderFoundation粉餅\\PowderFoundation1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-13PowderFoundation粉餅\\PowderFoundation1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-13PowderFoundation粉餅\\PowderFoundation2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-13PowderFoundation粉餅\\PowderFoundation2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-14-CushionFoundation氣墊粉餅\\CushionFoundation1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-14-CushionFoundation氣墊粉餅\\CushionFoundation1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-15-LoosePowder蜜粉蜜粉餅\\LoosePowder1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-15-LoosePowder蜜粉蜜粉餅\\LoosePowder1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-15-LoosePowder蜜粉蜜粉餅\\LoosePowder2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-15-LoosePowder蜜粉蜜粉餅\\LoosePowder2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-16-MakeupSettingSpray定妝噴霧\\MakeupSettingSpray1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-16-MakeupSettingSpray定妝噴霧\\MakeupSettingSpray1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-9-Primer妝前乳隔離霜\\Primer1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-9-Primer妝前乳隔離霜\\Primer1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\4-9-Primer妝前乳隔離霜\\Primer2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\4-9-Primer妝前乳隔離霜\\Primer2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\5-17-Brush刷具\\Brush1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\5-17-Brush刷具\\Brush1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\5-17-Brush刷具\\Brush2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\5-17-Brush刷具\\Brush2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\5-18-BeautyBlender美妝蛋\\BeautyBlender1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\5-18-BeautyBlender美妝蛋\\BeautyBlender1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\5-18-BeautyBlender美妝蛋\\BeautyBlender2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\5-18-BeautyBlender美妝蛋\\BeautyBlender2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\5-19-EyelashCurler睫毛夾\\EyelashCurler1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\5-19-EyelashCurler睫毛夾\\EyelashCurler1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\5-21-BeautySponge海綿\\BeautySponge1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\5-21-BeautySponge海綿\\BeautySponge1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\5-21-BeautySponge海綿\\BeautySponge2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\5-21-BeautySponge海綿\\BeautySponge2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\7-11_logo_hd.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\7-11_logo_hd.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\BeautyBlender1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\BeautyBlender1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\BeautyBlender2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\BeautyBlender2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\BeautySponge1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\BeautySponge1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\BeautySponge2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\BeautySponge2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Brush1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Brush1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Brush2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Brush2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Concealer1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Concealer1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\CushionFoundation1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\CushionFoundation1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\EyeShadow1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\EyeShadow1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\EyeShadow2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\EyeShadow2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\EyebrowPencil1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\EyebrowPencil1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\EyebrowPencil2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\EyebrowPencil2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\EyebrowPowder1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\EyebrowPowder1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\EyebrowPowder2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\EyebrowPowder2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\EyelashCurler1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\EyelashCurler1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Eyeliner1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Eyeliner1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Eyeliner2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Eyeliner2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Family.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Family.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\LipGloss1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\LipGloss1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\LipGloss2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\LipGloss2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\LipPencil1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\LipPencil1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\LipPencil2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\LipPencil2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Lipstick1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Lipstick1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Lipstick2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Lipstick2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\LiquidFoundation1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\LiquidFoundation1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\LiquidFoundation2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\LiquidFoundation2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\LoosePowder1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\LoosePowder1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\LoosePowder2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\LoosePowder2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\MakeupSettingSpray1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\MakeupSettingSpray1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Mascara1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Mascara1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Mascara2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Mascara2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\PowderFoundation1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\PowderFoundation1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\PowderFoundation2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\PowderFoundation2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Primer1.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Primer1.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\ProductImages\\Primer2.png",
+      "PackagePath": "staticwebassets\\images\\ProductImages\\Primer2.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\bigframe\\header.jpg",
+      "PackagePath": "staticwebassets\\images\\bigframe\\header.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\bigframe\\logo01.png",
+      "PackagePath": "staticwebassets\\images\\bigframe\\logo01.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\donation\\1028粉餅.jpg",
+      "PackagePath": "staticwebassets\\images\\donation\\1028粉餅.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\donation\\CLIOeyeshadow1.jpg",
+      "PackagePath": "staticwebassets\\images\\donation\\CLIOeyeshadow1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\donation\\MAClipstick1.jpg",
+      "PackagePath": "staticwebassets\\images\\donation\\MAClipstick1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\donation\\YSLlipstick1.jpg",
+      "PackagePath": "staticwebassets\\images\\donation\\YSLlipstick1.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\donation\\mufe蜜粉餅.jpg",
+      "PackagePath": "staticwebassets\\images\\donation\\mufe蜜粉餅.jpg"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\logo\\7-11_logo_hd.png",
+      "PackagePath": "staticwebassets\\images\\logo\\7-11_logo_hd.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\logo\\Family.png",
+      "PackagePath": "staticwebassets\\images\\logo\\Family.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\logo\\ibox_logo.png",
+      "PackagePath": "staticwebassets\\images\\logo\\ibox_logo.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\images\\logo\\myfone_logo.png",
+      "PackagePath": "staticwebassets\\images\\logo\\myfone_logo.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\js\\jquery-1.11.0.min.js",
+      "PackagePath": "staticwebassets\\js\\jquery-1.11.0.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\js\\templatemo.js",
+      "PackagePath": "staticwebassets\\js\\templatemo.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\js\\templatemo.min.js",
+      "PackagePath": "staticwebassets\\js\\templatemo.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "C:\\Users\\User\\Documents\\GitHub\\ENGEE\\EngeeGitHub\\MVC\\SSJ_EnGee\\Engee\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.EnGee.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.EnGee.props",
+      "PackagePath": "build\\EnGee.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.EnGee.props",
+      "PackagePath": "buildMultiTargeting\\EnGee.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.EnGee.props",
+      "PackagePath": "buildTransitive\\EnGee.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

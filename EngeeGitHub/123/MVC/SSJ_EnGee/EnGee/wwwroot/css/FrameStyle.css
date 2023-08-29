@@ -1,0 +1,410 @@
+/* ----start----初始化----start----*/
+
+html,
+body,
+div,
+span,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+p,
+br,
+pre,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+img,
+b,
+i,
+u,
+em,
+form {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+a {
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* ----end----初始化----end----*/
+
+/* ----start----共用顏色----start----*/
+
+.bg-color1 {
+    background-color: #EAD8D8;
+}
+
+.bg-color2 {
+    background-color: #e54862ca;
+}
+
+.bg-color3 {
+    background-color: rgb(223, 223, 223);
+}
+
+.bg-color4 {
+    background-color: #e0687ca2;
+}
+
+/*----end----共用顏色----end----*/
+
+/*----start----共用文字顏色與大小----start----*/
+
+.fz-color1 {
+    color: #5C4141;
+}
+
+.fz-color2 {
+    color: #946E6E;
+}
+
+.fz-color3 {
+    color: #000000;
+}
+
+.fz-size40px {
+    font-size: 40px;
+}
+
+.fz-size32px {
+    font-size: 32px;
+}
+
+.fz-size28px {
+    font-size: 28px;
+}
+
+.fz-size24px {
+    font-size: 24px;
+}
+
+.fz-size20px {
+    font-size: 20px;
+}
+
+.fz-size16px {
+    font-size: 16px;
+}
+
+/*----end----共用文字顏色與大小----end----*/
+
+/*----start----共用高度----start----*/
+
+.h-90px {
+    height: 90px;
+}
+
+.h-64px {
+    height: 64px;
+}
+
+.h-38px {
+    height: 38px;
+}
+
+.h-24px {
+    height: 24px;
+}
+
+.h-16px {
+    height: 16px;
+}
+
+/* ----end----共用高度----end----*/
+
+/*----start----共用寬度----start----*/
+
+.w-90px {
+    width: 90px;
+}
+
+.w-64px {
+    width: 64px;
+}
+
+.w-38px {
+    width: 38px;
+}
+
+.w-24px {
+    width: 24px;
+}
+
+.w-16px {
+    width: 16px;
+}
+
+.w-15 {
+    width: 15% !important;
+}
+
+.w-20 {
+    width: 20% !important;
+}
+
+.w-30 {
+    width: 30% !important;
+}
+
+.w-45 {
+    width: 40% !important;
+}
+
+/* ----end----共用寬度----end----*/
+
+/* ----start----共用分隔線----start----*/
+
+hr.hr-m4px {
+    margin: 4px;
+    border: 0.8px solid black;
+}
+
+/* ----end----分隔線----end----*/
+
+/* ----start----共用按鈕----start----*/
+
+button.btn-s {
+    background-color: #e54862ca;
+    color: #000000;
+    height: 36px;
+    width: auto;
+    border: 0;
+}
+
+button.btn-m {
+    background-color: #e54862ca;
+    color: #000000;
+    height: 48px;
+    width: auto;
+    border: 0;
+}
+
+button.btn-l {
+    background-color: #e54862ca;
+    color: #000000;
+    height: 64px;
+    width: auto;
+    border: 0;
+}
+
+button.btn-rong-s {
+    /* 取代custom->.btn-border */
+    border: 2px dashed #aa8282;
+    border-radius: 6px;
+    height: 36px;
+    width: auto;
+}
+
+button.btn-rong-m {
+    /* 取代custom->.btn-border */
+    border: 2px dashed #aa8282;
+    border-radius: 6px;
+    height: 36px;
+    width: auto;
+}
+
+button.btn-rong-l {
+    /* 取代custom->.btn-border */
+    border: 2px dashed #aa8282;
+    border-radius: 6px;
+    height: 36px;
+    width: auto;
+}
+
+
+.btnHoverStyle1:hover {
+    /* 舊名btnHoverColor1 */
+    color: #5c4141bf;
+    background-color: white;
+}
+
+.btnHoverStyle2:hover {
+    /* 舊名btnHoverColor1 */
+    color: black;
+    background-color: #e0687ca2;
+    /* #e5486288 */
+}
+
+.btnHoverStyle3:hover {
+    /* 取代custom->.a:hover  */
+    color: #e54862ca;
+    border: 2px dashed #aa8282;
+    border-radius: 6px;
+}
+
+
+/* ----end----共用按鈕----end----*/
+
+/* ----start---共用頁碼切換----start----*/
+/* 程式碼參考下面 */
+/* <div div="row">
+    <ul class="pagination justify-content-end">
+        <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+</div> */
+.pagination .page-link {
+    color: #4b3030;
+}
+
+.pagination .page-link:hover {
+    background-color: #9f6666;
+    color: #fff;
+}
+
+/* ----end----共用頁碼切換----end----*/
+
+/* ----start---共用超連結----start----*/
+
+.hrefstyle {
+    color: #000000;
+    display: flex;
+    align-items: center;
+
+}
+
+.hrefstyle1-s {
+    background-color: #e54862ca;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    height: 36px;
+    width: auto;
+    border: 0;
+    border-radius: 6px;
+}
+
+.hrefstyle1-m {
+    background-color: #e54862ca;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    width: auto;
+    border: 0;
+    border-radius: 6px;
+}
+
+.hrefstyle1-l {
+    background-color: #e54862ca;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    height: 64px;
+    width: auto;
+    border: 0;
+    border-radius: 6px;
+}
+
+.hrefstyle:hover {
+    color: #e54862ca;
+}
+
+.hrefstyle1:hover {
+    /* 舊名btnHoverColor1 */
+    color: black;
+    background-color: #e0687ca2;
+    /* #e5486288 */
+}
+
+/* ----end----共用超連結----end----*/
+
+/*----start----控制Navbar區域----start----*/
+
+.dropdown-menu {
+    color: black;
+    background-color: #ffffff;
+    list-style: none;
+    /* 下拉選單 */
+}
+
+.dropdown-item:hover {
+    background-color: #EAD8D8;
+    /* 下拉選單hover */
+}
+
+.navbar {
+    background-color: #EAD8D8;
+    padding: 0;
+    margin: 0;
+    /* nav背景、大小調整 */
+}
+
+.nav-link:hover {
+    color: #e54862ca;
+    /* nav超連結hover */
+}
+
+.nav-link {
+    color: black;
+    /* nav超連結字體顏色 */
+}
+
+.logo-size {
+    width: 90px;
+    height: 90px;
+    margin: right 8px;
+    padding: 0;
+    /* icon大小 */
+}
+
+/*----end----控制Navbar區域----end----*/
+
+/*----start----控制header區域----start----*/
+
+.headerimg {
+    /* 控制header圖片CSS */
+    position: relative;
+    height: 200px;
+    background-image: url(../images/bigframe/header.jpg);
+    background-size: cover;
+    background-position-y: 65%;
+    background-position-x: 50%;
+}
+
+.overlay {
+    /* header圖片遮罩 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.15926);
+}
+
+/*----end----控制header區域----end----*/
+
+/* ----start----將footer推至底部----start----*/
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* 設置 body 最小高度為視窗高度 */
+    margin: 0;
+}
+
+main {
+    flex: 1;
+    /* 讓 main 區塊佔滿剩餘的空間，推動 Footer 到底部 */
+}
+
+/* ----end----將footer推至底部----end----*/
