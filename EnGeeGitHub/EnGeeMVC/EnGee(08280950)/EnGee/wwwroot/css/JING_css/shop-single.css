@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+}
+.message {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin-bottom: 5px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.message-buttons {
+    display: flex;
+    align-items: center;
+}
+.delete-button,
+.select-button {
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.delete-button {
+    background-color: #f44336;}
+.select-button {
+    background-color: #FA75AA; 
+}
+
+.message-container {
+    background-color: #ec6b6b; /* 添加背景色 */
+    padding: 10px;
+    margin-top: 20px;
+}
