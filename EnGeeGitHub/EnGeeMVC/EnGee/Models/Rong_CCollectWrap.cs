@@ -1,6 +1,4 @@
-﻿using EnGee.Models;
-
-namespace EnGee.Controllers
+﻿namespace EnGee.Models
 {
     public class Rong_CCollectWrap
     {
@@ -95,7 +93,7 @@ namespace EnGee.Controllers
             get { return _coll.CollectAmount; }
             set { _coll.CollectAmount = value; }
         }
-        
+
 
     }
 }
