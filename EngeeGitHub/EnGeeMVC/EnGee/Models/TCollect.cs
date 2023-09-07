@@ -13,6 +13,8 @@ public partial class TCollect
 
     public string CollectCaption { get; set; } = null!;
 
+    public DateTime CollectStartDate { get; set; }
+
     public DateTime CollectEndDate { get; set; }
 
     public int DeliveryTypeId { get; set; }
@@ -33,13 +35,9 @@ public partial class TCollect
 
     public int CollectAmount { get; set; }
 
-    public DateTime CollectStartDate { get; set; }
-
     public virtual TDeliveryType DeliveryType { get; set; } = null!;
-
-    public virtual TCosmeticMainCategory MainCategory { get; set; } = null!;
 
     public virtual TMember Member { get; set; } = null!;
 
-    public virtual TCosmeticSubcategory Subcategory { get; set; } = null!;
+    public virtual ICollection<TDonationOrder> TDonationOrders { get; set; } = new List<TDonationOrder>();
 }

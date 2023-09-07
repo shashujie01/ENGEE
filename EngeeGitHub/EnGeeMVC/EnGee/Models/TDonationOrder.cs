@@ -9,6 +9,8 @@ public partial class TDonationOrder
 
     public int MemberId { get; set; }
 
+    public int CollectId { get; set; }
+
     public DateTime OrderDate { get; set; }
 
     public int DeliveryTypeId { get; set; }
@@ -19,9 +21,11 @@ public partial class TDonationOrder
 
     public string DonationStatus { get; set; } = null!;
 
+    public int DonationAmount { get; set; }
+
+    public virtual TCollect Collect { get; set; } = null!;
+
     public virtual TDeliveryType DeliveryType { get; set; } = null!;
 
     public virtual TMember Member { get; set; } = null!;
-
-    public virtual ICollection<TDonationOrderDetail> TDonationOrderDetails { get; set; } = new List<TDonationOrderDetail>();
 }

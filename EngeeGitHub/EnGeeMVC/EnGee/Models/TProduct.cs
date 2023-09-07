@@ -51,8 +51,6 @@ public partial class TProduct
 
     public virtual ICollection<TDemand> TDemands { get; set; } = new List<TDemand>();
 
-    public virtual ICollection<TDonationOrderDetail> TDonationOrderDetails { get; set; } = new List<TDonationOrderDetail>();
-
     public virtual ICollection<TMemberFavorite> TMemberFavorites { get; set; } = new List<TMemberFavorite>();
 
     public virtual ICollection<TMessage> TMessages { get; set; } = new List<TMessage>();
