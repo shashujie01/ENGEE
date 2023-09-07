@@ -1,0 +1,126 @@
+﻿@model EnGee.Models.TMember
+
+<style>
+    .spanvaildation{
+        font-size:10px;
+        color:red;
+        opacity:0.5;
+    }
+</style>
+
+ 
+<h1 style="text-align:center;">Sign Up</h1>
+
+
+<hr />
+<form asp-action="Create">
+    <div class="row">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class= "spanvaildation"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="spanvaildation" ></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="spanvaildation"></span>
+               
+            </div>
+            <div class="form-group">
+                <label asp-for="Fullname" class="control-label"></label>
+                <input asp-for="Fullname" class="form-control" />
+               
+            </div>
+            <div class="form-group">
+                <label asp-for="Nickname" class="control-label"></label>
+                <input asp-for="Nickname" class="form-control" />
+                
+            </div>
+            <div class="form-group" id="app">
+               <input type="radio" v-model="gender" value="male"> Male
+                 <input type="radio" v-model="gender" value="female"> Female
+                  
+            </div>
+         </div>
+         <div class="col-md-6">
+    
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="spanvaildation"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="spanvaildation"></span>
+            </div>
+           @*  <div class="form-group">
+                <label asp-for="RegistrationDate" class="control-label"></label>
+                <input asp-for="RegistrationDate" class="form-control" />
+                <span asp-validation-for="RegistrationDate" class="spanvaildation"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="Birth" class="control-label"></label>
+                <input asp-for="Birth" class="form-control" />
+                <span asp-validation-for="Birth" class=" spanvaildation"></span>
+            </div>
+           @*  <div class="form-group">
+                <label asp-for="Access" class="control-label"></label>
+                <input asp-for="Access" class="form-control" />
+                <span asp-validation-for="Access" class=" spanvaildation"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Point" class="control-label"></label>
+                <input asp-for="Point" class="form-control" />
+                <span asp-validation-for="Point" class=" spanvaildation"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="PhotoPath" class="control-label"></label>
+                <input asp-for="PhotoPath" class="form-control form-control"  style="background-color:pink;" type="file"/>
+                <span asp-validation-for="PhotoPath" class="spanvaildation"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Introduction" class="control-label"></label>
+                <input asp-for="Introduction" class="form-control" />
+                <span asp-validation-for="Introduction" class=" spanvaildation"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CharityProof" class="control-label"></label>
+                <input asp-for="CharityProof" class="form-control" style="background-color:pink;" type="file"/>
+                <span asp-validation-for="CharityProof" class=" spanvaildation"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            </div>
+    </div>
+</form>
+</div>
+
+@* <div>
+    <a asp-action="Index">Back to List</a>
+</div> *@
+
+<script>
+        Vue.createApp({
+            data() {
+                return {
+                    
+                    gender: '', // 如果要預選
+                }
+            },
+
+        }).mount('#app')
+
+ </script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

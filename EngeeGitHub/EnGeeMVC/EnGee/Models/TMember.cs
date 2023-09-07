@@ -13,23 +13,23 @@ public partial class TMember
 
     public string Email { get; set; } = null!;
 
-    public string Fullname { get; set; } = null!;
+    public string? Fullname { get; set; }
 
-    public string Nickname { get; set; } = null!;
+    public string? Nickname { get; set; }
 
-    public string Gender { get; set; } = null!;
+    public string? Gender { get; set; }
 
     public string Address { get; set; } = null!;
 
     public string Phone { get; set; } = null!;
 
-    public DateTime RegistrationDate { get; set; }
+    public DateTime? RegistrationDate { get; set; }
 
-    public DateTime Birth { get; set; }
+    public DateTime? Birth { get; set; }
 
-    public int Access { get; set; }
+    public int? Access { get; set; }
 
-    public double Point { get; set; }
+    public double? Point { get; set; }
 
     public string? PhotoPath { get; set; }
 
