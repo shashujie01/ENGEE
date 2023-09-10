@@ -268,16 +268,18 @@ namespace prjEnGeeDemo.Controllers
             {
                 Products = products.ToList(),
                 CurrentPage = page,
-                TotalPages = totalPages
+                TotalPages = totalPages,
+                MainCategoryId = mainCategoryId,
+                SubCategoryId = subCategoryId
             };
 
-            return View("Index", model);  // 使用 Index 的 View 來呈現篩選結果
+            return View("IndexSSJ", model);  // 使用 Index 的 View 來呈現篩選結果
         }
 
         [HttpGet]
-        public IActionResult FilterByBrandId(int BrandId, int page = 1, int pageSize = 6)
+        public IActionResult FilterByBrandId(int brandId, int page = 1, int pageSize = 6)
         {
-            var products = db.TProducts.Where(p => p.BrandId == BrandId)
+            var products = db.TProducts.Where(p => p.BrandId == brandId)
                                         .Select(p => new SSJ_ProductViewModel
                                         {
                                             ProductId = p.ProductId,
@@ -297,10 +299,11 @@ namespace prjEnGeeDemo.Controllers
             {
                 Products = products.ToList(),
                 CurrentPage = page,
-                TotalPages = totalPages
+                TotalPages = totalPages,
+                BrandId = brandId
             };
 
-            return View("Index", model);
+            return View("IndexSSJ", model);
         }
 
         public IActionResult Details(int id)
@@ -350,13 +353,13 @@ namespace prjEnGeeDemo.Controllers
             EngeeContext db = new EngeeContext();
             db.TProducts.Add(p);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexSSJ");
         }
 
         public IActionResult DeleteSSJ(int? id)
         {
             if (id == null)
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexSSJ");
             EngeeContext db = new EngeeContext();
             TProduct cust = db.TProducts.FirstOrDefault(t => t.ProductId == id);
             if (cust != null)
