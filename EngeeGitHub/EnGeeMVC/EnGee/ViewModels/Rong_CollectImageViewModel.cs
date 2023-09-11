@@ -69,7 +69,7 @@ namespace EnGee.ViewModels
             set { _collect.CollectImagePath = value; }
         }
 
-        public IFormFile photo { get; set; }
+        public IFormFile photo { get ; set ;}
 
         public string CollectItemName
         {
