@@ -1,6 +1,8 @@
 ﻿@model EnGee.ViewModel.SSJ_ProductPageViewModel
 @*商品檢視頁面*@
-@{ Layout = "_Layout";}
+@{
+    Layout = "_Layout";
+}
 @{
     ViewBag.Title = "Engee買賣專區";
 }
@@ -8,21 +10,21 @@
     ViewBag.HeaderTitle = "買賣專區";
 }
 
-    <style>
-        /*---- Categories調整start---- */
-        .cattext a:hover {
-            color: #e54862ca;
-        }
+<style>
+    /*---- Categories調整start---- */
+    .cattext a:hover {
+        color: #e54862ca;
+    }
 
-        .cattext .text-decoration-none {
-            color: #000000;
-        }
+    .cattext .text-decoration-none {
+        color: #000000;
+    }
 
-        .flex-container {
-            /* 調整字母排列 */
-            display: flex;
-            flex-wrap: wrap;
-        }
+    .flex-container {
+        /* 調整字母排列 */
+        display: flex;
+        flex-wrap: wrap;
+    }
 
         .flex-container li {
             /* 調整字母排列 */
@@ -31,38 +33,38 @@
             margin-bottom: 10px;
         }
 
-        ul .cattext li {
-            margin-bottom: 20px;
-        }
+    ul .cattext li {
+        margin-bottom: 20px;
+    }
 
-        /*---- Categories調整end--- */
+    /*---- Categories調整end--- */
 
-        /* -----card調整start---- */
-        .card .card-img {
-           /* max-height: 350px;
-            min-height: 200px;
-            max-width: 350px;
-            min-width: 200px;*/
-        }
+    /* -----card調整start---- */
+    .card .card-img {
+        /* max-height: 350px;
+                min-height: 200px;
+                max-width: 350px;
+                min-width: 200px;*/
+    }
 
-        .card .card-img-overlay {
-            display: none;
-        }
+    .card .card-img-overlay {
+        display: none;
+    }
 
-        .card:hover .card-img-overlay {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-        }
+    .card:hover .card-img-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
 
-        .card-img-overlay i:hover {
-            color: #e54862ca;
-        }
+    .card-img-overlay i:hover {
+        color: #e54862ca;
+    }
 
-        .pagination .page-link {
-            color: #4b3030;
-        }
+    .pagination .page-link {
+        color: #4b3030;
+    }
 
         .pagination .page-link:hover {
             background-color: #9f6666;
@@ -75,13 +77,13 @@
         object-fit: contain;
     }
 
-        /* -----card調整end---- */
-    </style>
+    /* -----card調整end---- */
+</style>
 
 <main>
     <div class="container py-5">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
                 <h1 class="h2 pb-4">Categories</h1>
                 <ul class="list-unstyled ">
                     <li class="pb-3">
@@ -92,9 +94,9 @@
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
 
-                        <ul id="contentOne" class="collapse list-unstyled mb-5 cattext">
+                        <ul id="contentOne" class="collapse list-unstyled mb-5  mt-3 cattext ">
                             <li>
-                                <a class="text-decoration-none" href="@Url.Action("Index", "Product")" >
+                                <a class="text-decoration-none fw-bolder" href="@Url.Action("IndexSSJ", "Product")">
                                     分類全選
                                 </a>
                             </li>
@@ -120,7 +122,7 @@
                                     <li><a class="text-decoration-none" href="@Url.Action("FilterByCategoryId", "Product", new { mainCategoryId = 2, subCategoryId = 4 })">眉筆</a></li>
                                     <li><a class="text-decoration-none" href="@Url.Action("FilterByCategoryId", "Product", new { mainCategoryId = 2, subCategoryId = 5 })">眉粉</a></li>
                                 </ul>
-                             </li>
+                            </li>
                             <li>
                                 <a class="text-decoration-none" href="#" data-bs-toggle="collapse"
                                    data-bs-target="#collapseThree">
@@ -174,9 +176,9 @@
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
 
-                        <ul id="contentTwo" class=" collapse list-unstyled flex-container cattext ">
+                        <ul id="contentTwo" class=" collapse list-unstyled flex-container cattext  mt-3">
                             <li class:" d-flex">
-                                <a class="text-decoration-none" href="@Url.Action("Index", "Product")">
+                                <a class="text-decoration-none fw-bolder" href="@Url.Action("IndexSSJ", "Product")">
                                     自首全選
                                 </a>
                             </li>
@@ -218,55 +220,55 @@
                     @*列出商品*@
                     @foreach (var products in Model.Products)
                     {
-                    <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
-                       
-                                <div class="card ">
-                                <img class="card-img img-fluid" src="@products.ProductImagePath" alt="@products.ProductName" />
-                            <div class="card-img-overlay ">
-                                <ul class="list-unstyled">
-                                    <li>
-                                        <a class="btn bg-white text-black" href="shop-single.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                    </li>
-                                    <li> 
+                        <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
 
-                                         <a class="btn bg-white text-black mt-2" href="@Url.Action("Details", "Product", new { id = products.ProductId })">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                            <a class="btn bg-white text-black mt-2" href="@Url.Action("AddToCart", "Shopping", new { id = products.ProductId })">
-                                            <i class="fas fa-cart-plus"></i>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <div class="card ">
+                                <img class="card-img img-fluid" src="@products.ProductImagePath" alt="@products.ProductName" />
+                                <div class="card-img-overlay ">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a class="btn bg-white text-black" href="shop-single.html">
+                                                <i class="far fa-heart"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+
+                                            <a class="btn bg-white text-black mt-2" href="@Url.Action("Details", "Product", new { id = products.ProductId })">
+                                                <i class="far fa-eye"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("QuickAddToCart", "Shopping", new { productId = products.ProductId })" class="btn bg-white text-black mt-2 h3 text-decoration-none">
+                                                <i class="fas fa-cart-plus"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-center">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
                                     @Html.ActionLink(products.ProductName, "Details", "Product", new { id = products.ProductId }, new { @class = "h3 text-decoration-none" })
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <ul class="list-unstyled ">
-                                    <li>@products.ProductDescribe</li>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="list-unstyled ">
+                                        <li>@products.ProductDescribe</li>
+                                    </ul>
+
+                                </div>
+
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
                                 </ul>
-                               
+                                <p class="text-center mb-0">@products.ProductUnitPoint</p>
                             </div>
-                            
-                            <ul class="list-unstyled d-flex justify-content-center mb-1">
-                                <li>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-warning fa fa-star"></i>
-                                    <i class="text-muted fa fa-star"></i>
-                                    <i class="text-muted fa fa-star"></i>
-                                </li>
-                            </ul>
-                            <p class="text-center mb-0">@products.ProductUnitPoint</p>
+
                         </div>
-                        
-                    </div>
                     }
                 </div>
 
@@ -274,19 +276,29 @@
                 <div class="row">
                     <ul class="pagination justify-content-end">
                         <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                            <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage - 1 })" tabindex="-1">Previous</a>
+                            <a class="page-link" href="@Url.Action("IndexSSJ", new { page = Model.CurrentPage - 1 })" tabindex="-1">Previous</a>
                         </li>
 
                         @for (int i = 1; i <= Model.TotalPages; i++)
-                        {
-                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
-                            </li>
-                        }
+                         {
+                            string actionName = "IndexSSJ";
+                            object routeValues = new { page = i };
 
-                        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
-                            <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage + 1 })">Next</a>
-                        </li>
+                            if (Model.MainCategoryId.HasValue && Model.SubCategoryId.HasValue)
+                            {
+                                actionName = "FilterByCategoryId";
+                                routeValues = new { mainCategoryId = Model.MainCategoryId.Value, subCategoryId = Model.SubCategoryId.Value, page = i };
+                            }
+                            else if (Model.BrandId.HasValue)
+                            {
+                                actionName = "FilterByBrandId";
+                                routeValues = new { brandId = Model.BrandId.Value, page = i };
+                            }
+
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="@Url.Action(actionName, "Product", routeValues)">@i</a>
+                            </li>
+                         }
                     </ul>
                 </div>
             </div>
@@ -297,12 +309,13 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     @*切換頁面JS*@
-    $(document).ready(function ()
-    {
-        $('#contentOne, #contentTwo').on('show.bs.collapse', function ()
+        $(document).ready(function ()
         {
-            var id = $(this).attr('id');
-            $('ul .collapse').not('#' + id).collapse('hide');
+            $('#contentOne, #contentTwo').on('show.bs.collapse', function ()
+            {
+                var id = $(this).attr('id');
+                $('ul .collapse').not('#' + id).collapse('hide');
+            });
         });
-    });
+        //todo往前往後頁面還沒做
 </script>

@@ -6,10 +6,18 @@
         color:red;
         opacity:0.5;
     }
+
+    ::placeholder {
+        font-size: 10px;
+        color: tomato;
+    }
+
+
+
 </style>
 
  
-<h1 style="text-align:center;">Sign Up</h1>
+<h1 style="text-align:center;">註冊表單</h1>
 
 
 <hr />
@@ -19,17 +27,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
+                <input asp-for="Username" class="form-control " placeholder="此欄位必塡" />
                 <span asp-validation-for="Username" class= "spanvaildation"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control " placeholder="此欄位必塡" />
                 <span asp-validation-for="Password" class="spanvaildation" ></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control " placeholder="此欄位必塡" />
                 <span asp-validation-for="Email" class="spanvaildation"></span>
                
             </div>
@@ -53,12 +61,12 @@
     
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
+                <input asp-for="Address" class="form-control " placeholder="此欄位必塡" />
                 <span asp-validation-for="Address" class="spanvaildation"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
+                <input asp-for="Phone" class="form-control" placeholder="此欄位必塡" />
                 <span asp-validation-for="Phone" class="spanvaildation"></span>
             </div>
            @*  <div class="form-group">
@@ -97,7 +105,7 @@
                 <span asp-validation-for="CharityProof" class=" spanvaildation"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="送出" class="btn btn-primary " style="text-align:center;" />
             </div>
             </div>
     </div>
