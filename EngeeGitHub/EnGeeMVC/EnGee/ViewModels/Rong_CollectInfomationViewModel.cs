@@ -5,19 +5,9 @@ namespace EnGee.ViewModels
 {
     public class Rong_CollectInfomationViewModel
     {
-    //    private TCollect _collect;
-    //    public TCollect collect
-    //    {
-    //        get { return _collect; }
-    //        set { _collect = value; }
-    //    }
-    //    public Rong_CollectInfomationViewModel() 
-    //    {
-    //        _collect = new TCollect();
-    //    }
 
         public int CollectId { get; set; }
-        public string Nickname { get; set; }
+        public string Username { get; set; }
         public string CollectTitle { get; set; }
         public string CollectCaption
         { get; set; }
@@ -31,9 +21,6 @@ namespace EnGee.ViewModels
         public string? CollectImagePath { get; set; }
         public string? CollectItemName { get; set; }
         public int? CollectAmount { get; set; }
-
-        //[DisplayName("上架中")]
-        //public bool CollectStatus { get; set; }
 
     }
 }
