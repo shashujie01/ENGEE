@@ -8,10 +8,10 @@ using System.Text.Json;
 
 namespace EnGee.Controllers
 {
-    public class Chi_MemberController : Controller
+    public class Chi_MemberController : SuperController
     {
         
-        public IActionResult List(CKeywordViewModel vm)
+        public IActionResult List(CKeywordViewModel vm) //沒有畫面
         {
 
             EngeeContext db = new EngeeContext();
@@ -31,26 +31,25 @@ namespace EnGee.Controllers
         public IActionResult UserProfile()
         {
 
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
+            using (var dbContext = new EngeeContext())
             {
+                // 這裡可以直接使用 Session 中的用戶資訊，無需再次驗證
                 string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
 
-                using (var dbContext = new EngeeContext())
+                TMember userFromDatabase = dbContext.TMembers.FirstOrDefault(t => t.Email.Equals(loggedInUser.Email));
+                if (userFromDatabase != null)
                 {
-                    TMember userFromDatabase = dbContext.TMembers.FirstOrDefault(t => t.Email.Equals(loggedInUser.Email));
-                    if (userFromDatabase != null)
-                    {
-                        return View(userFromDatabase);
-                    }
+                    return View(userFromDatabase);
                 }
             }
-            
-            return RedirectToAction("LoginLayout","Home"); // 用户未登录或找不到用户信息时重定向到登录页面
+
+            // 如果未找到用戶或其他錯誤情況導向登錄頁面
+            return RedirectToAction("LoginLayout", "Home");
         }
     
 
-    public IActionResult Edit(int? id)
+    public IActionResult Edit(int? id) //沒有畫面
         {
             if (id == null)
                 return RedirectToAction("List");
