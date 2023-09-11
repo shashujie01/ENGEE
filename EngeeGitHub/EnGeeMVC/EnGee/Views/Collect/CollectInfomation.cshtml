@@ -65,7 +65,7 @@
             </div>
             <div class="row d-flex justify-content-end">
                 <a href="#使用者頁面" class="text-decoration-none fz-color2">
-                    發布者：@Html.DisplayFor(model => model.Username)
+                    發布者：@Html.DisplayFor(model => model.Nickname)
                 </a>
             </div>
             <div class="row g-1 d-flex align-items-center justify-content-end border-bottom pb-2">
@@ -107,10 +107,21 @@
                         </tr>
                     </tbody>
                 </table>
+                @* <h5 class="fz-color2 fw-bold"><i class="fa-solid fa-seedling me-1 "></i>需求品項</h5>
+                <div>
+                    <p class="fz-color1 px-4 py-3">@Html.DisplayFor(model => model.CollectItemName)</p>
+                    <p>@Html.DisplayFor(model => model.CollectAmount)</p>
+                </div> *@
+                @* <div class="progress">
+                    <div class="progress-bar progress-bar-striped bar fw-bold" role="progressbar"
+                         style="width: 100%;">
+                        @Html.DisplayFor(model => model.CollectAmount)
+                    </div>
+                </div> *@
             </div>
             <div class="row mt-5">
                 <div class="d-flex justify-content-end">
-                    <a href="@Url.Action("Donate", new { id = Model.CollectId })" class="btn-border btn btn-lg fw-bold fz-color2 a">我要捐贈</a>
+                    <a asp-controller="Donate" asp-action="DonateCreate" class="btn-border btn btn-lg fw-bold fz-color2 a">我要捐贈</a>
                 </div>
             </div>
             <div class="row mt-2">
