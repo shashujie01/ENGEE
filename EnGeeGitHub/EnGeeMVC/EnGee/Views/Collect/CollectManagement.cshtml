@@ -1,0 +1,105 @@
+﻿@model IEnumerable<EnGee.ViewModels.Rong_CollectManagementViewModel>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+@{
+    ViewBag.HeaderTitle = "文章管理";
+}
+
+<div class="container py-5 ">
+    <h2>許願池管理</h2>
+    <div class="row d-flex justify-content-end">
+        @using (Html.BeginForm())
+        {
+            <input type="text" name="txtKeyword" placeholder="搜尋文章標題"/>
+            <input type="submit" value="查詢" class="btn" />
+        }
+    </div>
+    <div class="row">
+        <table id="managetable" class="table table-hover text-center align-middle">
+            <thead class="fz-color2">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CollectId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MemberId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CollectTitle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CollectStartDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CollectEndDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DeliveryType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CollectStatus)
+                    </th>
+                    <th>操作功能</th>
+                </tr>
+            </thead>
+            <tbody class=" fz-color3">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CollectId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MemberId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CollectTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CollectStartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CollectEndDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DeliveryType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CollectStatus)
+                            </td>
+                            <td>
+                                @Html.ActionLink("修改", "EditCollect", new { id=item.CollectId },new{@class="btn nav-link"})
+                                @Html.ActionLink("刪除", "DeleteCollectManagement", "Collect",new { id=item.CollectId },new {@class="nav-link", onclick="return confirm('確定要刪除嗎?')"})
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var jq = jQuery.noConflict();
+        jq(document).ready(function () {
+            jq('#managetable').DataTable({
+                "paging": false,
+                "scrollCollapse": true,
+                "scrollY": "1000px",
+                "Info": true,
+                language: {
+                    "sInfo": "共有 _TOTAL_ 筆資料",
+                },
+                "searching": false,
+                "ordering": true,
+                "columnDefs": [
+                    { 
+                        "orderable": false, 
+                        "targets": [-2, -1],
+                    }
+                ]
+            });
+        });
+    </script>
+</div>
+

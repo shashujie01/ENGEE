@@ -32,11 +32,6 @@
             get { return _coll.CollectCaption; }
             set { _coll.CollectCaption = value; }
         }
-        //public DateTime CollectStartDate
-        //{
-        //    get { return _collect.CollectStartDate; }
-        //    set { _collect.CollectStartDate = value; }
-        //}
         public DateTime CollectEndDate
         {
             get { return _coll.CollectEndDate; }

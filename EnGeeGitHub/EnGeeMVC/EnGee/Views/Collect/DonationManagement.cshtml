@@ -1,0 +1,138 @@
+﻿@model IEnumerable<EnGee.ViewModels.Rong_DonationManagementViewModel>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+@{
+    ViewBag.HeaderTitle = "捐贈訂單管理";
+}
+<div class="container py-5 ">
+    <h2>捐贈訂單管理</h2>
+    <div class="row d-flex justify-content-end">
+        @using (Html.BeginForm())
+        {
+            <input type="text" name="txtKeyword" placeholder="搜尋捐贈者姓名" />
+            <input type="submit" value="查詢" class="btn" />
+        }
+    </div>
+    <div class="row">
+        <table id="managetable" class="table table-hover text-center align-middle w-100">
+            <thead class="fz-color2 w-100 ">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DonationOrderId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MemberId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CollectId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DeliveryType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DonarName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DonarPhone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CollectItemName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DonationAmount)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DonationStatus)
+                    </th>
+                    <th>操作功能</th>
+                </tr>
+            </thead>
+            <tbody class=" fz-color3 w-100">
+                @{
+                    foreach (var item in Model)
+                    {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DonationOrderId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MemberId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CollectId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DeliveryType)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DonarName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DonarPhone)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CollectItemName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DonationAmount)
+                                    </td>
+                                        @if (@item.DonationStatus == "1")
+                                        {
+                                            <td>待出貨</td>       
+                                        }
+                                        else if (@item.DonationStatus == "2")
+                                        {
+                                            <td>待收貨</td>
+                                        }
+                                        else if (@item.DonationStatus == "3")
+                                        {
+                                            <td>訂單已完成</td>
+                                        }
+                                        else if (@item.DonationStatus == "4")
+                                        {
+                                            <td>不成立</td>
+                                        }
+
+                                    
+                                    <td>
+                                @Html.ActionLink("修改", "EditDonation" ,"Collect", new { id=item.DonationOrderId },new{@class="btn nav-link"})
+                                        @Html.ActionLink("刪除", "DeleteCollectManagement", "Collect",new { id=item.DonationOrderId },new {@class="nav-link", onclick="return confirm('確定要刪除嗎?')"})
+                                    </td>
+                                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var jq = jQuery.noConflict();
+        jq(document).ready(function () {
+            jq('#managetable').DataTable({
+                "paging": false,
+                "scrollCollapse": true,
+                "scrollY": "1000px",
+                "Info": true,
+                language: {
+                    "sInfo": "共有 _TOTAL_ 筆資料",
+                },
+                "searching": false,
+                "ordering": true,
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": [-2, -1],
+                    },
+                
+                ],
+            });
+        });
+    </script>
+</div>
+
