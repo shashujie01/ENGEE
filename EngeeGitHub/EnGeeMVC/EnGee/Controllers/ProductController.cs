@@ -218,9 +218,29 @@ namespace prjEnGeeDemo.Controllers
         //以下為樹傑的Action
 
         EngeeContext db = new EngeeContext();
-        public IActionResult IndexSSJ(int page = 1, int pageSize = 6)
+        public IActionResult IndexSSJ(SSJ_ProductPageViewModel vm, int page = 1, int pageSize = 6)
         {
-            var products = db.TProducts.Select(p => new SSJ_ProductViewModel
+            IQueryable<TProduct> query = db.TProducts;
+
+            // Apply keyword filter if present
+            if (!string.IsNullOrEmpty(vm.txtKeyword))
+            {
+                query = query.Where(p => p.ProductName.Contains(vm.txtKeyword));
+            }
+
+            // Apply category filter if present
+            if (vm.MainCategoryId.HasValue && vm.SubCategoryId.HasValue)
+            {
+                query = query.Where(p => p.MainCategoryId == vm.MainCategoryId.Value && p.SubcategoryId == vm.SubCategoryId.Value);
+            }
+
+            // Apply brand filter if present
+            if (vm.BrandId.HasValue)
+            {
+                query = query.Where(p => p.BrandId == vm.BrandId.Value);
+            }
+
+            var products = query.Select(p => new SSJ_ProductViewModel
             {
                 ProductId = p.ProductId,
                 ProductName = p.ProductName,
@@ -229,83 +249,27 @@ namespace prjEnGeeDemo.Controllers
                 ProductUnitPoint = p.ProductUnitPoint
             });
 
-            // Get the number of products to determine total pages
+            // Pagination
             var totalCount = products.Count();
             var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-
             products = products.Skip((page - 1) * pageSize).Take(pageSize);
 
             var model = new SSJ_ProductPageViewModel
             {
                 Products = products.ToList(),
                 CurrentPage = page,
-                TotalPages = totalPages
+                TotalPages = totalPages,
+                txtKeyword = vm.txtKeyword,
+                MainCategoryId = vm.MainCategoryId,
+                SubCategoryId = vm.SubCategoryId,
+                BrandId = vm.BrandId
             };
 
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult FilterByCategoryId(int mainCategoryId, int subCategoryId, int page = 1, int pageSize = 6)
-        {
-            var products = db.TProducts.Where(p => p.MainCategoryId == mainCategoryId && p.SubcategoryId == subCategoryId)
-                                        .Select(p => new SSJ_ProductViewModel
-                                        {
-                                            ProductId = p.ProductId,
-                                            ProductName = p.ProductName,
-                                            ProductDescribe = p.ProductDescribe,
-                                            ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
-                                            ProductUnitPoint = p.ProductUnitPoint
-                                        });
-
-            // Get the number of products to determine total pages
-            var totalCount = products.Count();
-            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-
-            products = products.Skip((page - 1) * pageSize).Take(pageSize);
-
-            var model = new SSJ_ProductPageViewModel
-            {
-                Products = products.ToList(),
-                CurrentPage = page,
-                TotalPages = totalPages
-            };
-
-            return View("Index", model);  // 使用 Index 的 View 來呈現篩選結果
-        }
-
-        [HttpGet]
-        public IActionResult FilterByBrandId(int BrandId, int page = 1, int pageSize = 6)
-        {
-            var products = db.TProducts.Where(p => p.BrandId == BrandId)
-                                        .Select(p => new SSJ_ProductViewModel
-                                        {
-                                            ProductId = p.ProductId,
-                                            ProductName = p.ProductName,
-                                            ProductDescribe = p.ProductDescribe,
-                                            ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
-                                            ProductUnitPoint = p.ProductUnitPoint
-                                        });
-
-            // Get the number of products to determine total pages
-            var totalCount = products.Count();
-            var totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-
-            products = products.Skip((page - 1) * pageSize).Take(pageSize);
-
-            var model = new SSJ_ProductPageViewModel
-            {
-                Products = products.ToList(),
-                CurrentPage = page,
-                TotalPages = totalPages
-            };
-
-            return View("Index", model);
-        }
-
         public IActionResult Details(int id)
         {
-
             var product = db.TProducts
                             .Include(p => p.Brand)
                             .Include(p => p.MainCategory)
@@ -350,21 +314,7 @@ namespace prjEnGeeDemo.Controllers
             EngeeContext db = new EngeeContext();
             db.TProducts.Add(p);
             db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult DeleteSSJ(int? id)
-        {
-            if (id == null)
-                return RedirectToAction("Index");
-            EngeeContext db = new EngeeContext();
-            TProduct cust = db.TProducts.FirstOrDefault(t => t.ProductId == id);
-            if (cust != null)
-            {
-                db.TProducts.Remove(cust);
-                db.SaveChanges();
-            }
-            return RedirectToAction("List");
+            return RedirectToAction("IndexSSJ");
         }
     }
 }
