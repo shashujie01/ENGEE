@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using EnGee.Data;
 using EnGee.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using EnGee.CollectService;
+using EnGee.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("EnGeeContextConnection") ?? throw new InvalidOperationException("Connection string 'EnGeeContextConnection' not found.");
@@ -10,6 +12,9 @@ var connectionString = builder.Configuration.GetConnectionString("EnGeeContextCo
 builder.Services.AddDbContext<EnGeeContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<EnGeeUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<EnGeeContext>();
+
+// Rong新增
+builder.Services.AddDbContext<EngeeContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -24,6 +29,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
 
+// Rong新增
+builder.Services.AddSingleton<IHostedService, CollectStatusUpdate>();
 
 var app = builder.Build();
 

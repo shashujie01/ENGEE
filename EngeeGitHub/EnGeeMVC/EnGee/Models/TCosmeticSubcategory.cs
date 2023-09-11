@@ -13,7 +13,5 @@ public partial class TCosmeticSubcategory
 
     public virtual TCosmeticMainCategory MainCategory { get; set; } = null!;
 
-    public virtual ICollection<TCollectItem> TCollectItems { get; set; } = new List<TCollectItem>();
-
     public virtual ICollection<TProduct> TProducts { get; set; } = new List<TProduct>();
 }

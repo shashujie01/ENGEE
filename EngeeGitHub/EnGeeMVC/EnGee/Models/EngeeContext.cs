@@ -23,10 +23,6 @@ public partial class EngeeContext : DbContext
 
     public virtual DbSet<TCollect> TCollects { get; set; }
 
-    public virtual DbSet<TCollectImage> TCollectImages { get; set; }
-
-    public virtual DbSet<TCollectItem> TCollectItems { get; set; }
-
     public virtual DbSet<TCosmeticMainCategory> TCosmeticMainCategories { get; set; }
 
     public virtual DbSet<TCosmeticSubcategory> TCosmeticSubcategories { get; set; }
@@ -36,8 +32,6 @@ public partial class EngeeContext : DbContext
     public virtual DbSet<TDemand> TDemands { get; set; }
 
     public virtual DbSet<TDonationOrder> TDonationOrders { get; set; }
-
-    public virtual DbSet<TDonationOrderDetail> TDonationOrderDetails { get; set; }
 
     public virtual DbSet<TMember> TMembers { get; set; }
 
@@ -59,10 +53,12 @@ public partial class EngeeContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=Engee;Integrated Security=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Server=engee.database.windows.net;Database=Engee;User ID=Fuen2901;Password=EnGee2023;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
+
         modelBuilder.Entity<TBrand>(entity =>
         {
             entity.HasKey(e => e.BrandId).HasName("PK_Table_1");
@@ -128,13 +124,17 @@ public partial class EngeeContext : DbContext
 
             entity.Property(e => e.CollectId).HasColumnName("CollectID");
             entity.Property(e => e.CollectCaption).HasMaxLength(1000);
-            entity.Property(e => e.CollectEndDate).HasColumnType("datetime");
-            entity.Property(e => e.CollectStartDate).HasColumnType("datetime");
+            entity.Property(e => e.CollectEndDate).HasColumnType("date");
+            entity.Property(e => e.CollectImagePath).HasMaxLength(1000);
+            entity.Property(e => e.CollectItemName).HasMaxLength(50);
+            entity.Property(e => e.CollectStartDate).HasColumnType("date");
             entity.Property(e => e.CollectTitle).HasMaxLength(100);
             entity.Property(e => e.ConvenienNum).HasMaxLength(50);
             entity.Property(e => e.DeliveryAddress).HasMaxLength(100);
             entity.Property(e => e.DeliveryTypeId).HasColumnName("DeliveryTypeID");
+            entity.Property(e => e.MainCategoryId).HasColumnName("MainCategoryID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.SubcategoryId).HasColumnName("SubcategoryID");
 
             entity.HasOne(d => d.DeliveryType).WithMany(p => p.TCollects)
                 .HasForeignKey(d => d.DeliveryTypeId)
@@ -145,40 +145,6 @@ public partial class EngeeContext : DbContext
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_tCollect_tMembers");
-        });
-
-        modelBuilder.Entity<TCollectImage>(entity =>
-        {
-            entity.HasKey(e => e.CollectImageId);
-
-            entity.ToTable("tCollectImage");
-
-            entity.Property(e => e.CollectImageId).HasColumnName("CollectImageID");
-            entity.Property(e => e.CollectId).HasColumnName("CollectID");
-            entity.Property(e => e.CollectImagePath).HasMaxLength(1000);
-        });
-
-        modelBuilder.Entity<TCollectItem>(entity =>
-        {
-            entity.HasKey(e => e.CollectItemsId);
-
-            entity.ToTable("tCollectItems");
-
-            entity.Property(e => e.CollectItemsId).HasColumnName("CollectItemsID");
-            entity.Property(e => e.CollectId).HasColumnName("CollectID");
-            entity.Property(e => e.CollectItemName).HasMaxLength(50);
-            entity.Property(e => e.MainCategoryId).HasColumnName("MainCategoryID");
-            entity.Property(e => e.SubcategoryId).HasColumnName("SubcategoryID");
-
-            entity.HasOne(d => d.MainCategory).WithMany(p => p.TCollectItems)
-                .HasForeignKey(d => d.MainCategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tCollectItems_tCosmeticMainCategory");
-
-            entity.HasOne(d => d.Subcategory).WithMany(p => p.TCollectItems)
-                .HasForeignKey(d => d.SubcategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tCollectItems_tCosmeticSubcategory");
         });
 
         modelBuilder.Entity<TCosmeticMainCategory>(entity =>
@@ -265,16 +231,20 @@ public partial class EngeeContext : DbContext
             entity.ToTable("tDonationOrder");
 
             entity.Property(e => e.DonationOrderId).HasColumnName("DonationOrderID");
+            entity.Property(e => e.CollectId).HasColumnName("CollectID");
             entity.Property(e => e.DeliveryTypeId).HasColumnName("DeliveryTypeID");
             entity.Property(e => e.DonarName).HasMaxLength(50);
-            entity.Property(e => e.DonarPhone)
-                .HasMaxLength(10)
-                .IsFixedLength();
+            entity.Property(e => e.DonarPhone).HasMaxLength(50);
             entity.Property(e => e.DonationStatus)
                 .HasMaxLength(1)
                 .IsFixedLength();
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Collect).WithMany(p => p.TDonationOrders)
+                .HasForeignKey(d => d.CollectId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tDonationOrder_tCollect");
 
             entity.HasOne(d => d.DeliveryType).WithMany(p => p.TDonationOrders)
                 .HasForeignKey(d => d.DeliveryTypeId)
@@ -285,27 +255,6 @@ public partial class EngeeContext : DbContext
                 .HasForeignKey(d => d.MemberId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_tDonationOrder_tMembers");
-        });
-
-        modelBuilder.Entity<TDonationOrderDetail>(entity =>
-        {
-            entity.HasKey(e => e.DonationOrderDetailId);
-
-            entity.ToTable("tDonationOrderDetail");
-
-            entity.Property(e => e.DonationOrderDetailId).HasColumnName("DonationOrderDetailID");
-            entity.Property(e => e.DonationOrderId).HasColumnName("DonationOrderID");
-            entity.Property(e => e.ProductId).HasColumnName("ProductID");
-
-            entity.HasOne(d => d.DonationOrder).WithMany(p => p.TDonationOrderDetails)
-                .HasForeignKey(d => d.DonationOrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tDonationOrderDetail_tDonationOrderDetail");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.TDonationOrderDetails)
-                .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tDonationOrderDetail_tProducts");
         });
 
         modelBuilder.Entity<TMember>(entity =>
