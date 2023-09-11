@@ -124,10 +124,10 @@ public partial class EngeeContext : DbContext
 
             entity.Property(e => e.CollectId).HasColumnName("CollectID");
             entity.Property(e => e.CollectCaption).HasMaxLength(1000);
-            entity.Property(e => e.CollectEndDate).HasColumnType("datetime");
+            entity.Property(e => e.CollectEndDate).HasColumnType("date");
             entity.Property(e => e.CollectImagePath).HasMaxLength(1000);
             entity.Property(e => e.CollectItemName).HasMaxLength(50);
-            entity.Property(e => e.CollectStartDate).HasColumnType("datetime");
+            entity.Property(e => e.CollectStartDate).HasColumnType("date");
             entity.Property(e => e.CollectTitle).HasMaxLength(100);
             entity.Property(e => e.ConvenienNum).HasMaxLength(50);
             entity.Property(e => e.DeliveryAddress).HasMaxLength(100);
