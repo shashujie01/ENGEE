@@ -8,6 +8,6 @@
         public int? MainCategoryId { get; set; }
         public int? SubCategoryId { get; set; }
         public int? BrandId { get; set; }
+        public string txtKeyword { get; set; }
     }
-
 }
