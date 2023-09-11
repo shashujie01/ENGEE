@@ -1,7 +1,13 @@
 ﻿@model List<EnGee.Models.SSJ_CShoppingCarItem>
-@{ViewData["Title"] = "我的購物車";}
-@{Layout = "_Layout";}
-@{ ViewBag.HeaderTitle = "我的購物車";}
+@{
+    ViewData["Title"] = "我的購物車";
+}
+@{
+    Layout = "_Layout";
+}
+@{
+    ViewBag.HeaderTitle = "我的購物車";
+}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     /* 購物車網頁專用start */
@@ -70,150 +76,137 @@
                             {
                                 count++;
                                 pay += item.小計;
-                                <div class="card p-2">
-                                    <div class="cartcontent">
-                                        <div class="row m-0 ">
-                                            <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
-                                                <div class="form-check">
-                                                    <input class="cartcheckout form-check-input" type="checkbox" value=""
-                                                           data-pay="@item.小計">
-                                                </div>
-                                                <div class="cartimg d-flex">
-                                                    <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
-                                                <div class="card-body p-0">
-                                                    <h5 class="card-title">
+                                            <div class="card p-2">
+                                                <div class="cartcontent">
+                                                    <div class="row m-0 ">
+                                                        <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                                            <div class="form-check">
+                                                                <input class="cartcheckout form-check-input" type="checkbox" value=""
+                                                                       data-pay="@item.小計">
+                                                            </div>
+                                                            <div class="cartimg d-flex">
+                                                                <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                                            <div class="card-body p-0">
+                                                                <h5 class="card-title">
                                                         @Html.DisplayFor(modelItem => item.tproduct.ProductName)
-                                                    </h5>
-                                                    <p class="card-text">
-                                                        //其他資訊擺放位置
-                                                    </p>
+                                                                </h5>
+                                                                <p class="card-text">
+                                                                    //其他資訊擺放位置
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                                            <label class="me-1 mb-2" for="">點數:</label>
+                                                            <label for="">@Html.DisplayFor(modelItem => item.point)</label><br>
+                                                            <label class="me-1 mb-2" for="">數量:</label>
+<button class="btn btn-rong-s btnHoverStyle2 btnMinus" type="button">-</button>
+<label class="me-2" for="">@Html.DisplayFor(modelItem => item.count)</label>
+<button class="btn btn-rong-s btnHoverStyle2 btnPlus" type="button">+</button>
+                                                            <label class="me-1 mb-2" for="">小計:</label>
+                                                            <label class="me-2" for="">@Html.DisplayFor(modelItem => item.小計)</label> <br>
+                                                            <label class="me-1 mb-2">選擇的配送方式:</label>
+                                                            <label class="me-2 mb-2" for="">@item.DeliveryType</label>
+                                                            <a class="hrefstyle mb-2" href="#">修改配送方式</a>
+                                                            <a class=" hrefstyle" href="#">刪除</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="hr-m4px">
+                                            </div>
+                            }
+                                    <div class="container p-0 ">
+                                        <div class="row m-0 p-0">
+                                            <div class="payInfoBox d-flex align-items-center justify-content-end">
+                                                <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
+                                                    <input class=" form-check-input select-all-checkbox" type="checkbox"
+                                                           data-target=".cartcheckout" id="storePickupSelectAll">
+                                                    <label class="form-check-label" for="storePickupSelectAll">全選</label>
+                                                </div>
+                                                <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
+                                                    結帳總點數：<span> $ </span><span> @pay.ToString() </span>
+                                                </div>
+                                                <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
+                                                    <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
                                                 </div>
                                             </div>
-                                            <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
-                                                <label class="me-1 mb-2" for="">點數:</label>
-                                                <label for="">@Html.DisplayFor(modelItem => item.point)</label><br>
-                                                <label class="me-1 mb-2" for="">數量:</label>
-                                                <label class="me-2" for="">@Html.DisplayFor(modelItem => item.count)</label>
-                                                <i id="minus"
-                                                   class="btn fa-solid fa-circle-minus fz-color2 border-0 p-0 me-2"></i>
-                                                <i id="plus" class="btn fa-solid fa-circle-plus fz-color2 border-0 p-0 "></i><br>
-                                                <label class="me-1 mb-2" for="">小計:</label>
-                                                <label class="me-2" for="">@Html.DisplayFor(modelItem => item.小計)</label> <br>
-                                                <label class="me-1 mb-2">選擇的配送方式::</label>
-                                                <label class="me-2 mb-2" for="">@Html.DisplayFor(modelItem => item.DeliveryOption)</label>
-                                                <a class="hrefstyle mb-2" href="#">修改配送方式</a>
-                                                <a class=" hrefstyle" href="#">刪除</a>
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <a class="hrefstyle mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <hr class="hr-m4px">
-                                </div>
-                            }
-                            <div class="container p-0 ">
-                                <div class="row m-0 p-0">
-                                    <div class="payInfoBox d-flex align-items-center justify-content-end">
-                                        <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
-                                            <input class=" form-check-input select-all-checkbox" type="checkbox"
-                                                   data-target=".cartcheckout" id="storePickupSelectAll">
-                                            <label class="form-check-label" for="storePickupSelectAll">全選</label>
+                //隱藏宅配表單
+                                    <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
+                                        <div class="container mt-5">
+                                            <div class="input-group mb-2 d-flex  align-items-end">
+                                                <div class="fz-size32px">
+                                                    會員資料
+                                                </div>
+                                                <div class="d-flex align-items-center justify-content-center border-0 fz-size16px m-1">
+                                                    <input class="form-check-input mt-0  " type="checkbox" value="" id="defaultCheck1">
+                                                    <label class="form-check-label" for="defaultCheck1">
+                                                        帶入會員資料
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <form method="post" action="@Url.Action("ConfirmPurchase", "Shopping")">
+                                                <input type="hidden" name="OrderTotalUsagePoints" value="@pay.ToString()" />
+
+                                                <div class="input-group mb-2">
+                                                    <span class="input-group-text">姓名</span>
+                                                    <input type="text" class="form-control" name="Fullname">
+                                                </div>
+                                                <div class="input-group mb-2">
+                                                    <span class="input-group-text">Email</span>
+                                                    <input type="text" class="form-control" name="Email">
+                                                </div>
+                                                <div class="input-group mb-2">
+                                                    <span class="input-group-text">手機</span>
+                                                    <input type="text" class="form-control" name="Phone">
+                                                </div>
+                                                <div class="input-group mb-2">
+                                                    <span class="input-group-text" >地址</span>
+                                                    <input type="text" class="form-control" name="DeliveryAddress">
+                                                </div>
+
+                                        @{
+                                            decimal memberPoints = 0; // 初始化会员点数为0
+                                        }
+                                            <div class="container mt-4">
+                                                <div class="input-group mb-2">
+                                                    <span class="input-group-text">商品總點數</span>
+                                                    <input type="form-text" class="form-control" readonly value="@pay.ToString()">
+                                                    <span class="input-group-text">會員點數</span>
+                                                    <input type="form-text" class="form-control" readonly value="@memberPoints.ToString()">
+                                                    <span class="input-group-text">購買後剩餘點數</span>
+                                                    <input type="form-text" class="form-control" readonly value="@((memberPoints - pay).ToString())">
+                                                </div>
+                                                <div class="d-flex justify-content-center ">
+                                                    <a class=" hrefstyle1-m  m-2 px-3 py-2">儲值</a>
+                                                    <button class="btn btn-m btnHoverStyle2 m-2" type="submit">確認結帳</button>
+                                                            <a class=" hrefstyle1-m  m-2 px-3 py-2" href="@Url.Action("IndexSSJ", "Product")">取消</a>
+                                                </div>
+
+                                                </div>
+                                            </form>
+                                            </div>
                                         </div>
-                                        <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
-                                            結帳總點數：<span> $ </span><span> @pay.ToString() </span>
-                                        </div>
-                                        <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
-                                            <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-end">
-                                        <a class="hrefstyle mt-2" href="@Url.Action("Index", "Product")">繼續購物</a>
-                                    </div>
-                                </div>
-                            </div>
-                            //隱藏超取表單
-                            <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
-                                <div class="container mt-5">
-                                    <div class="input-group mb-2 d-flex  align-items-end">
-                                        <div class="fz-size32px">
-                                            會員資料
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-center border-0 fz-size16px m-1">
-                                            <input class="form-check-input mt-0  " type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                帶入會員資料
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">姓名</span>
-                                        <input type="form-text" class="form-control">
-                                    </div>
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">Email</span>
-                                        <input type="form-text" class="form-control">
-                                    </div>
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">手機</span>
-                                        <input type="form-text" class="form-control">
-                                    </div>
-                                    <div class="input-group mt-2 convenientExtract">
-                                        <ul class="mb-2 d-flex">
-                                            <li>
-                                                <label for="store_type_711">
-                                                    <input class="radio" type="radio" value="711" name="store_type"id="store_type_711" checked="checked"><img height="65" width="65" alt=""src="~/images/logo/7-11_logo_hd.png">
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label for="store_type_fami">
-                                                    <input class="radio" type="radio" value="Fami" name="store_type" id="store_type_fami"><img height="65" width="65" alt="" src="~/images/logo/Family.png">
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label for="store_type_ibox">
-                                                    <input class="radio" type="radio" value="BOX" name="store_type" id="store_type_ibox"><img height="65" width="65" alt=""src="~/images/logo/ibox_logo.png">
-                                                </label>
-                                            </li>
-                                        </ul>
-                                        <div class="input-group mb-2 ">
-                                            <span class="input-group-text">門市名稱：</span>
-                                            <input class="form-control " name="storename" type="form-text" id="storename" value="" readonly="">
-                                            <a href="#" id="iSeven" class="hrefstyle ms-2">
-                                                修改取貨門市
-                                            </a>
-                                        </div>
-                                        <div class="input-group mb-2 ">
-                                            <span class="input-group-text">門市地址：</span>
-                                            <input class="form-control" name="address" type="form-text" id="address" value="" readonly="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container mt-4">
-                                    <div class="input-group mb-2">
-                                        <span class="input-group-text">商品總點數</span>
-                                        <input type="form-text" class="form-control" readonly>
-                                        <span class="input-group-text">會員點數</span>
-                                        <input type="form-text" class="form-control" readonly>
-                                        <span class="input-group-text">購買後剩餘點數</span>
-                                        <input type="form-text" class="form-control" readonly>
-                                    </div>
-                                    <div class="d-flex justify-content-center ">
-                                        <a class=" hrefstyle1-m  m-2 px-3 py-2">儲值</a>
-                                        <button class="btn btn-m btnHoverStyle2 m-2" type="submit">確認結帳</button>
-                                        <a class=" hrefstyle1-m  m-2 px-3 py-2" href="@Url.Action("Index", "Product")">取消</a>
-                                    </div>
-                                </div>
-                            </div>
+
                         }
                         else
                         {
-                            <div class="alert alert-warning">您的購物車是空的。</div>
+                                    <div class="alert alert-warning">您的購物車是空的。</div>
+                                              <div class="d-flex align-items-center justify-content-center">
+                                                        <a class="hrefstyle3-m mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
+                                                    </div>
                         }
                     }
                 </div>
-                <!-- 宅配頁面 -->
-                @*                <div class="tab-pane fade" id="nav-homeDelivery-content" role="tabpanel" aria-labelledby="nav-homeDelivery-tab">
+                <!-- 超取頁面 -->
+                @*                
+                    <div class="tab-pane fade" id="nav-homeDelivery-content" role="tabpanel" aria-labelledby="nav-homeDelivery-tab">
                 @{
                 count = 0;
                 pay = 0;
@@ -286,7 +279,7 @@
                 </div>
                 </div>
                 </div>
-                //隱藏宅配表單
+                //隱藏超取表單
                 <div class="CheckoutHomeDelivery" id="CheckoutHomeDelivery" style="display: none;">
                 <div class="container mt-5">
                 <div class="input-group mb-2 d-flex align-items-end">
@@ -304,24 +297,47 @@
 
                 <div class="input-group mb-2">
                 <span class="input-group-text">姓名</span>
-                <input type="form-text" class="form-control">
+                <input type="form-text" class="form-control" name="">
                 </div>
                 <div class="input-group mb-2">
                 <span class="input-group-text">Email</span>
-                <input type="form-text" class="form-control">
+                <input type="form-text" class="form-control name=" "">
                 </div>
                 <div class="input-group mb-2">
                 <span class="input-group-text">手機</span>
                 <input type="form-text" class="form-control">
                 </div>
-                <div class="input-group mb-2">
-                <span class="input-group-text">郵遞區號</span>
-                <input type="form-text" class="form-control">
+                <div class="input-group mt-2 convenientExtract">
+                <ul class="mb-2 d-flex">
+                <li>
+                <label for="store_type_711">
+                <input class="radio" type="radio" value="711" name="store_type"id="store_type_711" checked="checked"><img height="65" width="65" alt=""src="~/images/logo/7-11_logo_hd.png">
+                </label>
+                </li>
+                <li>
+                <label for="store_type_fami">
+                <input class="radio" type="radio" value="Fami" name="store_type" id="store_type_fami"><img height="65" width="65" alt="" src="~/images/logo/Family.png">
+                </label>
+                </li>
+                <li>
+                <label for="store_type_ibox">
+                <input class="radio" type="radio" value="BOX" name="store_type" id="store_type_ibox"><img height="65" width="65" alt=""src="~/images/logo/ibox_logo.png">
+                </label>
+                </li>
+                </ul>
+                <div class="input-group mb-2 ">
+                <span class="input-group-text">門市名稱：</span>
+                <input class="form-control " name="storename" type="form-text" id="storename" value="" readonly="">
+                <a href="#" id="iSeven" class="hrefstyle ms-2">
+                修改取貨門市
+                </a>
                 </div>
-                <div class="input-group mb-2">
-                <span class="input-group-text">地址</span>
-                <input type="form-text" class="form-control">
+                <div class="input-group mb-2 ">
+                <span class="input-group-text">門市地址：</span>
+                <input class="form-control" name="address" type="form-text" id="address" value="" readonly="">
                 </div>
+                </div>
+
                 </div>
                 <div class="container mt-4">
                 <div class="input-group mb-2">
@@ -353,7 +369,6 @@
         </div>
     </div>
 </main>
-<script src="./js/bootstrap.bundle.min.js"></script>
 <script>
     // 啟動時，為所有商品checkbox添加事件監聽器
     var formDisplayed = false;
@@ -470,6 +485,32 @@
             // 更新總點數顯示
             $(".totalPriceMoney span:nth-child(2)").text(total.toFixed(2));
         }
+
     });
+
+    $(document).ready(function () {
+    // 為每個減少按鈕添加點擊事件
+    $('.btnMinus').click(function () {
+        // 獲取相鄰的label元素，這裡假設它就是計數顯示
+        var $label = $(this).next('label');
+        var count = parseInt($label.text(), 10);
+        if (count > 0) {
+            count--;
+            $label.text(count);
+        }
+        // 在這裡，你也可以更新其他UI元素或者發送請求到服務器
+    });
+
+    // 為每個增加按鈕添加點擊事件
+    $('.btnPlus').click(function () {
+        // 獲取相鄰的label元素，這裡假設它就是計數顯示
+        var $label = $(this).prev('label');
+        var count = parseInt($label.text(), 10);
+        count++;
+        $label.text(count);
+        // 在這裡，你也可以更新其他UI元素或者發送請求到服務器
+    });
+});
                 //TODO 切換頁面無法隱藏
+                //TODO 結帳總點數若使用+-按鈕顯示異常
 </script>
