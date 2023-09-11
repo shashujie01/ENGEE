@@ -13,7 +13,7 @@ namespace EnGee.Controllers
             return View();
         }
         public IActionResult List()
-        {//僅供測試使用，不會上線
+        {//僅供測試使用，不會上線，V已刪除
             EngeeContext db = new EngeeContext();
             var datas = from p in db.TProducts select p;
             List<SSJ_CProductWrap> list = new List<SSJ_CProductWrap>();
@@ -254,7 +254,7 @@ namespace EnGee.Controllers
                     DeliveryTypeId = vm.DeliveryType,
                     DeliveryAddress = vm.DeliveryAddress,
                     OrderTotalUsagePoints = vm.OrderTotalUsagePoints, // Use vm instead of model ->加減按鈕後異常
-                    BuyerId = 59,//尚未串接
+                    BuyerId = 59,//TODO:尚未串接
                     SellerId = 60,//尚未串接
                     OrderStatus = "3",//結帳後為3
                     OrderCatagory = 1,//買賣為1
