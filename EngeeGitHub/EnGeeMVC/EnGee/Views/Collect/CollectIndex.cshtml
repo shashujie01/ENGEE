@@ -3,52 +3,97 @@
 @{
     ViewBag.HeaderTitle = "許願池";
 }
-@{
-    var mainCategoryList = ViewBag.MainCategory as List<TCosmeticMainCategory>;
-    var subcategoryList = ViewBag.Subcategory as List<TCosmeticSubcategory>;
-}
 
 <div class="container-md my-5">
-    
     <div class="row">
         <div class="col-lg-3">
-            <h3 class="pb-4">彩妝品分類</h3>
-            <ul class="list-unstyled">
-                @foreach (var main in mainCategoryList)
-                {
-                    <li class="pb-3">
-                        <a name="MainCategoryId" class="collapsed d-flex justify-content-between h5 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse@(main.MainCategoryId)" href="@Url.Action("CollectIndex",new{mainId = main.MainCategoryId, subId = 0})">
-                            @main.MainCategory
-                            <i class="fa-solid fa-chevron-down down-arrow"></i>
-                        </a>
-                        <ul id="collapse@(main.MainCategoryId)" class="collapse list-unstyled ps-3 ">
-                            @foreach (var sub in subcategoryList.Where(s => s.MainCategoryId == main.MainCategoryId))
-                            {
-                                <li><a name="SubcategoryId" class="text-decoration-none a2 cat-textColor" href="@Url.Action("CollectIndex", new{mainId = 0, subId = sub.SubcategoryId})">@sub.Subcategory</a></li>
-                            }
-                        </ul>
-                    </li>
-                } 
-            </ul> 
+            <h3 class="pb-4 fz-color3">彩妝品分類</h3>
+            <ul class="list-unstyled templatemo-accordion">
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h5 text-decoration-none fz-color3" href="#">
+                    眼部彩妝
+                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                    </a>
+                    <ul id="collapseOne" class="collapse list-unstyled ps-3">
+                        <li><a class="text-decoration-none" href="#">眼影</a></li>
+                        <li><a class="text-decoration-none" href="#">眼線液 / 眼線筆</a></li>
+                        <li><a class="text-decoration-none" href="#">睫毛膏 / 睫毛打底膏</a></li>
+                    </ul>
+                </li>
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h5 text-decoration-none fz-color3"
+                                href="#">
+                                眉部彩妝
+                                <i class="fa-solid fa-chevron-down down-arrow"></i>
+                            </a>
+                    <ul id="collapseTwo" class="collapse list-unstyled ps-3">
+                                <li><a class="text-decoration-none" href="#">眉筆</a></li>
+                                <li><a class="text-decoration-none" href="#">眉粉</a></li>
+                            </ul>
+                </li>
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h5 text-decoration-none fz-color3"
+                                href="#">
+                                唇部彩妝
+                                <i class="fa-solid fa-chevron-down down-arrow"></i>
+                            </a>
+                    <ul id="collapseThree" class="collapse list-unstyled ps-3">
+                                <li><a class="text-decoration-none" href="#">唇膏</a></li>
+                                <li><a class="text-decoration-none" href="#">唇蜜</a></li>
+                                <li><a class="text-decoration-none" href="#">唇筆</a></li>
+                            </ul>
+                </li>
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h5 text-decoration-none fz-color3" href="#">
+                    臉部彩妝
+                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                    </a>
+                    <ul id="collapseFour" class="collapse list-unstyled ps-3">
+                                <li><a class="text-decoration-none" href="#">妝前乳 / 隔離霜</a></li>
+                                <li><a class="text-decoration-none" href="#">遮瑕膏</a></li>
+                                <li><a class="text-decoration-none" href="#">修容</a></li>
+                                <li><a class="text-decoration-none" href="#">粉底液</a></li>
+                                <li><a class="text-decoration-none" href="#">粉餅</a></li>
+                                <li><a class="text-decoration-none" href="#">氣墊粉餅</a></li>
+                                <li><a class="text-decoration-none" href="#">蜜粉 / 蜜粉餅</a></li>
+                                <li><a class="text-decoration-none" href="#">定妝噴霧</a></li>
+                            </ul>
+                </li>
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h5 text-decoration-none fz-color3" href="#">
+                     彩妝工具
+                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                    </a>
+                    <ul id="collapseFive" class="collapse list-unstyled ps-3">
+                                <li><a class="text-decoration-none" href="#">刷具</a></li>
+                                <li><a class="text-decoration-none" href="#">美妝蛋</a></li>
+                                <li><a class="text-decoration-none" href="#">睫毛夾</a></li>
+                                <li><a class="text-decoration-none" href="#">粉撲</a></li>
+                                <li><a class="text-decoration-none" href="#">海綿</a></li>
+                            </ul>
+                </li>
+                <li class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h5 text-decoration-none fz-color3" href="#">
+                    其他
+                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                    </a>
+                    <ul id="collapseSix" class="collapse list-unstyled ps-3">
+                                <li><a class="text-decoration-none" href="#">其他彩妝相關</a></li>
+                            </ul>
+                </li>
+            </ul>
             <div class="d-grid">
                 <a asp-controller="Collect" asp-action="Create" class="btn btn-lg fw-bold fz-color2 btn-border a">我要許願</a>
             </div>
         </div>
         <div class="col-lg-9">
-            <div class="row pb-3 d-flex justify-content-between align-items-center">
-                <div class="col-auto  ">
+            <div class="row">
+                <div class="d-flex justify-content-end pb-3">
                     <select class="form-select-sm border-0">
                         <option disabled selected>排列方式</option>
                         <option value="1">募集時間：新到舊</option>
                         <option value="2">募集時間：舊到新</option>
                     </select>
-                </div>
-                <div class="col-auto">
-                    @using (Html.BeginForm())
-                    {
-                        <input type="text" name="txtKeyword" placeholder="搜尋文章標題" />
-                        <input type="submit" value="查詢" class="btn" />
-                    }
                 </div>
             </div>
             <div id="cards" class="row">
@@ -70,7 +115,7 @@
                                 </div>
                                 <div class="row">
                                     <a href="#會員資料頁面" class="text-decoration-none text-black-50">
-                                        發布者：@Html.DisplayFor(modelItem => item.Username)
+                                        發布者：@Html.DisplayFor(modelItem => item.Nickname)
                                     </a>
                                 </div>
                             </div>
@@ -83,27 +128,32 @@
             </div>
             <div class="row">
                 <ul class="pagination justify-content-end">
-                    @if (ViewData["CurrentPage"] != null && ViewData["TotalPage"] != null)
-                    {
-                        int currentPage = (int)ViewData["CurrentPage"];
-                        int totalPage = (int)ViewData["TotalPage"];
-
-                        <li class="page-item @(currentPage == 1 ? "disabled":"")">
-                            <a class="page-link" href="@Url.Action("CollectIndex", new{page = currentPage - 1})">上一頁</a>
-                        </li>
-                        @for (int i = 1; i <= totalPage; i++)
-                        {
-                            <li class="page-item @(i == currentPage ? "active":"")">
-                                <a class="page-link" href="@Url.Action("CollectIndex", new{page=i})">@i</a>
-                            </li>
-                        }
-                        <li class="page-item @(currentPage == @totalPage ? "disabled":"")">
-                            <a class="page-link" href="@Url.Action("CollectIndex", new{page = currentPage + 1})">下一頁</a>
-                        </li>
-                    }
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
-
+<script>
+    $(document).ready(function () {
+        $('#cards').DataTable({
+            "paging": false,       // 禁用分頁
+            "info": true,         // 移除顯示頁數的資訊
+            "searching": false,    // 移除搜索框
+            "ordering": true       // 保留排序功能
+        });
+    });
+</script>
