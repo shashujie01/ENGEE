@@ -87,15 +87,18 @@
             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
                 @using (Html.BeginForm("IndexSSJ", "Product", FormMethod.Post, new { @class = "form-inline" }))
                 {
+                    <div>
+                        <a class="text-decoration-none fw-bolder mb-3" href="@Url.Action("CartView", "Shopping")">檢視購物車</a>
+                    </div>
                     <div class="d-flex p-0">
                     <div class="form-group mb-2">
-                        <label for="txtKeyword" class="sr-only">關鍵字</label>
+                        @* <label for="txtKeyword" class="sr-only">關鍵字</label> *@
                         @Html.TextBox("txtKeyword", null, new { @class = "form-control", @placeholder = "輸入關鍵字" })
                     </div>
                     @Html.Hidden("MainCategoryId", Model.MainCategoryId, new { @id = "MainCategoryId" })
                     @Html.Hidden("SubCategoryId", Model.SubCategoryId, new { @id = "SubCategoryId" })
                     @Html.Hidden("BrandId", Model.BrandId, new { @id = "BrandId" })
-                    <button type="submit" class="btn btn-primary mb-2 ms-2">查詢</button>
+                        <button type="submit" class="btn btn-primary mb-2 ms-2 w-90px">查詢</button>
                         </div>
                 }
                 <h1 class="h2 pb-4">Categories</h1>
