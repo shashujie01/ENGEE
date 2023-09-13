@@ -48,7 +48,6 @@ namespace EnGee.Controllers
                 select new Rong_CollectIndexViewModel
                 {
                     CollectId = co.CollectId,
-                    Nickname = m != null ? m.Nickname : "沒有資料",
                     CollectTitle = co.CollectTitle,
                     CollectStartDate = co.CollectStartDate.ToString("yyyy/MM/dd"),
                     CollectEndDate = co.CollectEndDate.ToString("yyyy/MM/dd"),
@@ -72,7 +71,6 @@ namespace EnGee.Controllers
                  select new Rong_CollectInfomationViewModel
                  {
                      CollectId = c.CollectId,
-                     Nickname = m != null ? m.Nickname : "沒有資料",
                      CollectTitle = c.CollectTitle,
                      CollectCaption = c.CollectCaption,
                      CollectStartDate = c.CollectStartDate.ToString("yyyy/MM/dd"),

@@ -3,7 +3,6 @@
     margin-top: 3%;
     margin-bottom: 3%;
     border-radius: 0.5rem;
-    background: #fff;
 }
 
 .profile-img {
@@ -49,6 +48,7 @@
     font-weight: 600;
     color: #6c757d;
     cursor: pointer;
+    margin-bottom:20px
 }
 
 .proile-rating {
@@ -83,7 +83,7 @@
 }
 
     .profile-work p {
-        font-size: 12px;
+        font-size: 25px;
         color: #818182;
         font-weight: 600;
         margin-top: 10%;
@@ -107,4 +107,65 @@
 .profile-tab p {
     font-weight: 600;
     color: #0062cc;
+}
+.avatar-wrapper {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    margin: 50px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 1px 1px 15px -5px black;
+    transition: all .3s ease;
+    &:hover{
+    transform: scale(1.05);
+    cursor: pointer;}
+           &:hover .profile-pic {
+               opacity: .5;}
+
+.profile-pic {
+    height: 100%;
+    width: 100%;
+    transition: all .3s ease;
+    &:after{
+               font-family: FontAwesome;
+               content: "\f007";
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               position:center;
+               font-size: 190px;
+               background: #ecf0f1;
+               color: #34495e;
+               text-align:center;
+
+           }
+
+}
+
+.upload-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    .fa-arrow-circle-up
+
+{
+    position: center;
+    font-size: 200px;
+    top: -17px;
+    left: 0;
+    text-align: center;
+    opacity: 0;
+    transition: all .3s ease;
+    color: #34495e;
+}
+
+&:hover .fa-arrow-circle-up {
+    opacity: .9;
+}
+
+}
 }

@@ -273,7 +273,6 @@ public partial class EngeeContext : DbContext
                 .HasMaxLength(1)
                 .IsFixedLength();
             entity.Property(e => e.Introduction).HasMaxLength(200);
-            entity.Property(e => e.Nickname).HasMaxLength(100);
             entity.Property(e => e.Password).HasMaxLength(25);
             entity.Property(e => e.Phone).HasMaxLength(50);
             entity.Property(e => e.PhotoPath).HasMaxLength(1000);

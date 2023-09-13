@@ -1,4 +1,4 @@
-﻿@model EnGee.Models.TMember
+﻿@model EnGee.Models.CHI_CMemberWrap
 
 @{
     ViewData["Title"] = "個人檔案";
@@ -12,146 +12,103 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
 
-    <div class="container emp-profile">
+    <div class="container emp-profile bg-light">
         <form method="post">
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-img">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
-                        <div class="file btn btn-lg btn-primary">
-                            Change Photo
-                            <input type="file" name="file" />
-                        </div>
-                    </div>
+                        @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                        {
+                            <img src="~/images/UserImage/@Model.PhotoPath" alt="User Photo" />
+                        }
+                        else
+                        {
+                            <img src="~/images/UserImage/profile.png" alt="Default User Photo" />
+                        }
+                        
+                    </div>                   
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="profile-head">
                         <h5>
                             
                         </h5>
                         <h6>
-                            Web Developer and Designer
+                            User Id #@Model.Username
                         </h6>
-                        <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                            編輯資料
+                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                            修改密碼
+                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                            會員身分變更
+                        </button><br />
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">商品</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">買方評價</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">賣方評價</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">我的點數</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">訂單管理</a>
                             </li>
                         </ul>
                     </div>
-                </div>
-                <div class="col-md-2">
-                    <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" />
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-work">
-                        <p>WORK LINK</p>
-                        <a href="">Website Link</a><br />
-                        <a href="">Bootsnipp Profile</a><br />
-                        <a href="">Bootply Profile</a>
-                        <p>SKILLS</p>
-                        <a href="">Web Designer</a><br />
-                        <a href="">Web Developer</a><br />
-                        <a href="">WordPress</a><br />
-                        <a href="">WooCommerce</a><br />
-                        <a href="">PHP, .Net</a><br />
+                        <p class="proile-rating">綜合評價 <span>8/10</span></p>
+                        <p>個人簡介</p>                        
+                        <div>
+                            @Model.Introduction
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content profile-tab" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="tab-pane fade show active col-md-6" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>User Id</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Kshiti123</p>
-                                </div>
+                                第一列商品明細
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Name</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Kshiti Ghelani</p>
-                                </div>
+                                第二列商品明細
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Email</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>kshitighelani@gmail.com</p>
-                                </div>
+                                第三列商品明細
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Phone</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>123 456 7890</p>
-                                </div>
+                                第四列商品明細
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Profession</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Web Developer and Designer</p>
-                                </div>
+                                第五列商品明細
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade col-md-6" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Experience</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Expert</p>
-                                </div>
+                                第一列評價
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Hourly Rate</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>10$/hr</p>
-                                </div>
+                                第二列評價
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Total Projects</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>230</p>
-                                </div>
+                                第三列評價
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>English Level</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>Expert</p>
-                                </div>
+                                第四列評價
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label>Availability</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>6 months</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>Your Bio</label><br />
-                                    <p>Your detail description</p>
-                                </div>
+                                第五列評價
                             </div>
                         </div>
                     </div>
@@ -159,9 +116,98 @@
             </div>
         </form>
     </div>
+    <!-- 會員資料編輯視窗 -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 會員資料編輯表單內容 -->
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="MemberId" />
+                        <div class="avatar-wrapper">
+                            @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                            {
+                                <img src="~/images/UserImage/@Model.PhotoPath" alt="User Photo" class="profile-pic" />
+                            }
+                            else
+                            {
+                                <img src="~/images/UserImage/profile.png" alt="Default User Photo" class="profile-pic" />
+                            }
+                            <div class="upload-button">
+                                <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                            </div>
+                            <input class="file-upload" type="file" accept="image/*" />
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Email">Email</label>
+                            <input asp-for="Email" class="form-control" />
+                            <button type="submit" class="btn btn-primary mt-2" asp-action="verifyingEmail">發送驗證信</button>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Fullname">全名</label>
+                            <input asp-for="Fullname" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Gender">性別</label><br>
+                            <input type="radio" asp-for="Gender" class="" value="0" id="Male">
+                            <label for="Male">男</label>
+                            <input type="radio" asp-for="Gender" class="" value="1" id="Female">
+                            <label for="Female">女</label>
+                            <input type="radio" asp-for="Gender" class="" value="2" id="Unknow">
+                            <label for="Unknow">不透漏</label>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Address">聯繫地址</label>
+                            <input asp-for="Address" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Phone">手機號碼</label>
+                            <input asp-for="Phone" class="form-control" />
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var readURL = function (input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.profile-pic').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(".file-upload").on('change', function () {
+            readURL(this);
+        });
+
+        $(".upload-button").on('click', function () {
+            $(".file-upload").click();
+        });
+    });
+</script>
 
 
 

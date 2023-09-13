@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Images\product\**" />
+    <Compile Remove="wwwroot\Images\UserImages\**" />
+    <Content Remove="wwwroot\Images\product\**" />
+    <Content Remove="wwwroot\Images\UserImages\**" />
+    <EmbeddedResource Remove="wwwroot\Images\product\**" />
+    <EmbeddedResource Remove="wwwroot\Images\UserImages\**" />
+    <None Remove="wwwroot\Images\product\**" />
+    <None Remove="wwwroot\Images\UserImages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="2.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.10" />
@@ -22,8 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Images\UserImages\" />
-    <Folder Include="wwwroot\Images\product\" />
     <Folder Include="wwwroot\Images\News\" />
   </ItemGroup>
 
