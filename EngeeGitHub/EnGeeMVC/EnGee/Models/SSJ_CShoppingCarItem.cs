@@ -5,7 +5,6 @@ namespace EnGee.Models;
 public class SSJ_CShoppingCarItem
 {
     public int ProductId { get; set; }
-
     public int count { get; set; }
     public int point { get; set; }
     public string ProductImagePath { get; set; } = null!;
@@ -36,4 +35,5 @@ public class SSJ_CShoppingCarItem
             return this.count * this.point;
         }
     }
+    public bool IsSelected { get; set; }
 }
