@@ -10,7 +10,7 @@
         @Html.AntiForgeryToken()
 
         <input type="hidden" name="CollectId" value="@Model.CollectId" />
-        <input type="hidden" name="MemberId" value="1" />
+        <input type="hidden" name="MemberId" value="@ViewBag.MemerId" />
         <input type="hidden" name="DonationStatus" value="1" />
 
         <div class="row form-group mb-4">
@@ -27,31 +27,31 @@
         </div>
         <div class="form-group mb-4">
             <label for="" class="h5 fz-color1">捐贈品項</label>
-                <div class="row p-3">
-                    <table class="table table-hover align-middle">
-                        <thead>
-                                <tr>
-                                    <th class="col-5" style="color:#946E6E;">需求品項名稱</th>
-                                    <th class="col-3" style="color:#946E6E;">徵求數量</th>
-                                    <th class="col-4" style="color:#946E6E;">捐贈數量</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="fz-color3">
-                                        <i class="fa-solid fa-hand-holding-heart me-2 icon-style"></i>
-                                        @Html.DisplayFor(model => model.CollectItemName)
-                                    </td>
-                                    <td class="fz-color3">
-                                        @Html.DisplayFor(model => model.CollectAmount)
-                                    </td>
-                                    <td class="fz-color3">
+            <div class="row p-3">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th class="col-5" style="color:#946E6E;">需求品項名稱</th>
+                            <th class="col-3" style="color:#946E6E;">徵求數量</th>
+                            <th class="col-4" style="color:#946E6E;">捐贈數量</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fz-color3">
+                                <i class="fa-solid fa-hand-holding-heart me-2 icon-style"></i>
+                                @Html.DisplayFor(model => model.CollectItemName)
+                            </td>
+                            <td class="fz-color3">
+                                @Html.DisplayFor(model => model.CollectAmount)
+                            </td>
+                            <td class="fz-color3">
                                 <input type="number" name="DonationAmount" id="DonationAmount" class="form-control fz-color1" min="1" max="@Html.DisplayFor(model => model.CollectAmount)" placeholder="選擇數量" required>
-                                    </td>
-                                </tr>
-                            </tbody>
-                    </table>
-                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="form-group mb-4">
             <div class="row">
@@ -61,7 +61,7 @@
                 @if (Model.DeliveryTypeId == 1)
                 {
                     <div class="m-1">
-                        <input name="DeliveryTypeId" type="radio" class="me-1" value="1" required />
+                        <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="1" required />
                         @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model => model.DeliveryFee)點
                     </div>
                     <div class="ms-4">
@@ -71,7 +71,7 @@
                 else if (Model.DeliveryTypeId == 2)
                 {
                     <div class="m-1">
-                        <input name="DeliveryTypeId" type="radio" class="me-1" value="2" required />
+                        <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="2" required />
                         @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model => model.DeliveryFee)點
                     </div>
                     <div class="ms-4">
@@ -82,8 +82,8 @@
                 {
                     <div class="col-6">
                         <div class="m-1">
-                            <input name="DeliveryTypeId" type="radio" class="me-1" value="1" required />
-                            @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model => model.DeliveryFee)點
+                            <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="1" required />
+                            宅配 150 點
                         </div>
                         <div name="DeliveryType" class="ms-4">
                             寄件地址：@Html.DisplayFor(model => model.DeliveryAddress)
@@ -91,34 +91,42 @@
                     </div>
                     <div class="col-6">
                         <div class="m-1">
-                            <input name="DeliveryTypeId" type="radio" class="me-1" value="2" required />
-                            @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model => model.DeliveryFee)點
+                            <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="2" required />
+                            超商 60 點
                         </div>
                         <div class="ms-4">
                             7-11超商店號：@Html.DisplayFor(model => model.ConvenienNum)
                         </div>
                     </div>
-                    
+
                 }
             </div>
         </div>
         <div class="form-group mb-4 m-auto d-flex justify-content-end">
-            <button type="submit" form="donationform" id="submitform"class="btn btn-border a px-3 me-2 fw-bold fz-color2">送出</button>
+            <button type="submit" form="donationform" id="submitform" class="btn btn-border a px-3 me-2 fw-bold fz-color2">送出</button>
             @Html.ActionLink("取消", "CollectIndex", "Collect",new { id=Model.CollectId },new {@class="fz-color2 btn btn-border a px-3 me-2 fw-bold"})
 
         </div>
     </form>
 
+    @* 0912新增會員點數不足的情況 *@
     <script>
         document.getElementById("submitform").addEventListener("click", function () {
             var form = document.getElementById("donationform");
             if (form.checkValidity()) {
-                alert("捐贈表單填寫成功！");
-                form.submit();
-            } else {
-                alert("請再仔細檢查所有欄位！");
-            }
-    </script>
-    
-</div>
+                var memberPoint = parseFloat("@ViewBag.MemberPoint");
+                var deliveryFee = parseFloat(document.getElementById("DeliveryFee").value);
 
+                if (memberPoint >= deliveryFee) {
+                    alert("捐贈表單填寫成功！");
+                    form.submit();
+                } else {
+                    alert("點數不足，請先儲值後再捐贈！");
+                }
+            } else {
+                alert("請確實填寫所有欄位！");
+            }
+        });
+    </script>
+
+</div>

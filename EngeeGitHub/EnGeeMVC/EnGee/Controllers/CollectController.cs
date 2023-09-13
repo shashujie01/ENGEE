@@ -1,8 +1,15 @@
 ﻿using EnGee.Models;
 using EnGee.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using prjMvcCoreDemo.Models;
 using System.Diagnostics;
 using System.Drawing.Printing;
+using System.Security.Cryptography;
+using System.Text.Json;
+
 
 
 namespace EnGee.Controllers
@@ -48,14 +55,14 @@ namespace EnGee.Controllers
         }
 
         // 許願池首頁
-        public IActionResult CollectIndex(Rong_keywordViewModel k, int mainId, int subId, int page = 1)
+        public IActionResult CollectIndex(Rong_keywordViewModel k, int mainId, int subId, int page = 1, int sortBy = 1)
         {
             int pageSize = 12;
             int stillCollect = db.TCollects.Count(c => c.CollectStatus == true);
             int totalPage = (int)Math.Ceiling((double)stillCollect / pageSize);
 
             IEnumerable<Rong_CollectIndexViewModel> collectindex =
-                (from co in db.TCollects
+                from co in db.TCollects
                  join m in db.TMembers on co.MemberId equals m.MemberId
                  where co.CollectStatus == true
                  select new Rong_CollectIndexViewModel
@@ -69,33 +76,68 @@ namespace EnGee.Controllers
                      MainCategoryId = co.MainCategoryId,
                      SubcategoryId = co.SubcategoryId,
                      CollectStatus = co.CollectStatus,
-                 })
-                .Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                 };
 
+            // 日期排序
+            List<Rong_CollectIndexViewModel> orderedCollectIndex = collectindex.ToList();
+            if (sortBy == 2)
+            {
+                orderedCollectIndex = orderedCollectIndex.OrderBy(co => co.CollectStartDate).ToList();
+            }
+            else
+            {
+                orderedCollectIndex = orderedCollectIndex.OrderByDescending(co => co.CollectStartDate).ToList();
+            }
+
+            // 化妝品分類
             if (mainId != 0 || subId != 0)
             {
-                collectindex = collectindex.Where(co => co.MainCategoryId == mainId || co.SubcategoryId == subId)
-                    .Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                orderedCollectIndex = orderedCollectIndex.Where(co => co.MainCategoryId == mainId && co.SubcategoryId == subId).ToList();
             }
+
+            // 搜尋功能
             if (!string.IsNullOrEmpty(k.txtKeyword))
             {
-                collectindex = collectindex.Where(i => i.CollectTitle.Contains(k.txtKeyword))
-                    .Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                orderedCollectIndex = orderedCollectIndex.Where(i => i.CollectTitle.Contains(k.txtKeyword)).ToList();
             }
+
+            // 分頁
             ViewData["CurrentPage"] = page;
             ViewData["TotalPage"] = totalPage;
 
+            // 化妝品分類
             var mainca = db.TCosmeticMainCategories.ToList();
             var subca = db.TCosmeticSubcategories.ToList();
             ViewBag.MainCategory = mainca;
             ViewBag.Subcategory = subca;
 
-            return View(collectindex);
+            // 登入判斷
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
+            {
+                ViewBag.ShowWishButton = false;
+            }
+            else
+            {
+                string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+                TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+                if (loggedInUser.Access == 3)
+                {
+                    ViewBag.ShowWishButton = true;
+                }
+                else
+                    ViewBag.ShowWishButton = false;
+            }
 
+            collectindex = orderedCollectIndex
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return View(collectindex);
         }
 
         // 許願詳細頁面
-        public IActionResult CollectInfomation(int? id)
+        public IActionResult CollectInformation(int? id)
         {
             if (id == null)
                 return RedirectToAction("CollectIndex");
@@ -105,9 +147,10 @@ namespace EnGee.Controllers
                  join m in db.TMembers on c.MemberId equals m.MemberId into memberJoin
                  from m in memberJoin.DefaultIfEmpty()
                  where c.CollectId == id
-                 select new Rong_CollectInfomationViewModel
+                 select new Rong_CollectInformationViewModel
                  {
                      CollectId = c.CollectId,
+                     MemberId = c.MemberId,
                      Username = m.Username,
                      CollectTitle = c.CollectTitle,
                      CollectCaption = c.CollectCaption,
@@ -115,6 +158,7 @@ namespace EnGee.Controllers
                      CollectEndDate = c.CollectEndDate.ToString("yyyy/MM/dd"),
                      DeliveryTypeId = c.DeliveryTypeId,
                      DeliveryType = d.DeliveryType,
+                     DeliveryFee = (int)d.DeliveryFee,
                      DeliveryAddress = c.DeliveryAddress != null ? c.DeliveryAddress : "",
                      ConvenienNum = c.ConvenienNum != null ? c.ConvenienNum : "",
                      CollectImagePath = c.CollectImagePath,
@@ -123,11 +167,33 @@ namespace EnGee.Controllers
                  })
                 .FirstOrDefault();
 
+            // 登入判斷
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
+            {
+                ViewBag.ShowEditAndDeleteButton = false;
+                ViewBag.ShowAlert = true;
+                ViewBag.ShowDonateBtn = true;
+            }
+            else
+            {
+                string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+                TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+                if (loggedInUser.MemberId == cinfo.MemberId)
+                {
+                    ViewBag.ShowEditAndDeleteButton = true;
+                    ViewBag.ShowDonateBtn = false;
+                }
+                else
+                {
+                    ViewBag.ShowEditAndDeleteButton = false;
+                    ViewBag.ShowDonateBtn = true;
+                }
+            }
+
             return View(cinfo);
         }
 
         // 我要許願
-
         public IActionResult Create()
         {
             var mainca = db.TCosmeticMainCategories.ToList();
@@ -149,9 +215,17 @@ namespace EnGee.Controllers
                 ci.CollectImagePath = photoName;
             }
 
+            // 登入判斷
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+            if (loggedInUser.MemberId != null)
+            {
+                ViewBag.MemberId = loggedInUser.MemberId;
+            }
+
             TCollect c = new TCollect()
             {
-                MemberId = ci.MemberId,
+                MemberId = ViewBag.MemberId,
                 CollectTitle = ci.CollectTitle,
                 CollectCaption = ci.CollectCaption,
                 CollectStartDate = ci.CollectStartDate,
@@ -168,11 +242,10 @@ namespace EnGee.Controllers
             };
             db.TCollects.Add(c);
             db.SaveChanges();
-            return RedirectToAction("CollectInfomation");
+            return RedirectToAction("CollectInformation");
         }
 
         // 管理_許願刪除
-
         public IActionResult DeleteCollectManagement(int? id)
         {
             if (id == null)
@@ -200,6 +273,7 @@ namespace EnGee.Controllers
             }
             return RedirectToAction("CollectIndex");
         }
+
         // 許願修改
         public IActionResult EditCollect(int? id)
         {
@@ -251,7 +325,7 @@ namespace EnGee.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("CollectInfomation");
+            return RedirectToAction("CollectInformation");
         }
 
         // 捐贈表單
@@ -262,8 +336,6 @@ namespace EnGee.Controllers
             var doninfo =
                 (from c in db.TCollects
                  join d in db.TDeliveryTypes on c.DeliveryTypeId equals d.DeliveryTypeId
-                 join m in db.TMembers on c.MemberId equals m.MemberId into memberJoin
-                 from m in memberJoin.DefaultIfEmpty()
                  where c.CollectId == id
                  select new Rong_DonateViewModel
                  {
@@ -283,26 +355,47 @@ namespace EnGee.Controllers
         public IActionResult Donate(Rong_DonateViewModel d)
         {
             var collect = db.TCollects.FirstOrDefault(c => c.CollectId == d.CollectId);
+
+            // 登入判斷
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+            if (loggedInUser.MemberId != null)
+            {
+                ViewBag.MemberId = loggedInUser.MemberId;
+                ViewBag.MemberPoint = loggedInUser.Point;
+            }
+
+            // 扣除點數
             if (collect != null)
             {
-
-                int newCollectAmount = collect.CollectAmount - d.DonationAmount;
-                collect.CollectAmount = newCollectAmount;
-
-                TDonationOrder don = new TDonationOrder()
+                var selectedDeliveryType = db.TDeliveryTypes.FirstOrDefault(dt => dt.DeliveryTypeId == d.DeliveryTypeId);
+                if (selectedDeliveryType != null)
                 {
-                    MemberId = d.MemberId,
-                    CollectId = d.CollectId,
-                    OrderDate = DateTime.Now,
-                    DeliveryTypeId = d.DeliveryTypeId,
-                    DonarName = d.DonarName,
-                    DonarPhone = d.DonarPhone,
-                    DonationStatus = d.DonationStatus,
-                    DonationAmount = d.DonationAmount
-                };
+                    int deliveryFee = (int)selectedDeliveryType.DeliveryFee;
+                    if (loggedInUser.Point >= deliveryFee)
+                    {
+                        loggedInUser.Point -= deliveryFee;
+                        db.TMembers.Update(loggedInUser);
 
-                db.TDonationOrders.Add(don);
-                db.SaveChanges();
+                        int newCollectAmount = collect.CollectAmount - d.DonationAmount;
+                        collect.CollectAmount = newCollectAmount;
+                        TDonationOrder don = new TDonationOrder()
+                        {
+                            MemberId = ViewBag.MemberId,
+                            CollectId = d.CollectId,
+                            OrderDate = DateTime.Now,
+                            DeliveryTypeId = d.DeliveryTypeId,
+                            DonarName = d.DonarName,
+                            DonarPhone = d.DonarPhone,
+                            DonationStatus = d.DonationStatus,
+                            DonationAmount = d.DonationAmount
+                        };
+                        db.TDonationOrders.Add(don);
+                        db.SaveChanges();
+
+                        return RedirectToAction("CollectIndex");
+                    }
+                }
             }
             return RedirectToAction("CollectIndex");
         }
@@ -368,6 +461,7 @@ namespace EnGee.Controllers
 
             return RedirectToAction("DonationManagement");
         }
+
         // 捐贈刪除
         public IActionResult DeleteDonationManagement(int? id)
         {
