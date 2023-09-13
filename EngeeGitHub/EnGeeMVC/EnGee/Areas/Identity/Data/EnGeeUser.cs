@@ -21,7 +21,6 @@ public class EnGeeUser : IdentityUser
 
     public string Nickname { get; set; } = null!;
 
-    public string Gender { get; set; } = null!;
 
     public string Address { get; set; } = null!;
 
