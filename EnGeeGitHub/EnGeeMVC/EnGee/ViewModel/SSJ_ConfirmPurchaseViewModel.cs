@@ -1,7 +1,10 @@
-﻿namespace EnGee.ViewModel
+﻿using EnGee.Models;
+
+namespace EnGee.ViewModel
 {
     public class SSJ_ConfirmPurchaseViewModel
     {
+        public List<SSJ_CShoppingCarItem> Items { get; }
         public string Fullname { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }

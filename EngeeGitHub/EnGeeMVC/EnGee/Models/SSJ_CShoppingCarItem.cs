@@ -28,7 +28,7 @@ public class SSJ_CShoppingCarItem
         }
     }
     public TProduct tproduct { get; set; }
-    public decimal 小計
+    public int 小計
     {
         get
         {
