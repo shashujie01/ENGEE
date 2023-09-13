@@ -9,7 +9,7 @@
 }
 
 <div class="container-md my-5">
-    
+
     <div class="row">
         <div class="col-lg-3">
             <h3 class="pb-4">彩妝品分類</h3>
@@ -17,30 +17,33 @@
                 @foreach (var main in mainCategoryList)
                 {
                     <li class="pb-3">
-                        <a name="MainCategoryId" class="collapsed d-flex justify-content-between h5 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse@(main.MainCategoryId)" href="@Url.Action("CollectIndex",new{mainId = main.MainCategoryId, subId = 0})">
+                        <a id="selectMain" name="MainCategoryId" class="collapsed d-flex justify-content-between h5 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse@(main.MainCategoryId)" href="@Url.Action("CollectIndex",new{mainId = main.MainCategoryId, subId = 0})">
                             @main.MainCategory
                             <i class="fa-solid fa-chevron-down down-arrow"></i>
                         </a>
                         <ul id="collapse@(main.MainCategoryId)" class="collapse list-unstyled ps-3 ">
                             @foreach (var sub in subcategoryList.Where(s => s.MainCategoryId == main.MainCategoryId))
                             {
-                                <li><a name="SubcategoryId" class="text-decoration-none a2" href="@Url.Action("CollectIndex", new{mainId = 0, subId = sub.SubcategoryId})">@sub.Subcategory</a></li>
+                                <li><a id="selectSub" name="SubcategoryId" class="text-decoration-none sub-link" href="@Url.Action("CollectIndex", new{mainId = sub.MainCategoryId, subId = sub.SubcategoryId})">@sub.Subcategory</a></li>
                             }
                         </ul>
                     </li>
-                } 
-            </ul> 
+                }
+            </ul>
             <div class="d-grid">
-                <a asp-controller="Collect" asp-action="Create" class="btn btn-lg fw-bold fz-color2 btn-border a">我要許願</a>
+                @if (ViewBag.ShowWishButton)
+                {
+                    <a asp-controller="Collect" asp-action="Create" class="btn btn-lg fw-bold fz-color2 btn-border a">我要許願</a>
+                }
             </div>
         </div>
         <div class="col-lg-9">
             <div class="row pb-3 d-flex justify-content-between align-items-center">
                 <div class="col-auto  ">
-                    <select class="form-select-sm border-0">
+                    <select id="orderByStartDate" class="form-select-sm border-0">
                         <option disabled selected>排列方式</option>
-                        <option value="1">募集時間：新到舊</option>
-                        <option value="2">募集時間：舊到新</option>
+                        <option value="1">募集時間：舊到新</option>
+                        <option value="2">募集時間：新到舊</option>
                     </select>
                 </div>
                 <div class="col-auto">
@@ -52,32 +55,41 @@
                 </div>
             </div>
             <div id="cards" class="row">
-                @foreach (var item in Model)
+                @if (Model.Any())
                 {
-                    <div class="col-md-4 d-flex align-items-stretch">
-                        <div class="card mb-4" style="width: 18rem; height:22rem;">
-                            <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                <a href="@Url.Action("CollectInfomation", new { id = item.CollectId })">
-                                    <img name="CollectImagePath" class="card-img-top rounded-0" src="~/images/donation/@Html.DisplayFor(modelItem => item.CollectImagePath)" style="width: 100%; height: 100%; object-fit: contain;">
-                                </a>
-                            </div>
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4 d-flex align-items-stretch">
+                            <div class="card mb-4" style="width: 18rem; height:22rem;">
+                                <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <a href="@Url.Action("CollectInformation", new { id = item.CollectId })">
+                                        <img name="CollectImagePath" class="card-img-top rounded-0" src="~/images/donation/@Html.DisplayFor(modelItem => item.CollectImagePath)" style="width: 100%; height: 100%; object-fit: contain;">
+                                    </a>
+                                </div>
 
-                            <div class="card-body">
-                                <div class="row">
-                                    <a href="@Url.Action("CollectInfomation", new { id = item.CollectId })" class="h5 card-title text-decoration-none fw-bold p-caption" style="color: #ae6565;">
-                                        @Html.DisplayFor(modelItem => item.CollectTitle)
-                                    </a>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <a href="@Url.Action("CollectInformation", new { id = item.CollectId })" class="h5 card-title text-decoration-none fw-bold p-caption" style="color: #ae6565;">
+                                            @Html.DisplayFor(modelItem => item.CollectTitle)
+                                        </a>
+                                    </div>
+                                    <div class="row">
+                                        <a href="#會員資料頁面" class="text-decoration-none text-black-50">
+                                            發布者：@Html.DisplayFor(modelItem => item.Username)
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <a href="#會員資料頁面" class="text-decoration-none text-black-50">
-                                        發布者：@Html.DisplayFor(modelItem => item.Username)
-                                    </a>
+                                <div class="card-footer border-top-0">
+                                    <small class="fz-color1">募集日：@Html.DisplayFor(modelItem => item.CollectStartDate)－@Html.DisplayFor(modelItem => item.CollectEndDate) </small>
                                 </div>
-                            </div>
-                            <div class="card-footer border-top-0">
-                                <small class="fz-color1">募集日：@Html.DisplayFor(modelItem => item.CollectStartDate)－@Html.DisplayFor(modelItem => item.CollectEndDate) </small>
                             </div>
                         </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-md-12 text-center my-5">
+                        <p>此分類無商品可顯示</p>
                     </div>
                 }
             </div>
@@ -106,4 +118,12 @@
         </div>
     </div>
 </div>
+
+@* 可以用的版本但不能選取分類後照時間分類 *@
+<script>
+    document.getElementById("orderByStartDate").addEventListener("change", function () {
+        var orderBySelect = this.value;
+        window.location.href = "@Url.Action("CollectIndex")" + "?page=1&sortBy=" + orderBySelect /* + "&mainId=" + mainId + "&subId=" + subId */;
+    })
+</script>
 

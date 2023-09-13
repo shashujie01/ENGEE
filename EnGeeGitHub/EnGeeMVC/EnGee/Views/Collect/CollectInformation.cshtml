@@ -1,7 +1,7 @@
-﻿@model EnGee.ViewModels.Rong_CollectInfomationViewModel
+﻿@model EnGee.ViewModels.Rong_CollectInformationViewModel
 
 @{
-    ViewBag.HeaderTitle = "許願";
+    ViewBag.HeaderTitle = "許願內容";
 }
 
 <div class="container pb-5">
@@ -20,7 +20,7 @@
                     @if (Model.DeliveryTypeId == 1)
                     {
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
-                            @Html.DisplayFor(model => model.DeliveryType)（150點）
+                            @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model=>model.DeliveryFee) 點
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
                             寄件地址：@Html.DisplayFor(model => model.DeliveryAddress)
@@ -29,7 +29,7 @@
                     else if (Model.DeliveryTypeId == 2)
                     {
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
-                            @Html.DisplayFor(model => model.DeliveryType)（60點）
+                            @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model=>model.DeliveryFee) 點
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
                             7-11超商店號：@Html.DisplayFor(model => model.ConvenienNum)
@@ -38,13 +38,13 @@
                     else if (Model.DeliveryTypeId == 3)
                     {
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
-                            宅配（150點）
+                            宅配 150 點
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
                             寄件地址：@Html.DisplayFor(model => model.DeliveryAddress)
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
-                            超商（60點）
+                            超商 60 點
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
                             7-11超商店號：@Html.DisplayFor(model => model.ConvenienNum)
@@ -59,9 +59,6 @@
                 <div class="col-auto">
                     <h3 class="my-2 fw-bold fz-color1">@Html.DisplayFor(model => model.CollectTitle)</h3>
                 </div>
-                @* <div class="col-auto text-muted" name="CollectId" id="CollectId">
-                No. @Html.DisplayFor(model=> model.CollectId)
-                </div> *@
             </div>
             <div class="row d-flex justify-content-end">
                 <a href="#使用者頁面" class="text-decoration-none fz-color2">
@@ -108,19 +105,37 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row mt-5">
-                <div class="d-flex justify-content-end">
-                    <a href="@Url.Action("Donate", new { id = Model.CollectId })" class="btn-border btn btn-lg fw-bold fz-color2 a">我要捐贈</a>
+            @if (ViewBag.ShowDonateBtn)
+            {
+                <div class="row mt-5">
+                    <div class="d-flex justify-content-end">
+                        <a href="@Url.Action("Donate", new { id = Model.CollectId })" id="donateBtn" class="btn-border btn btn-lg fw-bold fz-color2 a" data-show-alert="@ViewBag.ShowAlert">我要捐贈</a>
+                    </div>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div class="d-flex justify-content-end">
-                    <a asp-controller="Collect" asp-action="EditCollect" asp-route-id="@Model.CollectId" id="editCollect" class="me-3 btn-border btn btn-lg fw-bold fz-color2 a">修改</a>
-                    <a asp-controller="Collect" asp-action="DeleteCollectMember" asp-route-id="@Model.CollectId" id="deleteCollect" class="btn-border btn btn-lg fw-bold fz-color2 a" onclick="return confirm('確定要刪除嗎?')">刪除</a>
-                </div>
-            </div>
+            }
 
+            @if (ViewBag.ShowEditAndDeleteButton)
+            {
+                <div class="row mt-2">
+                    <div class="d-flex justify-content-end">
+                        <a asp-controller="Collect" asp-action="EditCollect" asp-route-id="@Model.CollectId" id="editCollect" class="me-3 btn-border btn btn-lg fw-bold fz-color2 a">修改</a>
+                        <a asp-controller="Collect" asp-action="DeleteCollectMember" asp-route-id="@Model.CollectId" id="deleteCollect" class="btn-border btn btn-lg fw-bold fz-color2 a" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+                    </div>
+                </div>
+            }
         </div>
-
     </div>
+
+    <script>
+        document.getElementById("donateBtn").addEventListener("click", function (e) {
+            var showAlert = this.getAttribute("data-show-alert") === "True"
+            if (showAlert) {
+                alert("請先登入或註冊會員！");
+                e.preventDefault();
+                window.location.href = "/Home/LoginLayout";
+            }
+        });
+    </script>
 </div>
+
+

@@ -55,57 +55,57 @@
                 @{
                     foreach (var item in Model)
                     {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.DonationOrderId)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.MemberId)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CollectId)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OrderDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.DeliveryType)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.DonarName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.DonarPhone)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CollectItemName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.DonationAmount)
-                                    </td>
-                                        @if (@item.DonationStatus == "1")
-                                        {
-                                            <td>待出貨</td>       
-                                        }
-                                        else if (@item.DonationStatus == "2")
-                                        {
-                                            <td>待收貨</td>
-                                        }
-                                        else if (@item.DonationStatus == "3")
-                                        {
-                                            <td>訂單已完成</td>
-                                        }
-                                        else if (@item.DonationStatus == "4")
-                                        {
-                                            <td>不成立</td>
-                                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DonationOrderId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MemberId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CollectId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DeliveryType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DonarName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DonarPhone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CollectItemName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DonationAmount)
+                            </td>
+                            @if (@item.DonationStatus == "1")
+                            {
+                                <td>待出貨</td>
+                            }
+                            else if (@item.DonationStatus == "2")
+                            {
+                                <td>待收貨</td>
+                            }
+                            else if (@item.DonationStatus == "3")
+                            {
+                                <td>訂單已完成</td>
+                            }
+                            else if (@item.DonationStatus == "4")
+                            {
+                                <td>不成立</td>
+                            }
 
-                                    
-                                    <td>
+
+                            <td>
                                 @Html.ActionLink("修改", "EditDonation" ,"Collect", new { id=item.DonationOrderId },new{@class="btn nav-link"})
-                                        @Html.ActionLink("刪除", "DeleteCollectManagement", "Collect",new { id=item.DonationOrderId },new {@class="nav-link", onclick="return confirm('確定要刪除嗎?')"})
-                                    </td>
-                                </tr>
+                                @Html.ActionLink("刪除", "DeleteCollectManagement", "Collect",new { id=item.DonationOrderId },new {@class="nav-link", onclick="return confirm('確定要刪除嗎?')"})
+                            </td>
+                        </tr>
                     }
                 }
             </tbody>
@@ -129,7 +129,7 @@
                         "orderable": false,
                         "targets": [-2, -1],
                     },
-                
+
                 ],
             });
         });
