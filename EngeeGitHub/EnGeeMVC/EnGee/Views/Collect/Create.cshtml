@@ -10,7 +10,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @Html.AntiForgeryToken()
         <input type="hidden" name="CollectStatus" value="true" />
-        <input type="hidden" name="MemberId" value="27" />
+        <input type="hidden" name="MemberId" value="@ViewBag.MemberId" />
 
         <div class="form-group mb-4">
             <label for="CollectTitle" class="form-label h5 fz-color1">許願標題</label>
@@ -18,22 +18,20 @@
         </div>
         <div class="form-group mb-4">
             <label for="CollectCaption" class="form-label h5 fz-color1">募集需求描述</label>
-            <textarea id="CollectCaption" name="CollectCaption" class="form-control mt-1 fz-color1 scroll" placeholder="需求描述"  required></textarea>
+            <textarea id="CollectCaption" name="CollectCaption" class="form-control mt-1 fz-color1 scroll" placeholder="需求描述" required></textarea>
         </div>
         <div class="form-group mb-4">
             <label for="CollectEndDate" class="form-label h5 fz-color1">募集時間：即日起至</label>
             <input type="date" id="CollectStartDate" name="CollectStartDate" hidden>
             <input type="date" id="CollectEndDate" name="CollectEndDate" class="form-control" onkeydown="return false" required>
         </div>
-        
+
         <div class="form-group mb-4">
             <label for="photo" class="form-label h5 fz-color1">圖片上傳</label>
-            <input type="file" name="photo" id="CollectImagePath" data-target="file-uploader" accept=".jpg,.jpeg,.png" class="form-control fz-color1" required>
-            <div class="w-25 mt-3">
-                <img id="photo" name="photo" style="width: 100%; height: 100%; object-fit: contain;" />
-            </div>
+            <input type="file" name="photo" id="CollectImagePath" data-target="file-uploader" accept=".jpg,.jpeg,.png" class="form-control" required>
+            <img id="photo" name="photo" class="pt-3" style="width:250px; height:300px; object-fit: contain;" />
         </div>
-        
+
         <div class="form-group mb-4">
             <label for="" class="h5 fz-color1">需求品項</label>
             <ul class="list-group">
@@ -43,7 +41,7 @@
                             <i class="fa-solid fa-hand-holding-heart me-2"></i>
                             <input type="text" id="CollectItemName" name="CollectItemName" class="form-control" placeholder="品項名稱" required>
                         </div>
-                        <div class="col-md-4 d-flex justify-content-end align-items-center">
+                        <div class="col-md-6 d-flex justify-content-end align-items-center">
                             <select id="MainCategoryId" name="MainCategoryId" class="form-select fz-color1" onchange="updateSubcategory()" required>
                                 <option disabled selected>主分類</option>
                                 @foreach (var main in ViewBag.MainCategory)
@@ -59,8 +57,8 @@
                                 }
                             </select>
                         </div>
-                        <div class="col-md-4 d-flex justify-content-end align-items-center ">
-                            <input type="number" name="CollectAmount" class="form-control fz-color1" min="1" placeholder="選擇徵求數量" required>
+                        <div class="col-md-2 d-flex justify-content-end align-items-center ">
+                            <input type="number" name="CollectAmount" class="form-control fz-color1" min="1" placeholder="數量" required>
                         </div>
                     </div>
                 </li>
@@ -84,11 +82,11 @@
                     <input type="text" id="DeliveryAddress" name="DeliveryAddress" class="form-control fz-color1" placeholder="輸入宅配地址" />
                 </div>
             </div>
-        </div>   
+        </div>
         <div class="form-group mb-4 m-auto d-flex justify-content-end">
             <button type="submit" form="collectform" id="submitForm" class="btn btn-border a px-3 me-2 fw-bold fz-color2">送出</button>
             <button type="button" id="cancelForm" class="btn btn-border a px-3 fw-bold fz-color2">取消</button>
-        </div>  
+        </div>
     </form>
 
     <script>
@@ -106,7 +104,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var inputField = document.getElementById("CollectStartDate");
-            var today = new Date().toISOString()0.split("T")[];
+            var today = new Date().toISOString().split("T")[0];
             inputField.value = today;
         });
     </script>
@@ -118,60 +116,59 @@
             var form = document.getElementById("collectform");
             if (form.checkValidity()) {
                 alert("許願成功!");
-            } else { 
+            } else {
                 alert("請確實填寫所有欄位！");
             }
         });
     </script>
 
-<script>
-    window.onload = function () {
-        var typeSelected = document.getElementById("DeliveryTypeId");
-        var numInput = document.getElementById("ConvenienNum");
-        var addressInput = document.getElementById("DeliveryAddress");
-        numInput.style.display = "none";
-        addressInput.style.display = "none";
+    <script>
+        window.onload = function () {
+            var typeSelected = document.getElementById("DeliveryTypeId");
+            var numInput = document.getElementById("ConvenienNum");
+            var addressInput = document.getElementById("DeliveryAddress");
+            numInput.style.display = "none";
+            addressInput.style.display = "none";
 
-        typeSelected.addEventListener("change", function () {
-            var selectedValue = this.value;
-            if (selectedValue === "1") {
-                numInput.style.display = "none";
-                addressInput.style.display = "block";
-                addressInput.setAttribute("required", "required");
-            } else if (selectedValue === "2") {
-                numInput.style.display = "block";
-                numInput.setAttribute("required", "required");
-                addressInput.style.display = "none";
-            } else if (selectedValue === "3") {
-                numInput.style.display = "block";
-                numInput.setAttribute("required", "required");
-                addressInput.style.display = "block";
-                addressInput.setAttribute("required", "required");
-            } else {
-                numInput.style.display = "none";
-                addressInput.style.display = "none";
-            }
+            typeSelected.addEventListener("change", function () {
+                var selectedValue = this.value;
+                if (selectedValue === "1") {
+                    numInput.style.display = "none";
+                    addressInput.style.display = "block";
+                    addressInput.setAttribute("required", "required");
+                } else if (selectedValue === "2") {
+                    numInput.style.display = "block";
+                    numInput.setAttribute("required", "required");
+                    addressInput.style.display = "none";
+                } else if (selectedValue === "3") {
+                    numInput.style.display = "block";
+                    numInput.setAttribute("required", "required");
+                    addressInput.style.display = "block";
+                    addressInput.setAttribute("required", "required");
+                } else {
+                    numInput.style.display = "none";
+                    addressInput.style.display = "none";
+                }
             });
-     };
-</script>
+        };
+    </script>
 
-<script>
-    function updateSubcategory() {
-        var selectedMainId = document.getElementById("MainCategoryId").value;
-        var subOptions = document.querySelectorAll("#SubcategoryId option");
-        for (var i = 0; i < subOptions.length;i++) {
-            var option = subOptions[i];
-            var dataMainId = option.getAttribute("data-maincategoryid");
-            if (dataMainId === selectedMainId) {
-                option.style.display = "block";
-            } else { 
-                option.style.display = "none";
+    <script>
+        function updateSubcategory() {
+            var selectedMainId = document.getElementById("MainCategoryId").value;
+            var subOptions = document.querySelectorAll("#SubcategoryId option");
+            for (var i = 0; i < subOptions.length; i++) {
+                var option = subOptions[i];
+                var dataMainId = option.getAttribute("data-maincategoryid");
+                if (dataMainId === selectedMainId) {
+                    option.style.display = "block";
+                } else {
+                    option.style.display = "none";
+                }
             }
+            document.getElementById("SubcategoryId").value = "";
         }
-        document.getElementById("SubcategoryId").value = "";
-    }
-
-</script>
+    </script>
 </div>
 
 

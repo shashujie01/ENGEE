@@ -1,14 +1,14 @@
-﻿@model EnGee.ViewModels.Rong_CollectInfomationViewModel
+﻿@model EnGee.ViewModels.Rong_CollectInformationViewModel
 
 @{
-    ViewBag.HeaderTitle = "許願";
+    ViewBag.HeaderTitle = "許願內容";
 }
 
 <div class="container pb-5">
     <div class="row">
         <div class="col-md-5 mt-5">
             <div class="row mb-5" style="height:300px;">
-                <img name="CollectImagePath" class="border-3" src="~/images/donation/@Html.DisplayFor(model =>model.CollectImagePath)" style=" height: 100%; object-fit: contain"; />
+                <img name="CollectImagePath" class="border-3" src="~/images/donation/@Html.DisplayFor(model =>model.CollectImagePath)" style=" height: 100%; object-fit: contain" ; />
             </div>
             <div class="row">
                 <ul class="list-unstyled">
@@ -20,7 +20,7 @@
                     @if (Model.DeliveryTypeId == 1)
                     {
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
-                            @Html.DisplayFor(model => model.DeliveryType)（150點）
+                            @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model=>model.DeliveryFee) 點
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
                             寄件地址：@Html.DisplayFor(model => model.DeliveryAddress)
@@ -29,7 +29,7 @@
                     else if (Model.DeliveryTypeId == 2)
                     {
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
-                            @Html.DisplayFor(model => model.DeliveryType)（60點）
+                            @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model=>model.DeliveryFee) 點
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
                             7-11超商店號：@Html.DisplayFor(model => model.ConvenienNum)
@@ -38,13 +38,13 @@
                     else if (Model.DeliveryTypeId == 3)
                     {
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
-                            宅配（150點）
+                            宅配 150 點
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
                             寄件地址：@Html.DisplayFor(model => model.DeliveryAddress)
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
-                            超商（60點）
+                            超商 60 點
                         </li>
                         <li name="DeliveryType" class="d-flex justify-content-between m-1 fz-color2">
                             7-11超商店號：@Html.DisplayFor(model => model.ConvenienNum)
@@ -52,16 +52,13 @@
                     }
                 </ul>
             </div>
-            
+
         </div>
         <div class="col-md-7 mt-5 ps-5">
             <div class="row d-flex justify-content-between align-items-center">
                 <div class="col-auto">
                     <h3 class="my-2 fw-bold fz-color1">@Html.DisplayFor(model => model.CollectTitle)</h3>
                 </div>
-                @* <div class="col-auto text-muted" name="CollectId" id="CollectId">
-                    No. @Html.DisplayFor(model=> model.CollectId)
-                </div> *@
             </div>
             <div class="row d-flex justify-content-end">
                 <a href="#使用者頁面" class="text-decoration-none fz-color2">
@@ -70,7 +67,7 @@
             </div>
             <div class="row g-1 d-flex align-items-center justify-content-end border-bottom pb-2">
                 <div class="col-auto fz-color2">
-                     募集時間：
+                    募集時間：
                 </div>
                 <div class="col-auto fz-color2">
                     @Html.DisplayFor(model => model.CollectStartDate)
@@ -89,13 +86,13 @@
                         @Html.DisplayFor(model => model.CollectCaption)
                     </p>
                 </div>
-                
+
             </div>
             <div class="row mt-5">
                 <h5 class="fz-color2 fw-bold"><i class="fa-solid fa-seedling me-1 "></i>需求品項</h5>
                 <table class="table table-hover text-center mt-4">
                     <thead>
-                        <tr >
+                        <tr>
                             <th style="color:#946E6E;">需求品項名稱</th>
                             <th style="color:#946E6E;">徵求數量</th>
                         </tr>
@@ -108,89 +105,37 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row mt-5">
-                <div class="d-flex justify-content-end">
-                    <a href="@Url.Action("Donate", new { id = Model.CollectId })" class="btn-border btn btn-lg fw-bold fz-color2 a">我要捐贈</a>
+            @if (ViewBag.ShowDonateBtn)
+            {
+                <div class="row mt-5">
+                    <div class="d-flex justify-content-end">
+                        <a href="@Url.Action("Donate", new { id = Model.CollectId })" id="donateBtn" class="btn-border btn btn-lg fw-bold fz-color2 a" data-show-alert="@ViewBag.ShowAlert">我要捐贈</a>
+                    </div>
                 </div>
-            </div>
-            <div class="row mt-2">
-                <div  class="d-flex justify-content-end">
-                    <a asp-controller="Collect" asp-action="EditCollect" asp-route-id="@Model.CollectId" id="editCollect" class="me-3 btn-border btn btn-lg fw-bold fz-color2 a">修改</a>
-                    <a asp-controller="Collect" asp-action="DeleteCollectMember" asp-route-id="@Model.CollectId"  id="deleteCollect" class="btn-border btn btn-lg fw-bold fz-color2 a" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+            }
+
+            @if (ViewBag.ShowEditAndDeleteButton)
+            {
+                <div class="row mt-2">
+                    <div class="d-flex justify-content-end">
+                        <a asp-controller="Collect" asp-action="EditCollect" asp-route-id="@Model.CollectId" id="editCollect" class="me-3 btn-border btn btn-lg fw-bold fz-color2 a">修改</a>
+                        <a asp-controller="Collect" asp-action="DeleteCollectMember" asp-route-id="@Model.CollectId" id="deleteCollect" class="btn-border btn btn-lg fw-bold fz-color2 a" onclick="return confirm('確定要刪除嗎?')">刪除</a>
+                    </div>
                 </div>
-            </div>
-            
+            }
         </div>
-
     </div>
+
+    <script>
+        document.getElementById("donateBtn").addEventListener("click", function (e) {
+            var showAlert = this.getAttribute("data-show-alert") === "True"
+            if (showAlert) {
+                alert("請先登入或註冊會員！");
+                e.preventDefault();
+                window.location.href = "/Home/LoginLayout";
+            }
+        });
+    </script>
 </div>
 
 
-@* <div>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CollectId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model =>model.CollectId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CollectTitle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CollectTitle)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CollectCaption)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CollectCaption)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CollectStartDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CollectStartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CollectEndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CollectEndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ConvenienNum)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ConvenienNum)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CollectItemName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CollectItemName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CollectAmount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CollectAmount)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-   
-</div> *@

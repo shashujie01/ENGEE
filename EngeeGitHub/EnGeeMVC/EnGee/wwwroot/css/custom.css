@@ -1,4 +1,6 @@
-
+.sub-link {
+    color: #422323;
+}
 .a:hover {
     color: #e54862ca;
     border: 2px dashed #aa8282;
@@ -25,9 +27,7 @@
     height: 25px;
     line-height:25px;
 }
-.bar{
-    background-color: #cd9e9e;
-}
+
 .submit-sytle{
     background-color: #c97a7a;
     color: #eadfdf;
