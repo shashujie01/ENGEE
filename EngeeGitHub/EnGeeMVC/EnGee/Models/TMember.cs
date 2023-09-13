@@ -22,8 +22,7 @@ public partial class TMember
     public string Email { get; set; } = null!;
     [DisplayName("名字全名")]
     public string? Fullname { get; set; }
-    [DisplayName("匿名")]
-    public string? Nickname { get; set; }
+   
     [DisplayName("性別")]
     public string? Gender { get; set; }
     [DisplayName("通訊地址")]
