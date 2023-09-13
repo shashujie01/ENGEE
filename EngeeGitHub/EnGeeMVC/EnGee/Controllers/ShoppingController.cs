@@ -32,13 +32,11 @@ namespace EnGee.Controllers
             {
                 cart = new List<SSJ_CShoppingCarItem>();
             }
-
             else
             {
                 string json = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
                 cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json) ?? new List<SSJ_CShoppingCarItem>();
             }
-
             return View(cart);
         }
 
@@ -99,7 +97,6 @@ namespace EnGee.Controllers
 
             json = JsonSerializer.Serialize(cart);
             HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
-            //return View("ConfirmPurchase", confirmPurchaseVM);
             return RedirectToAction("CartView");
         }
 
@@ -223,9 +220,11 @@ namespace EnGee.Controllers
 
 
         [HttpPost]
-        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm)
-        {
-            //讀取Session
+        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm,string SelectedProducts)
+        {//TODO結帳時如果單選，其他沒選的也會進資料庫，但價格只有選中的
+         //讀取Session
+         // 將字符串反序列化為整數列表
+            List<int> selectedProductIds = JsonSerializer.Deserialize<List<int>>(SelectedProducts);
             int? sessionDeliveryType = HttpContext.Session.GetInt32("DeliveryType");
             if (sessionDeliveryType.HasValue)
             {
@@ -279,27 +278,62 @@ namespace EnGee.Controllers
                 // 對於購物車中的每一項商品，都在TOrderDetail表中新增一個詳細資料行
                 foreach (var item in cart)
                 {
-                    TOrderDetail orderDetail = new TOrderDetail
+                    if (selectedProductIds.Contains(item.ProductId))//chkbox選中的ID是否包含item.ProductId
                     {
-                        OrderId = order.OrderId,
-                        OrderDate = order.OrderDate,
-                        ProductId = item.ProductId,
-                        ProductUnitPoint = item.point,
-                        OrderQuantity = item.count,  //+-按鈕無法變更
-                        BuyerId = order.BuyerId,
-                        SellerId = order.SellerId
-                    };
-                    db.TOrderDetails.Add(orderDetail);
+                        TOrderDetail orderDetail = new TOrderDetail
+                        {
+                            OrderId = order.OrderId,
+                            OrderDate = order.OrderDate,
+                            ProductId = item.ProductId,
+                            ProductUnitPoint = item.point,
+                            OrderQuantity = item.count, 
+                            BuyerId = order.BuyerId,
+                            SellerId = order.SellerId
+                        };
+                        db.TOrderDetails.Add(orderDetail);
+                    }
                 }
                 db.SaveChanges();
-
+                //TODO 無法單獨清除選種CHKBOX的
                 // 購買後從Session中清除購物車
-                HttpContext.Session.Remove(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
-                HttpContext.Session.Remove("DeliveryType");//清除寄送方式Session
+                cart.RemoveAll(item => selectedProductIds.Contains(item.ProductId));
+                json = JsonSerializer.Serialize(cart);
+                HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
+                //HttpContext.Session.Remove(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
+                //HttpContext.Session.Remove("DeliveryType");//清除寄送方式Session
+                //TODO寄送方式是否跟別的一起傳
             }
             return RedirectToAction("CartView");
         }
 
+        [HttpPost]
+        public JsonResult UpdateCartItem(int productId, int newCount)
+        {//讀取購物車的JSON，並利用ID找到要修改的資料(購買數量))
+            List<SSJ_CShoppingCarItem> cart;
+
+            string json = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
+            cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json) ?? new List<SSJ_CShoppingCarItem>();
+
+            // 找到具有相應 productId 的項目
+            var itemToUpdate = cart.FirstOrDefault(item => item.ProductId == productId);
+
+            if (itemToUpdate != null)
+            {
+                // 更新數量
+                itemToUpdate.count = newCount;
+
+                // 序列化回 JSON 並保存到 Session
+                json = JsonSerializer.Serialize(cart);
+                HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
+
+                Console.WriteLine($"Updated count for Product ID {productId} to {newCount}，{ itemToUpdate.count} ");
+                return Json(new { success = true, subtotalPoints = itemToUpdate.小計, itemToUpdate.count, totalPoints = cart.Sum(item => item.小計) });
+            }
+            else
+            {Console.WriteLine($"false");
+                return Json(new { success = false, message = "Product not found" });   
+            }
+        }
     }
 }
 
