@@ -19,7 +19,7 @@ public class SSJ_CShoppingCarItem
             }
             else if (DeliveryTypeID == 2)
             {
-                return "超商 / i郵箱 / myfone門市取貨";
+                return "超商門市取貨";
             }
             else
             {
