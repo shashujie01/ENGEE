@@ -89,11 +89,8 @@
     </div>
 </main>
 <script>
-
-
     $(document).ready(function ()
     {
-
         // 初始化設置
         var initialDelivery = $("input[name='deliveryType']:checked").attr("delytype");
         $(".deliveryOptionInput").val(initialDelivery);
@@ -138,7 +135,6 @@
 
             var formData = form.serialize();
 
-   
             // 使用 AJAX 提交
             $.ajax({
                 type: "POST",
