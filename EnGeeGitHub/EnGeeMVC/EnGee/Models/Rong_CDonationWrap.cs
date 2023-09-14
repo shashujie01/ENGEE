@@ -3,7 +3,6 @@
     public class Rong_CDonationWrap
     {
         private TDonationOrder _don;
-        private TCollect _collect;
         public TDonationOrder don
         {
             get { return _don; }
@@ -34,8 +33,6 @@
             get { return _don.OrderDate; }
             set { _don.OrderDate = value; }
         }
-        
-
         public string DonarName
         {
             get { return _don.DonarName; }
@@ -57,6 +54,5 @@
             get { return _don.DonationStatus; }
             set { _don.DonationStatus = value; }
         }
-
     }
 }

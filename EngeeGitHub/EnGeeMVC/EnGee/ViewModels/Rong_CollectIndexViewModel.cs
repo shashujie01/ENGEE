@@ -16,7 +16,5 @@
 
         public int MainCategoryId { get; set; }
         public int SubcategoryId { get; set; }
-
-
     }
 }

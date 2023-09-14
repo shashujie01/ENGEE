@@ -17,8 +17,8 @@ public partial class TMember
     [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
     public string Password { get; set; } = null!;
     [DisplayName("註冊信箱(驗證)")]
-    [DataType(DataType.EmailAddress, ErrorMessage = ("信箱格式不符合"))]
     [Required(ErrorMessage = ("註冊信箱必填"))]
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "請輸入有效的電子郵件地址")]
     public string Email { get; set; } = null!;
     [DisplayName("名字全名")]
     public string? Fullname { get; set; }

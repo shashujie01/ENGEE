@@ -19,14 +19,10 @@ namespace EnGee.ViewModels
 
         public string ConvenienNum { get; set; }
         public int CollectAmount { get; set; }
-
-
         public string CollectItemName { get; set; }
         public string DonarName { get; set; }
         public string DonarPhone { get; set; }
-
         public int DonationAmount { get; set; }
         public string DonationStatus { get; set; }
-
     }
 }

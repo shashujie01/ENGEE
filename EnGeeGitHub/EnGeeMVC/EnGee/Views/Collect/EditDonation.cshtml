@@ -9,8 +9,8 @@
         <div asp-validation-summary="ModelOnly" class="text-danger "></div>
 
         <input type="hidden" name="DonationOrderId" value="@Model.DonationOrderId" />
-         <input type="hidden" name="Memberid" value="1" />
-         <input type="hidden" name="DonationStatus" value="1" />
+        <input type="hidden" name="Memberid" value="1" />
+        <input type="hidden" name="DonationStatus" value="1" />
 
         <div class="row form-group mb-4">
             <div class="form-group col-md-6 mb-3">
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="form-group mb-4">
-            <div class="row">
+            <div class="row d-flex justify-content-center">
                 <label class="form-label h5 fz-color1">訂單狀態</label>
             </div>
             <div class="row">
@@ -65,7 +65,7 @@
 
     <script>
         document.getElementById("cancelForm").addEventListener("click", function () {
-            window.location.href = '/Collect/CollectInfomation';
+            window.location.href = '/Collect/CollectInformation';
         });
         document.getElementById("submitform").addEventListener("click", function () {
             var form = document.getElementById("donationform");
