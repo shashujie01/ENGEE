@@ -157,19 +157,18 @@
                                                         會員資料
                                                     </div>
                                                     <div class="d-flex align-items-center justify-content-center border-0 fz-size16px m-1">
-                                                        <input class="form-check-input mt-0  " type="checkbox" value="" id="defaultCheck1">
-                                                        <label class="form-check-label" for="defaultCheck1">
+                                            <input class="form-check-input mt-0  " type="checkbox" id="defaultCheck_memberInformation">
+                                            <label class="form-check-label" for="defaultCheck_memberInformation">
                                                             帶入會員資料
                                                         </label>
                                                     </div>
                                                 </div>
                                                 <form method="post" action="@Url.Action("ConfirmPurchase", "Shopping")">
-                                                   
                                                     <input type="hidden" name="SelectedProducts" id="SelectedProducts" />
 
                                                     <div class="input-group mb-2">
                                                         <span class="input-group-text">姓名</span>
-                                                        <input type="text" class="form-control" name="Fullname">
+                                            <input type="text" class="form-control" name="Fullname" >
                                                     </div>
                                                     <div class="input-group mb-2">
                                                         <span class="input-group-text">Email</span>
@@ -212,7 +211,7 @@
                                         <div class="alert alert-warning">您的購物車是空的。</div>
                                                   <div class="d-flex align-items-center justify-content-center">
                                 <a class="hrefstyle hrefstyle1:hover mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
-                                                        </div>
+                                                   </div>
                         }
                     }
                 </div>
@@ -221,11 +220,9 @@
     </div>
 </main>
 <script>
-    // 啟動時，為所有商品checkbox添加事件監聽器
     var formDisplayed = false;
-    
     document.addEventListener("DOMContentLoaded", function ()
-    {
+    {//當有商選中時，隱藏表單顯示，沒選中時相反
         var checkboxes = document.querySelectorAll('.cartcheckout');
 
         checkboxes.forEach(function (checkbox)
@@ -292,7 +289,7 @@
             formDisplayed = false;
         }
     }
-
+    // -------------------------
     $(document).ready(function ()
     {
         updateTotalPrice();
@@ -308,7 +305,6 @@
             {
                 toggleFormVisibility();
             }
-
             // 更新總點數
             updateTotalPrice();
         });
@@ -335,7 +331,30 @@
             $('input[name="SelectedProducts"]').val(JSON.stringify(selectedProducts));
         });
     });
+ // ------------------------------
+    // 當帶入會員資料勾選時自動帶入會員資料'
+    var jsonData = @Html.Raw(Json.Serialize(ViewBag.userFromDatabase ?? new {}));
 
+    document.getElementById('defaultCheck_memberInformation').addEventListener('change', function ()
+    {
+        if (this.checked)
+        {
+            if (jsonData)
+            {
+                document.querySelector("input[name='Fullname']").value = '@Html.Raw(ViewBag.userFromDatabase.Fullname)';
+                document.querySelector("input[name='Email']").value = '@Html.Raw(ViewBag.userFromDatabase.Email)';
+                document.querySelector("input[name='Phone']").value = '@Html.Raw(ViewBag.userFromDatabase.Phone)';
+                document.querySelector("input[name='DeliveryAddress']").value = '@Html.Raw(ViewBag.userFromDatabase.Address)';
+            }
+        } else
+        {
+            document.querySelector("input[name='Fullname']").value = "";
+            document.querySelector("input[name='Email']").value = "";
+            document.querySelector("input[name='Phone']").value = "";
+            document.querySelector("input[name='DeliveryAddress']").value = "";
+        }
+    });
+    // -----------------------------
     $(document).ready(function () {
     // 為每個減少按鈕添加點擊事件
         $('.btnMinus').click(function ()
@@ -343,7 +362,7 @@
             var $label = $(this).next('label');
             var count = parseInt($label.text(), 10);
             var productId = $label.data('product-id');  // 注意這行
-            if (count > 0)
+            if (count > 1)
             {
                 count--;
                 $label.text(count);
@@ -363,11 +382,11 @@
             updateTotalPrice();
         });
 });
-
+// -------------------------
     $(document).ready(function ()
     {
         $(".delete-item").click(function (event)
-        {
+        {//刪除購物出商品
             event.preventDefault(); // 阻止超連結默認
             // 獲取刪除商品ID
             var productId = $(this).data("product-id");
@@ -381,22 +400,16 @@
                     if (response.success)
                     {
                         location.reload();
-                    } else
-                    {
-
-                    }
+                    } 
                 },
                 error: function ()
-                {
-                    console.error('Error:', error);
-                }
+                { console.error('Error:', error);}
             });
         });
     });
-
-
+    // ---------------------
     $(document).ready(function ()
-    {
+        {//chkBox變更商品deliveryType
         $(".delivery-radio").each(function ()
         {
             var productId = $(this).data("product-id");
@@ -409,18 +422,14 @@
                 $(".delivery-label." + productId).text(deliveryType);
             }
         });
-
         $(".delivery-radio").change(function ()
         {
             var productId = $(this).data("product-id");
             var newDeliveryType = $(this).data("delivery-type");
             $(".delivery-label." + productId).text(newDeliveryType);
             var $label = $(`label[data-product-id=${productId}]`);
-            var newCount = parseInt($label.text(), 10);
-            updateCartItem(productId, newCount, newDeliveryType);
         });
     });
-
     //------------function------------------
     // 更新總點數函數
     function updateTotalPrice()

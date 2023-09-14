@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EnGee.ViewModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace EnGee.Models;
 
 public class SSJ_CShoppingCarItem
 {
+    public SSJ_ProductDetailsViewModel ProductDetails { get; set; }
     public int ProductId { get; set; }
     public int count { get; set; }
     public int point { get; set; }
