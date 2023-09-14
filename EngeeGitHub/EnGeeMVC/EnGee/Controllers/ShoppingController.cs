@@ -13,9 +13,7 @@ namespace EnGee.Controllers
         private readonly EngeeContext _db;
 
         public ShoppingController(EngeeContext db)
-        {
-            _db = db;
-        }
+        {_db = db;}
 
         private TMember GetLoggedInUser()
         {
@@ -57,9 +55,7 @@ namespace EnGee.Controllers
         {
             // 使用 GetCartItems 方法獲取購物車項目
             var cart = GetCartItems();
-
             SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == productId);
-
             TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == productId);
             if (p != null)
             {
@@ -80,22 +76,18 @@ namespace EnGee.Controllers
                     };
                     cart.Add(item);
                 }
-
                 // 保存更新後的購物車到 Session
                 string json = JsonSerializer.Serialize(cart);
                 HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
             }
-
             return cart;
         }
 
         public IActionResult CartView()
         {
             TMember loggedInUser = GetLoggedInUser();
-
             TMember userFromDatabase = _db.TMembers.FirstOrDefault(t => t.Email.Equals(loggedInUser.Email));
             ViewBag.userFromDatabase = userFromDatabase;
-
             List<SSJ_CShoppingCarItem> cart = GetCartItems();
             return View(cart);
         }
@@ -109,18 +101,14 @@ namespace EnGee.Controllers
                 HttpContext.Session.SetInt32("DeliveryType", deliverytypeid.Value);//TODO用處?
             }
             if (vm == null)
-            {
-                return RedirectToAction("CartView");
-            }
+            {return RedirectToAction("CartView"); }
 
             TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == vm.txtProductId);
             if (p == null)
             {
                 return RedirectToAction("CartView");
             }
-
             List<SSJ_CShoppingCarItem> cart = GetCartItems();
-
             SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == vm.txtProductId);
             if (existingItem != null)
             {
@@ -138,22 +126,17 @@ namespace EnGee.Controllers
                     DeliveryTypeID = (int)deliverytypeid
                 });
             }
-
             SaveCartItems(cart);
             return RedirectToAction("CartView");
         }
         //------------------------
-        
         [HttpGet]
         public ActionResult QuickAddToCart(int productId)
         {
             int defaultCount = 1;
             int defaultDeliveryOption = 1;
-
             HttpContext.Session.SetInt32("DeliveryType", defaultDeliveryOption);
-
             GetOrUpdateCart(productId, defaultCount, defaultDeliveryOption);
-
             return RedirectToAction("CartView");
         }
 
@@ -164,19 +147,15 @@ namespace EnGee.Controllers
             {
                 return Json(new { success = false, message = "加入購物車失敗" });
             }
-
             GetOrUpdateCart(vm.txtProductId, vm.txtCount, deliveryOption);
-
             return Json(new { success = true, message = "已加入購物車" });
         }
  
         [HttpPost]
         public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm,string SelectedProducts)
-        { // 檢查購物車中是否有商品
-            if (!HttpContext.Session.Keys.Contains(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST))
-            {
-                return RedirectToAction("CartView");
-            }
+        { //確認結帳傳至後端
+            var cart = GetCartItems();
+            if (cart == null || cart.Count == 0) return RedirectToAction("CartView");// 檢查購物車中是否有商品
             int? sessionDeliveryType = HttpContext.Session.GetInt32("DeliveryType");
             if (sessionDeliveryType.HasValue)
             {
@@ -186,7 +165,7 @@ namespace EnGee.Controllers
             List<int> selectedProductIds = JsonSerializer.Deserialize<List<int>>(SelectedProducts);
             // 從Session中獲取購物車商品
             string json = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
-            List<SSJ_CShoppingCarItem> cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json);
+             cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json);
             // 如果購物車為空，則重新導向到購物車視圖
             if (cart == null || cart.Count == 0)
             {
@@ -196,7 +175,6 @@ namespace EnGee.Controllers
             int totalUsagePoints = 0;
             using (EngeeContext db = new EngeeContext())
             {
-
                 TOrder order = new TOrder
                 {
                     OrderDate = DateTime.Now,
@@ -223,7 +201,6 @@ namespace EnGee.Controllers
                         innerException = innerException.InnerException;
                     }
                 }
-
                 // 對於購物車中的每一項商品，都在TOrderDetail表中新增一個詳細資料行
                 foreach (var item in cart)
                 {
@@ -240,7 +217,6 @@ namespace EnGee.Controllers
                             SellerId = order.SellerId
                         };
                         db.TOrderDetails.Add(orderDetail);
-                        
                         totalUsagePoints += item.小計;// 計算小計
                     }
                 }
@@ -260,60 +236,35 @@ namespace EnGee.Controllers
 
         [HttpPost]
         public JsonResult UpdateCartItem(int productId, int newCount)
-        {//讀取購物車的JSON，並利用ID找到要修改的資料(購買數量))
-            List<SSJ_CShoppingCarItem> cart;
-
-            string json = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
-            cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json) ?? new List<SSJ_CShoppingCarItem>();
-
-            // 找到具有相應 productId 的項目
+        {//更新小計、totalPoint用
+            // 從Session中獲取購物車列表
+            var cart = GetCartItems();
+            // 在購物車中尋找與指定ID匹配的商品
             var itemToUpdate = cart.FirstOrDefault(item => item.ProductId == productId);
-
-            if (itemToUpdate != null)
-            {
-                // 更新數量
-                itemToUpdate.count = newCount;
-
-                // 序列化回 JSON 並保存到 Session
-                json = JsonSerializer.Serialize(cart);
-                HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
-
-                Console.WriteLine($"Updated count for Product ID {productId} to {newCount}，{itemToUpdate.count} ");
-                return Json(new { success = true, subtotalPoints = itemToUpdate.小計, itemToUpdate.count, totalPoints = cart.Sum(item => item.小計) });
-            }
-            else
-            {
-                Console.WriteLine($"false");
-                return Json(new { success = false, message = "Product not found" });
-            }
+            // 如果找不到該商品，返回失敗
+            if (itemToUpdate == null) return Json(new { success = false, message = "Product not found" });
+            // 更新商品數量
+            itemToUpdate.count = newCount;
+            // 保存新的購物車列表到Session
+            SaveCartItems(cart);
+            // 返回成功和更新後的資訊
+            return Json(new { success = true, subtotalPoints = itemToUpdate.小計, itemToUpdate.count, totalPoints = cart.Sum(item => item.小計) });
         }
-
         [HttpPost]
         public JsonResult DeleteCartItem(int productId)
         {
-            try
-            {
-                List<SSJ_CShoppingCarItem> cart;
-                string json = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
-                cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json) ?? new List<SSJ_CShoppingCarItem>();
-                // 找到具有相應 productId 的項目
-                var itemToRemove = cart.FirstOrDefault(item => item.ProductId == productId);
-                if (itemToRemove != null)
-                {
-                    cart.Remove(itemToRemove);
-                    json = JsonSerializer.Serialize(cart);
-                    HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
-                    return Json(new { success = true }); 
-                }
-                else
-                {
-                    return Json(new { success = false, message = "未找到商品" }); 
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "無法刪除：" + ex.Message }); 
-            }
+            // 從Session中獲取購物車列表
+            var cart = GetCartItems();
+            // 在購物車中尋找與指定ID匹配的商品
+            var itemToRemove = cart.FirstOrDefault(item => item.ProductId == productId);
+            // 如果找不到該商品，返回失敗
+            if (itemToRemove == null) return Json(new { success = false, message = "未找到商品" });
+            // 從購物車中移除該商品
+            cart.Remove(itemToRemove);
+            // 保存新的購物車列表到Session
+            SaveCartItems(cart);
+            // 返回成功
+            return Json(new { success = true });
         }
     }
-    }
+}

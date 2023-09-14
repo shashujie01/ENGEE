@@ -261,7 +261,6 @@ namespace prjEnGeeDemo.Controllers
                 SubCategoryId = vm.SubCategoryId,
                 BrandId = vm.BrandId
             };
-
             return View(model);
         }
 
@@ -297,7 +296,6 @@ namespace prjEnGeeDemo.Controllers
                 //SellerName = product.Seller?.MemberName,
                 ProductSaleStatus = product.ProductSaleStatus,
             };
-
             return View(PDviewModel);
         }
         //以下好像用不到
