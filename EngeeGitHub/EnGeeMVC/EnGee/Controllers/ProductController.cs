@@ -15,7 +15,6 @@ namespace prjEnGeeDemo.Controllers
             _enviro = p;
         }
 
-
         public IActionResult Index()
         {
             return View();
@@ -218,28 +217,26 @@ namespace prjEnGeeDemo.Controllers
         //以下為樹傑的Action
 
         EngeeContext db = new EngeeContext();
-        public IActionResult IndexSSJ(SSJ_ProductPageViewModel vm, int page = 1, int pageSize = 6)
-        {
-            IQueryable<TProduct> query = db.TProducts;
-
-            // Apply keyword filter if present
+        private IQueryable<TProduct> ApplyFilters(SSJ_ProductPageViewModel vm, IQueryable<TProduct> query)
+        {//filters邏輯使用方法
             if (!string.IsNullOrEmpty(vm.txtKeyword))
             {
                 query = query.Where(p => p.ProductName.Contains(vm.txtKeyword));
             }
-
-            // Apply category filter if present
             if (vm.MainCategoryId.HasValue && vm.SubCategoryId.HasValue)
             {
                 query = query.Where(p => p.MainCategoryId == vm.MainCategoryId.Value && p.SubcategoryId == vm.SubCategoryId.Value);
             }
-
-            // Apply brand filter if present
             if (vm.BrandId.HasValue)
             {
                 query = query.Where(p => p.BrandId == vm.BrandId.Value);
             }
-
+            return query;
+        }
+        public IActionResult IndexSSJ(SSJ_ProductPageViewModel vm, int page = 1, int pageSize = 6)
+        {
+            IQueryable<TProduct> query = db.TProducts;
+            query = ApplyFilters(vm, query);
             var products = query.Select(p => new SSJ_ProductViewModel
             {
                 ProductId = p.ProductId,
@@ -303,19 +300,19 @@ namespace prjEnGeeDemo.Controllers
 
             return View(PDviewModel);
         }
-
-        public IActionResult Create()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult Create(TProduct p)
-        {
-            EngeeContext db = new EngeeContext();
-            db.TProducts.Add(p);
-            db.SaveChanges();
-            return RedirectToAction("IndexSSJ");
-        }
+        //以下好像用不到
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public IActionResult Create(TProduct p)
+        //{
+        //    EngeeContext db = new EngeeContext();
+        //    db.TProducts.Add(p);
+        //    db.SaveChanges();
+        //    return RedirectToAction("IndexSSJ");
+        //}
     }
 }
 
