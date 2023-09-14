@@ -104,13 +104,24 @@
                                                                 <button class="btn btn-rong-s btnHoverStyle2 btnPlus" type="button">+</button>
                                                                 <label class="me-1 mb-2" >小計:</label>
                                                                  <label class="me-2 subtotalPoints" data-product-id="@item.ProductId" >@Html.DisplayFor(modelItem => item.小計)</label>
-                                                                 <label class="me-1 mb-2">所選配送方式:</label>
-                                                                <label class="me-2 mb-2" >@item.DeliveryType</label>
-                                                                <span class="hrefstyle mb-2" >修改配送方式:</span>
+                                                <label class="me-1 mb-2 @item.ProductId">所選配送方式:</label>
+                                                <label class="me-2 mb-2 delivery-label @item.ProductId" data-product-id="@item.ProductId">@item.DeliveryType</label>
+                                                @*保存原始的DeliveryType、DeliveryTypeID值 *@
+                                                <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
+                                                <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">
+                                                <span class="hrefstyle mb-2">修改配送方式:</span>
+                                                @*<label><input type="radio" name="deliverytypeid"   delytype="宅配" value="1" id="homeDelivery" data-product-id="@item.ProductId">宅配/label>
+                                    <label> <input type="radio" name="deliverytypeid"  delytype="超商門市取貨" value="2" id="StorePickup" data-product-id=" @item.ProductId">超商門市取貨</label>*@
                                                 <label>
-                                                <input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" data-product-id="@item.ProductId">宅配</label>
+                                                    <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
+                                                           data-product-id="@item.ProductId" data-delivery-type="宅配" value="1" id="homeDelivery"
+                                                           data-label-class="delivery-label @item.ProductId">宅配
+                                                </label>
                                                 <label>
-                                                <input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup" data-product-id=" @item.ProductId">超商門市取貨</label>
+                                                    <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
+                                                           data-product-id="@item.ProductId" data-delivery-type="超商門市取貨" value="2" id="StorePickup"
+                                                           data-label-class="delivery-label @item.ProductId">超商門市取貨
+                                                </label>
                                                                 <a class="hrefstyle delete-item" href="#" data-product-id="@item.ProductId">刪除</a>
                                                             </div>
                                                         </div>
@@ -380,6 +391,33 @@
                     console.error('Error:', error);
                 }
             });
+        });
+    });
+
+
+    $(document).ready(function ()
+    {
+        $(".delivery-radio").each(function ()
+        {
+            var productId = $(this).data("product-id");
+            var deliveryType = $(this).data("delivery-type");
+            var originalDeliveryType = $("input[name='originalDeliveryType'][data-product-id='" + productId + "']").val();
+
+            if (deliveryType === originalDeliveryType)
+            {
+                $(this).prop("checked", true);
+                $(".delivery-label." + productId).text(deliveryType);
+            }
+        });
+
+        $(".delivery-radio").change(function ()
+        {
+            var productId = $(this).data("product-id");
+            var newDeliveryType = $(this).data("delivery-type");
+            $(".delivery-label." + productId).text(newDeliveryType);
+            var $label = $(`label[data-product-id=${productId}]`);
+            var newCount = parseInt($label.text(), 10);
+            updateCartItem(productId, newCount, newDeliveryType);
         });
     });
 
