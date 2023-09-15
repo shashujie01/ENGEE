@@ -5,6 +5,11 @@ using EnGee.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using EnGee.CollectService;
 using EnGee.Models;
+using EnGee.Services.EmailService;
+using EnGee.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
+
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +18,8 @@ var connectionString = builder.Configuration.GetConnectionString("EnGeeContextCo
 builder.Services.AddDbContext<EnGeeContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<EnGeeUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<EnGeeContext>();
-
+//Min新增
+//builder.Services.AddScoped<IEmailService, EmailService>();
 // Rong新增
 builder.Services.AddDbContext<EngeeContext>(options => options.UseSqlServer(connectionString));
 
@@ -54,6 +60,6 @@ app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=index}/{id?}");
 app.MapRazorPages();
 app.Run();

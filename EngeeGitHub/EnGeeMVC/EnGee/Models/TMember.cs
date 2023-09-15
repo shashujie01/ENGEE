@@ -23,8 +23,9 @@ public partial class TMember
     [DisplayName("全名")]
     public string Fullname { get; set; } = null!;
 
-    //[DisplayName("性別")]
-    public string? Gender { get; set; } 
+  
+    [Required(ErrorMessage = ("性別必填"))]
+    public string Gender { get; set; } = null!;
 
 
     [DisplayName("通訊地址")]
