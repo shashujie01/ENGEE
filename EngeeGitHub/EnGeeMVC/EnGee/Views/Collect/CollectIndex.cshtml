@@ -74,7 +74,7 @@
                                         </a>
                                     </div>
                                     <div class="row">
-                                        <a href="#會員資料頁面" class="text-decoration-none text-black-50">
+                                        <a href="@Url.Action("UserProfile","Chi_Member", new { id=item.MemberId})" class="text-decoration-none text-black-50">
                                             發布者：@Html.DisplayFor(modelItem => item.Username)
                                         </a>
                                     </div>

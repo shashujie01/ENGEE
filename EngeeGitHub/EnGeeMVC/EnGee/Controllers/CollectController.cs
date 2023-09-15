@@ -68,6 +68,7 @@ namespace EnGee.Controllers
                  select new Rong_CollectIndexViewModel
                  {
                      CollectId = co.CollectId,
+                     MemberId = co.MemberId,
                      Username = m.Username,
                      CollectTitle = co.CollectTitle,
                      CollectStartDate = co.CollectStartDate.ToString("yyyy/MM/dd"),
@@ -80,7 +81,7 @@ namespace EnGee.Controllers
 
             // 日期排序
             List<Rong_CollectIndexViewModel> orderedCollectIndex = collectindex.ToList();
-            if (sortBy == 2)
+            if (sortBy == 1)
             {
                 orderedCollectIndex = orderedCollectIndex.OrderBy(co => co.CollectStartDate).ToList();
             }
@@ -331,6 +332,14 @@ namespace EnGee.Controllers
         // 捐贈表單
         public IActionResult Donate(int? id)
         {
+            // 登入判斷
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+            if (loggedInUser.MemberId != null)
+            {
+                ViewBag.MemberId = loggedInUser.MemberId;
+                ViewBag.MemberPoint = loggedInUser.Point;
+            }
             if (id == null)
                 return RedirectToAction("CollectIndex");
             var doninfo =
@@ -359,6 +368,8 @@ namespace EnGee.Controllers
             // 登入判斷
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+            var member = db.TMembers.FirstOrDefault(m => m.MemberId == loggedInUser.MemberId);
+
             if (loggedInUser.MemberId != null)
             {
                 ViewBag.MemberId = loggedInUser.MemberId;
@@ -366,16 +377,16 @@ namespace EnGee.Controllers
             }
 
             // 扣除點數
-            if (collect != null)
+            if (loggedInUser != null && collect != null && ViewBag.MemberId != null)
             {
                 var selectedDeliveryType = db.TDeliveryTypes.FirstOrDefault(dt => dt.DeliveryTypeId == d.DeliveryTypeId);
                 if (selectedDeliveryType != null)
                 {
                     int deliveryFee = (int)selectedDeliveryType.DeliveryFee;
-                    if (loggedInUser.Point >= deliveryFee)
+                    if (ViewBag.MemberPoint >= deliveryFee)
                     {
-                        loggedInUser.Point -= deliveryFee;
-                        db.TMembers.Update(loggedInUser);
+                        int newMemberPoint = (int)(ViewBag.MemberPoint - deliveryFee);
+                        member.Point = newMemberPoint;
 
                         int newCollectAmount = collect.CollectAmount - d.DonationAmount;
                         collect.CollectAmount = newCollectAmount;
@@ -438,11 +449,19 @@ namespace EnGee.Controllers
         {
             if (id == null)
                 return RedirectToAction("DonationManagement");
-            TDonationOrder d = db.TDonationOrders.FirstOrDefault(t => t.DonationOrderId == id);
+
+            //TDonationOrder d = db.TDonationOrders.FirstOrDefault(t => t.DonationOrderId == id);
+            TDonationOrder d = db.TDonationOrders
+                .Include(t => t.Collect)
+                .FirstOrDefault(t => t.DonationOrderId == id);
+
             if (d == null)
                 return RedirectToAction("DonationManagement");
             Rong_CDonationWrap dWrap = new Rong_CDonationWrap();
             dWrap.don = d;
+            int collectAmount = d.Collect != null ? d.Collect.CollectAmount : 0;
+            dWrap.CollectAmount = collectAmount;
+            dWrap.CollectItemName = d.Collect != null ? d.Collect.CollectItemName : "";
             return View(dWrap);
         }
         [HttpPost]
@@ -465,13 +484,23 @@ namespace EnGee.Controllers
         // 捐贈刪除
         public IActionResult DeleteDonationManagement(int? id)
         {
+
             if (id == null)
                 return RedirectToAction("DonationManagement");
             TDonationOrder d = db.TDonationOrders.FirstOrDefault(t => t.DonationOrderId == id);
             if (d != null)
             {
-                db.TDonationOrders.Remove(d);
-                db.SaveChanges();
+                var collect = db.TCollects.FirstOrDefault(c => c.CollectId == d.CollectId);
+
+                if (collect != null) 
+                {
+                    int newCollectAmount = collect.CollectAmount + d.DonationAmount;
+                    Console.WriteLine(d.DonationAmount.ToString());
+                    collect.CollectAmount = newCollectAmount;
+                    db.TDonationOrders.Remove(d);
+                    db.SaveChanges();
+                }
+
             }
             return RedirectToAction("DonationManagement");
         }

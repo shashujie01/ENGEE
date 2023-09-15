@@ -23,9 +23,10 @@ namespace EnGee.CollectService
         {
             using (var scope = _scopeFactory.CreateScope())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<EngeeContext>(); 
+                var dbContext = scope.ServiceProvider.GetRequiredService<EngeeContext>();
+                var now = DateTime.Now.Date;
                 var expiredCollects = dbContext.TCollects
-                    .Where(c => (c.CollectStatus != false && c.CollectEndDate < DateTime.Now) || (c.CollectStatus != false && c.CollectAmount == 0))
+                    .Where(c => (c.CollectStatus != false && c.CollectEndDate < now) || (c.CollectStatus != false && c.CollectAmount == 0))
                     .ToList();
                 foreach (var collect in expiredCollects)
                 {

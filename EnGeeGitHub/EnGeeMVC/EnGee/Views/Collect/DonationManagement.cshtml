@@ -103,7 +103,7 @@
 
                             <td>
                                 @Html.ActionLink("修改", "EditDonation" ,"Collect", new { id=item.DonationOrderId },new{@class="btn nav-link"})
-                                @Html.ActionLink("刪除", "DeleteCollectManagement", "Collect",new { id=item.DonationOrderId },new {@class="nav-link", onclick="return confirm('確定要刪除嗎?')"})
+                                @Html.ActionLink("刪除", "DeleteDonationManagement", "Collect",new { id=item.DonationOrderId },new {@class="nav-link", onclick="return confirm('確定要刪除嗎?')"})
                             </td>
                         </tr>
                     }

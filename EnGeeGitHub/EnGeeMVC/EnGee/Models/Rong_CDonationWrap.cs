@@ -1,4 +1,6 @@
-﻿namespace EnGee.Models
+﻿using System.Configuration;
+
+namespace EnGee.Models
 {
     public class Rong_CDonationWrap
     {
@@ -8,6 +10,7 @@
             get { return _don; }
             set { _don = value; }
         }
+       
         public Rong_CDonationWrap()
         {
             _don = new TDonationOrder();
@@ -22,7 +25,9 @@
             get { return _don.CollectId; }
             set { _don.CollectId = value; }
         }
+        public string CollectItemName { get; set; }
 
+        public int CollectAmount { get; set; }
         public int MemberId
         {
             get { return _don.MemberId; }

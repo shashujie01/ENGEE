@@ -9,7 +9,6 @@
         <div asp-validation-summary="ModelOnly" class="text-danger "></div>
 
         <input type="hidden" name="DonationOrderId" value="@Model.DonationOrderId" />
-        <input type="hidden" name="Memberid" value="1" />
         <input type="hidden" name="DonationStatus" value="1" />
 
         <div class="row form-group mb-4">
@@ -30,13 +29,22 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th class="col-4" style="color:#946E6E;">捐贈數量</th>
+                            <th class="col-5" style="color:#946E6E;">捐贈品項名稱</th>
+                            <th class="col-3" style="color:#946E6E;">徵求數量</th>
+                            <th class="col-4" style="color:#946E6E;">您的捐贈數量</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="fz-color3">
-                                <input type="number" asp-for="DonationAmount" id="DonationAmount" class="form-control fz-color1" min="1" placeholder="選擇數量" required>
+                                <i class="fa-solid fa-hand-holding-heart me-2 icon-style"></i>
+                                @Html.DisplayFor(model => model.CollectItemName)
+                            </td>
+                            <td class="fz-color3">
+                                @Html.DisplayFor(model => model.CollectAmount)
+                            </td>
+                            <td class="fz-color3">
+                                <input type="number" asp-for="DonationAmount" id="DonationAmount" class="form-control fz-color1" min="1" max="@Html.DisplayFor(model => model.CollectAmount)" placeholder="選擇數量" required>
                             </td>
                         </tr>
                     </tbody>
@@ -44,21 +52,23 @@
             </div>
         </div>
         <div class="form-group mb-4">
-            <div class="row d-flex justify-content-center">
-                <label class="form-label h5 fz-color1">訂單狀態</label>
-            </div>
-            <div class="row">
-                <select asp-for="DonationStatus" class="form-select fz-color1 w-auto" required>
-                    <option value="1">待出貨</option>
-                    <option value="2">待收貨</option>
-                    <option value="3">訂單已完成</option>
-                    <option value="4">不成立</option>
-                </select>
+            <div class="row d-flex align-items-center align-self-center">
+                <div class="col-auto">
+                    <label class="form-label h5 fz-color1">訂單狀態</label>
+                </div>
+                <div class="col-auto">
+                    <select asp-for="DonationStatus" class="form-select fz-color1 w-auto" required>
+                        <option value="1">待出貨</option>
+                        <option value="2">待收貨</option>
+                        <option value="3">訂單已完成</option>
+                        <option value="4">不成立</option>
+                    </select>
+                </div>
+                
             </div>
         </div>
         <div class="form-group mb-4 m-auto d-flex justify-content-end">
             <button type="submit" form="editform" id="submitform" class="btn btn-border a px-3 me-2 fw-bold fz-color2">送出</button>
-
             <button type="button" id="cancelForm" class="btn btn-border a px-3 fw-bold fz-color2">取消</button>
         </div>
     </form>
@@ -74,7 +84,7 @@
                 form.submit();
             } else {
                 alert("請再仔細檢查所有欄位！");
-            }
+            });
     </script>
 
 </div>

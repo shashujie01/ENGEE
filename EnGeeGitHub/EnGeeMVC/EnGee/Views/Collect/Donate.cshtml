@@ -11,7 +11,9 @@
 
         <input type="hidden" name="CollectId" value="@Model.CollectId" />
         <input type="hidden" name="MemberId" value="@ViewBag.MemerId" />
+        <input type="hidden" name="Point" id="idpoints" value="@ViewBag.MemberPoint" />
         <input type="hidden" name="DonationStatus" value="1" />
+
 
         <div class="row form-group mb-4">
             <div class="form-group col-md-6 mb-3">
@@ -31,9 +33,9 @@
                 <table class="table table-hover align-middle">
                     <thead>
                         <tr>
-                            <th class="col-5" style="color:#946E6E;">需求品項名稱</th>
+                            <th class="col-5" style="color:#946E6E;">徵求品項名稱</th>
                             <th class="col-3" style="color:#946E6E;">徵求數量</th>
-                            <th class="col-4" style="color:#946E6E;">捐贈數量</th>
+                            <th class="col-4" style="color:#946E6E;">您的捐贈數量</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +63,7 @@
                 @if (Model.DeliveryTypeId == 1)
                 {
                     <div class="m-1">
-                        <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="1" required />
+                        <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="1" data-deliveryfee="@Html.DisplayFor(model => model.DeliveryFee)" required />
                         @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model => model.DeliveryFee)點
                     </div>
                     <div class="ms-4">
@@ -71,7 +73,7 @@
                 else if (Model.DeliveryTypeId == 2)
                 {
                     <div class="m-1">
-                        <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="2" required />
+                        <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="2" data-deliveryfee="@Html.DisplayFor(model => model.DeliveryFee)" required />
                         @Html.DisplayFor(model => model.DeliveryType) @Html.DisplayFor(model => model.DeliveryFee)點
                     </div>
                     <div class="ms-4">
@@ -82,7 +84,7 @@
                 {
                     <div class="col-6">
                         <div class="m-1">
-                            <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="1" required />
+                            <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="1" data-deliveryfee="150" required />
                             宅配 150 點
                         </div>
                         <div name="DeliveryType" class="ms-4">
@@ -91,7 +93,7 @@
                     </div>
                     <div class="col-6">
                         <div class="m-1">
-                            <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="2" required />
+                            <input id="DeliveryFee" name="DeliveryTypeId" type="radio" class="me-1" value="2" data-deliveryfee="60" required />
                             超商 60 點
                         </div>
                         <div class="ms-4">
@@ -111,17 +113,23 @@
 
     @* 0912新增會員點數不足的情況 *@
     <script>
-        document.getElementById("submitform").addEventListener("click", function () {
+        document.getElementById("submitform").addEventListener("click", function (e) {
             var form = document.getElementById("donationform");
+            
             if (form.checkValidity()) {
-                var memberPoint = parseFloat("@ViewBag.MemberPoint");
-                var deliveryFee = parseFloat(document.getElementById("DeliveryFee").value);
+                var mpoints = parseFloat(document.getElementById("idpoints").value);
+                var selectedDeliveryType = document.querySelector( 'input[name="DeliveryTypeId"]:checked');
+                var fee = selectedDeliveryType ? parseFloat(selectedDeliveryType.getAttribute("data-deliveryfee")) : 0;
+                console.log("mpoints: " + mpoints);
+                console.log("fee: " + fee);
 
-                if (memberPoint >= deliveryFee) {
+                if (mpoints >= fee) {
                     alert("捐贈表單填寫成功！");
                     form.submit();
-                } else {
+                 } else {
+                    e.preventDefault();
                     alert("點數不足，請先儲值後再捐贈！");
+                    window.location.href = "/Collect/CollectIndex";
                 }
             } else {
                 alert("請確實填寫所有欄位！");
