@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EnGee.Models;
 
@@ -15,12 +16,21 @@ public partial class TMember
     [DisplayName("註冊密碼")]
     [Required(ErrorMessage = ("註冊密碼必填"))]
     [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
+    
     public string Password { get; set; } = null!;
+    [NotMapped] //不存至SQL
+    [DisplayName("確認密碼")]
+    [Required(ErrorMessage = ("確認密碼必填"))]
+    [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
+    [Compare("Password", ErrorMessage = "兩組密碼必須相同")]
+    public string RePassword { get; set; } = null!;
     [DisplayName("註冊信箱(驗證)")]
     [Required(ErrorMessage = ("註冊信箱必填"))]
     [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "請輸入有效的電子郵件地址")]
+
     public string Email { get; set; } = null!;
     [DisplayName("全名")]
+    [Required(ErrorMessage = ("全名必填"))]
     public string Fullname { get; set; } = null!;
 
   
