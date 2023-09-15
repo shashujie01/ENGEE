@@ -20,23 +20,26 @@ public partial class TMember
     [Required(ErrorMessage = ("註冊信箱必填"))]
     [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "請輸入有效的電子郵件地址")]
     public string Email { get; set; } = null!;
-    [DisplayName("名字全名")]
-    public string? Fullname { get; set; }
-   
-    [DisplayName("性別")]
-    public string? Gender { get; set; }
+    [DisplayName("全名")]
+    public string Fullname { get; set; } = null!;
+
+    //[DisplayName("性別")]
+    public string? Gender { get; set; } 
+
+
     [DisplayName("通訊地址")]
     [Required(ErrorMessage = ("通訊地址必填"))]
     public string Address { get; set; } = null!;
     [DisplayName("手機號碼")]
     [Required(ErrorMessage = ("手機號碼必填"))]
     [StringLength(10, ErrorMessage = ("手機位數共10位:09xxxxxxxx"), MinimumLength = 10)]
-
     public string Phone { get; set; } = null!;
+
     [DisplayName("註冊日期")]
     public DateTime? RegistrationDate { get; set; }
     [DisplayName("出生日期")]
-    public DateTime? Birth { get; set; }
+    [Required(ErrorMessage = ("出生日期必填"))]
+    public DateTime Birth { get; set; } = DateTime.MinValue;
     [DisplayName("權限")]
     public int? Access { get; set; }
     [DisplayName("點數")]
