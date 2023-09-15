@@ -47,9 +47,10 @@
                
             </div>
            
-            <div class="form-group" id="app">
-               <input type="radio" v-model="gender" value="male"> Male
-                 <input type="radio" v-model="gender" value="female"> Female
+            <div class="form-group mt-3" id="app">
+               <input type="radio" v-model="gender" value="0"> Male
+               <input type="radio" v-model="gender" value="1"> Female
+               <input type="radio" v-model="gender" value="2"> 不透漏
                   
             </div>
          </div>
@@ -72,7 +73,7 @@
             </div> *@
             <div class="form-group">
                 <label asp-for="Birth" class="control-label"></label>
-                <input asp-for="Birth" class="form-control" />
+                <input asp-for="Birth" class="form-control" type="date"/>
                 <span asp-validation-for="Birth" class=" spanvaildation"></span>
             </div>
            @*  <div class="form-group">
@@ -100,9 +101,9 @@
                 <input asp-for="CharityProof" class="form-control" style="background-color:pink;" type="file"/>
                 <span asp-validation-for="CharityProof" class=" spanvaildation"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="送出" class="btn btn-primary " style="text-align:center;" />
             </div>
+            <div class="form-group d-flex justify-content-center align-items-center mt-3">
+                <input type="submit" value="送出" class="btn btn-primary  " style="text-align:center;" />
             </div>
     </div>
 </form>
@@ -117,7 +118,7 @@
             data() {
                 return {
                     
-                    gender: '', // 如果要預選
+                    gender: '0', // 如果要預選
                 }
             },
 
