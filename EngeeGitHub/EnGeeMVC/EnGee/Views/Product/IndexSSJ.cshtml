@@ -77,6 +77,22 @@
         object-fit: contain;
     }
 
+    .card > a {
+        position: relative;
+        z-index: 1; 
+    }
+
+    .card-img-overlay {
+        position: absolute;
+        top: 50%; /* 只會把元素的左上角移到父元素的中心 */
+        left: 50%;/* 只會把元素的左上角移到父元素的中心 */ 
+        transform: translate(-50%, -50%);/* 這個設定會將元素沿著其自身的 X 和 Y 軸各移動 -50% */
+        width: 20%; 
+        height: 20%; 
+        z-index: 2;
+    }
+
+    
     /* -----card調整end---- */
 </style>
 
@@ -103,8 +119,7 @@
                 }
                 <h1 class="h2 pb-4">Categories</h1>
                 <ul class="list-unstyled ">
-                    <li class="pb-3">
-                        @*篩選*@
+                    <li class="pb-3"> @*篩選*@
                         <a class="h3 text-decoration-none d-flex justify-content-between " href="#"
                            data-bs-toggle="collapse" data-bs-target="#contentOne">
                             彩妝品分類
@@ -192,7 +207,6 @@
                             品牌字首
                             <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                         </a>
-
                         <ul id="contentTwo" class=" collapse list-unstyled flex-container cattext  mt-3">
                             <li class:" d-flex">
                                 <a class="text-decoration-none fw-bolder" href="@Url.Action("IndexSSJ", "Product")">
@@ -240,18 +254,14 @@
                         <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
 
                             <div class="card ">
+                                <a class="btn bg-white text-black mt-2" href="@Url.Action("Details", "Product", new { id = products.ProductId })">
                                 <img class="card-img img-fluid" src="@products.ProductImagePath" alt="@products.ProductName" />
+                                </a>
                                 <div class="card-img-overlay ">
-                                    <ul class="list-unstyled">
+                                    <ul class="list-unstyled  flex-column ">
                                         <li>
-                                            <a class="btn bg-white text-black" href="shop-single.html">
+                                            <a class="btn bg-white text-black " href="shop-single.html">
                                                 <i class="far fa-heart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-
-                                            <a class="btn bg-white text-black mt-2" href="@Url.Action("Details", "Product", new { id = products.ProductId })">
-                                                <i class="far fa-eye"></i>
                                             </a>
                                         </li>
                                         <li>
@@ -273,7 +283,7 @@
 
                                 </div>
 
-                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                <ul class="list-unstyled d-flex justify-content-center  mb-1">
                                     <li>
                                         <i class="text-warning fa fa-star"></i>
                                         <i class="text-warning fa fa-star"></i>
