@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
+
 namespace EnGee.Models;
 
 public partial class TMember
@@ -90,4 +91,5 @@ public partial class TMember
     public virtual ICollection<TRating> TRatingSellers { get; set; } = new List<TRating>();
 
     public virtual ICollection<TShoppingCart> TShoppingCarts { get; set; } = new List<TShoppingCart>();
+
 }
