@@ -67,16 +67,16 @@ namespace EnGee.Controllers
             }
             db.Add(tm);
             db.SaveChanges();
-            return RedirectToAction("SendEmail");
+            return RedirectToAction("SendEmail", new { emailto = email });  //email是實際模型輸入值，命名為emailto傳給SendEmail
         }
 
         //----------0915新增EmailSend Test--------//
 
-        public IActionResult SendEmail(/*EmailDto request*/)
+        public IActionResult SendEmail(string emailto)   //email是實際模型輸入值，命名為emailto傳給SendEmail
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("EnGee", "engeegift@gmail.com"));
-            message.To.Add(new MailboxAddress("ivy1101238@yahoo.com.tw", "ivy1101238@yahoo.com.tw"));
+            message.To.Add(new MailboxAddress(emailto, emailto)); //email是實際模型輸入值，命名為emailto傳給SendEmail
             message.Subject = "EnGee會員註冊驗證信";
             message.Body = new TextPart("plain") { Text = "請點擊以下連結，完成註冊會員最後一步驟 >>  https://engee2023.azurewebsites.net/" };
 
