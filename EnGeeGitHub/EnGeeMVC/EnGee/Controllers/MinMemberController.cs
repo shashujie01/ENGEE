@@ -9,6 +9,7 @@ using MailKit.Security;
 using MailKit.Net.Smtp;
 using System.Drawing.Text;
 using NuGet.Common;
+using Newtonsoft.Json;
 
 namespace EnGee.Controllers
 {
@@ -18,13 +19,6 @@ namespace EnGee.Controllers
         {
             return View();//填寫表單後請使用者至信箱收信畫面
         }
-        //-----------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫-------------------------//
-        public IActionResult VerifyEmail()
-        {
-
-            return View(); // 創建一個使用者至信箱點連結後的畫面
-        }
-        
         //-----------------------------------------------------------------------------------------//
         public IActionResult Create()
         {
@@ -65,28 +59,29 @@ namespace EnGee.Controllers
             //----------------0916修改比對資料庫與模型是否有重複username及email---------------------------//
 
             EngeeContext db = new EngeeContext();
-            //var reusername=db.TMembers.Any(x => x.Username == username);
-            //var reemail=db.TMembers.Any (x => x.Email == email);
+            var reusername = db.TMembers.Any(x => x.Username == username);
+            var reemail = db.TMembers.Any(x => x.Email == email);
 
-            //if (reusername)
-            //{
-            //    ModelState.AddModelError("Username", "此帳號已經被使用。");
-            //    return View();
-            //}
-            //if (reemail)
-            //{
-            //    ModelState.AddModelError("Email", "此信箱已經被使用。");
-            //    return View();    
-            //}
-            db.Add(tm);
-            db.SaveChanges();
+            if (reusername)
+            {
+                ModelState.AddModelError("Username", "此帳號已經被使用。");
+                return View();
+            }
+            if (reemail)
+            {
+                ModelState.AddModelError("Email", "此信箱已經被使用。");
+                return View();
+            }
+
             //----------------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫---------------------//
+            Response.Cookies.Append("memberstorageData", JsonConvert.SerializeObject(tm));  //將資料轉成jason檔存在cookie
+           
             SendVerificationEmail(email, randomToken);
-            return RedirectToAction(" EmailValid");  //email是實際模型輸入值，命名為emailto傳給SendEmail
+            return RedirectToAction("EmailValid");  //email是實際模型輸入值，命名為emailto傳給SendEmail
         }
 
 
-        //-----------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫-------------------------//
+        //-----------0916新增Email 連結可以跳轉至頁面-------------------------//
         private string GenerateRandomToken()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -115,11 +110,22 @@ namespace EnGee.Controllers
             smtp.Disconnect(true);
             return RedirectToAction("VerifyEmail");
         }
-        //public IActionResult VerifyEmail(/*string email, string token*/)
-        //{
 
-        //    return View("EmailVerified"); // 創建一個使用者至信箱點連結後的畫面
-        //}
+        //-----------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫-------------------------//
+        public IActionResult VerifyEmail(string token)
+        {
+            var memberStorageCookie = Request.Cookies["memberstorageData"];
+
+            var tmCookie = JsonConvert.DeserializeObject<TMember>(memberStorageCookie);
+            tmCookie.RandomToken = token;
+            EngeeContext db = new EngeeContext();
+            db.Add(tmCookie);
+            db.SaveChanges();
+
+            Response.Cookies.Delete("memberstorageData");
+
+            return RedirectToAction("LoginLayout", "Home"); // (控制器/方法)
+        }
 
 
     }
