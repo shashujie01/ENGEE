@@ -113,6 +113,10 @@ namespace EnGee.Controllers
         }
 
         private IActionResult SendVerificationEmail(string emailto, string token)
+        //{
+        //    _emailsenderIn= emailSenderIn;
+        //}
+        public IActionResult SendEmail(/*EmailDto request*/)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("EnGee", "engeegift@gmail.com"));
