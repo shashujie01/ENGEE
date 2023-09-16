@@ -21,8 +21,9 @@ namespace EnGee.Controllers
         {
             return View();
         }
+
         [HttpPost]
-        public IActionResult Create(TMember tm)
+        public IActionResult Create(TMember tm, string username, string email)
         {
             //---------------條件限制規則--------------------//
             if (tm.Gender == null)
@@ -48,22 +49,29 @@ namespace EnGee.Controllers
             {
                 tm.Point = 0;
             }
-            //-------------------------------------------//
-
+            //----------------0916修改比對資料庫與模型是否有重複username及email---------------------------//
 
             EngeeContext db = new EngeeContext();
+            var reusername=db.TMembers.Any(x => x.Username == username);
+            var reemail=db.TMembers.Any (x => x.Email == email);
 
+            if (reusername)
+            {
+                ModelState.AddModelError("Username", "此帳號已經被使用。");
+                return View();
+            }
+            if (reemail)
+            {
+                ModelState.AddModelError("Email", "此信箱已經被使用。");
+                return View();    
+            }
             db.Add(tm);
             db.SaveChanges();
             return RedirectToAction("SendEmail");
         }
 
         //----------0915新增EmailSend Test--------//
-        //private readonly IEmailSender _emailsenderIn;
-        //public MinMemberController(IEmailSender emailSenderIn)
-        //{
-        //    _emailsenderIn= emailSenderIn;
-        //}
+
         public IActionResult SendEmail(/*EmailDto request*/)
         {
             var message = new MimeMessage();
