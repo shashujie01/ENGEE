@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace EnGee.Models;
 
 public partial class TMember
@@ -60,6 +61,10 @@ public partial class TMember
     [DisplayName("會員自介")]
     public string? Introduction { get; set; }
     [DisplayName("公益團體證明(文件上傳)")]
+
+    //--0916新增--//
+    [NotMapped]
+    public string? RandomToken { get; set; } 
     public string? CharityProof { get; set; }
 
     public virtual ICollection<TCase> TCases { get; set; } = new List<TCase>();
@@ -93,4 +98,5 @@ public partial class TMember
     public virtual ICollection<TRating> TRatingSellers { get; set; } = new List<TRating>();
 
     public virtual ICollection<TShoppingCart> TShoppingCarts { get; set; } = new List<TShoppingCart>();
+
 }
