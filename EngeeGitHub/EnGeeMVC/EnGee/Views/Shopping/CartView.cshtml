@@ -361,12 +361,12 @@
         {
             var $label = $(this).next('label');
             var count = parseInt($label.text(), 10);
-            var productId = $label.data('product-id');  // 注意這行
+            var productId = $label.data('product-id'); 
             if (count > 1)
             {
                 count--;
                 $label.text(count);
-                updateCartItem(productId, count);  // 注意這行
+                updateCartItem(productId, count); 
                 updateTotalPrice();
             }
         });
@@ -375,10 +375,10 @@
         {
             var $label = $(this).prev('label');
             var count = parseInt($label.text(), 10);
-            var productId = $label.data('product-id');  // 注意這行
+            var productId = $label.data('product-id'); 
             count++;
             $label.text(count);
-            updateCartItem(productId, count);  // 注意這行
+            updateCartItem(productId, count);  
             updateTotalPrice();
         });
 });

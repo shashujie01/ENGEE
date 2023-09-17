@@ -38,7 +38,7 @@ namespace WebApplication2.Controllers
                 datas = db.TMembers.Where(t => t.Username.Contains(vm.txtKeyword)
                 || t.Phone.Contains(vm.txtKeyword)
                 || t.Email.Contains(vm.txtKeyword));
-                //||t.Address.Contains(vm.txtKeyword));
+                //||t.Address.Contains(vm.TxtKeyword));
             }
 
 
