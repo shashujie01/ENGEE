@@ -24,7 +24,6 @@
                     </div>
                     <div class="product-details-container col-md-4 col-4  d-flex align-items justify-content-center ms-5">
                         <div class="product-Detail-section fz-size28px">
-
                         <div class="product-info-section d-flex flex-column">
                             <div class="product-info-row">
                                 <h1 class="product-title">@Model.ProductName</h1>
@@ -48,45 +47,40 @@
                                 <div class="product-seller-name">賣家: @Model.SellerName</div>
                             </div>
                         </div>
-
                         <div>
-                                <form id="productForm" asp-controller="Shopping" asp-action="CartView" method="post">
-                                    <!-- Product ID (Hidden) -->
-                                    <input type="hidden" name="txtProductId" value="@Model.ProductId" />
-                                    <input type="hidden" name="deliveryOption" value="" class="deliveryOptionInput" />
-
-                                    <!-- 數量 -->
-                                    <div class="Purchase-quantity-section d-flex">
-                                        <label class="" for="txtCount">數量:</label>
-                                        <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnMinus">-</button>
-                                        <div class="col-md-10 w-64px">
-                                            @Html.TextBox("txtCount", "1", new { @class = "form-control" })
-                                        </div>
-                                        <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnPlus">+</button>
+                            <form id="productForm" asp-controller="Shopping" asp-action="AddToCartAndReturnCarView" method="post">
+                                <!-- Product ID (Hidden) -->
+                                <input type="hidden" name="txtProductId" value="@Model.ProductId" class="txtProductId" />
+                                <input type="hidden" name="deliveryOption" value="" class="deliveryOptionInput" />
+                                <!-- 數量 -->
+                                <div class="Purchase-quantity-section d-flex">
+                                    <label class="" for="txtCount">數量:</label>
+                                    <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnMinus">-</button>
+                                    <div class="col-md-10 w-64px">
+                                        @Html.TextBox("txtCount", "1", new { @class = "form-control", @readonly = "readonly" })
                                     </div>
+                                    <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnPlus">+</button>
+                                </div>
 
-                                    <!-- 配送方式 -->
+                                <!-- 配送方式 -->
                                 <!-- TODO要根據資料庫運送方式顯示-->
                                 <div class="choose-product-delivery-section d-flex flex-wrap">
-                                        <div id="delyTitle">配送方式:</div>  
-                                        <div class="shippingList">
-                                         <label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="">宅配</label>
-                                         <label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>
-                                        </div>
+                                    <div id="delyTitle">配送方式:</div>
+                                    <div class="shippingList">
+                                        <label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="">宅配</label>
+                                        <label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>
                                     </div>
+                                </div>
 
-                                    <!-- 行动 -->
-                                    <div class="product-action-section d-flex">
-                                        <button class="btn btn-m btnHoverStyle2 m-2 add-to-cart" type="button">加入購物車</button>
-                                        <button class="btn btn-m btnHoverStyle2 m-2" type="submit" name="actionType" value="buyNow" class="buy-now">立即購買</button>
+                                <!-- 行动 -->
+                                <div class="product-action-section d-flex">
+                                    <button class="btn btn-m btnHoverStyle2 m-2 add-to-cart" type="button">加入購物車</button>
+                                    <button class="btn btn-m btnHoverStyle2 m-2" type="submit" name="actionType" value="buyNow" class="buy-now">立即購買</button>
                                     <a class="hrefstyle hrefstyle1:hover mt-2 fz-size16px ms-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
                                 </div>
-                                </form>
-                            
-                        </div>
-                      
+                            </form>
+                        </div>      
                     </div> 
-                
                     </div>
             </div>
         </div>
@@ -95,12 +89,16 @@
 <script>
     $(document).ready(function ()
     {
+        console.log("Hello, World!");
+    });
+    $(document).ready(function ()
+    {
         // 初始化設置
-        var initialDelivery = $("input[name='deliveryType']:checked").attr("delytype");
+        var initialDelivery = $("input[name='deliverytypeid']:checked").attr("delytype");
         $(".deliveryOptionInput").val(initialDelivery);
 
         // 當選擇配送方式時
-        $("input[name='deliveryType']").on("change", function ()
+        $("input[name='deliverytypeid']").on("change", function ()
         {
             var selectedDelivery = $(this).attr("delytype");
             $(".deliveryOptionInput").val(selectedDelivery);
@@ -119,41 +117,69 @@
             $("#txtCount").val(currentCount - 1);
         }
     });
+    // --------------------------------
+        // // 當點擊 "加入購物車"時
+        // $(".add-to-cart").on("click", function (e)
+        // {
+        //     e.preventDefault(); // 阻止預設事件
 
+        //     var formData = $("#productForm").serialize();  // 使用正確的 form selector
+        //     console.log("Form Data:", formData);
 
-        // 當點擊 "加入購物車" 或 "立即購買" 時
-        $(".add-to-cart, .buy-now").on("click", function (e)
+        //     // 使用 AJAX 提交
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/Shopping/AddToCart",  // 確保這是正確的後端方法
+        //         data: formData,
+        //         success: function (response)
+        //         {
+        //             if (response.success)
+        //             {
+        //                 alert("已加入購物車");
+        //             } else
+        //             {
+        //                 if (response.needToLogin)
+        //                 {  // 假設後端會設置這個屬性來通知需要登入
+        //                     window.location.href = "/Home/LoginLayout";  // 或你需要重定向的 URL
+        //                 } else
+        //                 {
+        //                     alert(response.message ? response.message : "請先登入");
+        //                 }
+        //             }
+        //         },
+
+        //         error: function (jqXHR, textStatus, errorThrown)
+        //         {
+        //             alert("操作失敗，請稍後再試");
+        //         }
+        //     });
+        // });
+
+// -------------------------------------------
+    // 當點擊"立即購買" 時
+        $(".buy-now").on("click", function (e)
         {
             e.preventDefault(); // 阻止預設事件
 
-            var selectedDelivery = $("input[name='deliveryType']:checked").attr("delytype");
-            var form = $("#productForm");
-            $(".deliveryOptionInput", form).val(selectedDelivery);
-
-            // 如果是 "立即購買" 就直接提交表單
-            if ($(this).hasClass("buy-now"))
-            {
-                form.submit();
-                return;
-            }
-
-            var formData = form.serialize();
+            var formData = $("#productForm").serialize();
+            console.log("After serializing the form");
+            console.log("Form Data:", formData);
 
             // 使用 AJAX 提交
             $.ajax({
                 type: "POST",
-                url: form.attr("action"),
-                data: formData + "&deliveryOption=" + selectedDelivery, // 這裡加上 deliveryOption 參數
+                url: "/Shopping/AddToCartAndReturnCarView",
+                data: formData,
                 success: function (response)
-                {
-                    alert("已加入購物車");
+                {// 成功時重定向到 CartView
+                    window.location.href = "/Shopping/CartView";
                 },
                 error: function (jqXHR, textStatus, errorThrown)
                 {
-                    alert("添加失敗，請稍後再試");
+                    alert("操作失敗，請稍後再試");
                 }
             });
         });
-    });
+     });
 </script>
 
