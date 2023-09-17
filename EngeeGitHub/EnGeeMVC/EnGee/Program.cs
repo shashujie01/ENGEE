@@ -10,14 +10,22 @@ using EnGee.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using EnGee.Hubs;
 
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("EnGeeContextConnection") ?? throw new InvalidOperationException("Connection string 'EnGeeContextConnection' not found.");
 
 builder.Services.AddDbContext<EnGeeContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<EnGeeUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<EnGeeContext>();
+//builder.Services.y<EnGeeUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<EnGeeContext>();
+
 //Min新增
-//builder.Services.AddScoped<IEmailService, EmailService>();
+// 添加 Identity 服務設定AddDefaultIdentit
+builder.Services.AddIdentity<EnGeeUser, IdentityRole>()
+    .AddEntityFrameworkStores< EnGeeContext > ()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<UserManager<EnGeeUser>>();
+builder.Services.AddScoped<SignInManager<EnGeeUser>>();
 // Rong新增
 builder.Services.AddDbContext<EngeeContext>(options => options.UseSqlServer(connectionString));
 
@@ -33,6 +41,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = new PathString("/Home/Login");
         options.AccessDeniedPath = new PathString("/Home/AccessDenied");
     });
+
 
 // Add services to the container.AddSession
 builder.Services.AddControllersWithViews();

@@ -45,7 +45,7 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(TMember tm, string username, string email, string gender)
+        public async Task<IActionResult> Create(TMember tm, string username, string email, string gender)
         {
 
 
