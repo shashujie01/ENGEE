@@ -11,7 +11,7 @@
         @Html.AntiForgeryToken()
         <input type="hidden" name="CollectStatus" value="true" />
         <input type="hidden" name="MemberId" value="@ViewBag.MemberId" />
-
+ 
         <div class="form-group mb-4">
             <label for="CollectTitle" class="form-label h5 fz-color1">許願標題</label>
             <input type="text" id="CollectTitle" name="CollectTitle" class="form-control mt-1 fz-color1" placeholder="請輸入1-10個中文字" pattern="[\u4e00-\u9fa5]{1,20}" title="請填入1-10個中文字" required />
@@ -88,7 +88,7 @@
             <button type="button" id="cancelForm" class="btn btn-border a px-3 fw-bold fz-color2">取消</button>
         </div>
     </form>
-
+   
     <script>
         document.getElementById("CollectEndDate").min = new Date().toISOString().split("T")[0];
     </script>
@@ -169,6 +169,7 @@
             document.getElementById("SubcategoryId").value = "";
         }
     </script>
+    
 </div>
 
 

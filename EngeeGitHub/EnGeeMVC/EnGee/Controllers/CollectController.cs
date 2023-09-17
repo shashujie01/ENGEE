@@ -28,6 +28,20 @@ namespace EnGee.Controllers
         // 許願池管理
         public IActionResult CollectManagement(Rong_keywordViewModel k)
         {
+            // 登入判斷
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            if (userJson == null)
+                return RedirectToAction("LoginLayout", "Home");
+            else
+            {
+                TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+
+                if (loggedInUser.Access != 0 || loggedInUser.Access != 2)
+                {
+                    return RedirectToAction("CollectIndex");
+                }
+            }
+
             IEnumerable<Rong_CollectManagementViewModel> collectmanage =
                 from co in db.TCollects
                 join d in db.TDeliveryTypes on co.DeliveryTypeId equals d.DeliveryTypeId
@@ -197,6 +211,18 @@ namespace EnGee.Controllers
         // 我要許願
         public IActionResult Create()
         {
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            if (userJson == null)
+                return RedirectToAction("LoginLayout", "Home");
+            else
+            {
+                TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+
+                if (loggedInUser.Access != 3)
+                {
+                    return RedirectToAction("CollectIndex");
+                }
+            }
             var mainca = db.TCosmeticMainCategories.ToList();
             var subca = db.TCosmeticSubcategories.ToList();
             var deliverytype = db.TDeliveryTypes.ToList();
@@ -223,7 +249,6 @@ namespace EnGee.Controllers
             {
                 ViewBag.MemberId = loggedInUser.MemberId;
             }
-
             TCollect c = new TCollect()
             {
                 MemberId = ViewBag.MemberId,
@@ -245,10 +270,10 @@ namespace EnGee.Controllers
             db.SaveChanges();
             return RedirectToAction("CollectInformation");
         }
-
         // 管理_許願刪除
         public IActionResult DeleteCollectManagement(int? id)
         {
+            
             if (id == null)
                 return RedirectToAction("CollectManagement");
             TCollect c = db.TCollects.FirstOrDefault(t => t.CollectId == id);
@@ -262,13 +287,21 @@ namespace EnGee.Controllers
         // 會員_許願刪除
         public IActionResult DeleteCollectMember(int? id)
         {
+           
+
             if (id == null)
                 return RedirectToAction("Create");
 
             TCollect c = db.TCollects.FirstOrDefault(t => t.CollectId == id);
-
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+            if (loggedInUser.MemberId != c.MemberId)
+            {
+                return RedirectToAction("CollectIndex");
+            }
             if (c != null)
             {
+                
                 db.TCollects.Remove(c);
                 db.SaveChanges();
             }
@@ -281,6 +314,19 @@ namespace EnGee.Controllers
             if (id == null)
                 return RedirectToAction("CollectIndex");
             TCollect c = db.TCollects.FirstOrDefault(t => t.CollectId == id);
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            if (userJson == null)
+                return RedirectToAction("LoginLayout", "Home");
+            else
+            {
+                TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+
+                if (loggedInUser.MemberId != c.MemberId)
+                {
+                    return RedirectToAction("CollectIndex");
+                }
+            }
+            
             if (c == null)
                 return RedirectToAction("CollectIndex");
             Rong_CCollectWrap cWrap = new Rong_CCollectWrap();
@@ -334,12 +380,19 @@ namespace EnGee.Controllers
         {
             // 登入判斷
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
-            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
-            if (loggedInUser.MemberId != null)
+            if (userJson == null)
+                return RedirectToAction("LoginLayout", "Home");
+            else
             {
-                ViewBag.MemberId = loggedInUser.MemberId;
-                ViewBag.MemberPoint = loggedInUser.Point;
+                TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+
+                if (loggedInUser.MemberId != null)
+                {
+                    ViewBag.MemberId = loggedInUser.MemberId;
+                    ViewBag.MemberPoint = loggedInUser.Point;
+                }
             }
+            
             if (id == null)
                 return RedirectToAction("CollectIndex");
             var doninfo =
@@ -411,9 +464,22 @@ namespace EnGee.Controllers
             return RedirectToAction("CollectIndex");
         }
 
-        // 捐贈管理
+        // 捐贈訂單管理
         public IActionResult DonationManagement(Rong_keywordViewModel k)
         {
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            if (userJson == null)
+                return RedirectToAction("LoginLayout", "Home");
+            else
+            {
+                TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+
+                if (loggedInUser.Access != 0 || loggedInUser.Access != 2)
+                {
+                    return RedirectToAction("CollectIndex");
+                }
+            }
+            
             IEnumerable<Rong_DonationManagementViewModel> donationmanage =
                 from don in db.TDonationOrders
                 join d in db.TDeliveryTypes on don.DeliveryTypeId equals d.DeliveryTypeId
@@ -447,10 +513,22 @@ namespace EnGee.Controllers
         // 捐贈修改
         public IActionResult EditDonation(int? id)
         {
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            if (userJson == null)
+                return RedirectToAction("LoginLayout", "Home");
+            else
+            {
+                TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+
+                if (loggedInUser.Access != 0 || loggedInUser.Access != 2)
+                {
+                    return RedirectToAction("CollectIndex");
+                }
+            }
+
             if (id == null)
                 return RedirectToAction("DonationManagement");
 
-            //TDonationOrder d = db.TDonationOrders.FirstOrDefault(t => t.DonationOrderId == id);
             TDonationOrder d = db.TDonationOrders
                 .Include(t => t.Collect)
                 .FirstOrDefault(t => t.DonationOrderId == id);
