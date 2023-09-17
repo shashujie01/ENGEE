@@ -9,6 +9,9 @@ namespace EnGee.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the EnGeeUser class
 public class EnGeeUser : IdentityUser
 {
+    //----------------------0917 Min新增--------------------------//
+    public string PasswordHash { get; set; }
+    //----------------------------------------------------------//
     public int MemberId { get; set; }
 
     public string Username { get; set; } = null!;
@@ -39,5 +42,7 @@ public class EnGeeUser : IdentityUser
     public string? Introduction { get; set; }
 
     public string? CharityProof { get; set; }
+
+
 }
 

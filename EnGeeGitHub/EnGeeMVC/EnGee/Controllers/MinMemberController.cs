@@ -1,20 +1,36 @@
 ﻿using EnGee.Models;
 using Microsoft.AspNetCore.Mvc;
 using MimeKit;
-using MailKit;
 using EnGee.ViewModels;
 using EnGee.Services.EmailService;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using MailKit.Security;
 using MailKit.Net.Smtp;
-using System.Drawing.Text;
-using NuGet.Common;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using EnGee.Areas.Identity.Data;
 
 namespace EnGee.Controllers
 {
     public class MinMemberController : Controller
     {
+
+        //------------------ 0917---------------------------------------//
+        private readonly UserManager<EnGeeUser> _userManager;
+
+
+        public MinMemberController(UserManager<EnGeeUser> userManager, SignInManager<EnGeeUser> signInManager)
+        {
+            _userManager = userManager;
+
+        }
+
+        public IActionResult EmailValidFail()
+        {
+            return View();//註冊加密失敗頁面
+        }
+
+        //-------------------------------------------------------------//
         public IActionResult EmailValid()
         {
             return View();//填寫表單後請使用者至信箱收信畫面
@@ -26,8 +42,10 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(TMember tm, string username, string email, string gender)
+        public async Task<IActionResult> Create(TMember tm, string username, string email, string gender)
         {
+
+
             //---------------條件限制規則--------------------//
             if (tm.Gender == null)
             {
@@ -43,7 +61,7 @@ namespace EnGee.Controllers
             }
             if (tm.Access == null)
             {
-                if(tm.CharityProof != null)
+                if (tm.CharityProof != null)
                 {
                     tm.Access = 3;  //公益團體權限3
                 }
@@ -76,12 +94,49 @@ namespace EnGee.Controllers
                 ModelState.AddModelError("Email", "此信箱已經被使用。");
                 return View();
             }
-
             //----------------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫---------------------//
             Response.Cookies.Append("memberstorageData", JsonConvert.SerializeObject(tm));  //將資料轉成jason檔存在cookie
-           
+
             SendVerificationEmail(email, randomToken);
-            return RedirectToAction("EmailValid");  //email是實際模型輸入值，命名為emailto傳給SendEmail
+            //--------------0917 hash salt-   先將Tmember部分屬性轉移給模型EnGeeUser------------------------------//
+            var user = new EnGeeUser   //實作類別EnGeeUser
+            {
+                UserName = username,
+                Email = email,
+               
+
+            };
+
+            // 使用 ASP.NET Core Identity 提供的 UserManager 來進行hash salt
+            var result = await _userManager.CreateAsync(user, tm.Password);
+            if (result.Succeeded)
+            {
+                    return RedirectToAction("EmailValid");
+                //user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, tm.Password);  //此處再次進行加密可能是為了進一步確保密碼安全性。
+                // 
+                //var saveResult = _userManager.UpdateAsync(user).Result;  //確保將任何變更（包括密碼）保存到資料庫
+                //if (saveResult.Succeeded)
+                //{
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("", "註冊失敗");
+                //    return RedirectToAction("EmailValidFail", "MinMember");
+                //}
+                    
+            }
+            else
+            {
+                // 用户创建失败的处理逻辑
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"Error: {error.Description}");
+                }
+                ModelState.AddModelError("", "註冊失敗");
+                return RedirectToAction("EmailValidFail", "MinMember");
+            }
+          
+
         }
 
 
@@ -118,6 +173,7 @@ namespace EnGee.Controllers
         //-----------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫-------------------------//
         public IActionResult VerifyEmail(string token)
         {
+
             var memberStorageCookie = Request.Cookies["memberstorageData"];
 
             var tmCookie = JsonConvert.DeserializeObject<TMember>(memberStorageCookie);
