@@ -26,12 +26,16 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(TMember tm, string username, string email)
+        public IActionResult Create(TMember tm, string username, string email, string gender)
         {
             //---------------條件限制規則--------------------//
             if (tm.Gender == null)
             {
                 tm.Gender = "2";
+            }
+            else
+            {
+                tm.Gender = gender;
             }
             if (tm.RegistrationDate == null)
             {
