@@ -10,8 +10,10 @@
 }
 
     .profile-img img {
-        width: 70%;
-        height: 100%;
+        width: 250px;
+        height: 250px;
+        object-fit:cover;
+        border-radius: 50%;
     }
 
     .profile-img .file {
@@ -33,12 +35,9 @@
         }
 
 .profile-head h5 {
-    color: #333;
-}
-
-.profile-head h6 {
     color: #0062cc;
 }
+
 
 .profile-edit-btn {
     border: none;
@@ -62,7 +61,7 @@
         font-size: 15px;
         font-weight: 600;
     }
-
+/*
 .profile-head .nav-tabs {
     margin-bottom: 5%;
 }
@@ -75,7 +74,7 @@
         .profile-head .nav-tabs .nav-link.active {
             border: none;
             border-bottom: 2px solid #0062cc;
-        }
+        }*/
 
 .profile-work {
     padding: 14%;
@@ -111,7 +110,6 @@
 
 /*以下為頭貼*/
 .avatar-wrapper {
-    position: absolute;
     height: 200px;
     width: 200px;
     margin: 50px auto;
@@ -128,6 +126,7 @@
 .profile-pic {
     height: 100%;
     width: 100%;
+    object-fit:cover;
     transition: all .3s ease;
     &:after{
                font-family: FontAwesome;
