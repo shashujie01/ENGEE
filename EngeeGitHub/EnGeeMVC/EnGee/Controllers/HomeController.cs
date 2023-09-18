@@ -13,6 +13,7 @@ namespace EnGee.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private CHI_CUserViewModel UserVM;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -42,30 +43,33 @@ namespace EnGee.Controllers
         {
             return View();
         }
-        public IActionResult LoginLayout()
+        public IActionResult Login()
         {        
             return View();
         }
         [HttpPost]
 
-        public IActionResult LoginLayout(CLoginViewModel vm)
+        public IActionResult Login(CLoginViewModel vm)
         {
             TMember user = (new EngeeContext()).TMembers.FirstOrDefault(
                 t => t.Email.Equals(vm.txtAccount) && t.Password.Equals(vm.txtPassword));
             if (user != null && user.Password.Equals(vm.txtPassword))
             {
                 string json = JsonSerializer.Serialize(user);
-                HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER, json);              
+                HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER, json);
 
                 return RedirectToAction("Index");
+
             }
             return View();
         }
         public IActionResult Logout()
         {
-            HttpContext.SignOutAsync(); // 清除使用者的驗證 Cookie
+            HttpContext.SignOutAsync(); // 清除認證
+            HttpContext.Session.Clear(); // 清除Session
             return RedirectToAction("Index");
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

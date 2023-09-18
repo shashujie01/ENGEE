@@ -22,7 +22,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.Cookie.Name = "YourAuthCookieName";
-        options.LoginPath = new PathString("/Home/LoginLayout");
+        options.LoginPath = new PathString("/Home/Login");
         options.AccessDeniedPath = new PathString("/Home/AccessDenied");
     });
 
@@ -30,9 +30,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 
 // Rong新增
 builder.Services.AddSingleton<IHostedService, CollectStatusUpdate>();
+
+//CHI新增
+builder.Services.AddSingleton<CHI_CUserViewModel>();
 
 var app = builder.Build();
 
@@ -57,3 +61,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 app.Run();
+
+
