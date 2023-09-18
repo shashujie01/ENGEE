@@ -12,6 +12,8 @@ namespace prjEnGeeDemo.Controllers
         //以下為樹傑的Action
 
 
+
+
         EngeeContext db = new EngeeContext();
         private IQueryable<TProduct> ApplyFilters(SSJ_ProductPageViewModel vm, IQueryable<TProduct> query)
         {//filters邏輯使用方法
@@ -52,7 +54,6 @@ namespace prjEnGeeDemo.Controllers
                 ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
                 ProductUnitPoint = p.ProductUnitPoint
             }).ToList();
-
             // return 給SSJ_ProductPageViewModel在前端顯示
             var model = new SSJ_ProductPageViewModel
             {
@@ -71,8 +72,15 @@ namespace prjEnGeeDemo.Controllers
         {//分頁函式
             return query.Skip((page - 1) * pageSize).Take(pageSize);
         }
+
         public IActionResult Details(int id, int txtCount, int deliverytypeid)
         {// 商品詳情頁面
+            //為了加入購物車充新導回Details+ID的頁面
+            if (TempData["RedirectToAction"] != null && TempData["RedirectToAction"].ToString() == "AddToCart")
+            {//傳給前端
+                ViewBag.RedirectToAction = "AddToCart";
+            }
+
             // 從資料庫中獲取指定ID的商品，並且預先加載相關的資料
             var product = db.TProducts
                             .Include(p => p.Brand)
@@ -104,8 +112,6 @@ namespace prjEnGeeDemo.Controllers
                 //SellerName = product.Seller?.MemberName,
                 ProductSaleStatus = product.ProductSaleStatus,
             };
-            return View(PDviewModel);
-        }
         //以下好像用不到
         //public IActionResult Create()
         //{
@@ -119,6 +125,8 @@ namespace prjEnGeeDemo.Controllers
         //    db.SaveChanges();
         //    return RedirectToAction("IndexSSJ");
         //}
+            return View(PDviewModel);
+        }
     }
 }
 

@@ -52,7 +52,7 @@
                                 <!-- Product ID (Hidden) -->
                                 <input type="hidden" name="txtProductId" value="@Model.ProductId" class="txtProductId" />
                                 <input type="hidden" name="deliveryOption" value="" class="deliveryOptionInput" />
-                                <!-- 數量 -->
+
                                 <div class="Purchase-quantity-section d-flex">
                                     <label class="" for="txtCount">數量:</label>
                                     <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnMinus">-</button>
@@ -62,7 +62,6 @@
                                     <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnPlus">+</button>
                                 </div>
 
-                                <!-- 配送方式 -->
                                 <!-- TODO要根據資料庫運送方式顯示-->
                                 <div class="choose-product-delivery-section d-flex flex-wrap">
                                     <div id="delyTitle">配送方式:</div>
@@ -72,7 +71,6 @@
                                     </div>
                                 </div>
 
-                                <!-- 行动 -->
                                 <div class="product-action-section d-flex">
                                     <button class="btn btn-m btnHoverStyle2 m-2 add-to-cart" type="button">加入購物車</button>
                                     <button class="btn btn-m btnHoverStyle2 m-2" type="submit" name="actionType" value="buyNow" class="buy-now">立即購買</button>
@@ -87,10 +85,6 @@
     </div>
 </main>
 <script>
-    $(document).ready(function ()
-    {
-        console.log("Hello, World!");
-    });
     $(document).ready(function ()
     {
         // 初始化設置
@@ -118,52 +112,62 @@
         }
     });
     // --------------------------------
-        // // 當點擊 "加入購物車"時
-        // $(".add-to-cart").on("click", function (e)
-        // {
-        //     e.preventDefault(); // 阻止預設事件
+        // 此段為當頁面加載後的自動觸發，用於再次嘗試加入購物車
+        if ('@ViewBag.RedirectToAction' === "AddToCart")
+        {
+            var formData = {
+                txtProductId: '@Context.Session.GetInt32("TempProductId")',
+                txtCount: '@Context.Session.GetInt32("TempTxtCount")',
+                deliverytypeid: '@Context.Session.GetInt32("TempDeliverytypeid")'
+            };
 
-        //     var formData = $("#productForm").serialize();  // 使用正確的 form selector
-        //     console.log("Form Data:", formData);
+            $.ajax({
+                type: "POST",
+                url: "/Shopping/AddToCart",
+                data: formData,
+                success: function (response)
+                {
+                    if (response.success)
+                    {
+                        alert("已加入購物車");
+                    }
+                }
+            });
+        }
 
-        //     // 使用 AJAX 提交
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/Shopping/AddToCart",  // 確保這是正確的後端方法
-        //         data: formData,
-        //         success: function (response)
-        //         {
-        //             if (response.success)
-        //             {
-        //                 alert("已加入購物車");
-        //             } else
-        //             {
-        //                 if (response.needToLogin)
-        //                 {  // 假設後端會設置這個屬性來通知需要登入
-        //                     window.location.href = "/Home/LoginLayout";  // 或你需要重定向的 URL
-        //                 } else
-        //                 {
-        //                     alert(response.message ? response.message : "請先登入");
-        //                 }
-        //             }
-        //         },
+        // 此段為使用者點擊"加入購物車"按鈕時的手動觸發
+        $(".add-to-cart").on("click", function (e)
+        {
+            e.preventDefault();
 
-        //         error: function (jqXHR, textStatus, errorThrown)
-        //         {
-        //             alert("操作失敗，請稍後再試");
-        //         }
-        //     });
-        // });
+            var formData = $("#productForm").serialize();
 
-// -------------------------------------------
+            $.ajax({
+                type: "POST",
+                url: "/Shopping/AddToCart",
+                data: formData,
+                success: function (response)
+                {
+                    if (response.needToLogin)
+                    {
+                        window.location.href = "/Home/LoginLayout";
+                    } else if (response.success)
+                    {
+                        alert("已加入購物車");
+                    }
+                },
+                error: function ()
+                {
+                    alert("操作失敗，請稍後再試");
+                }
+            });
+        });
     // 當點擊"立即購買" 時
         $(".buy-now").on("click", function (e)
         {
             e.preventDefault(); // 阻止預設事件
 
             var formData = $("#productForm").serialize();
-            console.log("After serializing the form");
-            console.log("Form Data:", formData);
 
             // 使用 AJAX 提交
             $.ajax({
