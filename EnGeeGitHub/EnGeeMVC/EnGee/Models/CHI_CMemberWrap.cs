@@ -1,9 +1,13 @@
 ﻿namespace EnGee.Models
 {
-    public class CHI_CMemberWrap
+    public class CHI_CMemberWrap:TMember
     {
 
         private TMember _member;
+        public CHI_CMemberWrap()
+        {
+            _member = new TMember();
+        }
         public string Username
         {
             get { return _member.Username; }
@@ -36,6 +40,12 @@
             set { _member.Email = value; }
         }
 
+        public DateTime? Birth
+        {
+            get { return _member.Birth; }
+            set { _member.Birth = value; }
+        }
+
         public string Fullname
         {
             get { return _member.Fullname; }
@@ -57,6 +67,12 @@
         {
             get { return _member.Phone; }
             set { _member.Phone = value; }
+        }
+
+        public string Password
+        {
+            get { return _member.Password; }
+            set { _member.Password = value; }
         }
 
 

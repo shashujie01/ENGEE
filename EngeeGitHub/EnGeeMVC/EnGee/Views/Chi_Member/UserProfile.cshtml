@@ -6,45 +6,45 @@
 <head>
     <link rel="stylesheet" href="~/css/CHIACHI_UserProfile.css">
 </head>
-<body>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<body>@*
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!------ Include the above in your HEAD tag ---------->
 
-    <div class="container emp-profile bg-light">
+    <div class="container emp-profile bg-white">
         <form method="post">
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-img">
                         @if (!string.IsNullOrEmpty(Model.PhotoPath))
                         {
-                            <img src="~/images/UserImage/@Model.PhotoPath" alt="User Photo" />
+                            <img src="~/images/UserImage/@Model.PhotoPath" alt="User Photo"/>
                         }
                         else
                         {
-                            <img src="~/images/UserImage/profile.png" alt="Default User Photo" />
+                            <img src="~/images/UserImage/profile.png" alt="Default User Photo"/>
                         }
                         
                     </div>                   
                 </div>
                 <div class="col-md-8">
                     <div class="profile-head">
-                        <h5>
-                            
-                        </h5>
-                        <h6>
+                        <h5 class="mb-3">
                             User Id #@Model.Username
-                        </h6>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
-                            編輯資料
-                        </button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
-                            修改密碼
-                        </button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
-                            會員身分變更
-                        </button><br />
+                        </h5>
+                        <!-- 會員編輯按鈕 -->
+                        <div class="mb-2">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                                編輯資料
+                            </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPasswordModal">
+                                修改密碼
+                            </button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                                會員身分變更
+                            </button><br />
+                        </div>                        
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">商品</a>
@@ -68,7 +68,8 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-work">
-                        <p class="proile-rating">綜合評價 <span>8/10</span></p>
+                        <p class="proile-rating">綜合評價</p>
+                        <span>8/10</span>
                         <p>個人簡介</p>                        
                         <div>
                             @Model.Introduction
@@ -121,60 +122,102 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit Profile</h5>
+                    <h5 class="modal-title" id="editModalLabel">會員資料修改</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <!-- 會員資料編輯表單內容 -->
-                    <form asp-action="Edit" method="post">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="MemberId" />
-                        <div class="avatar-wrapper">
-                            @if (!string.IsNullOrEmpty(Model.PhotoPath))
-                            {
-                                <img src="~/images/UserImage/@Model.PhotoPath" alt="User Photo" class="profile-pic" />
-                            }
-                            else
-                            {
-                                <img src="~/images/UserImage/profile.png" alt="Default User Photo" class="profile-pic" />
-                            }
-                            <div class="upload-button">
-                                <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                        <div>
+                            <div class="avatar-wrapper">
+                                @if (!string.IsNullOrEmpty(Model.PhotoPath))
+                                {
+                                    <img src="~/images/UserImage/@Model.PhotoPath" alt="User Photo" class="profile-pic" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/UserImage/profile.png" alt="Default User Photo" class="profile-pic" />
+                                }
+                                <div class="upload-button">
+                                    <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                                </div>
+                                <input class="file-upload" type="file" asp-for="photo" accept=".jpg, .jpeg, .png" />
                             </div>
-                            <input class="file-upload" type="file" accept="image/*" />
-                        </div>
+                            <div class="form-group">
+                                <label asp-for="Email">Email</label>
+                                <input asp-for="Email" class="form-control" />
+                                <button type="submit" class="btn btn-primary mt-2" asp-action="verifyingEmail">發送驗證信</button>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Fullname">全名</label>
+                                <input asp-for="Fullname" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Birth">生日</label>
+                                <input type="date" asp-for="Birth" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Gender">性別</label><br>
+                                <input type="radio" asp-for="Gender" class="" value="0" id="Male">
+                                <label for="Male">男</label>
+                                <input type="radio" asp-for="Gender" class="" value="1" id="Female">
+                                <label for="Female">女</label>
+                                <input type="radio" asp-for="Gender" class="" value="2" id="Unknow">
+                                <label for="Unknow">不透漏</label>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Address">聯繫地址</label>
+                                <input asp-for="Address" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Phone">手機號碼</label>
+                                <input asp-for="Phone" class="form-control" />
+                            </div>
 
-                        <div class="form-group">
-                            <label asp-for="Email">Email</label>
-                            <input asp-for="Email" class="form-control" />
-                            <button type="submit" class="btn btn-primary mt-2" asp-action="verifyingEmail">發送驗證信</button>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Fullname">全名</label>
-                            <input asp-for="Fullname" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Gender">性別</label><br>
-                            <input type="radio" asp-for="Gender" class="" value="0" id="Male">
-                            <label for="Male">男</label>
-                            <input type="radio" asp-for="Gender" class="" value="1" id="Female">
-                            <label for="Female">女</label>
-                            <input type="radio" asp-for="Gender" class="" value="2" id="Unknow">
-                            <label for="Unknow">不透漏</label>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Address">聯繫地址</label>
-                            <input asp-for="Address" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Phone">手機號碼</label>
-                            <input asp-for="Phone" class="form-control" />
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">保存</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>                       
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 會員帳密編輯視窗 -->
+    <div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">密碼修改</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 會員帳密編輯表單內容 -->
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="MemberId" />
+                        <div>
+                            <div class="form-group">
+                                <label asp-for="Password">舊密碼輸入</label>
+                                <input asp-for="Password" class="form-control" />                               
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email">新密碼輸入</label>
+                                <input asp-for="Email" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email">新密碼輸入</label>
+                                <input asp-for="Email" class="form-control" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            </div>
                         </div>
                     </form>
                 </div>
