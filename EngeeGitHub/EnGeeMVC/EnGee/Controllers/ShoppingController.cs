@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 namespace EnGee.Controllers
 {
     public class ShoppingController : SuperController
-    {
+    {//TODO購買的取貨方式、BuyerId、SellerId還沒串接
         private readonly EngeeContext _db;
         // 建構子，用於依賴注入
         public ShoppingController(EngeeContext db)
@@ -87,57 +87,53 @@ namespace EnGee.Controllers
         }
         //------------------------
         public override void OnActionExecuting(ActionExecutingContext context)
-        {//登入後自動跳轉到頁面->>目前AddToCartAndReturnCarView、AddToCart
+        {//// overview:
+         //// 判斷目前執行的動作是否為特定Action，如果會員沒登入，紀錄原本要使用的action至session(Key:RedirectAfterLogin)、
+         //// txtProductId(Key:TempProductId)、 deliverytypeid(Key:TempDeliverytypeid)、 txtCount(Key:TempTxtCount)，最後跳轉至登入頁面
             base.OnActionExecuting(context); // 調用基類的 OnActionExecuting 方法來進行基本驗證
-            // 判斷目前執行的動作是否為 QuickAddToCart
             if (context.ActionDescriptor.DisplayName.Contains("QuickAddToCart"))
             {
                 if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
-                {//如果會員沒登入，跳轉至登入頁面
+                {
                     int txtProductId = (int)context.ActionArguments["txtProductId"];
                     HttpContext.Session.SetInt32("TempProductId", txtProductId);
-                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); // 紀錄原本要使用的action
+                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
                     context.Result = new RedirectToActionResult("LoginLayout", "Home", null);
                 }
-                //從LoginLayout方法中跳回來RedirectToAction("QuickAddToCart", "Shopping"執行QuickAddToCart，
-                //但因ActionExecutingContext會再次執行OnActionExecuting，驗證有登入則不做事，繼續執行QuickAddToCart
             }
             else if (context.ActionDescriptor.DisplayName.Contains("CartView"))
             {
                 if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
-                {//如果會員沒登入，跳轉至登入頁面
-
-                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); // 紀錄原本要使用的action
+                {
+                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
                     context.Result = new RedirectToActionResult("LoginLayout", "Home", null);
                 }
             }
             else if (context.ActionDescriptor.DisplayName.Contains("AddToCartAndReturnCarView"))
             {
                 if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
-                {//如果會員沒登入，跳轉至登入頁面
+                {
                     if (context.ActionArguments.ContainsKey("txtProductId"))
                         {  HttpContext.Session.SetInt32("TempProductId", (int)context.ActionArguments["txtProductId"]);}
                     if (context.ActionArguments.ContainsKey("deliverytypeid")) 
                     {HttpContext.Session.SetInt32("TempDeliverytypeid", (int)context.ActionArguments["deliverytypeid"]);}
                     if (context.ActionArguments.ContainsKey("txtCount"))
-                    { HttpContext.Session.SetInt32("TempTxtCount", (int)context.ActionArguments["txtCount"]); }// 保存商品數量
-                  
-                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); // 紀錄原本要使用的action
+                    { HttpContext.Session.SetInt32("TempTxtCount", (int)context.ActionArguments["txtCount"]); }
+                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
                     context.Result = new RedirectToActionResult("LoginLayout", "Home", null);
                 }
             }
             else if (context.ActionDescriptor.DisplayName.Contains("AddToCart"))
             {
                 if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
-                {//如果會員沒登入，跳轉至登入頁面
+                {
                     if (context.ActionArguments.ContainsKey("txtProductId"))
                     { HttpContext.Session.SetInt32("TempProductId", (int)context.ActionArguments["txtProductId"]); }
                     if (context.ActionArguments.ContainsKey("deliverytypeid"))
                     { HttpContext.Session.SetInt32("TempDeliverytypeid", (int)context.ActionArguments["deliverytypeid"]); }
                     if (context.ActionArguments.ContainsKey("txtCount"))
-                    { HttpContext.Session.SetInt32("TempTxtCount", (int)context.ActionArguments["txtCount"]); }// 保存商品數量
-
-                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); // 紀錄原本要使用的action
+                    { HttpContext.Session.SetInt32("TempTxtCount", (int)context.ActionArguments["txtCount"]); }
+                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName);
                     context.Result = new JsonResult(new { needToLogin = true });
                 }
             }
@@ -152,65 +148,31 @@ namespace EnGee.Controllers
             return View(cart);
         }
 
-        //[HttpPost] /*直接購買與加入購物車分離出CARTVIEW，待測驗OK刪除*/
-        ////Details會post商品資料過來
-        //public ActionResult CartView(SSJ_CAddToCartViewModel vm, int? deliverytypeid)
-        //{
-        //    if (deliverytypeid.HasValue)
-        //    {
-        //        HttpContext.Session.SetInt32("DeliveryType", deliverytypeid.Value);//TODO用處?
-        //    }
-        //    if (vm == null)
-        //    { return RedirectToAction("CartView"); }
-
-        //    TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == vm.txtProductId);
-        //    if (p == null)
-        //    {
-        //        return RedirectToAction("CartView");
-        //    }
-        //    List<SSJ_CShoppingCarItem> cart = GetCartItems();
-        //    SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == vm.txtProductId);
-        //    if (existingItem != null)
-        //    {
-        //        existingItem.count += vm.txtCount;
-        //    }
-        //    else
-        //    {
-        //        cart.Add(new SSJ_CShoppingCarItem
-        //        {
-        //            point = (int)p.ProductUnitPoint,
-        //            ProductId = vm.txtProductId,
-        //            count = vm.txtCount,
-        //            tproduct = p,
-        //            ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
-        //            DeliveryTypeID = (int)deliverytypeid
-        //        });
-        //    }
-        //    SaveCartItems(cart);
-        //    return RedirectToAction("IndexSSJ", "Product");
-        //}
-
-        public ActionResult AddToCart(int txtProductId, int txtCount, int deliverytypeid)
-        {//Detail中的加入購物車(不會跳轉至cartview)
-            //if (deliverytypeid.HasValue)
-            //{
-            //    HttpContext.Session.SetInt32("DeliveryType", deliverytypeid.Value);
-            //}
-
-            //if (vm == null)
-            //{
-            //    return Json(new { success = false, message = "No product details provided." });
-            //}
-
+        public ActionResult AddToCart(SSJ_CShoppingCarItem vm ,int txtProductId, int txtCount, int deliverytypeid)
+        {
+            if (deliverytypeid!=0)
+            {
+                HttpContext.Session.SetInt32("DeliveryType", deliverytypeid);
+            }
+            if (vm == null)
+            {
+                return Json(new { success = false, message = "No product details provided." });
+            }
+            else//test
+            {
+                Console.WriteLine(vm.ProductId);//0
+                Console.WriteLine(vm.count);//0
+                Console.WriteLine(vm.DeliveryTypeID);//1
+                Console.WriteLine(vm.DeliveryType);//宅配
+                Console.WriteLine(vm.小計);//0
+            }
             TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == txtProductId);
             if (p == null)
             {
                 return Json(new { success = false, message = "Product not found." });
             }
-
             List<SSJ_CShoppingCarItem> cart = GetCartItems();
             SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == txtProductId);
-
             if (existingItem != null)
             {
                 existingItem.count += txtCount;
@@ -218,11 +180,10 @@ namespace EnGee.Controllers
             else
             {
                 cart.Add(new SSJ_CShoppingCarItem
-                {
+                {   tproduct = p,
                     point = (int)p.ProductUnitPoint,
                     ProductId = txtProductId,
                     count = txtCount,
-                    tproduct = p,
                     ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
                     DeliveryTypeID = deliverytypeid
                 });
@@ -231,19 +192,25 @@ namespace EnGee.Controllers
             return Json(new { success = true, message = "Product added to cart." });
         }
 
-
-        public ActionResult AddToCartAndReturnCarView(int txtProductId, int txtCount, int deliverytypeid)
+        public ActionResult AddToCartAndReturnCarView(SSJ_CShoppingCarItem vm,int txtProductId, int txtCount, int deliverytypeid)
         {//Detail中的直接購買(跳轉至cartview)
-            //SSJ_CAddToCartViewModel vm = new SSJ_CAddToCartViewModel();
-            //if (deliverytypeid.HasValue)
-            //{
-            //    HttpContext.Session.SetInt32("DeliveryType", deliverytypeid.Value);
-            //}
+            if (deliverytypeid != 0)
+            {
+                HttpContext.Session.SetInt32("DeliveryType", deliverytypeid);
+            }
 
-            //if (vm == null)
-            //{
-            //    return Json(new { success = false, message = "No product details provided." });
-            //}
+            if (vm == null)
+            {
+                return Json(new { success = false, message = "No product details provided." });
+            }
+            else//test
+            {
+                Console.WriteLine(vm.ProductId);
+                Console.WriteLine(vm.count);
+                Console.WriteLine(vm.DeliveryTypeID);
+                Console.WriteLine(vm.DeliveryType);
+                Console.WriteLine(vm.小計);
+            }
 
             TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == txtProductId);
             if (p == null)
@@ -262,10 +229,10 @@ namespace EnGee.Controllers
             {
                 cart.Add(new SSJ_CShoppingCarItem
                 {
-                    point = (int)p.ProductUnitPoint,
-                    ProductId = txtProductId,/*vm.txtProductId,*/
-                    count = txtCount,/*vm.txtCount,*/
                     tproduct = p,
+                    point = (int)p.ProductUnitPoint,
+                    ProductId = txtProductId,
+                    count = txtCount,
                     ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
                     DeliveryTypeID = (int)deliverytypeid
                 });
@@ -273,34 +240,23 @@ namespace EnGee.Controllers
             SaveCartItems(cart);
             return RedirectToAction("CartView");
         }
-
       
         public ActionResult QuickAddToCart(int txtProductId)
         { // 購物頁商品快速加入商品到購物車
             // 設定預設的配送選項
             int defaultCount = 1;
             int defaultDeliveryOption = 1;
-            HttpContext.Session.SetInt32("DeliveryType", defaultDeliveryOption);
+            HttpContext.Session.SetInt32("DeliveryType", defaultDeliveryOption);//不應該存入SESSION，應該直接對cart session操作
             // 用GetAndUpdateCart將商品加入購物車
             int productId = txtProductId;
             GetAndUpdateCart(productId, defaultCount, defaultDeliveryOption);
             return RedirectToAction("CartView");
         }
 
-        //[HttpPost]
-        //public JsonResult AddToCartWithAjax(SSJ_CAddToCartViewModel vm, int deliveryOption)
-        //{//商品Detail中，使用加入購物車
-        //    if (vm == null)
-        //    {
-        //        return Json(new { success = false, message = "加入購物車失敗" });
-        //    }
-        //    GetAndUpdateCart(vm.txtProductId, vm.txtCount, deliveryOption);
-        //    return Json(new { success = true, message = "已加入購物車" });
-        //}
-
         [HttpPost]
-        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm,string SelectedProducts)
-        { //確認結帳傳至後端
+        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm,string SelectedProducts, int txtProductId, int txtCount, int deliverytypeid)
+        {
+            //確認結帳傳至後端
             var cart = GetCartItems();
             if (cart == null || cart.Count == 0) return RedirectToAction("CartView");// 檢查購物車中是否有商品
             int? sessionDeliveryType = HttpContext.Session.GetInt32("DeliveryType");
@@ -318,7 +274,19 @@ namespace EnGee.Controllers
             {
                 return RedirectToAction("CartView");
             }
+            else //test
+            {
+                    Console.WriteLine(cart);
+            }
+
             // 創建新的訂單並儲存
+
+            if (vm != null)//test
+            {
+                Console.WriteLine(vm.DeliveryType);
+                Console.WriteLine(vm.DeliveryAddress);
+            }
+
             int totalUsagePoints = 0;
             using (EngeeContext db = new EngeeContext())
             {
@@ -413,5 +381,44 @@ namespace EnGee.Controllers
             // 返回成功
             return Json(new { success = true });
         }
+        //--------------墳墓--------------
+        //[HttpPost] /*直接購買與加入購物車分離出CARTVIEW，待測驗OK刪除*/
+        ////Details會post商品資料過來
+        //public ActionResult CartView(SSJ_CAddToCartViewModel vm, int? deliverytypeid)
+        //{
+        //    if (deliverytypeid.HasValue)
+        //    {
+        //        HttpContext.Session.SetInt32("DeliveryType", deliverytypeid.Value);//TODO用處?
+        //    }
+        //    if (vm == null)
+        //    { return RedirectToAction("CartView"); }
+
+        //    TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == vm.txtProductId);
+        //    if (p == null)
+        //    {
+        //        return RedirectToAction("CartView");
+        //    }
+        //    List<SSJ_CShoppingCarItem> cart = GetCartItems();
+        //    SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == vm.txtProductId);
+        //    if (existingItem != null)
+        //    {
+        //        existingItem.count += vm.txtCount;
+        //    }
+        //    else
+        //    {
+        //        cart.Add(new SSJ_CShoppingCarItem
+        //        {
+        //            point = (int)p.ProductUnitPoint,
+        //            ProductId = vm.txtProductId,
+        //            count = vm.txtCount,
+        //            tproduct = p,
+        //            ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
+        //            DeliveryTypeID = (int)deliverytypeid
+        //        });
+        //    }
+        //    SaveCartItems(cart);
+        //    return RedirectToAction("IndexSSJ", "Product");
+        //}
+        //-----------墳墓-------------
     }
 }

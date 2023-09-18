@@ -47,6 +47,7 @@ namespace EnGee.Controllers
         {
             return View();
         }
+
         //[HttpPost]
         //public IActionResult LoginLayout(CLoginViewModel vm)
         //{
@@ -62,6 +63,18 @@ namespace EnGee.Controllers
         //    return View();
         //}
 
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(); // 清除使用者的驗證 Cookie
+            return RedirectToAction("Index");
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
         [HttpPost]
         public IActionResult LoginLayout(CLoginViewModel vm)
         {
@@ -75,7 +88,7 @@ namespace EnGee.Controllers
                 Console.WriteLine("Entering HandleRedirectAfterLogin");
                 string redirectPage = HttpContext.Session.GetString("RedirectAfterLogin") ?? "Index";
                 int? txtProductId = HttpContext.Session.GetInt32("TempProductId");
-                int? deliverytypeid = HttpContext.Session.GetInt32("TempDeliverytypeid");  // 假設您也儲存了這個
+                int? deliverytypeid = HttpContext.Session.GetInt32("TempDeliverytypeid");
                 int? txtCount = HttpContext.Session.GetInt32("TempTxtCount");
                 if (redirectPage.Contains("QuickAddToCart"))
                 {
@@ -106,13 +119,8 @@ namespace EnGee.Controllers
                 {
                     if (txtProductId.HasValue && deliverytypeid.HasValue && txtCount.HasValue)
                     {
-                        Console.WriteLine($"Redirecting to AddToCart with txtProductId={txtProductId}, txtCount={txtCount}, deliverytypeid={deliverytypeid}");
-                        return RedirectToAction("AddToCart", "Shopping", new
-                        {
-                            txtProductId = (int)txtProductId,
-                            txtCount = (int)txtCount,
-                            deliverytypeid = (int)deliverytypeid,
-                        });
+                        TempData["RedirectToAction"] = "AddToCart"; //辨識字串存temp，使 View 知道需要重啟 AJAX 請求
+                        return RedirectToAction("Details", "Product", new { id = txtProductId });//並非導回AddToCart
                     }
                     else
                     {
@@ -127,58 +135,6 @@ namespace EnGee.Controllers
             }
 
             return View();
-        }
-        private IActionResult HandleRedirectAfterLogin()
-        {//登入後自動跳轉到頁面->>目前AddToCartAndReturnCarView、AddToCart
-            Console.WriteLine("Entering HandleRedirectAfterLogin");
-            string redirectPage = HttpContext.Session.GetString("RedirectAfterLogin") ?? "Index";
-            int? txtProductId = HttpContext.Session.GetInt32("TempProductId");
-            int? deliverytypeid = HttpContext.Session.GetInt32("TempDeliverytypeid");  // 假設您也儲存了這個
-            int? txtCount = HttpContext.Session.GetInt32("TempTxtCount");
-            if (redirectPage.Contains("QuickAddToCart"))
-            {
-                return RedirectToAction("QuickAddToCart", "Shopping", new { txtProductId });
-            }
-            else if (redirectPage.Contains("CartView"))
-            {
-                return RedirectToAction("CartView", "Shopping", new { txtProductId });
-            }
-            else if (redirectPage.Contains("AddToCartAndReturnCarView"))
-            {
-                if (txtProductId.HasValue && deliverytypeid.HasValue && txtCount.HasValue)
-                {
-                    Console.WriteLine($"Redirecting to AddToCartAndReturnCarView with txtProductId={txtProductId}, txtCount={txtCount}, deliverytypeid={deliverytypeid}");
-                    return RedirectToAction("AddToCartAndReturnCarView", "Shopping", new
-                    {
-                        txtProductId = txtProductId.Value,
-                        txtCount = txtCount.Value,
-                        deliverytypeid= deliverytypeid.Value
-                    });
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
-                } 
-            }
-            else if (redirectPage.Contains("AddToCart"))
-            {
-                return RedirectToAction("AddToCart", "Shopping");
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-        }
-        public IActionResult Logout()
-        {
-            HttpContext.SignOutAsync(); // 清除使用者的驗證 Cookie
-            return RedirectToAction("Index");
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
