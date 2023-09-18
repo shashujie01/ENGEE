@@ -4,26 +4,26 @@
     ViewBag.Title = Model.ProductName + " Details";
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- <style>
-        .product-image-section img {
+<style>
+    .product-image-section img {
         width: 250px;
         height: 100%;
         object-fit: contain;
         max-height: 250px;
-        }
-
-    .product-Detail-section{
     }
-    </style>
+
+    .product-Detail-section {
+    }
+</style>
 <main>
     <div class="container py-5">
         <div class="row border-0 ">
             <div class="product-details-container d-flex justify-content-center m-2">
-                    <div class="product-image-section col-l-6 col-md-6 col-sm-6 col-xs-4 col-2 d-flex align-items-center justify-content-center">
+                <div class="product-image-section col-l-6 col-md-6 col-sm-6 col-xs-4 col-2 d-flex align-items-center justify-content-center">
                     <img src="@Model.ProductImagePath" alt="@Model.ProductName Image">
-                    </div>
-                    <div class="product-details-container col-md-4 col-4  d-flex align-items justify-content-center ms-5">
-                        <div class="product-Detail-section fz-size28px">
+                </div>
+                <div class="product-details-container col-md-4 col-4  d-flex align-items justify-content-center ms-5">
+                    <div class="product-Detail-section fz-size28px">
 
                         <div class="product-info-section d-flex flex-column">
                             <div class="product-info-row">
@@ -50,80 +50,77 @@
                         </div>
 
                         <div>
-                                <form id="productForm" asp-controller="Shopping" asp-action="CartView" method="post">
-                                    <!-- Product ID (Hidden) -->
-                                    <input type="hidden" name="txtProductId" value="@Model.ProductId" />
-                                    <input type="hidden" name="deliveryOption" value="" class="deliveryOptionInput" />
+                            <form id="productForm" asp-controller="Shopping" asp-action="CartView" method="post">
+                                <!-- Product ID (Hidden) -->
+                                <input type="hidden" name="txtProductId" value="@Model.ProductId" />
+                                <input type="hidden" name="deliveryOption" value="" class="deliveryOptionInput" />
 
-                                    <!-- 數量 -->
-                                    <div class="Purchase-quantity-section d-flex">
-                                        <label class="" for="txtCount">數量:</label>
-                                        <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnMinus">-</button>
-                                        <div class="col-md-10 w-64px">
-                                            @Html.TextBox("txtCount", "1", new { @class = "form-control" })
-                                        </div>
-                                        <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnPlus">+</button>
+                                <!-- 數量 -->
+                                <div class="Purchase-quantity-section d-flex">
+                                    <label class="" for="txtCount">數量:</label>
+                                    <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnMinus">-</button>
+                                    <div class="col-md-10 w-64px">
+                                        @Html.TextBox("txtCount", "1", new { @class = "form-control" })
                                     </div>
+                                    <button class="btn btn-rong-s btnHoverStyle2" type="button" id="btnPlus">+</button>
+                                </div>
 
-                                    <!-- 配送方式 -->
+                                <!-- 配送方式 -->
                                 <!-- TODO要根據資料庫運送方式顯示-->
                                 <div class="choose-product-delivery-section d-flex flex-wrap">
-                                        <div id="delyTitle">配送方式:</div>  
-                                        <div class="shippingList">
-                                         <label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="">宅配</label>
-                                         <label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>
-                                        </div>
+                                    <div id="delyTitle">配送方式:</div>
+                                    <div class="shippingList">
+                                        <label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="">宅配</label>
+                                        <label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>
                                     </div>
+                                </div>
 
-                                    <!-- 行动 -->
-                                    <div class="product-action-section d-flex">
-                                        <button class="btn btn-m btnHoverStyle2 m-2 add-to-cart" type="button">加入購物車</button>
-                                        <button class="btn btn-m btnHoverStyle2 m-2" type="submit" name="actionType" value="buyNow" class="buy-now">立即購買</button>
+                                <!-- 行动 -->
+                                <div class="product-action-section d-flex">
+                                    <button class="btn btn-m btnHoverStyle2 m-2 add-to-cart" type="button">加入購物車</button>
+                                    <button class="btn btn-m btnHoverStyle2 m-2" type="submit" name="actionType" value="buyNow" class="buy-now">立即購買</button>
                                     <a class="hrefstyle hrefstyle1:hover mt-2 fz-size16px ms-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
                                 </div>
-                                </form>
-                            
+                            </form>
+
                         </div>
-                      
-                    </div> 
-                
+
                     </div>
+
+                </div>
             </div>
         </div>
     </div>
 </main>
 <script>
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         // 初始化設置
         var initialDelivery = $("input[name='deliveryType']:checked").attr("delytype");
         $(".deliveryOptionInput").val(initialDelivery);
 
         // 當選擇配送方式時
-        $("input[name='deliveryType']").on("change", function ()
-        {
+        $("input[name='deliveryType']").on("change", function () {
             var selectedDelivery = $(this).attr("delytype");
             $(".deliveryOptionInput").val(selectedDelivery);
         });
 
-         // 當點擊 "增加" 按鈕
-    $("#btnPlus").on("click", function() {
-        var currentCount = parseInt($("#txtCount").val(), 10);
-        $("#txtCount").val(currentCount + 1);
-    });
+        // 當點擊 "增加" 按鈕
+        $("#btnPlus").on("click", function () {
+            var currentCount = parseInt($("#txtCount").val(), 10);
+            $("#txtCount").val(currentCount + 1);
+        });
 
-    // 當點擊 "減少" 按鈕
-    $("#btnMinus").on("click", function() {
-        var currentCount = parseInt($("#txtCount").val(), 10);
-        if (currentCount > 1) { // 確保數量不會小於1
-            $("#txtCount").val(currentCount - 1);
-        }
-    });
+        // 當點擊 "減少" 按鈕
+        $("#btnMinus").on("click", function () {
+            var currentCount = parseInt($("#txtCount").val(), 10);
+            if (currentCount > 1) { // 確保數量不會小於1
+                $("#txtCount").val(currentCount - 1);
+            }
+        });
 
 
         // 當點擊 "加入購物車" 或 "立即購買" 時
-        $(".add-to-cart, .buy-now").on("click", function (e)
-        {
+        $(".add-to-cart, .buy-now").on("click", function (e) {
             e.preventDefault(); // 阻止預設事件
 
             var selectedDelivery = $("input[name='deliveryType']:checked").attr("delytype");
@@ -131,8 +128,7 @@
             $(".deliveryOptionInput", form).val(selectedDelivery);
 
             // 如果是 "立即購買" 就直接提交表單
-            if ($(this).hasClass("buy-now"))
-            {
+            if ($(this).hasClass("buy-now")) {
                 form.submit();
                 return;
             }
@@ -144,12 +140,10 @@
                 type: "POST",
                 url: form.attr("action"),
                 data: formData + "&deliveryOption=" + selectedDelivery, // 這裡加上 deliveryOption 參數
-                success: function (response)
-                {
+                success: function (response) {
                     alert("已加入購物車");
                 },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
+                error: function (jqXHR, textStatus, errorThrown) {
                     alert("添加失敗，請稍後再試");
                 }
             });

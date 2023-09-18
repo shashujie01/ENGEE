@@ -1,5 +1,6 @@
 ﻿using EnGee.Models;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace prjEnGeeDemo.Models
 {
@@ -85,6 +86,7 @@ namespace prjEnGeeDemo.Models
             set { _product.ProductRemainingQuantity = value; }
         }
         [DisplayName("有效期限")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime ProductExpirationDate
         {
             get { return _product.ProductExpirationDate; }
@@ -103,6 +105,7 @@ namespace prjEnGeeDemo.Models
             set { _product.DonationStatus = value; }
         }
         [DisplayName("銷售日期")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfSale
         {
             get { return _product.DateOfSale; }

@@ -20,12 +20,12 @@
                     <h2>商品照片</h2>
                 </div>
                 <div class="col-12 d-flex justify-content-center">
-                    <img id="imagePreview" src="@Url.Content("~/images/product/" + Model.ProductImagePath)" alt="Product Image" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                    <img id="imagePreview" src="@Url.Content("~/images/ProductImages/" + Model.ProductImagePath)" alt="Product Image" class="img-fluid" style="max-width: 300px; max-height: 300px;">
                 </div>
             </div>
             <div class="form-group mt-2 d-flex justify-content-center">
-                    <input type="file" name="photo" />
-                </div>                             
+                <input type="file" name="photo" />
+            </div>
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label"></label>
                 <input asp-for="ProductName" class="form-control" />
@@ -81,7 +81,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProductExpirationDate" class="control-label"></label>
-                <input asp-for="ProductExpirationDate" class="form-control" />
+                <input asp-for="ProductExpirationDate" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="ProductExpirationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -90,27 +90,33 @@
                 <span asp-validation-for="ProductUsageStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DonationStatus" class="control-label"></label>
-                <select asp-for="DonationStatus" class="form-control">
-                    <option value="0">非捐贈</option>
-                    <option value="1">捐贈</option>
-                </select>
+                <label asp-for="DonationStatus" class="control-label">捐贈狀態</label>
+                <div>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="DonationStatus" value="0"> 非捐贈
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="DonationStatus" value="1"> 捐贈
+                    </label>
+                </div>
                 <span asp-validation-for="DonationStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateOfSale" class="control-label"></label>
-                <input asp-for="DateOfSale" class="form-control" />
+                <input asp-for="DateOfSale" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="DateOfSale" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeliveryTypeId" class="control-label"></label>
-                <select asp-for="DeliveryTypeId" class="form-control">
-                    <option value="">請選擇運送方式</option>
+                <label asp-for="DeliveryTypeId" class="control-label">請選擇運送方式</label>
+                <div>
                     @foreach (var deliveryType in ViewBag.TDeliveryType)
                     {
-                        <option value="@deliveryType.DeliveryTypeId">@deliveryType.DeliveryType</option>
+                        <label class="radio-inline">
+                            <input type="radio" asp-for="DeliveryTypeId" value="@deliveryType.DeliveryTypeId">
+                            @deliveryType.DeliveryType
+                        </label>
                     }
-                </select>
+                </div>
                 <span asp-validation-for="DeliveryTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -119,18 +125,24 @@
                 <span asp-validation-for="SellerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProductSaleStatus" class="control-label"></label>
-                <select asp-for="ProductSaleStatus" class="form-control">
-                    <option value="1">下架</option>
-                    <option value="2">上架</option>
-                    <option value="3">訂單成立</option>
-                </select>
+                <label asp-for="ProductSaleStatus" class="control-label">產品狀態</label>
+                <div>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="ProductSaleStatus" value="1"> 下架
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="ProductSaleStatus" value="2"> 上架
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="ProductSaleStatus" value="3"> 訂單成立
+                    </label>
+                </div>
                 <span asp-validation-for="ProductSaleStatus" class="text-danger"></span>
             </div>
             <div class="form-group d-flex justify-content-center mt-3">
                 <button type="submit" class="btn btn-success">修改</button>
                 <button type="button" class="btn btn-danger ms-5" onclick="location.href='@Url.Action("List")'">取消</button>
-            </div>           
+            </div>
         </form>
     </div>
 </div>

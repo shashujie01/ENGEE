@@ -1,36 +1,31 @@
 ﻿@model prjEnGeeDemo.Models.NL_ProductModel
 
 @{
-    ViewData["Title"] = "Add";
-    ViewBag.HeaderTitle = "商品上架 - 一點捐贈";
+    ViewData["Title"] = "Edit";
+    ViewBag.HeaderTitle = "修改商品";
 }
-<br />
-<div class="row">
-    <div class="col-lg-3">
-        <button class="btn shadow-none d-flex align-items-center justify-content-between bg-danger text-white w-100" data-bs-toggle="collapse" data-bs-target="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-            <h6 class="m-0">商品上架表單類別</h6>
-            <i class="fa fa-angle-down text-dark"></i>
-        </button>
-        <nav class="collapse navbar-vertical navbar-light align-items-center p-0  border border-top-0 border-bottom-3 bg-light" id="navbar-vertical">
-            <div class="navbar-nav w-100 overflow-hidden" style="height: auto; transition: max-height 0.3s ease;">
-                <a asp-action="Add" class="nav-item nav-link">二手商品上架</a>
-                <a asp-action="AddOne" class="nav-item nav-link">一點捐贈</a>
-            </div>
-        </nav>
-    </div>
-    <div class="col-lg-7 d-flex justify-content-center">
-        <form asp-action="Add" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label>預覽圖：</label>
-                <img id="imagePreview" src="#" alt="預覽圖" style="max-width: 300px; max-height: 300px; display: none; margin: auto;">
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductImagePath" class="control-label"></label>
-                <input asp-for="ProductImagePath" type="file" name="photo" class="form-control" accept="image/*">
-                <span asp-validation-for="ProductImagePath" class="text-danger"></span>
-            </div>
 
+
+<div class="d-flex justify-content-center">
+    <h1>商品資料</h1>
+</div>
+<hr />
+<div class="row">
+    <div class=" d-flex justify-content-center">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="ProductId" value="@Model.ProductId" />
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-center">
+                    <h2>商品照片</h2>
+                </div>
+                <div class="col-12 d-flex justify-content-center">
+                    <img id="imagePreview" src="@Url.Content("~/images/ProductImages/" + Model.ProductImagePath)" alt="Product Image" class="img-fluid" style="max-width: 300px; max-height: 300px;">
+                </div>
+            </div>
+            <div class="form-group mt-2 d-flex justify-content-center">
+                <input type="file" name="photo" />
+            </div>
             <div class="form-group">
                 <label asp-for="ProductName" class="control-label"></label>
                 <input asp-for="ProductName" class="form-control" />
@@ -74,9 +69,9 @@
                 <input asp-for="ProductDescribe" class="form-control" />
                 <span asp-validation-for="ProductDescribe" class="text-danger"></span>
             </div>
-            <div class="form-group" style="display: none;">
+            <div class="form-group">
                 <label asp-for="ProductUnitPoint" class="control-label"></label>
-                <input asp-for="ProductUnitPoint" class="form-control" type="number" min="0" type="hidden" value="1" />
+                <input asp-for="ProductUnitPoint" class="form-control" type="number" min="0" />
                 <span asp-validation-for="ProductUnitPoint" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -86,7 +81,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProductExpirationDate" class="control-label"></label>
-                <input asp-for="ProductExpirationDate" class="form-control" />
+                <input asp-for="ProductExpirationDate" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="ProductExpirationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -94,46 +89,63 @@
                 <input asp-for="ProductUsageStatus" class="form-control" />
                 <span asp-validation-for="ProductUsageStatus" class="text-danger"></span>
             </div>
-            <div class="form-group" style="display: none;">
-                <label asp-for="DonationStatus" class="control-label"></label>
-                <input asp-for="DonationStatus" class="form-control" type="hidden" value="1" />
+            <div class="form-group">
+                <label asp-for="DonationStatus" class="control-label">捐贈狀態</label>
+                <div>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="DonationStatus" value="0"> 非捐贈
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="DonationStatus" value="1"> 捐贈
+                    </label>
+                </div>
                 <span asp-validation-for="DonationStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateOfSale" class="control-label"></label>
-                <input asp-for="DateOfSale" class="form-control" />
+                <input asp-for="DateOfSale" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="DateOfSale" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeliveryTypeId" class="control-label"></label>
-                <select asp-for="DeliveryTypeId" class="form-control">
-                    <option value="">請選擇運送方式</option>
+                <label asp-for="DeliveryTypeId" class="control-label">請選擇運送方式</label>
+                <div>
                     @foreach (var deliveryType in ViewBag.TDeliveryType)
                     {
-                        <option value="@deliveryType.DeliveryTypeId">@deliveryType.DeliveryType</option>
+                        <label class="radio-inline">
+                            <input type="radio" asp-for="DeliveryTypeId" value="@deliveryType.DeliveryTypeId">
+                            @deliveryType.DeliveryType
+                        </label>
                     }
-                </select>
+                </div>
                 <span asp-validation-for="DeliveryTypeId" class="text-danger"></span>
             </div>
-            <div class="form-group" style="display: none;">
+            <div class="form-group">
                 <label asp-for="SellerId" class="control-label"></label>
-                <input asp-for="SellerId" class="form-control" type="hidden" value="1" />
+                <input asp-for="SellerId" class="form-control" readonly />
                 <span asp-validation-for="SellerId" class="text-danger"></span>
             </div>
-            <div class="form-group" style="display: none;">
-                <label asp-for="ProductSaleStatus" class="control-label"></label>
-                <input asp-for="ProductSaleStatus" class="form-control" type="hidden" value="2" />
+            <div class="form-group">
+                <label asp-for="ProductSaleStatus" class="control-label">產品狀態</label>
+                <div>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="ProductSaleStatus" value="1"> 下架
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="ProductSaleStatus" value="2"> 上架
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" asp-for="ProductSaleStatus" value="3"> 訂單成立
+                    </label>
+                </div>
                 <span asp-validation-for="ProductSaleStatus" class="text-danger"></span>
             </div>
-            <div class="form-group mt-3 d-flex justify-content-center">
-                <button type="button" class="btn btn-primary me-5" onclick="location.href='@Url.Action("Index")'">返回</button>
-                <input type="submit" value="上架" class="btn btn-success ms-5 me-5" />
-                <input type="reset" value="取消" class="btn btn-danger ms-5" />
+            <div class="form-group d-flex justify-content-center mt-3">
+                <button type="submit" class="btn btn-success">修改</button>
+                <button type="button" class="btn btn-danger ms-5" onclick="location.href='@Url.Action("List")'">取消</button>
             </div>
         </form>
     </div>
 </div>
-
 
 @section Scripts {
     @{

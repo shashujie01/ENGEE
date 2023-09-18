@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Add";
-    ViewBag.HeaderTitle = "商品上架 - 二手商品上架";
+    ViewBag.HeaderTitle = "商品上架 - 一點捐贈";
 }
 <br />
 <div class="row">
@@ -20,7 +20,7 @@
     </div>
     <div class="col-lg-7 d-flex justify-content-center">
         <form asp-action="Add" enctype="multipart/form-data">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>   
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label>預覽圖：</label>
                 <img id="imagePreview" src="#" alt="預覽圖" style="max-width: 300px; max-height: 300px; display: none; margin: auto;">
@@ -57,7 +57,7 @@
                     }
                 </select>
                 <span asp-validation-for="MainCategoryId" class="text-danger"></span>
-            </div>           
+            </div>
             <div class="form-group">
                 <label asp-for="SubcategoryId" class="control-label"></label>
                 <select asp-for="SubcategoryId" class="form-control">
@@ -73,10 +73,10 @@
                 <label asp-for="ProductDescribe" class="control-label"></label>
                 <input asp-for="ProductDescribe" class="form-control" />
                 <span asp-validation-for="ProductDescribe" class="text-danger"></span>
-            </div>            
-            <div class="form-group">
+            </div>
+            <div class="form-group" style="display: none;">
                 <label asp-for="ProductUnitPoint" class="control-label"></label>
-                <input asp-for="ProductUnitPoint" class="form-control" type="number" min="0" />
+                <input asp-for="ProductUnitPoint" class="form-control" type="number" min="0" type="hidden" value="1" />
                 <span asp-validation-for="ProductUnitPoint" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -86,7 +86,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProductExpirationDate" class="control-label"></label>
-                <input asp-for="ProductExpirationDate" class="form-control" />
+                <input asp-for="ProductExpirationDate" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="ProductExpirationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -96,28 +96,30 @@
             </div>
             <div class="form-group" style="display: none;">
                 <label asp-for="DonationStatus" class="control-label"></label>
-                <input asp-for="DonationStatus" class="form-control" type="hidden" value="0" />
+                <input asp-for="DonationStatus" class="form-control" type="hidden" value="1" />
                 <span asp-validation-for="DonationStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateOfSale" class="control-label"></label>
-                <input asp-for="DateOfSale" class="form-control" />
+                <input asp-for="DateOfSale" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
                 <span asp-validation-for="DateOfSale" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DeliveryTypeId" class="control-label"></label>
-                <select asp-for="DeliveryTypeId" class="form-control">
-                    <option value="">請選擇運送方式</option>
+                <label asp-for="DeliveryTypeId" class="control-label">請選擇運送方式</label>
+                <div>
                     @foreach (var deliveryType in ViewBag.TDeliveryType)
                     {
-                        <option value="@deliveryType.DeliveryTypeId">@deliveryType.DeliveryType</option>
+                        <label class="radio-inline">
+                            <input type="radio" asp-for="DeliveryTypeId" value="@deliveryType.DeliveryTypeId">
+                            @deliveryType.DeliveryType
+                        </label>
                     }
-                </select>
+                </div>
                 <span asp-validation-for="DeliveryTypeId" class="text-danger"></span>
             </div>
             <div class="form-group" style="display: none;">
                 <label asp-for="SellerId" class="control-label"></label>
-                <input asp-for="SellerId" class="form-control" type="hidden" value="1" />
+                <input asp-for="SellerId" class="form-control" type="hidden" value="@ViewBag.userId" />
                 <span asp-validation-for="SellerId" class="text-danger"></span>
             </div>
             <div class="form-group" style="display: none;">
