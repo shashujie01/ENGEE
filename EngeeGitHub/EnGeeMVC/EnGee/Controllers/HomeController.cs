@@ -57,9 +57,50 @@ namespace EnGee.Controllers
             {
                 string json = JsonSerializer.Serialize(user);
                 HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER, json);
-
-                return RedirectToAction("Index");
-
+                string redirectPage = HttpContext.Session.GetString("RedirectAfterLogin") ?? "Index";
+                int? txtProductId = HttpContext.Session.GetInt32("TempProductId");
+                int? deliverytypeid = HttpContext.Session.GetInt32("TempDeliverytypeid");
+                int? txtCount = HttpContext.Session.GetInt32("TempTxtCount");
+                if (redirectPage.Contains("QuickAddToCart"))
+                {
+                    return RedirectToAction("QuickAddToCart", "Shopping", new { txtProductId });
+                }
+                else if (redirectPage.Contains("CartView"))
+                {
+                    return RedirectToAction("CartView", "Shopping", new { txtProductId });
+                }
+                else if (redirectPage.Contains("AddToCartAndReturnCarView"))
+                {
+                    if (txtProductId.HasValue && deliverytypeid.HasValue && txtCount.HasValue)
+                    {
+                        return RedirectToAction("AddToCartAndReturnCarView", "Shopping", new
+                        {
+                            txtProductId = (int)txtProductId,
+                            txtCount = (int)txtCount,
+                            deliverytypeid = (int)deliverytypeid,
+                        });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else if (redirectPage.Contains("AddToCart"))
+                {
+                    if (txtProductId.HasValue && deliverytypeid.HasValue && txtCount.HasValue)
+                    {
+                        TempData["RedirectToAction"] = "AddToCart"; //辨識字串存temp，使 View 知道需要重啟 AJAX 請求
+                        return RedirectToAction("Details", "Product", new { id = txtProductId });//並非導回AddToCart
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             return View();
         }
