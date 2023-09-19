@@ -49,7 +49,7 @@ namespace EnGee.Controllers
         //        context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
         //        {
         //            controller = "Home",
-        //            action = "LoginLayout"
+        //            action = "Login"
         //        }));
         //    }
         //}

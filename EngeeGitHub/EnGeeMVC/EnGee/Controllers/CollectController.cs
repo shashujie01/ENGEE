@@ -31,7 +31,7 @@ namespace EnGee.Controllers
             // 登入判斷
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             if (userJson == null)
-                return RedirectToAction("LoginLayout", "Home");
+                return RedirectToAction("Login", "Home");
             else
             {
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
@@ -213,7 +213,7 @@ namespace EnGee.Controllers
         {
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             if (userJson == null)
-                return RedirectToAction("LoginLayout", "Home");
+                return RedirectToAction("Login", "Home");
             else
             {
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
@@ -316,7 +316,7 @@ namespace EnGee.Controllers
             TCollect c = db.TCollects.FirstOrDefault(t => t.CollectId == id);
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             if (userJson == null)
-                return RedirectToAction("LoginLayout", "Home");
+                return RedirectToAction("Login", "Home");
             else
             {
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
@@ -381,7 +381,7 @@ namespace EnGee.Controllers
             // 登入判斷
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             if (userJson == null)
-                return RedirectToAction("LoginLayout", "Home");
+                return RedirectToAction("Login", "Home");
             else
             {
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
@@ -469,7 +469,7 @@ namespace EnGee.Controllers
         {
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             if (userJson == null)
-                return RedirectToAction("LoginLayout", "Home");
+                return RedirectToAction("Login", "Home");
             else
             {
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
@@ -515,7 +515,7 @@ namespace EnGee.Controllers
         {
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             if (userJson == null)
-                return RedirectToAction("LoginLayout", "Home");
+                return RedirectToAction("Login", "Home");
             else
             {
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
