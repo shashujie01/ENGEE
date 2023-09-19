@@ -18,18 +18,15 @@ var connectionString = builder.Configuration.GetConnectionString("EnGeeContextCo
 builder.Services.AddDbContext<EnGeeContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<EnGeeUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<EnGeeContext>();
-//Min新增
-//builder.Services.AddScoped<IEmailService, EmailService>();
-//builder.Services.y<EnGeeUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<EnGeeContext>();
 
 //Min新增
 // 添加 Identity 服務設定AddDefaultIdentit
-builder.Services.AddIdentity<EnGeeUser, IdentityRole>()
-    .AddEntityFrameworkStores< EnGeeContext > ()
-    .AddDefaultTokenProviders();
+//builder.Services.AddIdentity<EnGeeUser, IdentityRole>()
+//    .AddEntityFrameworkStores< EnGeeContext > ()
+//    .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<UserManager<EnGeeUser>>();
-builder.Services.AddScoped<SignInManager<EnGeeUser>>();
+//builder.Services.AddScoped<UserManager<EnGeeUser>>();
+//builder.Services.AddScoped<SignInManager<EnGeeUser>>();
 // Rong新增
 builder.Services.AddDbContext<EngeeContext>(options => options.UseSqlServer(connectionString));
 

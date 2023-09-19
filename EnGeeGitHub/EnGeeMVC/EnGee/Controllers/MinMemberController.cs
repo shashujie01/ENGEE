@@ -184,7 +184,7 @@ namespace EnGee.Controllers
 
             Response.Cookies.Delete("memberstorageData");
 
-            return RedirectToAction("LoginLayout", "Home"); // (控制器/方法)
+            return RedirectToAction("Login", "Home"); // (控制器/方法)
         }
 
 
