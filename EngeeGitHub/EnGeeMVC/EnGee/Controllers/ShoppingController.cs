@@ -101,7 +101,7 @@ namespace EnGee.Controllers
                     int txtProductId = (int)context.ActionArguments["txtProductId"];
                     HttpContext.Session.SetInt32("TempProductId", txtProductId);
                     HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
-                    context.Result = new RedirectToActionResult("LoginLayout", "Home", null);
+                    context.Result = new RedirectToActionResult("Login", "Home", null);
                 }
             }
             else if (context.ActionDescriptor.DisplayName.Contains("CartView"))
@@ -109,7 +109,7 @@ namespace EnGee.Controllers
                 if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
                 {
                     HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
-                    context.Result = new RedirectToActionResult("LoginLayout", "Home", null);
+                    context.Result = new RedirectToActionResult("Login", "Home", null);
                 }
             }
             else if (context.ActionDescriptor.DisplayName.Contains("AddToCartAndReturnCarView"))
@@ -123,7 +123,7 @@ namespace EnGee.Controllers
                     if (context.ActionArguments.ContainsKey("txtCount"))
                     { HttpContext.Session.SetInt32("TempTxtCount", (int)context.ActionArguments["txtCount"]); }
                     HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
-                    context.Result = new RedirectToActionResult("LoginLayout", "Home", null);
+                    context.Result = new RedirectToActionResult("Login", "Home", null);
                 }
             }
             else if (context.ActionDescriptor.DisplayName.Contains("AddToCart"))
