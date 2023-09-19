@@ -340,7 +340,7 @@ namespace EnGee.Controllers
                 }
                 order.OrderTotalUsagePoints = totalUsagePoints;
                 db.SaveChanges();
-                //TODO 無法單獨清除選中CHKBOX的
+
                 // 購買後從Session中清除購物車
                 cart.RemoveAll(item => selectedProductIds.Contains(item.ProductId));
                 json = JsonSerializer.Serialize(cart);
