@@ -188,6 +188,12 @@ namespace EnGee.Controllers
         }
 
 
-    }
+        public IActionResult CreateStepForm(TMember tm)
+        {
+            return View();
+        }
+
+	}
+    
 }
 
