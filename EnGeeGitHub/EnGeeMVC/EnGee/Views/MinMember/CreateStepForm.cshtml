@@ -1,0 +1,142 @@
+﻿@model EnGee.Models.TMember
+<link rel="stylesheet" href="~/css/Min_css/CreateStepForm.css" />
+<script src="~/js/Min_js/CreateStepForm.js"></script>
+<style>
+    .spanvaildation {
+        font-size: 10px;
+        color: red;
+        opacity: 0.5;
+    }
+
+    ::placeholder {
+        font-size: 10px;
+        color: tomato;
+    }
+
+</style>
+
+<main>
+
+        <div id="form-outer">
+            <h1 id="title" style="color:pink;">ＳｉｇｎＵｐ</h1>
+            <p id="description">
+
+            </p>
+            <form id="stepform1" name="stepform1">
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="fullname"> 用戶名: </label>
+                    </div>
+                    <div class="rightTab">
+                        <input autofocus type="text" name="fullname" id="fullname" class="input-field" placeholder="必塡(中英皆可)">
+                    </div>
+                </div>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="username"> 用戶帳號: </label>
+                    </div>
+                    <div class="rightTab">
+                        <input type="text" name="username" id="username" class="input-field" placeholder="必塡(英文數字共5-10字元)">
+                    </div>
+                </div>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="empid"> 用戶密碼: </label>
+                    </div>
+                    <div class="rightTab">
+                        <input type="text" name="password" id="password" class="input-field" placeholder="必塡(英文數字共5-10字元)">
+                    </div>
+                </div>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="empid"> 確認密碼: </label>
+                    </div>
+                    <div class="rightTab">
+                        <input type="text" name="repassword" id="repassword" class="input-field" placeholder="必塡(英文數字共5-10字元)">
+                    </div>
+                </div>
+                <input class="button" type="button" value="Next" id="submit1" onclick="nextStep2()">
+            </form>
+            <form id="stepform2" name="stepform2" class="display">
+
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="email">用戶信箱(驗證): </label>
+                    </div>
+                    <div class="rightTab">
+                        <input type="email" name="email" id="email" class="input-field" placeholder="必填(有效信箱)">
+                    </div>
+                </div>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="address"> 用戶手機: </label>
+                    </div>
+                    <div class="rightTab">
+                        <input type="text" name="address" id="address" class="input-field" placeholder="09xxxxxxxx">
+                    </div>
+                </div>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="email">通訊地址: </label>
+                    </div>
+                    <div class="rightTab">
+                        <input type="email" name="email" id="email" class="input-field" placeholder="必填">
+                    </div>
+                </div>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="email">性別: </label>
+                    </div>
+                    <div class="rightTab">
+                        <div>男生<input type="radio" name="gender" id="gender" class="input-field" value="0"></div>
+                        <div>女生<input type="radio" name="gender" id="gender" class="input-field" value="1"></div>
+                        <div>不透漏<input type="radio" name="gender" id="gender" class="input-field" value="2"></div>
+                    </div>
+                </div>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="email">生日: </label>
+                    </div>
+                    <div class="rightTab">
+                        <input type="date" name="birth" id="birth" class="input-field" placeholder="必填">
+                    </div>
+                </div>
+                <input class="button" type="button" id="submit1" value="Back" onclick="back1()">
+                <input class="button" type="button" id="submit3" value="Next" onclick="nextStep3()">
+            </form>
+            <form id="stepform3" name="stepform3" class="display">
+
+                <br>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="photopath">大頭照: </label>
+                    </div>
+                    <div class="rightTab">
+                        <input type="file" name="photopath" id="phtoepath" class="input-field">
+                    </div>
+                </div>
+                <div class="rowTab">
+                    <div class="labels">
+                        <label for="email">個人簡介: </label>
+                    </div>
+                    <div class="rightTab">
+                        <textarea rows="50" cols="5" name="introduction" id="introduction" class="input-field"></textarea>
+                    </div>
+                </div>
+                <input class="button" type="button" id="submit2" value="Back" onclick="back2()">
+                <input class="button" type="button" id="submit4" value="Next" onclick="nextStep4()">
+ 
+                        <!--    <input class="button" type="button" id="submit3" value="Yes" onclick="confirmSubmit()">
+                            <input  class="button" type="button" id="submit4" value="No" onclick="reject()"> -->
+            </form>
+            <form id="stepform4" name="stepform4" class="display">
+
+                <div id="display"></div>
+                <br>
+                <input class="button" type="button" id="submit5" value="Go To Homepage" onclick="home()">
+
+            </form>
+        </div>
+        <script src="scripts/Home.js"></script>
+
+</main>
