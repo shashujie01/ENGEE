@@ -80,7 +80,7 @@ namespace EnGee.Controllers
                 }
 
                 memDb.Fullname = memIn.Fullname;
-                memDb.Birth=memIn.Birth;
+                memDb.Birth= (DateTime)memIn.Birth;//20230919合併出錯時加入
                 memDb.Gender = memIn.Gender;
                 memDb.Email= memIn.Email;
                 memDb.Address=memIn.Address;

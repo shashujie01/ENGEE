@@ -43,7 +43,7 @@
         public DateTime? Birth
         {
             get { return _member.Birth; }
-            set { _member.Birth = value; }
+            set { _member.Birth = (DateTime)value; }//20230919合併時加入
         }
 
         public string Fullname

@@ -10,8 +10,8 @@ namespace EnGee.Controllers
     public class NL_ProductController : SuperController
     {
         private IWebHostEnvironment _enviro = null;
-        public NL_ProductController(IWebHostEnvironment p)
-        {
+        public NL_ProductController(IWebHostEnvironment p, CHI_CUserViewModel userViewModel) : base(userViewModel)
+        {//20230919合併出錯時加入
             _enviro = p;
         }
 

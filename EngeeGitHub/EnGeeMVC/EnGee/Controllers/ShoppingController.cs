@@ -15,8 +15,11 @@ namespace EnGee.Controllers
     {//TODO購買的取貨方式、BuyerId、SellerId還沒串接
         private readonly EngeeContext _db;
         // 建構子，用於依賴注入
-        public ShoppingController(EngeeContext db)
-        {_db = db;}
+        public ShoppingController(EngeeContext db, CHI_CUserViewModel userViewModel) : base(userViewModel)
+        {
+            _db = db;////20230919合併出錯時加入
+        }
+
 
         private TMember GetLoggedInUser()
         { // 從Session獲取當前登錄用戶
