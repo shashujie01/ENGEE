@@ -77,7 +77,7 @@ app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=index}/{id?}");
+    pattern: "{controller=MinMember}/{action=CreateSignup}/{id?}");
 app.MapRazorPages();
 
 //¥[¤J Hub NL
