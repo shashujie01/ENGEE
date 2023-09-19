@@ -62,7 +62,7 @@
             <span class="sr-only">Loading...</span>
         </div>
     </div>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow p-0 bg-color1">
+        <nav class="navbar navbar-expand-md sticky-top">
             <div class="container-md d-flex justify-content-between align-items-center">
                 <a class="navbar-brand me-2 p-0" asp-area="" asp-controller="Home" asp-action="Index">
                     <img class="logo-size" src="~/images/bigframe/logo01.png" alt="logo" asp-area="" asp-controller="Home" asp-action="Index">
@@ -115,7 +115,6 @@
                             <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Collect" asp-action="DonationManagement">捐贈訂單管理</a>
 
                             <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="NL_AD_Product" asp-action="List">商品管理</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Collect" asp-action="Management">許願池管理</a>
                             </div>
                         </li>
                     </ul>
@@ -172,11 +171,11 @@
         </div>
     </header>
 
-    @*     <div class="container"> 暫時刪除 目前會影響首頁的圖案(在首頁自行加container)->但所有人的main外都會多包contain，框架會推不到底*@
+        <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-@*     </div> *@
+    </div>
 
     <footer class="border-top footer text-muted bg-color1">
         <div class="container h-64px d-flex align-items-center justify-content-center">
