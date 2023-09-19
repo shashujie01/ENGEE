@@ -198,6 +198,12 @@ namespace EnGee.Controllers
             return View();
         }
 
+        //----------0920新增追蹤頁面------------------//
+        public IActionResult Favor()
+        {
+            return View();
+        }
+
 	}
     
 }
