@@ -193,6 +193,11 @@ namespace EnGee.Controllers
             return View();
         }
 
+        public IActionResult CreateSignup(TMember tm)
+        {
+            return View();
+        }
+
 	}
     
 }
