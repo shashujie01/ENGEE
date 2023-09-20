@@ -1,0 +1,438 @@
+﻿@model List<EnGee.Models.JING_CDemandCartItem>
+@{
+    ViewData["Title"] = "我的排隊索取";
+}
+@{
+    Layout = "_Layout";
+}
+@{
+    ViewBag.HeaderTitle = "我的排隊索取";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    /* 購物車網頁專用start */
+    .nav-tabs .nav-link.active {
+        background-color: #e54862ca;
+        transition: color 0.2s
+        /* 頁籤切換 */
+    }
+
+    .shopcartList {
+        display: inline-block;
+        margin: 0px 0px 10px 0px;
+        padding-top: 24px;
+        border-bottom: 2px solid #e1e1e1;
+        width: 100%;
+        box-sizing: border-box;
+        /* 購物車頁面調整 */
+    }
+
+    .cartcontent .card-footer {
+        background-color: white;
+    }
+
+    .cartcontent .cartimg img {
+        width: 160px;
+        height: 100%;
+        object-fit: contain;
+        max-height: 160px;
+    }
+
+    .selected {
+        background-color: #e54862ca;
+    }
+
+    .payInfoBox {
+        margin-top: 16px;
+        background-color: white;
+        border-radius: 6px;
+    }
+    /* 購物車網頁專用end */
+</style>
+<main class="bg-color3">
+    <div class="container p-0">
+        <div class="shopcartList">
+            <nav>
+                <div class="nav nav-tabs" id=" nav-tab" role="tablist">
+                    @* //button 會有 aria-controls 屬性，指向相應分頁（頁面）的ID。分頁（頁面的 div）會有 aria-labelledby 屬性，指向相對應的 button 的ID。*@
+                    <button class="nav-link active " id="nav-storePickup-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-storePickup-content" type="button" role="tab" aria-controls="nav-storePickup-content"
+                            aria-selected="true">
+                        超商/i郵箱/myfone門市取貨
+                    </button>
+                    <button class="nav-link" id="nav-homeDelivery-tab" data-bs-toggle="tab"
+                            data-bs-target="#nav-homeDelivery-content" type="button" role="tab" aria-controls="nav-homeDelivery-content"
+                            aria-selected="false">
+                        宅配
+                    </button>
+                </div>
+                <hr class="hr-m4px">
+            </nav>
+            <div class="tab-content " id="nav-tabContent">
+                <!-- 超商頁面 -->
+                <div class="tab-pane fade show active" id="nav-storePickup-content" role="tabpanel" aria-labelledby="nav-storePickup-tab">
+                    @{
+                        int count = 0;
+                        decimal pay = 0;
+                        if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <div class="card p-2">
+                                    <div class="cartcontent">
+                                        <div class="row m-0 ">
+                                            <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                                <div class="form-check">
+                                                    <input class="cartcheckout form-check-input" type="checkbox" value="" data-product-id="@item.ProductId" checked>
+                                                </div>
+                                                <div class="cartimg d-flex">
+                                                    <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                                <div class="card-body p-0">
+                                                    <h5 class="card-title">
+                                                        @Html.DisplayFor(modelItem => item.tproduct.ProductName)
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        //其他資訊擺放位置
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                                <label class="me-1 mb-2">點數:</label>
+                                                <label>@Html.DisplayFor(modelItem => item.point)</label><br>
+                                                <label class="me-1 mb-2">數量:</label>
+                                                <button class="btn btn-rong-s btnHoverStyle2 btnMinus" type="button">-</button>
+                                                <label class="me-2" data-product-id="@item.ProductId">@Html.DisplayFor(modelItem => item.count)</label>
+                                                <button class="btn btn-rong-s btnHoverStyle2 btnPlus" type="button">+</button>
+                                                <label class="me-1 mb-2">小計:</label>
+                                                <label class="me-2 subtotalPoints" data-product-id="@item.ProductId">@Html.DisplayFor(modelItem => item.小計)</label>
+                                                <label class="me-1 mb-2 @item.ProductId">所選配送方式:</label>
+                                                <label class="me-2 mb-2 delivery-label @item.ProductId" data-product-id="@item.ProductId">@item.DeliveryType</label>
+                                                @*保存原始的DeliveryType、DeliveryTypeID值 *@
+                                                <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
+                                                <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">
+                                                <span class="hrefstyle mb-2">修改配送方式:</span>
+                                                @*<label><input type="radio" name="deliverytypeid"   delytype="宅配" value="1" id="homeDelivery" data-product-id="@item.ProductId">宅配/label>
+                                    <label> <input type="radio" name="deliverytypeid"  delytype="超商門市取貨" value="2" id="StorePickup" data-product-id=" @item.ProductId">超商門市取貨</label>*@
+                                                <label>
+                                                    <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
+                                                           data-product-id="@item.ProductId" data-delivery-type="宅配" value="1" id="homeDelivery"
+                                                           data-label-class="delivery-label @item.ProductId">宅配
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
+                                                           data-product-id="@item.ProductId" data-delivery-type="超商門市取貨" value="2" id="StorePickup"
+                                                           data-label-class="delivery-label @item.ProductId">超商門市取貨
+                                                </label>
+                                                <a class="hrefstyle delete-item" href="#" data-product-id="@item.ProductId">刪除</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="hr-m4px">
+                                </div>
+                            }
+                            <div class="container p-0 ">
+                                <div class="row m-0 p-0">
+                                    <div class="payInfoBox d-flex align-items-center justify-content-end">
+                                        <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
+                                            <input class=" form-check-input select-all-checkbox" type="checkbox"
+                                                   data-target=".cartcheckout" id="storePickupSelectAll" checked>
+                                            <label class="form-check-label" for="storePickupSelectAll">全選</label>
+                                        </div>
+                                        <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
+                                            商品總點數：<span> $ </span><span id="productTotalPoint"> @pay.ToString() </span>
+                                        </div>
+                                        <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
+                                            <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-end">
+                                        <a class="hrefstyle mt-2" href="@Url.Action("IndexJING", "JING_Product")">繼續購物</a>
+                                    </div>
+                                </div>
+                            </div>
+                            //隱藏宅配表單
+                            <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
+                                <div class="container mt-5">
+                                    <div class="input-group mb-2 d-flex  align-items-end">
+                                        <div class="fz-size32px">
+                                            會員資料
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center border-0 fz-size16px m-1">
+                                            <input class="form-check-input mt-0  " type="checkbox" id="defaultCheck_memberInformation">
+                                            <label class="form-check-label" for="defaultCheck_memberInformation">
+                                                帶入會員資料
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <form method="post" action="@Url.Action("ConfirmPurchase", "JING_Demand")">
+                                        <input type="hidden" name="SelectedProducts" id="SelectedProducts" />
+
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">姓名</span>
+                                            <input type="text" class="form-control" name="Fullname">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">Email</span>
+                                            <input type="text" class="form-control" name="Email">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">手機</span>
+                                            <input type="text" class="form-control" name="Phone">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">地址</span>
+                                            <input type="text" class="form-control" name="DeliveryAddress">
+                                        </div>
+
+                                        @{
+                                            decimal memberPoints = 0; // TODO預設會員點數未串接
+                                        }
+                                        <div class="container mt-4">
+                                            <div class="input-group mb-2">
+                                                <span class="input-group-text">結帳扣點</span>
+                                                <input type="form-text" class="form-control" id="checkoutTotalPoint" readonly>
+
+                                                <span class="input-group-text">會員點數</span>
+                                                <input type="form-text" class="form-control" readonly value="@memberPoints.ToString()">
+                                                <span class="input-group-text">購買後剩餘點數</span>
+                                                <input type="form-text" class="form-control" readonly value="@((memberPoints - pay).ToString())">
+                                            </div>
+                                            <div class="d-flex justify-content-center ">
+                                                <a class=" hrefstyle1-m  m-2 px-3 py-2">儲值</a>
+                                                <button class="btn btn-m btnHoverStyle2 m-2" type="submit">確認結帳</button>
+                                                <a class=" hrefstyle m-2 px-3 py-2" href="@Url.Action("IndexJING", "JING_Product")">取消</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">您的購物車是空的。</div>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <a class="hrefstyle hrefstyle1:hover mt-2" href="@Url.Action("IndexJING", "JING_Product")">繼續購物</a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    var formDisplayed = false;
+    document.addEventListener("DOMContentLoaded", function () {//當有商選中時，隱藏表單顯示，沒選中時相反
+        var checkboxes = document.querySelectorAll('.cartcheckout');
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                if (formDisplayed) {
+                    toggleFormVisibility();
+                }
+            });
+        });
+    });
+    function toggleFormVisibility() {
+        var isChecked = false;
+        var checkboxes = document.querySelectorAll('.cartcheckout');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+        var element = document.getElementById('CheckoutStorePickup');
+        if (isChecked) {
+            element.style.display = "block";
+        } else {
+            element.style.display = "none";
+        }
+        formDisplayed = isChecked;
+    }
+    function toggleCheckout(elementId) {
+        var isChecked = false;
+        var checkboxes = document.querySelectorAll('.cartcheckout');
+
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+        var element = document.getElementById(elementId);
+        if (isChecked) {
+            if (formDisplayed) {
+                element.focus(); // 當表單已顯示且再次按下結帳，聚焦於表單
+            } else {
+                element.style.display = "block";
+                formDisplayed = true;
+            }
+        } else {
+            alert('請先選擇至少一件商品！');
+            element.style.display = "none";
+            formDisplayed = false;
+        }
+    }
+    // -------------------------
+    $(document).ready(function () {
+        updateTotalPrice();
+        // 監聽全選checkbox的改變事件
+        $("#storePickupSelectAll").change(function () {
+            // 根據全選checkbox的選擇狀態來設置所有商品checkbox的選擇狀態
+            let isChecked = $(this).prop('checked');
+            $(".cartcheckout").prop('checked', isChecked);
+
+            // 若全選checkbox取消勾選，則隱藏表單
+            if (!isChecked) {
+                toggleFormVisibility();
+            }
+            // 更新總點數
+            updateTotalPrice();
+        });
+        // 監聽每個商品checkbox的改變事件
+        $(".cartcheckout").change(function () {
+            // 如果所有商品checkbox都被選擇，全選checkbox應該也被選擇，否則取消選擇
+            if ($(".cartcheckout:checked").length === $(".cartcheckout").length) {
+                $("#storePickupSelectAll").prop('checked', true);
+            } else {
+                $("#storePickupSelectAll").prop('checked', false);
+            }
+            updateTotalPrice();
+        });
+    });
+
+    $(document).ready(function () {//傳遞CHKbox被選中的ID
+        $('form').on('submit', function (e) {
+            let selectedProducts = getSelectedProducts();
+            $('input[name="SelectedProducts"]').val(JSON.stringify(selectedProducts));
+        });
+    });
+    // ------------------------------
+    // 當帶入會員資料勾選時自動帶入會員資料'
+    var jsonData = @Html.Raw(Json.Serialize(ViewBag.userFromDatabase ?? new {}));
+
+    document.getElementById('defaultCheck_memberInformation').addEventListener('change', function () {
+        if (this.checked) {
+            if (jsonData) {
+                document.querySelector("input[name='Fullname']").value = '@Html.Raw(ViewBag.userFromDatabase.Fullname)';
+                document.querySelector("input[name='Email']").value = '@Html.Raw(ViewBag.userFromDatabase.Email)';
+                document.querySelector("input[name='Phone']").value = '@Html.Raw(ViewBag.userFromDatabase.Phone)';
+                document.querySelector("input[name='DeliveryAddress']").value = '@Html.Raw(ViewBag.userFromDatabase.Address)';
+            }
+        } else {
+            document.querySelector("input[name='Fullname']").value = "";
+            document.querySelector("input[name='Email']").value = "";
+            document.querySelector("input[name='Phone']").value = "";
+            document.querySelector("input[name='DeliveryAddress']").value = "";
+        }
+    });
+    // -----------------------------
+    $(document).ready(function () {
+        // 為每個減少按鈕添加點擊事件
+        $('.btnMinus').click(function () {
+            var $label = $(this).next('label');
+            var count = parseInt($label.text(), 10);
+            var productId = $label.data('product-id');  // 注意這行
+            if (count > 1) {
+                count--;
+                $label.text(count);
+                updateCartItem(productId, count);  // 注意這行
+                updateTotalPrice();
+            }
+        });
+
+        $('.btnPlus').click(function () {
+            var $label = $(this).prev('label');
+            var count = parseInt($label.text(), 10);
+            var productId = $label.data('product-id');  // 注意這行
+            count++;
+            $label.text(count);
+            updateCartItem(productId, count);  // 注意這行
+            updateTotalPrice();
+        });
+    });
+    // -------------------------
+    $(document).ready(function () {
+        $(".delete-item").click(function (event) {//刪除購物出商品
+            event.preventDefault(); // 阻止超連結默認
+            // 獲取刪除商品ID
+            var productId = $(this).data("product-id");
+
+            $.ajax({
+                url: "/Shopping/DeleteCartItem",
+                type: "POST",
+                data: { productId: productId },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();
+                    }
+                },
+                error: function () { console.error('Error:', error); }
+            });
+        });
+    });
+    // ---------------------
+    $(document).ready(function () {//chkBox變更商品deliveryType
+        $(".delivery-radio").each(function () {
+            var productId = $(this).data("product-id");
+            var deliveryType = $(this).data("delivery-type");
+            var originalDeliveryType = $("input[name='originalDeliveryType'][data-product-id='" + productId + "']").val();
+
+            if (deliveryType === originalDeliveryType) {
+                $(this).prop("checked", true);
+                $(".delivery-label." + productId).text(deliveryType);
+            }
+        });
+        $(".delivery-radio").change(function () {
+            var productId = $(this).data("product-id");
+            var newDeliveryType = $(this).data("delivery-type");
+            $(".delivery-label." + productId).text(newDeliveryType);
+            var $label = $(`label[data-product-id=${productId}]`);
+        });
+    });
+    //------------function------------------
+    // 更新總點數函數
+    function updateTotalPrice() {
+        let total = 0;
+        // 對於已勾選的商品，加上它的小計到總點數
+        $(".cartcheckout:checked").each(function () {
+            let productId = $(this).data("product-id");
+            let labelValue = $(`.subtotalPoints[data-product-id=${productId}]`).text();
+            total += parseFloat(labelValue);
+        });
+        // 更新總點數顯示
+        $("#productTotalPoint").text(total);
+        $('#checkoutTotalPoint').val(total);
+    }
+    function updateCartItem(productId, newCount) {//將label的值與product-id傳至後台Shopping/UpdateCartItem
+        $.ajax({
+            type: "POST",
+            url: "/Shopping/UpdateCartItem",
+            data: { productId: productId, newCount: newCount }, // 发送数量
+            success: function (result) {
+                console.log("成功更新購物車項目：", result);
+                // 測試用
+                $(`.subtotalPoints[data-product-id=${productId}]`).text(result.subtotalPoints);
+                //購物車有多個項目有subtotalPoints，故不適合用#subtotalPoints
+                //.text() 方法也可以用在 label 標籤上，不僅僅是 span、div 或 p 等元素。
+                updateTotalPrice();
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function getSelectedProducts() {//選出chkbox被選擇的商品
+        let selectedProducts = [];
+        $(".cartcheckout:checked").each(function () {
+            let productId = $(this).data("product-id");
+            selectedProducts.push(productId);
+        });
+        return selectedProducts;
+    }
+</script>
