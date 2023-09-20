@@ -17,7 +17,7 @@ namespace EnGee.Controllers
         {
             _enviro = p;
         }
-        public IActionResult UserProfile(MinMemberController min)
+        public IActionResult UserProfile()
         {
             
 
