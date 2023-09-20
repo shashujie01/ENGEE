@@ -1,6 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Login";
 }
+<style>
+    .centerjccaic{
+        justify-content:center;
+        align-items:center;
+    }
+</style>
 <script src="//code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 @using (Html.BeginForm()){
@@ -30,7 +36,7 @@
                                         <button class="btn btn-primary w-100 py-3" type="submit">登入</button>
                                     </div>
                                     <p class="mb-5 text-center">
-                                        <a asp-controller="MinFavor" asp-action="ResetPassword" data-toggle="modal" data-target="#exampleModalCenter">忘記密碼?</a>
+                                        <a asp-controller="MinFavor" asp-action="ResetPassword" data-toggle="modal" data-target="#ResetModel">忘記密碼?</a>
                                     </p>
                                     <p class="mb-0 text-center">
                                         還沒有帳號嗎? <a asp-controller="MinMember" asp-action="Create" class="fw-bold">手刀註冊</a>
@@ -56,12 +62,12 @@
 @* <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">忘記密碼</button> *@
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="ResetModel" tabindex="-1" role="dialog" aria-labelledby="ResetModelTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 @* ===========================Form Title========================== *@
-                <h5 class="modal-title" id="exampleModalLongTitle">忘記密碼重設</h5>
+                <h5 class="modal-title" id="ResetModelTitle">忘記密碼重設</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -70,28 +76,59 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">會員電子信箱(驗證):</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <label for="reset" class="col-form-label">會員電子信箱(驗證):</label>
+                        <input type="text" class="form-control" id="reset" name="sendemail" >
                     </div>
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">重設密碼</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <label for="reset" class="col-form-label">重設密碼</label>
+                        <input type="text" class="form-control" id="reset" name="resetpassword">
                     </div>
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">確認重設密碼</label>
-                        <input type="text" class="form-control" id="recipient-name">
+                        <label for="reset" class="col-form-label">確認重設密碼</label>
+                        <input type="text" class="form-control" id="reset" name="aresetpassword">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                @* ================================body============================ *@
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                @* ================================Form Body============================ *@
+                @* <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> *@
+                <button type="button" class="btn btn-primary centerjccaic" asp-action="">確定</button>
             </div>
         </div>
     </div>
 </div>
 @* <==========================忘記密碼重設===============================================================> *@
+<script>
+    $(document).ready(function () {
+        $('#resetForm').submit(function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Gather form data
+            var formData = {
+                sendemail: $('#sendemail').val(),
+                resetpassword: $('#resetpassword').val(),
+                aresetpassword: $('#aresetpassword').val()
+            };
+
+            // Send the data to the server using AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/Home/ResetPassword',  // Replace with the actual URL to handle the form submission
+                data: JSON.stringify(formData),
+                contentType: 'application/json',
+                success: function (data) {
+                    // Handle the success response from the server
+                    console.log('Form submitted successfully:', data);
+                },
+                error: function (error) {
+                    // Handle any errors
+                    console.error('Error submitting form:', error);
+                }
+            });
+        });
+    });
+</script>
+
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

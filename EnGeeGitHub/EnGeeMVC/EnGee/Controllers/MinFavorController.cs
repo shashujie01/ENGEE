@@ -8,11 +8,11 @@ namespace EnGee.Controllers
     {
 
        
-        public IActionResult ResetPassword()
-        {
-            string name = "王陽明";
+        //public IActionResult ResetPassword()
+        //{
+        //    string name = "王陽明";
             
-            return View();
-        }
+        //    return View();
+        //}
     }
 }
