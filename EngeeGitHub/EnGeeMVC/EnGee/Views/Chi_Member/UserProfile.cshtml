@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "個人檔案";
+    ViewBag.HeaderTitle = "個人檔案";
 }
 <head>
     <link rel="stylesheet" href="~/css/CHIACHI_UserProfile.css">
@@ -47,10 +48,7 @@
                         </div>                        
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">商品</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">買方評價</a>
+                                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">買方評價</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">賣方評價</a>
@@ -78,24 +76,8 @@
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content profile-tab" id="myTabContent">
-                        <div class="tab-pane fade show active col-md-6" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="row">
-                                第一列商品明細
-                            </div>
-                            <div class="row">
-                                第二列商品明細
-                            </div>
-                            <div class="row">
-                                第三列商品明細
-                            </div>
-                            <div class="row">
-                                第四列商品明細
-                            </div>
-                            <div class="row">
-                                第五列商品明細
-                            </div>
-                        </div>
-                        <div class="tab-pane fade col-md-6" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                       
+                        <div class="tab-pane fade show active  col-md-6" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="row">
                                 第一列評價
                             </div>
