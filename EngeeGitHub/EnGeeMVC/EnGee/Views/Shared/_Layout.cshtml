@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 @using System.Text.Json
 @using prjMvcCoreDemo.Models
@@ -92,22 +92,10 @@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Product" asp-action="IndexSSJ">商品總覽</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="NL_Product" asp-action="Index">商品上架</a>
                             </div>                            
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" data-bs-toggle="dropdown" asp-area="" asp-controller="Home" asp-action="AboutUs">會員專區</a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Chi_Member" asp-action="UserProfile">個人檔案</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Chi_Member" asp-action="List">帳號設定</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Home" asp-action="AboutUs">點數管理</a>
-                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="NL_Product" asp-action="List">買賣管理</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Home" asp-action="AboutUs">贈送管理</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Home" asp-action="AboutUs">收藏管理</a>
-                            </div>
-                        </li>
+                        </li>                       
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" data-bs-toggle="dropdown" asp-area="" asp-controller="Home" asp-action="Privacy">後臺管理</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Product" asp-action="List">商品管理</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Collect" asp-action="CollectManagement">許願池管理</a>
                             <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Collect" asp-action="DonationManagement">捐贈訂單管理</a>
 
@@ -129,6 +117,12 @@
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" asp-area="" asp-controller="Chi_Member" asp-action="UserProfile">個人主頁</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="NL_Product" asp-action="List">商品管理</a>
+                                    @if(loggedInUser.Access == 0 || loggedInUser.Access == 3)
+                                    {
+                                        <hr />
+                                        <a class="dropdown-item" asp-area="" asp-controller="Admin" asp-action="Index">EnGee後台管理</a>
+                                    }
                                 </div>
                             </div>
                             <form asp-controller="Home" asp-action="Logout" method="post">
