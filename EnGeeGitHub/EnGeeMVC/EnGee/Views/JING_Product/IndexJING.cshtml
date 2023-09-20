@@ -1,0 +1,364 @@
+﻿@model EnGee.ViewModel.JING_ProductPageViewModel
+@*商品檢視頁面*@
+@{
+    Layout = "_Layout";
+}
+@{
+    ViewBag.Title = "Engee一點贈送";
+}
+@{
+    ViewBag.HeaderTitle = "一點贈送";
+}
+
+<style>
+    /*---- Categories調整start---- */
+    .cattext a:hover {
+        color: #e54862ca;
+    }
+
+    .cattext .text-decoration-none {
+        color: #000000;
+    }
+
+    .flex-container {
+        /* 調整字母排列 */
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+        .flex-container li {
+            /* 調整字母排列 */
+            width: 33.33%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+    ul .cattext li {
+        margin-bottom: 20px;
+    }
+
+    /*---- Categories調整end--- */
+
+    /* -----card調整start---- */
+    .card .card-img {
+        /* max-height: 350px;
+                        min-height: 200px;
+                        max-width: 350px;
+                        min-width: 200px;*/
+    }
+
+    .card .card-img-overlay {
+        display: none;
+    }
+
+    .card:hover .card-img-overlay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .card-img-overlay i:hover {
+        color: #e54862ca;
+    }
+
+    .pagination .page-link {
+        color: #4b3030;
+    }
+
+        .pagination .page-link:hover {
+            background-color: #9f6666;
+            color: #fff;
+        }
+
+    .card-img.img-fluid {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+    }
+
+    /* -----card調整end---- */
+</style>
+
+<main>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
+                @using (Html.BeginForm("IndexJING", "JING_Product", FormMethod.Post, new { @class = "form-inline" }))
+                {
+                    <div>
+                        <a class="text-decoration-none fw-bolder mb-3" href="@Url.Action("CartView", "Shopping")">檢視購物車</a>
+                    </div>
+                    <div class="d-flex p-0">
+                        <div class="form-group mb-2">
+                            @* <label for="txtKeyword" class="sr-only">關鍵字</label> *@
+                            @Html.TextBox("txtKeyword", null, new { @class = "form-control", @placeholder = "輸入關鍵字" })
+                        </div>
+                        @Html.Hidden("MainCategoryId", Model.MainCategoryId, new { @id = "MainCategoryId" })
+                        @Html.Hidden("SubCategoryId", Model.SubCategoryId, new { @id = "SubCategoryId" })
+                        @Html.Hidden("BrandId", Model.BrandId, new { @id = "BrandId" })
+                        <button type="submit" class="btn btn-primary mb-2 ms-2 w-90px">查詢</button>
+                    </div>
+                }
+                <h1 class="h2 pb-4">Categories</h1>
+                <ul class="list-unstyled ">
+                    <li class="pb-3">
+                        @*篩選*@
+                        <a class="h3 text-decoration-none d-flex justify-content-between " href="#"
+                           data-bs-toggle="collapse" data-bs-target="#contentOne">
+                            彩妝品分類
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+
+                        <ul id="contentOne" class="collapse list-unstyled mb-5  mt-3 cattext ">
+                            <li>
+                                <a class="text-decoration-none fw-bolder" href="@Url.Action("IndexJING", "Product")">
+                                    分類全選
+                                </a>
+                            </li>
+                            <li>
+                                <a class="text-decoration-none" href="#" data-bs-toggle="collapse"
+                                   data-bs-target="#collapseOne">
+                                    眼部彩妝
+                                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                                </a>
+                                <ul id="collapseOne" class="collapse list-unstyled ps-3 mt-2 mt-2">
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 1, subCategoryId = 1 })">眼影</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 1, subCategoryId = 2 })">眼線液 / 眼線筆</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 1, subCategoryId = 3 })">睫毛膏 / 睫毛打底膏</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="text-decoration-none" href="#" data-bs-toggle="collapse"
+                                   data-bs-target="#collapseTwo">
+                                    眉部彩妝
+                                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                                </a>
+                                <ul id="collapseTwo" class="collapse list-unstyled ps-3 mt-2">
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 2, subCategoryId = 4 })">眉筆</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 2, subCategoryId = 5 })">眉粉</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="text-decoration-none" href="#" data-bs-toggle="collapse"
+                                   data-bs-target="#collapseThree">
+                                    唇部彩妝
+                                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                                </a>
+                                <ul id="collapseThree" class="collapse list-unstyled ps-3 mt-2">
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 3, subCategoryId = 6 })">唇膏</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 3, subCategoryId = 7 })">唇蜜</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 3, subCategoryId = 8 })">唇筆</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="text-decoration-none " href="#" data-bs-toggle="collapse"
+                                   data-bs-target="#collapseFour">
+                                    臉部彩妝
+                                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                                </a>
+                                <ul id="collapseFour" class="collapse list-unstyled ps-3 mt-2">
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 4, subCategoryId = 9 })">妝前乳 / 隔離霜</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 4, subCategoryId = 10 })">遮瑕膏</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 4, subCategoryId = 11 })">修容</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 4, subCategoryId = 12 })">粉底液</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 4, subCategoryId = 13 })">粉餅</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 4, subCategoryId = 14 })">氣墊粉餅</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 4, subCategoryId = 15 })">蜜粉 / 蜜粉餅</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 4, subCategoryId = 16 })">定妝噴霧</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="text-decoration-none" href="#" data-bs-toggle="collapse"
+                                   data-bs-target="#collapseFive">
+                                    彩妝工具
+                                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                                </a>
+                                <ul id="collapseFive" class="collapse list-unstyled ps-3 mt-2">
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 5, subCategoryId = 17 })">刷具</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 5, subCategoryId = 18 })">美妝蛋</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 5, subCategoryId = 19 })">粉撲</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 5, subCategoryId = 20 })">睫毛夾</a></li>
+                                    <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSJ", "Product", new { mainCategoryId = 5, subCategoryId = 21 })">海綿</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { mainCategoryId = 6, subCategoryId = 22 })">其他</a></li>
+                        </ul>
+                    </li>
+                    <li class="pb-3">
+                        <a class=" h3 text-decoration-none d-flex justify-content-between " href="#"
+                           data-bs-toggle="collapse" data-bs-target="#contentTwo">
+                            品牌字首
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+
+                        <ul id="contentTwo" class=" collapse list-unstyled flex-container cattext  mt-3">
+                            <li class:" d-flex">
+                                <a class="text-decoration-none fw-bolder" href="@Url.Action("IndexSSJ", "Product")">
+                                    自首全選
+                                </a>
+                            </li>
+                            <li class="spacer" style="list-style: none;"></li>
+                            <li class="spacer"></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 1 })">A</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 2 })">B</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 3 })">C</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 4})">D</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 5})">E</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 6})">F</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 7})">G</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 8})">H</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 9})">I</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 10})">J</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 11})">K</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 12})">L</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 13})">M</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 14})">N</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 15})">O</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 16})">P</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 17})">Q</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 18})">R</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 19})">S</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 20})">T</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 21 })">U</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 22 })">V</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 23 })">W</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 24 })">X</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 25 })">Y</a></li>
+                            <li><a class="text-decoration-none filter-link" href="@Url.Action("IndexSSj", "Product", new { BrandId = 26 })">Z</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-9 ">
+                <div class="row border-0">
+                    @*列出商品*@
+                    @foreach (var products in Model.Products)
+                    {
+                        <div class="col-md-4 col-sm-6 col-xs-8 col-12 justify-card-center mb-4">
+
+                            <div class="card ">
+                                <img class="card-img img-fluid" src="@products.ProductImagePath" alt="@products.ProductName" />
+                                <div class="card-img-overlay ">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a class="btn bg-white text-black" href="shop-single.html">
+                                                <i class="far fa-heart"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+
+                                            <a class="btn bg-white text-black mt-2" href="@Url.Action("DetailsJING", "JING_Product", new { id = products.ProductId })">
+                                                <i class="far fa-eye"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("QuickAddToCart", "Shopping", new { productId = products.ProductId })" class="btn bg-white text-black mt-2 h3 text-decoration-none">
+                                                <i class="fas fa-cart-plus"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-center">
+                                    @Html.ActionLink(products.ProductName, "DetailsJING", "JING_Product", new { id = products.ProductId }, new { @class = "h3 text-decoration-none" })
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <ul class="list-unstyled ">
+                                        <li>@products.ProductDescribe</li>
+                                    </ul>
+
+                                </div>
+
+                                <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                    <li>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                    </li>
+                                </ul>
+                                <p class="text-center mb-0">@products.ProductUnitPoint</p>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+
+                @*切換頁面*@
+                <div class="row">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("IndexJING", new { txtKeyword = Model.txtKeyword, page = Model.CurrentPage - 1 })" tabindex="-1">Previous</a>
+                        </li>
+
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            string actionName = "IndexJING";
+                            object routeValues = new { txtKeyword = Model.txtKeyword, page = i };
+
+                            if (Model.MainCategoryId.HasValue && Model.SubCategoryId.HasValue)
+                            {
+                                actionName = "IndexJING";
+                                routeValues = new { mainCategoryId = Model.MainCategoryId.Value, subCategoryId = Model.SubCategoryId.Value, txtKeyword = Model.txtKeyword, page = i };
+                            }
+                            else if (Model.BrandId.HasValue)
+                            {
+                                actionName = "IndexJING";
+                                routeValues = new { brandId = Model.BrandId.Value, txtKeyword = Model.txtKeyword, page = i };
+                            }
+
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="@Url.Action(actionName, "Product", routeValues)">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    @*切換頁面JS*@
+        $(document).ready(function () {
+            $('#contentOne, #contentTwo').on('show.bs.collapse', function () {
+                var id = $(this).attr('id');
+                $('ul .collapse').not('#' + id).collapse('hide');
+            });
+
+
+            $('a.filter-link').on('click', function (e) {
+                e.preventDefault(); // 阻止默认点击行为
+
+                // 收集所有的篩選條件
+                let currentKeyword = $("input[name='txtKeyword']").val();
+                let mainCategoryId = $("#mainCategoryId").val();
+                let subCategoryId = $("#subCategoryId").val();
+
+                // 組合成一個查詢對象或字串
+                let newUrl = $(this).attr('href');
+
+                if (currentKeyword) {
+                    newUrl += '&txtKeyword=' + encodeURIComponent(currentKeyword);
+                }
+
+                if (mainCategoryId) {
+                    newUrl += '&MainCategoryId=' + mainCategoryId;
+                }
+
+                if (subCategoryId) {
+                    newUrl += '&SubCategoryId=' + subCategoryId;
+                }
+
+                window.location.href = newUrl;
+            });
+        });
+
+                //todo往前往後頁面還沒做
+</script>
