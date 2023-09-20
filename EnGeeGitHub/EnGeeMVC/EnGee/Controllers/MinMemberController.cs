@@ -42,7 +42,7 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(TMember tm, string username, string email, string gender)
+        public IActionResult Create(TMember tm, string username, string email, string gender)
         {
 
 
@@ -98,45 +98,8 @@ namespace EnGee.Controllers
             Response.Cookies.Append("memberstorageData", JsonConvert.SerializeObject(tm));  //將資料轉成jason檔存在cookie
 
             SendVerificationEmail(email, randomToken);
+            return RedirectToAction("EmailValid");
             //--------------0917 hash salt-   先將Tmember部分屬性轉移給模型EnGeeUser------------------------------//
-            var user = new EnGeeUser   //實作類別EnGeeUser
-            {
-                UserName = username,
-                Email = email,
-               
-
-            };
-
-            // 使用 ASP.NET Core Identity 提供的 UserManager 來進行hash salt
-            var result = await _userManager.CreateAsync(user, tm.Password);
-            if (result.Succeeded)
-            {
-                    return RedirectToAction("EmailValid");
-                //user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, tm.Password);  //此處再次進行加密可能是為了進一步確保密碼安全性。
-                // 
-                //var saveResult = _userManager.UpdateAsync(user).Result;  //確保將任何變更（包括密碼）保存到資料庫
-                //if (saveResult.Succeeded)
-                //{
-                //}
-                //else
-                //{
-                //    ModelState.AddModelError("", "註冊失敗");
-                //    return RedirectToAction("EmailValidFail", "MinMember");
-                //}
-                    
-            }
-            else
-            {
-                // 用户创建失败的处理逻辑
-                foreach (var error in result.Errors)
-                {
-                    Console.WriteLine($"Error: {error.Description}");
-                }
-                ModelState.AddModelError("", "註冊失敗");
-                return RedirectToAction("EmailValidFail", "MinMember");
-            }
-          
-
         }
 
 
@@ -157,7 +120,7 @@ namespace EnGee.Controllers
             message.Subject = "EnGee會員註冊驗證信";
             //-------信件連結會跳轉至MinMember/verifyEmail方法--------------//
             var verificationLink = Url.Action("VerifyEmail", "MinMember", new {token } ,Request.Scheme); //Request.Scheme確保 URL 使用正確的協議（例如，http 或 https）
-            message.Body = new TextPart("plain") { Text = $"請點擊以下連結，完成註冊會員最後一步驟：\n{verificationLink}" };
+            message.Body = new TextPart("plain") { Text = $"請點擊以下連結，完成信箱註冊：\n{verificationLink}" };
             //---------------------//
 
             using var smtp = new SmtpClient();

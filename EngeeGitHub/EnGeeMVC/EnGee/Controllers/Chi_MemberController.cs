@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using prjEnGeeDemo.ViewModels;
 using prjMvcCoreDemo.Models;
 using System.Text.Json;
+using MimeKit;
 
 namespace EnGee.Controllers
 {
@@ -16,8 +17,9 @@ namespace EnGee.Controllers
         {
             _enviro = p;
         }
-        public IActionResult UserProfile()
+        public IActionResult UserProfile(MinMemberController min)
         {
+            
 
             using (var dbContext = new EngeeContext())
             {
