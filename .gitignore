@@ -1,0 +1,7 @@
+﻿################################################################################
+# 這個 .gitignore 檔案由 Microsoft(R) Visual Studio 自動建立。
+################################################################################
+
+/EngeeGitHub/EnGeeMVC/EnGee/Program.cs
+/EnGeeGitHub/EnGeeMVC/EnGee/Controllers/Chi_MemberController.cs
+/EngeeGitHub/EnGeeMVC/EnGee/Controllers/Chi_MemberController.cs
