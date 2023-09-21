@@ -7,19 +7,24 @@ using System.Linq;
 using prjMvcCoreDemo.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Http;
+using System.Data;
+
 
 namespace EnGee.Controllers
 {
     public class ShoppingController : SuperController
-    {//TODO購買的取貨方式、BuyerId、SellerId還沒串接
+    {
         private readonly EngeeContext _db;
-        // 建構子，用於依賴注入
         public ShoppingController(EngeeContext db, CHI_CUserViewModel userViewModel) : base(userViewModel)
         {
-            _db = db;////20230919合併出錯時加入
+            _db = db;
         }
+        //private readonly IDbConnection _db;
 
+        //public ShoppingController(IConfiguration configuration, CHI_CUserViewModel userViewModel) : base(userViewModel)
+        //{
+        //    _db = new SqlConnection(configuration.GetConnectionString("EnGeeContextConnection"));
+        //}
 
         private TMember GetLoggedInUser()
         { // 從Session獲取當前登錄用戶
@@ -59,7 +64,7 @@ namespace EnGee.Controllers
 
         private List<SSJ_CShoppingCarItem> GetAndUpdateCart(int productId, int count, int deliveryOption)
         { // 獲取或更新購物車資料
-            
+
             var cart = GetCartItems();// 使用 GetCartItems 方法獲取購物車項目
             SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == productId);
             TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == productId);
@@ -73,12 +78,13 @@ namespace EnGee.Controllers
                 {// 如果商品不存在，創建新項目並添加到購物車
                     SSJ_CShoppingCarItem item = new SSJ_CShoppingCarItem
                     {
-                        point = (int)p.ProductUnitPoint,
                         ProductId = productId,
+                        SellerId = p.SellerId,
                         count = count,
-                        tproduct = p,
+                        point = (int)p.ProductUnitPoint,
                         ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
-                        DeliveryTypeID = deliveryOption
+                        DeliveryTypeID = deliveryOption,
+                        tproduct = p
                     };
                     cart.Add(item);
                 }
@@ -100,7 +106,7 @@ namespace EnGee.Controllers
                 {
                     int txtProductId = (int)context.ActionArguments["txtProductId"];
                     HttpContext.Session.SetInt32("TempProductId", txtProductId);
-                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
+                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName);
                     context.Result = new RedirectToActionResult("Login", "Home", null);
                 }
             }
@@ -108,7 +114,7 @@ namespace EnGee.Controllers
             {
                 if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
                 {
-                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
+                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName);
                     context.Result = new RedirectToActionResult("Login", "Home", null);
                 }
             }
@@ -117,12 +123,12 @@ namespace EnGee.Controllers
                 if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
                 {
                     if (context.ActionArguments.ContainsKey("txtProductId"))
-                        {  HttpContext.Session.SetInt32("TempProductId", (int)context.ActionArguments["txtProductId"]);}
-                    if (context.ActionArguments.ContainsKey("deliverytypeid")) 
-                    {HttpContext.Session.SetInt32("TempDeliverytypeid", (int)context.ActionArguments["deliverytypeid"]);}
+                    { HttpContext.Session.SetInt32("TempProductId", (int)context.ActionArguments["txtProductId"]); }
+                    if (context.ActionArguments.ContainsKey("deliverytypeid"))
+                    { HttpContext.Session.SetInt32("TempDeliverytypeid", (int)context.ActionArguments["deliverytypeid"]); }
                     if (context.ActionArguments.ContainsKey("txtCount"))
                     { HttpContext.Session.SetInt32("TempTxtCount", (int)context.ActionArguments["txtCount"]); }
-                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName); 
+                    HttpContext.Session.SetString("RedirectAfterLogin", context.ActionDescriptor.DisplayName);
                     context.Result = new RedirectToActionResult("Login", "Home", null);
                 }
             }
@@ -151,9 +157,9 @@ namespace EnGee.Controllers
             return View(cart);
         }
 
-        public ActionResult AddToCart(SSJ_CShoppingCarItem vm ,int txtProductId, int txtCount, int deliverytypeid)
+        public ActionResult AddToCart(SSJ_CShoppingCarItem vm, int txtProductId, int txtCount, int deliverytypeid)
         {
-            if (deliverytypeid!=0)
+            if (deliverytypeid != 0)
             {
                 HttpContext.Session.SetInt32("DeliveryType", deliverytypeid);
             }
@@ -183,7 +189,9 @@ namespace EnGee.Controllers
             else
             {
                 cart.Add(new SSJ_CShoppingCarItem
-                {   tproduct = p,
+                {
+                    tproduct = p,
+                    SellerId = p.SellerId,
                     point = (int)p.ProductUnitPoint,
                     ProductId = txtProductId,
                     count = txtCount,
@@ -195,7 +203,7 @@ namespace EnGee.Controllers
             return Json(new { success = true, message = "Product added to cart." });
         }
 
-        public ActionResult AddToCartAndReturnCarView(SSJ_CShoppingCarItem vm,int txtProductId, int txtCount, int deliverytypeid)
+        public ActionResult AddToCartAndReturnCarView(SSJ_CShoppingCarItem vm, int txtProductId, int txtCount, int deliverytypeid)
         {//Detail中的直接購買(跳轉至cartview)
             if (deliverytypeid != 0)
             {
@@ -233,6 +241,7 @@ namespace EnGee.Controllers
                 cart.Add(new SSJ_CShoppingCarItem
                 {
                     tproduct = p,
+                    SellerId = p.SellerId,
                     point = (int)p.ProductUnitPoint,
                     ProductId = txtProductId,
                     count = txtCount,
@@ -243,13 +252,13 @@ namespace EnGee.Controllers
             SaveCartItems(cart);
             return RedirectToAction("CartView");
         }
-      
+
         public ActionResult QuickAddToCart(int txtProductId)
         { // 購物頁商品快速加入商品到購物車
             // 設定預設的配送選項
             int defaultCount = 1;
             int defaultDeliveryOption = 1;
-            HttpContext.Session.SetInt32("DeliveryType", defaultDeliveryOption);//不應該存入SESSION，應該直接對cart session操作
+            HttpContext.Session.SetInt32("DeliveryType", defaultDeliveryOption);//TODO不應該存入SESSION，應該直接對cart session操作
             // 用GetAndUpdateCart將商品加入購物車
             int productId = txtProductId;
             GetAndUpdateCart(productId, defaultCount, defaultDeliveryOption);
@@ -257,53 +266,47 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm,string SelectedProducts, int txtProductId, int txtCount, int deliverytypeid)
+        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm, string SelectedProducts, int txtProductId, int txtCount, int deliverytypeid)
         {
-            //確認結帳傳至後端
-            var cart = GetCartItems();
-            if (cart == null || cart.Count == 0) return RedirectToAction("CartView");// 檢查購物車中是否有商品
-            int? sessionDeliveryType = HttpContext.Session.GetInt32("DeliveryType");
-            if (sessionDeliveryType.HasValue)
-            {
-                vm.DeliveryType = sessionDeliveryType.Value;
-            }
-            // 將字符串反序列化為整數列表，Session中獲取CHKBox被選中的ID
-            List<int> selectedProductIds = JsonSerializer.Deserialize<List<int>>(SelectedProducts);
-            // 從Session中獲取購物車商品
+            //TODO->應該修好了，如果DETAIL先選好運送傳到CART就會有正常值，若是在CART上修改不會變更'DeliveryTypeID、DeliveryType
+            //讀取購物車->與GetCartItems重複執行->可刪除
             string json = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
-             cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json);
-            // 如果購物車為空，則重新導向到購物車視圖
+            var cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json);
+            //讀取購物車
+            //var cart = GetCartItems();
             if (cart == null || cart.Count == 0)
             {
                 return RedirectToAction("CartView");
             }
             else //test
-            {
-                    Console.WriteLine(cart);
-            }
+            { Console.WriteLine(cart); }
+            //將登入者存成loggedUserId
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            var user = JsonSerializer.Deserialize<TMember>(userJson);
+            int loggedUserId = user.MemberId;
 
+            // 將字符串反序列化為整數列表，Session中獲取CHKBox被選中的ID
+            List<int> selectedProductIds = JsonSerializer.Deserialize<List<int>>(SelectedProducts);
+            //-----------------------------
             // 創建新的訂單並儲存
-
-            if (vm != null)//test
-            {
-                Console.WriteLine(vm.DeliveryType);
-                Console.WriteLine(vm.DeliveryAddress);
-            }
-
             int totalUsagePoints = 0;
             using (EngeeContext db = new EngeeContext())
             {
                 TOrder order = new TOrder
                 {
                     OrderDate = DateTime.Now,
-                    DeliveryTypeId = vm.DeliveryType,
-                    DeliveryAddress = vm.DeliveryAddress,
-                    BuyerId = 59,//TODO:尚未串接
-                    SellerId = 60,//尚未串接
+                    BuyerId = loggedUserId,
+                    //firstEntry沒讀到
+                    //DeliveryTypeId = firstEntry.Value,
+                    ////TODO 訂單有多個運送方式應該移至TOrderDetail
+                    //DeliveryAddress = vm.DeliveryAddress,
+                    //////TODO 訂單有多個賣家應該移至TOrderDetail
+                    //SellerId = 60,//尚未串接
                     OrderStatus = "3",//結帳後為3
                     OrderCatagory = 1,//買賣為1
                     ConvienenNum = "0",//超商尚未串接
                     DeliveryFee = GetDeliveryFee(vm.DeliveryType)//用函式尋找DeliveryFee
+                    //DeliveryFee目前讀不到值都回0，應該做個加總
                 };
                 db.TOrders.Add(order);
                 try
@@ -325,14 +328,18 @@ namespace EnGee.Controllers
                     if (selectedProductIds.Contains(item.ProductId))//chkbox選中的ID是否包含item.ProductId
                     {
                         TOrderDetail orderDetail = new TOrderDetail
-                        {
+                        {//SQL更信後要重新加入context
                             OrderId = order.OrderId,
                             OrderDate = order.OrderDate,
+                            //OrderDate SQL應該可以刪除但先留著
+                            DeliveryTypeId = item.DeliveryTypeID,
+                            DeliveryAddress = vm.DeliveryAddress,
                             ProductId = item.ProductId,
                             ProductUnitPoint = item.point,
-                            OrderQuantity = item.count, 
-                            BuyerId = order.BuyerId,
-                            SellerId = order.SellerId
+                            OrderQuantity = item.count,
+                            SellerId = item.SellerId,
+                            //BuyerId = order.BuyerId,
+                            //buyer只有order有
                         };
                         db.TOrderDetails.Add(orderDetail);
                         totalUsagePoints += item.小計;// 計算小計
@@ -353,7 +360,7 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateCartItem(int productId, int newCount)
+        public JsonResult UpdateCartItem(int productId, int? newCount, int? deliveryTypeId)
         {//更新小計、totalPoint用
             // 從Session中獲取購物車列表
             var cart = GetCartItems();
@@ -361,8 +368,12 @@ namespace EnGee.Controllers
             var itemToUpdate = cart.FirstOrDefault(item => item.ProductId == productId);
             // 如果找不到該商品，返回失敗
             if (itemToUpdate == null) return Json(new { success = false, message = "Product not found" });
-            // 更新商品數量
-            itemToUpdate.count = newCount;
+            // 如果有值更新商品數量，沒有不更新
+            if (newCount.HasValue)
+            { itemToUpdate.count = newCount.Value; }
+            // 如果有值更新商品deliveryTypeId，沒有不更新
+            if (deliveryTypeId.HasValue)
+            { itemToUpdate.DeliveryTypeID = deliveryTypeId.Value; }
             // 保存新的購物車列表到Session
             SaveCartItems(cart);
             // 返回成功和更新後的資訊
@@ -423,5 +434,43 @@ namespace EnGee.Controllers
         //    return RedirectToAction("IndexSSJ", "Product");
         //}
         //-----------墳墓-------------
+
+        //        當你的購物平台允許買家從多個賣家那裡購買商品時，"訂單拆分" 是一個常見而且有助於管理的策略。
+
+        //訂單拆分的詳細說明：
+        //基本概念：
+        //訂單拆分是指當一個買家在結帳時，他的購物車中的商品來自多個賣家，系統會為每個賣家生成一個獨立的訂單，而不是將所有商品放在一個訂單中。
+
+        //操作流程：
+
+        //買家選擇商品加入購物車。
+        //結帳時，系統檢查購物車中的商品，確定有多少個賣家。
+        //對於購物車中的每個賣家，系統生成一個新的訂單編號。
+        //買家結帳完成後，將會看到多個訂單確認信息，每個賣家一個訂單。
+        //舉例：
+        //假設買家小王的購物車中有以下商品：
+
+        //商品A，賣家：張三
+        //商品B，賣家：張三
+        //商品C，賣家：李四
+        //當小王進行結帳時，系統會生成兩個訂單：
+
+        //訂單#001：
+        //商品A
+        //商品B
+        //賣家：張三
+        //訂單#002：
+        //商品C
+        //賣家：李四
+        //好處：
+        //賣家管理：張三和李四都會收到與他們商品相關的訂單通知。張三不需要關心商品C，李四也不需要關心商品A和商品B。這減少了混淆和管理上的困難。
+
+        //出貨與配送：由於每個訂單都是獨立的，所以每個賣家都可以獨立處理配送。如果所有商品都在同一個訂單中，則可能需要集中配送，這會增加復雜性。
+
+        //追踪與管理：對於買家來說，他們可以單獨追踪每個賣家的訂單。例如，如果商品C配送延遲，小王可以只關心訂單#002，而不需要擔心整個購物車的訂單。
+
+        //退貨與售後：在售後服務方面，如果小王想退貨商品C，他可以直接與李四聯繫，而不影響訂單#001。
+
+        //這種設計策略已經在很多大型的電商平台上得到了應用，尤其是在多供應商或多賣家的平台中。
     }
 }

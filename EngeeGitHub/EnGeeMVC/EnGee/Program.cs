@@ -67,5 +67,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=index}/{id?}");
 app.MapRazorPages();
 app.Run();
-
-

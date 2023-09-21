@@ -16,6 +16,7 @@
         transition: color 0.2s
         /* 頁籤切換 */
     }
+
     .shopcartList {
         display: inline-block;
         margin: 0px 0px 10px 0px;
@@ -29,15 +30,18 @@
     .cartcontent .card-footer {
         background-color: white;
     }
+
     .cartcontent .cartimg img {
         width: 160px;
         height: 100%;
         object-fit: contain;
         max-height: 160px;
     }
+
     .selected {
         background-color: #e54862ca;
     }
+
     .payInfoBox {
         margin-top: 16px;
         background-color: white;
@@ -68,50 +72,59 @@
                 <!-- 超商頁面 -->
                 <div class="tab-pane fade show active" id="nav-storePickup-content" role="tabpanel" aria-labelledby="nav-storePickup-tab">
                     @{
+            //將值傳遞至後台
+                        <input type="hidden" name="BuyerId" value="填入BUYLLER">
                         int count = 0;
                         decimal pay = 0;
                         if (Model != null && Model.Any())
                         {
                             foreach (var item in Model)
                             {
-                                                <div class="card p-2">
-                                                    <div class="cartcontent">
-                                                        <div class="row m-0 ">
-                                                            <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
-                                                                <div class="form-check">
-                                                                    <input class="cartcheckout form-check-input" type="checkbox" value="" data-product-id="@item.ProductId" checked>
-                                                                </div>
-                                                                <div class="cartimg d-flex">
-                                                                    <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
-                                                                <div class="card-body p-0">
-                                                                    <h5 class="card-title">
-                                                            @Html.DisplayFor(modelItem => item.tproduct.ProductName)
-                                                                    </h5>
-                                                                    <p class="card-text">
-                                                                        //其他資訊擺放位置
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
-                                                                <label class="me-1 mb-2" >點數:</label>
-                                                                <label >@Html.DisplayFor(modelItem => item.point)</label><br>
-                                                                <label class="me-1 mb-2" >數量:</label>
-                                                                <button class="btn btn-rong-s btnHoverStyle2 btnMinus" type="button">-</button>
-                                                                <label class="me-2" data-product-id="@item.ProductId" >@Html.DisplayFor(modelItem => item.count)</label>
-                                                                <button class="btn btn-rong-s btnHoverStyle2 btnPlus" type="button">+</button>
-                                                                <label class="me-1 mb-2" >小計:</label>
-                                                                 <label class="me-2 subtotalPoints" data-product-id="@item.ProductId" >@Html.DisplayFor(modelItem => item.小計)</label>
+                            // 前端變更運送方式用
+                                <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">
+                                //保存原始的DeliveryTypeID值
+                                <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
+                                //將值傳遞至後台
+                                <input type="hidden" name="SellerId" value="@item.SellerId">
+                                <input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />
+                                <div class="card p-2">
+                                    <div class="cartcontent">
+                                        <div class="row m-0 ">
+                                            <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                                <div class="form-check">
+                                                    <input class="cartcheckout form-check-input" type="checkbox" value="" data-product-id="@item.ProductId" checked>
+                                                </div>
+                                                <div class="cartimg d-flex">
+                                                    <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                                <div class="card-body p-0">
+                                                    <h5 class="card-title">
+                                                        @Html.DisplayFor(modelItem => item.tproduct.ProductName)
+                                                    </h5>
+                                                    <p class="card-text">
+                                                        //其他資訊擺放位置
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                                <label class="me-1 mb-2">點數:</label>
+                                                <label>@Html.DisplayFor(modelItem => item.point)</label><br>
+                                                <label class="me-1 mb-2">數量:</label>
+                                                <button class="btn btn-rong-s btnHoverStyle2 btnMinus" type="button">-</button>
+                                                <label class="me-2" data-product-id="@item.ProductId">@Html.DisplayFor(modelItem => item.count)</label>
+                                                <button class="btn btn-rong-s btnHoverStyle2 btnPlus" type="button">+</button>
+                                                <label class="me-1 mb-2">小計:</label>
+                                                <label class="me-2 subtotalPoints" data-product-id="@item.ProductId">@Html.DisplayFor(modelItem => item.小計)</label>
                                                 <label class="me-1 mb-2 @item.ProductId">所選配送方式:</label>
                                                 <label class="me-2 mb-2 delivery-label @item.ProductId" data-product-id="@item.ProductId">@item.DeliveryType</label>
-                                                @*保存原始的DeliveryType、DeliveryTypeID值 *@
-                                                <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
-                                                <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">
-                                                <span class="hrefstyle mb-2">修改配送方式:</span>
-                                                @*<label><input type="radio" name="deliverytypeid"   delytype="宅配" value="1" id="homeDelivery" data-product-id="@item.ProductId">宅配/label>
-                                    <label> <input type="radio" name="deliverytypeid"  delytype="超商門市取貨" value="2" id="StorePickup" data-product-id=" @item.ProductId">超商門市取貨</label>*@
+                                                @*保存原始的DeliveryType、DeliveryTypeID值
+                                    <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
+                                    <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">*@
+                                                @*保存原始的SelectedDeliveryTypeID值 *@
+                                                @*<input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />*@
+                                                <label class="me-2 mb-2" name="SellerId">賣家: @item.SellerId</label><br>
                                                 <label>
                                                     <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
                                                            data-product-id="@item.ProductId" data-delivery-type="宅配" value="1" id="homeDelivery"
@@ -122,96 +135,97 @@
                                                            data-product-id="@item.ProductId" data-delivery-type="超商門市取貨" value="2" id="StorePickup"
                                                            data-label-class="delivery-label @item.ProductId">超商門市取貨
                                                 </label>
-                                                                <a class="hrefstyle delete-item" href="#" data-product-id="@item.ProductId">刪除</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr class="hr-m4px">
-                                                </div>
-                            }
-                                        <div class="container p-0 ">
-                                            <div class="row m-0 p-0">
-                                                <div class="payInfoBox d-flex align-items-center justify-content-end">
-                                                    <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
-                                                        <input class=" form-check-input select-all-checkbox" type="checkbox"
-                                                       data-target=".cartcheckout" id="storePickupSelectAll" checked>
-                                                        <label class="form-check-label" for="storePickupSelectAll">全選</label>
-                                                    </div>
-                                                    <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
-                                                商品總點數：<span> $ </span><span id ="productTotalPoint"> @pay.ToString() </span>
-                                                    </div>
-                                                    <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
-                                                        <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex align-items-center justify-content-end">
-                                                    <a class="hrefstyle mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
-                                                </div>
+                                                <a class="hrefstyle delete-item" href="#" data-product-id="@item.ProductId">刪除</a>
                                             </div>
                                         </div>
-                //隱藏宅配表單
-                                        <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
-                                            <div class="container mt-5">
-                                                <div class="input-group mb-2 d-flex  align-items-end">
-                                                    <div class="fz-size32px">
-                                                        會員資料
-                                                    </div>
-                                                    <div class="d-flex align-items-center justify-content-center border-0 fz-size16px m-1">
+                                    </div>
+                                    <hr class="hr-m4px">
+                                </div>
+                            }
+                            <div class="container p-0 ">
+                                <div class="row m-0 p-0">
+                                    <div class="payInfoBox d-flex align-items-center justify-content-end">
+                                        <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
+                                            <input class=" form-check-input select-all-checkbox" type="checkbox"
+                                                   data-target=".cartcheckout" id="storePickupSelectAll" checked>
+                                            <label class="form-check-label" for="storePickupSelectAll">全選</label>
+                                        </div>
+                                        <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
+                                            商品總點數：<span> $ </span><span id="productTotalPoint"> @pay.ToString() </span>
+                                        </div>
+                                        <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
+                                            <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-end">
+                                        <a class="hrefstyle mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
+                                    </div>
+                                </div>
+                            </div>
+                            //隱藏宅配表單
+                            <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
+                                <div class="container mt-5">
+                                    <div class="input-group mb-2 d-flex  align-items-end">
+                                        <div class="fz-size32px">
+                                            會員資料
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center border-0 fz-size16px m-1">
                                             <input class="form-check-input mt-0  " type="checkbox" id="defaultCheck_memberInformation">
                                             <label class="form-check-label" for="defaultCheck_memberInformation">
-                                                            帶入會員資料
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <form method="post" action="@Url.Action("ConfirmPurchase", "Shopping")">
-                                                    <input type="hidden" name="SelectedProducts" id="SelectedProducts" />
+                                                帶入會員資料
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <form method="post" action="@Url.Action("ConfirmPurchase", "Shopping")">
+                                        <input type="hidden" name="SelectedProducts" id="SelectedProducts" />
 
-                                                    <div class="input-group mb-2">
-                                                        <span class="input-group-text">姓名</span>
-                                            <input type="text" class="form-control" name="Fullname" >
-                                                    </div>
-                                                    <div class="input-group mb-2">
-                                                        <span class="input-group-text">Email</span>
-                                                        <input type="text" class="form-control" name="Email">
-                                                    </div>
-                                                    <div class="input-group mb-2">
-                                                        <span class="input-group-text">手機</span>
-                                                        <input type="text" class="form-control" name="Phone">
-                                                    </div>
-                                                    <div class="input-group mb-2">
-                                                        <span class="input-group-text" >地址</span>
-                                                        <input type="text" class="form-control" name="DeliveryAddress">
-                                                    </div>
 
-                                            @{
-                                            decimal memberPoints = 0; // TODO預設會員點數未串接
-                                            }
-                                                <div class="container mt-4">
-                                                    <div class="input-group mb-2">
-                                                        <span class="input-group-text">結帳扣點</span>
-                                                    <input type="form-text" class="form-control" id="checkoutTotalPoint" readonly >
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">姓名</span>
+                                            <input type="text" class="form-control" name="Fullname">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">Email</span>
+                                            <input type="text" class="form-control" name="Email">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">手機</span>
+                                            <input type="text" class="form-control" name="Phone">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text">地址</span>
+                                            <input type="text" class="form-control" name="DeliveryAddress">
+                                        </div>
 
-                                                        <span class="input-group-text">會員點數</span>
-                                                        <input type="form-text" class="form-control" readonly value="@memberPoints.ToString()">
-                                                        <span class="input-group-text">購買後剩餘點數</span>
-                                                        <input type="form-text" class="form-control" readonly value="@((memberPoints - pay).ToString())">
-                                                    </div>
-                                                    <div class="d-flex justify-content-center ">
-                                                        <a class=" hrefstyle1-m  m-2 px-3 py-2">儲值</a>
-                                                        <button class="btn btn-m btnHoverStyle2 m-2" type="submit">確認結帳</button>
-                                                    <a class=" hrefstyle m-2 px-3 py-2" href="@Url.Action("IndexSSJ", "Product")">取消</a>
-                                                    </div>
-                                                    </div>
-                                                </form>
-                                                </div>
+                                        @{
+                                            decimal memberPoints = 0; // TODO預設，會員點數未串接
+                                        }
+                                        <div class="container mt-4">
+                                            <div class="input-group mb-2">
+                                                <span class="input-group-text">結帳扣點</span>
+                                                <input type="form-text" class="form-control" id="checkoutTotalPoint" readonly>
+
+                                                <span class="input-group-text">會員點數</span>
+                                                <input type="form-text" class="form-control" readonly value="@memberPoints.ToString()">
+                                                <span class="input-group-text">購買後剩餘點數</span>
+                                                <input type="form-text" class="form-control" readonly value="@((memberPoints - pay).ToString())">
                                             </div>
+                                            <div class="d-flex justify-content-center ">
+                                                <a class=" hrefstyle1-m  m-2 px-3 py-2">儲值</a>
+                                                <button class="btn btn-m btnHoverStyle2 m-2" type="submit">確認結帳</button>
+                                                <a class=" hrefstyle m-2 px-3 py-2" href="@Url.Action("IndexSSJ", "Product")">取消</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         }
                         else
                         {
-                                        <div class="alert alert-warning">您的購物車是空的。</div>
-                                                  <div class="d-flex align-items-center justify-content-center">
+                            <div class="alert alert-warning">您的購物車是空的。</div>
+                            <div class="d-flex align-items-center justify-content-center">
                                 <a class="hrefstyle hrefstyle1:hover mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
-                                                   </div>
+                            </div>
                         }
                     }
                 </div>
@@ -331,7 +345,7 @@
             $('input[name="SelectedProducts"]').val(JSON.stringify(selectedProducts));
         });
     });
- // ------------------------------
+    // ------------------------------
     // 當帶入會員資料勾選時自動帶入會員資料'
     var jsonData = @Html.Raw(Json.Serialize(ViewBag.userFromDatabase ?? new {}));
 
@@ -354,35 +368,7 @@
             document.querySelector("input[name='DeliveryAddress']").value = "";
         }
     });
-    // -----------------------------
-    $(document).ready(function () {
-    // 為每個減少按鈕添加點擊事件
-        $('.btnMinus').click(function ()
-        {
-            var $label = $(this).next('label');
-            var count = parseInt($label.text(), 10);
-            var productId = $label.data('product-id'); 
-            if (count > 1)
-            {
-                count--;
-                $label.text(count);
-                updateCartItem(productId, count); 
-                updateTotalPrice();
-            }
-        });
-
-        $('.btnPlus').click(function ()
-        {
-            var $label = $(this).prev('label');
-            var count = parseInt($label.text(), 10);
-            var productId = $label.data('product-id'); 
-            count++;
-            $label.text(count);
-            updateCartItem(productId, count);  
-            updateTotalPrice();
-        });
-});
-// -------------------------
+    // -------------------------
     $(document).ready(function ()
     {
         $(".delete-item").click(function (event)
@@ -400,16 +386,45 @@
                     if (response.success)
                     {
                         location.reload();
-                    } 
+                    }
                 },
                 error: function ()
-                { console.error('Error:', error);}
+                { console.error('Error:', error); }
             });
+        });
+    });
+    // -----------------------------
+    $(document).ready(function ()
+    {
+        // 為每個減少按鈕添加點擊事件
+        $('.btnMinus').click(function ()
+        {
+            var $label = $(this).next('label');
+            var count = parseInt($label.text(), 10);
+            var productId = $label.data('product-id');
+            if (count > 1)
+            {
+                count--;
+                $label.text(count);
+                updateCartItem(productId, count, null);
+                updateTotalPrice(); selectedDelivery
+            }
+        });
+
+        $('.btnPlus').click(function ()
+        {
+            var $label = $(this).prev('label');
+            var count = parseInt($label.text(), 10);
+            var productId = $label.data('product-id');
+            count++;
+            $label.text(count);
+            updateCartItem(productId, count, null);
+            updateTotalPrice();
         });
     });
     // ---------------------
     $(document).ready(function ()
-        {//chkBox變更商品deliveryType
+    {//chkBox變更商品deliveryType
         $(".delivery-radio").each(function ()
         {
             var productId = $(this).data("product-id");
@@ -426,8 +441,11 @@
         {
             var productId = $(this).data("product-id");
             var newDeliveryType = $(this).data("delivery-type");
+            var deliveryTypeId = $(this).val(); // 從radio button的value取得
             $(".delivery-label." + productId).text(newDeliveryType);
+            $("#selectedDeliveryTypeID_" + productId).val(deliveryTypeId);
             var $label = $(`label[data-product-id=${productId}]`);
+            updateCartItem(productId, null, deliveryTypeId)
         });
     });
     //------------function------------------
@@ -446,26 +464,27 @@
         $("#productTotalPoint").text(total);
         $('#checkoutTotalPoint').val(total);
     }
-          function updateCartItem(productId, newCount)
-              {//將label的值與product-id傳至後台Shopping/UpdateCartItem
-                $.ajax({
-                    type: "POST",
-                    url: "/Shopping/UpdateCartItem",
-                    data: { productId: productId, newCount: newCount }, // 发送数量
-                    success: function (result)
-                    {console.log("成功更新購物車項目：", result);
-                    // 測試用
-                        $(`.subtotalPoints[data-product-id=${productId}]`).text(result.subtotalPoints);
-                         //購物車有多個項目有subtotalPoints，故不適合用#subtotalPoints
-                         //.text() 方法也可以用在 label 標籤上，不僅僅是 span、div 或 p 等元素。
-                        updateTotalPrice();
-                    },
-                    error: function (error)
-                    {
-                        console.error('Error:', error);
-                    }
-                });
+    function updateCartItem(productId, newCount = null, deliveryTypeId = null)
+    {//將label的值與product-id傳至後台Shopping/UpdateCartItem
+        $.ajax({
+            type: "POST",
+            url: "/Shopping/UpdateCartItem",
+            data: { productId: productId, newCount: newCount, deliveryTypeId: deliveryTypeId }, // 发送数量
+            success: function (result)
+            {
+                console.log("成功更新購物車項目：", result);
+                // 測試用
+                $(`.subtotalPoints[data-product-id=${productId}]`).text(result.subtotalPoints);
+                //購物車有多個項目有subtotalPoints，故不適合用#subtotalPoints
+                //.text() 方法也可以用在 label 標籤上，不僅僅是 span、div 或 p 等元素。
+                updateTotalPrice();
+            },
+            error: function (error)
+            {
+                console.error('Error:', error);
             }
+        });
+    }
 
     function getSelectedProducts()
     {//選出chkbox被選擇的商品
