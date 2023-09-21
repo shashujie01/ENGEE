@@ -19,7 +19,7 @@ public partial class TMember
     [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
 
     public string Password { get; set; } = null!;
-    [NotMapped] //不存至SQL
+    [NotMapped] 
     [DisplayName("確認密碼")]
     [Required(ErrorMessage = ("確認密碼必填"))]
     [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]

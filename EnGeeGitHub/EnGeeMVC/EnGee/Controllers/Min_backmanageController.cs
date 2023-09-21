@@ -100,7 +100,7 @@ namespace EnGee.Controllers
 
             // 加入Point篩選條件
             if (minPoint.HasValue)
-            {
+        {
                 query = query.Where(t => t.Point >= minPoint.Value);
             }
 
