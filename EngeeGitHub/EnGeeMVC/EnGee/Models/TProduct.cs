@@ -5,9 +5,9 @@ namespace EnGee.Models;
 
 public partial class TProduct
 {
-    public int ProductId { get; set; }
+    public int ProductId { get; set; } //Min
 
-    public string ProductName { get; set; } = null!;
+    public string ProductName { get; set; } = null!;  //Min
 
     public int BrandId { get; set; }
 
@@ -15,7 +15,7 @@ public partial class TProduct
 
     public int SubcategoryId { get; set; }
 
-    public string ProductDescribe { get; set; } = null!;
+    public string ProductDescribe { get; set; } = null!; //Min
 
     public string ProductImagePath { get; set; } = null!;
 
@@ -27,7 +27,7 @@ public partial class TProduct
 
     public string ProductUsageStatus { get; set; } = null!;
 
-    public int DonationStatus { get; set; }
+    public int DonationStatus { get; set; } //Min
 
     public DateTime DateOfSale { get; set; }
 
@@ -36,6 +36,8 @@ public partial class TProduct
     public int SellerId { get; set; }
 
     public int ProductSaleStatus { get; set; }
+
+    public int ?boolFavor { get; set; }  //Min 新增 關聯至MinFavorController
 
     public virtual TBrand Brand { get; set; } = null!;
 

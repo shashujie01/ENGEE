@@ -1,0 +1,155 @@
+﻿@model IEnumerable<EnGee.Models.TMember>
+
+@{
+    ViewData["Title"] = "MemberList";
+}
+
+<style>
+    .btn-pink{
+        background-color:pink;
+        color:white;
+        justify-content:center;
+    }
+    .btn-pink:hover{
+        background-color:hotpink;
+    }
+</style>
+<h1>會員資料</h1>
+<div>
+    <a asp-action="Create" asp-controller="MinMember"  class="btn btn-pink ">新增會員</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                編號
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RePassword)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fullname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RegistrationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Access)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Point)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhotoPath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Introduction)
+            </th>
+@*             <th>
+                @Html.DisplayNameFor(model => model.RandomToken)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.CharityProof)
+            </th>
+            <th>
+                編輯
+            </th>
+            <th>
+                刪除
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count = 0;
+
+            foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <td>
+                        @count
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RePassword)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fullname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistrationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Birth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Access)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Point)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhotoPath)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Introduction)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RandomToken)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CharityProof)
+                    </td>
+                    <td>
+                        @Html.ActionLink("編輯", "Edit", new { id=item.MemberId }) 
+                       
+                    </td>
+                    <td>
+                        @Html.ActionLink("刪除", "Delete","Min_backmanage", new { id=item.MemberId  }, new {onclick="return confirm('確定要刪除嗎?')"})
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

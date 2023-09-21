@@ -47,14 +47,14 @@ namespace EnGee.Controllers
 
 
             //---------------條件限制規則--------------------//
-            if (tm.Gender == null)
-            {
-                tm.Gender = "2";
-            }
-            else
-            {
-                tm.Gender = gender;
-            }
+            //if (tm.Gender == null)
+            //{
+            //    tm.Gender = "2";
+            //}
+            //else
+            //{
+            //    tm.Gender = gender;
+            //}
             if (tm.RegistrationDate == null)
             {
                 tm.RegistrationDate = DateTime.Now;  //註冊日預設當日
@@ -162,10 +162,7 @@ namespace EnGee.Controllers
         }
 
         //----------0920新增追蹤頁面------------------//
-        public IActionResult Favor()
-        {
-            return View();
-        }
+
 
 	}
     
