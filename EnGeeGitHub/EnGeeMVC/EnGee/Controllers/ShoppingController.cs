@@ -13,7 +13,7 @@ using System.Data;
 namespace EnGee.Controllers
 {
     public class ShoppingController : SuperController
-    {
+    {//TODO特定時間清除多餘SESSION
         private readonly EngeeContext _db;
         public ShoppingController(EngeeContext db, CHI_CUserViewModel userViewModel) : base(userViewModel)
         {
@@ -94,6 +94,16 @@ namespace EnGee.Controllers
             }
             return cart;
         }
+
+        private void LogDbUpdateException(DbUpdateException e)
+        {
+            var innerException = e.InnerException;
+            while (innerException != null)
+            {
+                Console.WriteLine(innerException.Message);
+                innerException = innerException.InnerException;
+            }
+        }
         //------------------------
         public override void OnActionExecuting(ActionExecutingContext context)
         {//// overview:
@@ -153,9 +163,21 @@ namespace EnGee.Controllers
             TMember loggedInUser = GetLoggedInUser();
             TMember userFromDatabase = _db.TMembers.FirstOrDefault(t => t.Email.Equals(loggedInUser.Email));
             ViewBag.userFromDatabase = userFromDatabase;
+            int points = (int)(userFromDatabase?.Point ?? 0);
+            ViewBag.MemberPoints = points;
             List<SSJ_CShoppingCarItem> cart = GetCartItems();
             return View(cart);
         }
+
+        public IActionResult CartView_ConvenienceStore()
+        {// 顯示購物車畫面
+            TMember loggedInUser = GetLoggedInUser();
+            TMember userFromDatabase = _db.TMembers.FirstOrDefault(t => t.Email.Equals(loggedInUser.Email));
+            ViewBag.userFromDatabase = userFromDatabase;
+            List<SSJ_CShoppingCarItem> cart_ConvenienceStore = GetCartItems();
+            return View(cart_ConvenienceStore);
+        }
+
 
         public ActionResult AddToCart(SSJ_CShoppingCarItem vm, int txtProductId, int txtCount, int deliverytypeid)
         {
@@ -258,50 +280,39 @@ namespace EnGee.Controllers
             // 設定預設的配送選項
             int defaultCount = 1;
             int defaultDeliveryOption = 1;
-            HttpContext.Session.SetInt32("DeliveryType", defaultDeliveryOption);//TODO不應該存入SESSION，應該直接對cart session操作
+            int productId = txtProductId;            
             // 用GetAndUpdateCart將商品加入購物車
-            int productId = txtProductId;
             GetAndUpdateCart(productId, defaultCount, defaultDeliveryOption);
             return RedirectToAction("CartView");
         }
 
         [HttpPost]
-        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm, string SelectedProducts, int txtProductId, int txtCount, int deliverytypeid)
+        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm, string SelectedProducts) /*int txtProductId, int txtCount, int deliverytypeid*/
         {
-            //TODO->應該修好了，如果DETAIL先選好運送傳到CART就會有正常值，若是在CART上修改不會變更'DeliveryTypeID、DeliveryType
-            //讀取購物車->與GetCartItems重複執行->可刪除
-            string json = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
-            var cart = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json);
             //讀取購物車
-            //var cart = GetCartItems();
+            var cart = GetCartItems();
             if (cart == null || cart.Count == 0)
             {
                 return RedirectToAction("CartView");
             }
             else //test
             { Console.WriteLine(cart); }
+
             //將登入者存成loggedUserId
-            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
-            var user = JsonSerializer.Deserialize<TMember>(userJson);
+            var user = GetLoggedInUser();
             int loggedUserId = user.MemberId;
 
             // 將字符串反序列化為整數列表，Session中獲取CHKBox被選中的ID
             List<int> selectedProductIds = JsonSerializer.Deserialize<List<int>>(SelectedProducts);
-            //-----------------------------
+
             // 創建新的訂單並儲存
             int totalUsagePoints = 0;
-            using (EngeeContext db = new EngeeContext())
+            using (var db = _db)
             {
                 TOrder order = new TOrder
                 {
                     OrderDate = DateTime.Now,
                     BuyerId = loggedUserId,
-                    //firstEntry沒讀到
-                    //DeliveryTypeId = firstEntry.Value,
-                    ////TODO 訂單有多個運送方式應該移至TOrderDetail
-                    //DeliveryAddress = vm.DeliveryAddress,
-                    //////TODO 訂單有多個賣家應該移至TOrderDetail
-                    //SellerId = 60,//尚未串接
                     OrderStatus = "3",//結帳後為3
                     OrderCatagory = 1,//買賣為1
                     ConvienenNum = "0",//超商尚未串接
@@ -309,52 +320,47 @@ namespace EnGee.Controllers
                     //DeliveryFee目前讀不到值都回0，應該做個加總
                 };
                 db.TOrders.Add(order);
+                var selectedItems = cart.Where(item => selectedProductIds.Contains(item.ProductId));
+                // 對於購物車中的每一項商品，都在TOrderDetail表中新增一個詳細資料行
+                foreach (var item in selectedItems)
+                {
+                    TOrderDetail orderDetail = new TOrderDetail
+                    {
+                        OrderId = order.OrderId,
+                        OrderDate = order.OrderDate,
+                        DeliveryTypeId = item.DeliveryTypeID,
+                        DeliveryAddress = vm.DeliveryAddress,
+                        ProductId = item.ProductId,
+                        ProductUnitPoint = item.point,
+                        OrderQuantity = item.count,
+                        SellerId = item.SellerId,
+                    };
+                    _db.TOrderDetails.Add(orderDetail);
+                    totalUsagePoints += item.小計;
+                }
+                order.OrderTotalUsagePoints = totalUsagePoints;
+
                 try
                 {
-                    db.SaveChanges();
+                    _db.SaveChanges();
                 }
                 catch (DbUpdateException e)
                 {
-                    var innerException = e.InnerException;
-                    while (innerException != null)
-                    {
-                        Console.WriteLine(innerException.Message);
-                        innerException = innerException.InnerException;
-                    }
+                    LogDbUpdateException(e);  // A helper function to handle and log the exception
                 }
-                // 對於購物車中的每一項商品，都在TOrderDetail表中新增一個詳細資料行
-                foreach (var item in cart)
+
+                //更新會員點數
+                TMember currentMember = db.TMembers.FirstOrDefault(t => t.MemberId == loggedUserId);
+                if (currentMember != null)
                 {
-                    if (selectedProductIds.Contains(item.ProductId))//chkbox選中的ID是否包含item.ProductId
-                    {
-                        TOrderDetail orderDetail = new TOrderDetail
-                        {//SQL更信後要重新加入context
-                            OrderId = order.OrderId,
-                            OrderDate = order.OrderDate,
-                            //OrderDate SQL應該可以刪除但先留著
-                            DeliveryTypeId = item.DeliveryTypeID,
-                            DeliveryAddress = vm.DeliveryAddress,
-                            ProductId = item.ProductId,
-                            ProductUnitPoint = item.point,
-                            OrderQuantity = item.count,
-                            SellerId = item.SellerId,
-                            //BuyerId = order.BuyerId,
-                            //buyer只有order有
-                        };
-                        db.TOrderDetails.Add(orderDetail);
-                        totalUsagePoints += item.小計;// 計算小計
-                    }
+                    currentMember.Point -= totalUsagePoints;  // 減去已使用的點數
+                    db.SaveChanges();  // 儲存變更至資料庫
                 }
-                order.OrderTotalUsagePoints = totalUsagePoints;
-                db.SaveChanges();
 
                 // 購買後從Session中清除購物車
                 cart.RemoveAll(item => selectedProductIds.Contains(item.ProductId));
-                json = JsonSerializer.Serialize(cart);
+                string json = JsonSerializer.Serialize(cart);
                 HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
-                //HttpContext.Session.Remove(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST);
-                //HttpContext.Session.Remove("DeliveryType");//清除寄送方式Session
-                //TODO寄送方式是否跟別的一起傳
             }
             return RedirectToAction("CartView");
         }
@@ -395,46 +401,6 @@ namespace EnGee.Controllers
             // 返回成功
             return Json(new { success = true });
         }
-        //--------------墳墓--------------
-        //[HttpPost] /*直接購買與加入購物車分離出CARTVIEW，待測驗OK刪除*/
-        ////Details會post商品資料過來
-        //public ActionResult CartView(SSJ_CAddToCartViewModel vm, int? deliverytypeid)
-        //{
-        //    if (deliverytypeid.HasValue)
-        //    {
-        //        HttpContext.Session.SetInt32("DeliveryType", deliverytypeid.Value);//TODO用處?
-        //    }
-        //    if (vm == null)
-        //    { return RedirectToAction("CartView"); }
-
-        //    TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == vm.txtProductId);
-        //    if (p == null)
-        //    {
-        //        return RedirectToAction("CartView");
-        //    }
-        //    List<SSJ_CShoppingCarItem> cart = GetCartItems();
-        //    SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == vm.txtProductId);
-        //    if (existingItem != null)
-        //    {
-        //        existingItem.count += vm.txtCount;
-        //    }
-        //    else
-        //    {
-        //        cart.Add(new SSJ_CShoppingCarItem
-        //        {
-        //            point = (int)p.ProductUnitPoint,
-        //            ProductId = vm.txtProductId,
-        //            count = vm.txtCount,
-        //            tproduct = p,
-        //            ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
-        //            DeliveryTypeID = (int)deliverytypeid
-        //        });
-        //    }
-        //    SaveCartItems(cart);
-        //    return RedirectToAction("IndexSSJ", "Product");
-        //}
-        //-----------墳墓-------------
-
         //        當你的購物平台允許買家從多個賣家那裡購買商品時，"訂單拆分" 是一個常見而且有助於管理的策略。
 
         //訂單拆分的詳細說明：

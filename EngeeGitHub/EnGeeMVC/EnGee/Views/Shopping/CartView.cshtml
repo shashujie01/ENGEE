@@ -198,7 +198,6 @@
                                         </div>
 
                                         @{
-                                            decimal memberPoints = 0; // TODO預設，會員點數未串接
                                         }
                                         <div class="container mt-4">
                                             <div class="input-group mb-2">
@@ -206,10 +205,13 @@
                                                 <input type="form-text" class="form-control" id="checkoutTotalPoint" readonly>
 
                                                 <span class="input-group-text">會員點數</span>
-                                                <input type="form-text" class="form-control" readonly value="@memberPoints.ToString()">
+                                                <input type="form-text" class="form-control" readonly value="@ViewBag.MemberPoints">
+                                                <input type="hidden" id="memberPoints" value="@ViewBag.MemberPoints" />
+
                                                 <span class="input-group-text">購買後剩餘點數</span>
-                                                <input type="form-text" class="form-control" readonly value="@((memberPoints - pay).ToString())">
+                                                <input type="form-text" class="form-control" id="remainingPoints" readonly value="@ViewBag.MemberPoints">
                                             </div>
+
                                             <div class="d-flex justify-content-center ">
                                                 <a class=" hrefstyle1-m  m-2 px-3 py-2">儲值</a>
                                                 <button class="btn btn-m btnHoverStyle2 m-2" type="submit">確認結帳</button>
@@ -448,6 +450,7 @@
             updateCartItem(productId, null, deliveryTypeId)
         });
     });
+
     //------------function------------------
     // 更新總點數函數
     function updateTotalPrice()
@@ -463,6 +466,14 @@
         // 更新總點數顯示
         $("#productTotalPoint").text(total);
         $('#checkoutTotalPoint').val(total);
+
+        let memberPoints = parseFloat($("#memberPoints").val());
+        // 計算餘額
+        let remainingPoints = memberPoints - total;
+
+        // 將結果更新到目標輸入框中
+        $("#remainingPoints").val(remainingPoints);
+
     }
     function updateCartItem(productId, newCount = null, deliveryTypeId = null)
     {//將label的值與product-id傳至後台Shopping/UpdateCartItem
