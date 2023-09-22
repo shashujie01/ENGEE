@@ -16,6 +16,8 @@ namespace EnGee.Controllers
         {
             _userViewModel = userViewModel;
         }
+       
+
         public override void OnActionExecuting(ActionExecutingContext context)
         { // 使用ActionExecutingContext:有繼承SuperController的Controller中的每個Action執行前會被呼叫
           // 調用基類的OnActionExecuting方法

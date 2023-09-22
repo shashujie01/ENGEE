@@ -8,7 +8,12 @@ using prjEnGeeDemo.ViewModels;
 namespace prjEnGeeDemo.Controllers
 {
     public class ProductController : Controller
-    {
+    {        
+        //以下為樹傑的Action
+
+
+
+
         EngeeContext db = new EngeeContext();
         private IQueryable<TProduct> ApplyFilters(SSJ_ProductPageViewModel vm, IQueryable<TProduct> query)
         {//filters邏輯使用方法
@@ -107,42 +112,20 @@ namespace prjEnGeeDemo.Controllers
                 //SellerName = product.Seller?.MemberName,
                 ProductSaleStatus = product.ProductSaleStatus,
             };
+        //以下好像用不到
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public IActionResult Create(TProduct p)
+        //{
+        //    EngeeContext db = new EngeeContext();
+        //    db.TProducts.Add(p);
+        //    db.SaveChanges();
+        //    return RedirectToAction("IndexSSJ");
+        //}
             return View(PDviewModel);
-        }
-        [HttpGet]
-        public IActionResult GetDeliveryTypeDetails(int value)
-        {
-            var result = db.TDeliveryTypes.FirstOrDefault(t => t.DeliveryTypeId == value);
-
-            if (result != null)
-            {
-                return Json((int)result.DeliveryFee);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-        [HttpGet]
-        public IActionResult GetProductSellerID(int value)
-        {
-            var product = db.TProducts.FirstOrDefault(t => t.ProductId == value);
-            if (product != null)
-            {
-                var member = db.TMembers.FirstOrDefault(m => m.MemberId == product.SellerId);
-                if (member != null)
-                {
-                    return Json(member.Username);
-                }
-                else
-                {
-                    return Json("查無賣家資料");
-                }
-            }
-            else
-            {
-                return NotFound();
-            }
         }
     }
 }
