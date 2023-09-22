@@ -13,11 +13,64 @@
     .btn-pink:hover{
         background-color:hotpink;
     }
+    .box{
+        height:100px;
+    }
 </style>
 <h1>會員資料</h1>
 <div>
-    <a asp-action="Create" asp-controller="MinMember"  class="btn btn-pink ">新增會員</a>
+    <div>
+        <a asp-action="Create" asp-controller="MinMember" class="btn btn-pink ">新增會員</a>
+    </div>
+    <div>
+        @using (Html.BeginForm())
+        {
+            @:搜尋對象:
+            <select name="txtkeywordfor">
+                <option value="">全部</option>
+                <option value="0">帳號</option>
+                <option value="1">信箱</option>
+                <option value="2">全名</option>
+                <option value="3">地址</option>
+                <option value="4">電話</option>
+                <option value="5">註冊時間</option>
+                <option value="6">生日</option>
+            </select>
+
+            @: 關鍵字查詢
+            @Html.TextBox("txtKeyword")
+
+
+
+            @: 範圍查詢 Point：
+            @Html.TextBox("minPoint", null, new { placeholder = "最小值" })
+            @Html.TextBox("maxPoint", null, new { placeholder = "最大值" })
+
+            @: 篩選性別：
+            <select name="genderFilter">
+                <option value="">全部</option>
+                <option value="0">男</option>
+                <option value="1">女</option>
+                <option value="2">未透漏</option>
+            </select>
+
+            @:篩選權限:
+            <select name="accessFilter">
+                <option value="">全部</option>
+                <option value="0">網站管理員</option>
+                <option value="1">一般使用者</option>
+                <option value="2">員工</option>
+                <option value="3">公益團體</option>
+            </select>
+
+            <input type="submit" value="查詢" />
+        }
+    </div>
 </div>
+<div class="box">
+
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -40,7 +93,7 @@
                 @Html.DisplayNameFor(model => model.Fullname)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Gender)
+                @Html.DisplayNameFor(model =>  model.Gender)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Address)
@@ -153,3 +206,7 @@
         }
     </tbody>
 </table>
+
+
+
+                        @* =======================JS================== *@
