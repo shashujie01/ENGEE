@@ -2022,8 +2022,7 @@ readers do not read off random characters that represent icons */
 .fa-hackerrank:before {
   content: "\f5f7"; }
 
-.fa-
-:before {
+.fa-hamburger:before {
   content: "\f805"; }
 
 .fa-hammer:before {

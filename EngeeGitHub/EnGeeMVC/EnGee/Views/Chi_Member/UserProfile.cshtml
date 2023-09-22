@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "個人檔案";
-    ViewBag.HeaderTitle = "個人主頁";
 }
 <head>
     <link rel="stylesheet" href="~/css/CHIACHI_UserProfile.css">
@@ -48,7 +47,10 @@
                         </div>                        
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">買方評價</a>
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">商品</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">買方評價</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">賣方評價</a>
@@ -76,8 +78,24 @@
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content profile-tab" id="myTabContent">
-                       
-                        <div class="tab-pane fade show active  col-md-6" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade show active col-md-6" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                第一列商品明細
+                            </div>
+                            <div class="row">
+                                第二列商品明細
+                            </div>
+                            <div class="row">
+                                第三列商品明細
+                            </div>
+                            <div class="row">
+                                第四列商品明細
+                            </div>
+                            <div class="row">
+                                第五列商品明細
+                            </div>
+                        </div>
+                        <div class="tab-pane fade col-md-6" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             <div class="row">
                                 第一列評價
                             </div>
@@ -158,11 +176,6 @@
                                 <label asp-for="Phone">手機號碼</label>
                                 <input asp-for="Phone" class="form-control" />
                             </div>
-                            <div class="form-group">
-                                <label asp-for="Introduction">個人簡介</label>
-                                <input asp-for="Introduction" class="form-control" maxlength="200" style="height:200px"/>
-                            </div>
-
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">保存</button>
@@ -186,25 +199,23 @@
                 </div>
                 <div class="modal-body">
                     <!-- 會員帳密編輯表單內容 -->
-                    <form id="EditPassword" method="post" enctype="multipart/form-data">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="MemberId" />
                         <div>
                             <div class="form-group">
-                                <label for="oldPassword">舊密碼</label>
-                                <input type="password" id="oldPassword" class="form-control" />
+                                <label asp-for="Password">舊密碼輸入</label>
+                                <input asp-for="Password" class="form-control" />                               
                             </div>
                             <div class="form-group">
-                                <label for="NewPassword">新密碼</label>
-                                <input type="password" id="newPassword" name="NewPassword" class="form-control">
-                                <span class="badge bg-primary text-wrap mt-1">須符合6~25個字符,包含至少一大寫及一小寫英文字母與數字</span>
-                            </div>  
+                                <label asp-for="Email">新密碼輸入</label>
+                                <input asp-for="Email" class="form-control" />
+                            </div>
                             <div class="form-group">
-                                <label for="confirm_password">確認新密碼</label>
-                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" />
-                                <span class="badge bg-primary text-wrap mt-1">新密碼尚未確認</span>
+                                <label asp-for="Email">新密碼輸入</label>
+                                <input asp-for="Email" class="form-control" />
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" id="submit" class="btn btn-primary">保存</button>
+                                <button type="submit" class="btn btn-primary">保存</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                             </div>
                         </div>
@@ -216,7 +227,7 @@
 </body>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script> //大頭照的js
+<script>
     $(document).ready(function () {
 
         var readURL = function (input) {
@@ -240,53 +251,6 @@
         });
     });
 </script>
-<script>
-    //修改密碼的js
-</script>
-<script> //確認密碼的js
-    var $password = $("#newPassword");
-    var $confirmPass = $("#confirm_password");
-
-    //Check the length of the Password
-    function checkLength() {
-        return $password.val().length > 5;
-    }
-    //If checkLength() is > 5 then we'll hide the hint
-    function PassLength() {
-        if (checkLength()) {
-            $password.next().hide();
-        } else {
-            $password.next().show();
-        }
-    }
-    //Check to see if the value for pass and confirmPass are the same
-    function samePass() {
-        return $password.val() === $confirmPass.val();
-    }    
-
-    //If samePass returns true, we'll hide the hint
-    function PassMatch() {
-        if (samePass()) {
-            $confirmPass.next().hide();
-        } else {
-            $confirmPass.next().show();
-        }
-    }
-    function canSubmit() {
-        return samePass() && checkLength();
-    }
-    function enableSubmitButton() {
-        $("#submit").prop("disabled", !canSubmit());
-    }
-    //Calls the enableSubmitButton() function to disable the button
-    enableSubmitButton();
-
-    $password.keyup(PassLength).keyup(PassMatch).keyup(enableSubmitButton);
-    $confirmPass.focus(PassMatch).keyup(PassMatch).keyup(enableSubmitButton);
-
-</script>
-
-
 
 
 

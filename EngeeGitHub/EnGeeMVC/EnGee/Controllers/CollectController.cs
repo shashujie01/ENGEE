@@ -36,7 +36,7 @@ namespace EnGee.Controllers
             {
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
 
-                if (loggedInUser.Access == 1 || loggedInUser.Access == 3)
+                if (loggedInUser.Access != 0 || loggedInUser.Access != 2)
                 {
                     return RedirectToAction("CollectIndex");
                 }
@@ -474,7 +474,7 @@ namespace EnGee.Controllers
             {
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
 
-                if (loggedInUser.Access == 1 || loggedInUser.Access == 3)
+                if (loggedInUser.Access != 0 || loggedInUser.Access != 2)
                 {
                     return RedirectToAction("CollectIndex");
                 }

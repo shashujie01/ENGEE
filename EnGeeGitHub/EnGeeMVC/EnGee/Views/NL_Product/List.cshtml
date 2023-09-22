@@ -2,205 +2,415 @@
 
 @{
     ViewData["Title"] = "List";
-    ViewBag.HeaderTitle = "商品管理";
+    ViewBag.HeaderTitle = "個人商品管理";
 }
 
 <br />
-<div class="d-flex justify-content-end">
-    @using (Html.BeginForm("List", "NL_Product", FormMethod.Post))
-    {
-        @:名稱
-        @Html.TextBox("txtKeyword")
-        <input type="submit" class="btn btn-primary" value="查詢" />
-    }
-</div>
 
-<table class="table table-danger table-striped" style=" font-size: 14px;">
-    <thead>
-        <tr>
-            <th style="white-space: nowrap;text-align: center;">
-                序號
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.BrandId)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.MainCategoryId)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.SubcategoryId)
-            </th>
-            @*  <th style="white-space: nowrap;text-align: center;">
-            @Html.DisplayNameFor(model => model.ProductDescribe)
-            </th> *@
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.ProductUnitPoint)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.ProductRemainingQuantity)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.ProductExpirationDate)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.ProductUsageStatus)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.DonationStatus)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.DateOfSale)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.DeliveryTypeId)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.SellerId)
-            </th>
-            <th style="white-space: nowrap;text-align: center;">
-                @Html.DisplayNameFor(model => model.ProductSaleStatus)
-            </th>
-            <th style="white-space: nowrap;">
+<div class="row">
+    <div class="col-lg-3 col-md-12">
+        <div class="filter-box">
+            <h4><i class="fa-solid fa-seedling mb-3"></i>條件排序</h4>
+            <form method="post" action="@Url.Action("Sort", "NL_Product")">
+                @Html.AntiForgeryToken()
+                <div class="form-check mt-1">
+                    <input class="form-check-input" type="radio" name="sortingOption" id="highToLow" value="highToLow">
+                    <label class="form-check-label" for="highToLow">點數(高到低)</label>
+                </div>
+                <div class="form-check mt-1">
+                    <input class="form-check-input" type="radio" name="sortingOption" id="lowToHigh" value="lowToHigh">
+                    <label class="form-check-label" for="lowToHigh">點數(低到高)</label>
+                </div>
+                <div class="form-check mt-1">
+                    <input class="form-check-input" type="radio" name="sortingOption" id="recentToOld" value="recentToOld">
+                    <label class="form-check-label" for="recentToOld">日期(近到遠)</label>
+                </div>
+                <div class="form-check mt-1">
+                    <input class="form-check-input" type="radio" name="sortingOption" id="oldToRecent" value="oldToRecent">
+                    <label class="form-check-label" for="oldToRecent">日期(遠到近)</label>
+                </div>
+                <button type="submit" class="btn btn-primary ms-4 mt-2">排序</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-9 col-md-12">
+        <div class="row pb-3">
+            <div class="col-12 pb-1">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="d-flex justify-content-end flex-grow-1">
+                        @using (Html.BeginForm("List", "NL_Product", FormMethod.Post))
+                        {
+                            <div class="d-flex align-items-center">
+                                <span class="mr-2">搜尋條件：</span>
+                                <select id="searchBy" name="searchBy">
+                                    <option value="" disabled selected>請選擇</option>
+                                    <option value="Name">名稱</option>
+                                    <option value="Point">點數</option>
+                                    <option value="BrandId">品牌</option>
+                                    <option value="MainCategoryId">彩妝主分類</option>
+                                    <option value="DeliveryTypeId">運送方式</option>
+                                    <option value="DonationStatus">捐贈</option>
+                                    <option value="ProductSaleStatus">銷售狀況</option>
+                                </select>
 
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int startIndex = (ViewBag.PageIndex - 1) * ViewBag.PageSize;
-            int index = startIndex + 1;
-            foreach (var item in Model)
+                                <div style="margin-right: 10px;"></div>
+
+
+                                <div id="searchValue" style="display: none;">
+                                    @Html.TextBox("txtKeyword", null, new { name = "txtKeyword" })
+                                </div>
+                                <div id="BrandIdDropdown" style="display: none;">
+                                    <select name="BrandId">
+                                        <option value="" disabled selected>請選擇</option>
+                                        @foreach (var item in ViewBag.BrandId as SelectList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div id="MainCategoryIdDropdown" style="display: none;">
+                                    <select name="MainCategoryId">
+                                        <option value="" disabled selected>請選擇</option>
+                                        @foreach (var item in ViewBag.MainCategoryId as SelectList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div id="DeliveryTypeIdDropdown" style="display: none;">
+                                    <select name="DeliveryTypeId">
+                                        <option value="" disabled selected>請選擇</option>
+                                        @foreach (var item in ViewBag.DeliveryTypeId as SelectList)
+                                        {
+                                            <option value="@item.Value">@item.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div id="DonationStatusDropdown" style="display: none;">
+                                    <select name="DonationStatus">
+                                        <option value="" disabled selected>請選擇</option>
+                                        <option value="0">非捐贈</option>
+                                        <option value="1">捐贈</option>
+                                    </select>
+                                </div>
+
+                                <div id="ProductSaleStatusDropdown" style="display: none;">
+                                    <select name="ProductSaleStatus">
+                                        <option value="" disabled selected>請選擇</option>
+                                        <option value="1">下架</option>
+                                        <option value="2">上架</option>
+                                        <option value="3">訂單成立</option>
+                                    </select>
+                                </div>
+
+                                <div style="margin-right: 10px;"></div>
+
+                                <input type="submit" class="btn btn-primary" value="查詢" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            @foreach (var item in Model)
             {
-                <tr>
-                    <td style="text-align: center;">
-                        @index
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.ProductName)
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.Brand.BrandCategory)
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.MainCategory.MainCategory)
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.Subcategory.Subcategory)
-                    </td>
-                    @* <td style="text-align: center;">
-            @Html.DisplayFor(modelItem => item.ProductDescribe)
-            </td> *@
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.ProductUnitPoint)
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.ProductRemainingQuantity)
-                    </td>
-                    <td style="text-align: center;">
-                        @if (item.ProductExpirationDate != null)
-                        {
-                            @item.ProductExpirationDate.ToString("yyyy-MM-dd")
-                        }
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.ProductUsageStatus)
-                    </td>
-                    <td style="text-align: center;">
-                        @if (item.DonationStatus == 1)
-                        {
-                            <span>是</span>
-                        }
-                        else if (item.DonationStatus == 0)
-                        {
-                            <span>否</span>
-                        }
-                        else
-                        {
-                            <span>未知</span>
-                        }
-                    </td>
-                    <td style="text-align: center;">
-                        @if (item.DateOfSale != null)
-                        {
-                            @item.DateOfSale.ToString("yyyy-MM-dd")
-                        }
-                    </td>
-                    <td style="text-align: center;">
-                        @if (item.DeliveryTypeId == 1)
-                        {
-                            <span>宅配</span>
-                        }
-                        else if (item.DeliveryTypeId == 2)
-                        {
-                            <span>超商取貨</span>
-                        }
-                        else if (item.DeliveryTypeId == 3)
-                        {
-                            <span>皆可</span>
-                        }
-                        else
-                        {
-                            <span>未知</span>
-                        }
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => item.SellerId)
-                    </td>
-                    <td style="text-align: center;">
-                        @if (item.ProductSaleStatus == 1)
-                        {
-                            <span>下架</span>
-                        }
-                        else if (item.ProductSaleStatus == 2)
-                        {
-                            <span>上架</span>
-                        }
-                        else if (item.ProductSaleStatus == 3)
-                        {
-                            <span>訂單成立</span>
-                        }
-                        else
-                        {
-                            <span>未知</span>
-                        }
-                    </td>
-                    <td style="text-align: center;">
-
-                        @Html.ActionLink("修改", "Edit", new { id=item.ProductId }, new { @class = "btn btn-sm btn-success me-2", @style="white-space: nowrap;" })
-                        @Html.ActionLink("刪除", "Delete", "Product", new { id=item.ProductId }, new { @class = "btn btn-sm btn-danger ms-2", @style="white-space: nowrap;", onclick = "return confirm(`確定要刪除嗎?`)" })
-
-                    </td>
-                </tr>
-                index++;
+                <div class="col-lg-3 col-md-6 col-sm-12 pb-1" id="productList">
+                    <div class="card border-0 mb-4">
+                        <div class="card-header position-relative overflow-hidden bg-transparent border p-0">
+                            <img class="card-img-top " src="@Url.Content("~/images/ProductImages/" + @item.ProductImagePath)" alt="Product Image" width="150" height="200">
+                        </div>
+                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                            <h6 class="card-title text-truncate mb-3">@item.ProductName</h6>
+                            <div class="d-flex justify-content-center">
+                                <h6>點數:@item.ProductUnitPoint</h6>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <h6>
+                                    銷售狀況:
+                                    @if (item.ProductSaleStatus == 1)
+                                    {
+                                        <span>下架</span>
+                                    }
+                                    else if (item.ProductSaleStatus == 2)
+                                    {
+                                        <span>上架</span>
+                                    }
+                                    else if (item.ProductSaleStatus == 3)
+                                    {
+                                        <span>訂單成立</span>
+                                    }
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between bg-light border">
+                            <button class="btn btn-sm btn-outline-secondary ms-2 me-2 show-details" data-target="#productDetailsModal_@item.ProductId" data-toggle="modal">
+                                <i class="fas fa-eye text-primary mr-1"></i>詳細資料
+                            </button>
+                            <a href="@Url.Action("Edit", "NL_Product", new { id = item.ProductId })" class="btn btn-sm btn-outline-secondary ms-2 me-2">
+                                <i class="fas fa-pencil text-primary mr-1"></i>編輯
+                            </a>
+                        </div>
+                    </div>
+                </div>
             }
-        }
-    </tbody>
-</table>
-<div class="pagination d-flex justify-content-center">
-    <ul class="pagination">
-        @if (Model.Any())
-        {
-            <li class="page-item @(ViewBag.PageIndex == 1 ? "disabled" : "")">
-                <a class="page-link" asp-action="List" asp-route-page="1" asp-route-txtKeyword="@ViewBag.Keyword">第一頁</a>
-            </li>
-            <li class="page-item @(ViewBag.PageIndex == 1 ? "disabled" : "")">
-                <a class="page-link" asp-action="List" asp-route-page="@(ViewBag.PageIndex - 1)" asp-route-txtKeyword="@ViewBag.Keyword">上一頁</a>
-            </li>
-            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+
+        </div>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <!-- 商品詳細資料框 -->
+        <div class="modal fade" id="productDetailsModal_@item.ProductId" tabindex="-1" role="dialog" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productDetailsModalLabel">商品詳細資料</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 商品詳細資料内容 -->
+
+                        <h4>@item.ProductName</h4>
+                        <div class="col-12 d-flex justify-content-center">
+                            <img id="imagePreview" src="@Url.Content("~/images/ProductImages/" + @item.ProductImagePath)" alt="Product Image" class="img-fluid img-thumbnail" style="max-width: 300px; max-height: 300px;">
+                        </div>
+                        <p>
+                            品牌: @Html.DisplayFor(modelItem => item.Brand.BrandCategory)
+                        </p>
+                        <p>
+                            彩妝品分類: @Html.DisplayFor(modelItem => item.MainCategory.MainCategory)
+                        </p>
+                        <p>
+                            子分類: @Html.DisplayFor(modelItem => item.Subcategory.Subcategory)
+                        </p>
+                        <p>點數: @item.ProductUnitPoint</p>
+                        <p>
+                            數量: @Html.DisplayFor(modelItem => item.ProductRemainingQuantity)
+                        </p>
+                        <p>
+                            有效期限: @item.ProductExpirationDate.ToString("yyyy-MM-dd")
+                        </p>
+                        <p>
+                            使用狀態: @Html.DisplayFor(modelItem => item.ProductUsageStatus)
+                        </p>
+                        <p>產品敘述: @item.ProductDescribe</p>
+                        <p>
+                            是否為捐贈:
+                            @if (item.DonationStatus == 1)
+                            {
+                                <span>是</span>
+                            }
+                            else if (item.DonationStatus == 0)
+                            {
+                                <span>否</span>
+                            }
+                            else
+                            {
+                                <span>未知</span>
+                            }
+                        </p>
+                        <p>
+                            銷售日期:
+                            @item.DateOfSale.ToString("yyyy-MM-dd")
+                        </p>
+                        <p>
+                            運送方式:
+                            @if (item.DeliveryTypeId == 1)
+                            {
+                                <span>宅配</span>
+                            }
+                            else if (item.DeliveryTypeId == 2)
+                            {
+                                <span>超商取貨</span>
+                            }
+                            else if (item.DeliveryTypeId == 3)
+                            {
+                                <span>皆可</span>
+                            }
+                            else
+                            {
+                                <span>未知</span>
+                            }
+                        </p>
+                        <p>
+                            銷售狀態:
+                            @if (item.ProductSaleStatus == 1)
+                            {
+                                <span>下架</span>
+                            }
+                            else if (item.ProductSaleStatus == 2)
+                            {
+                                <span>上架</span>
+                            }
+                            else if (item.ProductSaleStatus == 3)
+                            {
+                                <span>訂單成立</span>
+                            }
+                            else
+                            {
+                                <span>未知</span>
+                            }
+                        </p>
+                        <!-- 其他商品詳細資料 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmButton">確認</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="pagination d-flex justify-content-center">
+        <ul class="pagination">
+            @if (Model.Any())
             {
-                <li class="page-item @(ViewBag.PageIndex == i ? "active" : "")">
-                    <a class="page-link" asp-action="List" asp-route-page="@i" asp-route-txtKeyword="@ViewBag.Keyword">@i</a>
+                <li class="page-item @(ViewBag.PageIndex == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="List" asp-route-page="1" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">第一頁</a>
+                </li>
+                <li class="page-item @(ViewBag.PageIndex == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="List" asp-route-page="@(ViewBag.PageIndex - 1)" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">上一頁</a>
+                </li>
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(ViewBag.PageIndex == i ? "active" : "")">
+                        <a class="page-link" asp-action="List" asp-route-page="@i" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">@i</a>
+                    </li>
+                }
+                <li class="page-item @(ViewBag.PageIndex == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="List" asp-route-page="@(ViewBag.PageIndex + 1)" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">下一頁</a>
+                </li>
+                <li class="page-item @(ViewBag.PageIndex == ViewBag.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="List" asp-route-page="@ViewBag.TotalPages" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">最後一頁</a>
                 </li>
             }
-            <li class="page-item @(ViewBag.PageIndex == ViewBag.TotalPages ? "disabled" : "")">
-                <a class="page-link" asp-action="List" asp-route-page="@(ViewBag.PageIndex + 1)" asp-route-txtKeyword="@ViewBag.Keyword">下一頁</a>
-            </li>
-            <li class="page-item @(ViewBag.PageIndex == ViewBag.TotalPages ? "disabled" : "")">
-                <a class="page-link" asp-action="List" asp-route-page="@ViewBag.TotalPages" asp-route-txtKeyword="@ViewBag.Keyword">最後一頁</a>
-            </li>
-        }
-    </ul>
-</div>
+        </ul>
+    </div>
+
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('.show-details').click(function () {
+                    var modalId = $(this).data('target');
+                    $(modalId).modal('show');
+                });
+            });
+
+            $(document).on('click', '.modal .close', function () {
+                $(this).closest('.modal').modal('hide');
+            });
+
+            $(document).on('click', '#confirmButton', function () {
+                var modalId = $(this).closest('.modal');
+                modalId.modal('hide');
+            });
+
+
+            var controllerUrl = "@Url.Action("List", "NL_Product")";
+
+            $(document).ready(function () {
+                $("#searchBy").change(function () {
+                    updateSearchFields();
+                });
+
+                $("#searchForm").submit(function (e) {
+                    e.preventDefault();
+
+                    var searchBy = $("#searchBy").val();
+                    var keyword = $("#txtKeyword").val();
+                    var url = "@Url.Action("List", "NL_Product")?searchBy=" + searchBy + "&txtKeyword=" + keyword + "&page=1";
+
+
+                    $.get(url, function (result) {
+                        $("#productList").html(result);
+                    });
+                });
+
+
+                function updateSearchFields() {
+                    var selectedValue = $("#searchBy").val();
+                    if (selectedValue === "Name" || selectedValue === "Point") {
+                        $("#searchValue").show();
+                        $("#BrandIdDropdown").hide();
+                        $("#MainCategoryIdDropdown").hide();
+                        $("#DeliveryTypeIdDropdown").hide();
+                        $("#DonationStatusDropdown").hide();
+                        $("#ProductSaleStatusDropdown").hide();
+                    } else if (selectedValue === "BrandId") {
+                        $("#searchValue").hide();
+                        $("#BrandIdDropdown").show();
+                        $("#MainCategoryIdDropdown").hide();
+                        $("#DeliveryTypeIdDropdown").hide();
+                        $("#DonationStatusDropdown").hide();
+                        $("#ProductSaleStatusDropdown").hide();
+                    } else if (selectedValue === "MainCategoryId") {
+                        $("#searchValue").hide();
+                        $("#BrandIdDropdown").hide();
+                        $("#MainCategoryIdDropdown").show();
+                        $("#DeliveryTypeIdDropdown").hide();
+                        $("#DonationStatusDropdown").hide();
+                        $("#ProductSaleStatusDropdown").hide();
+                    } else if (selectedValue === "DeliveryTypeId") {
+                        $("#searchValue").hide();
+                        $("#BrandIdDropdown").hide();
+                        $("#MainCategoryIdDropdown").hide();
+                        $("#DeliveryTypeIdDropdown").show();
+                        $("#DonationStatusDropdown").hide();
+                        $("#ProductSaleStatusDropdown").hide();
+                    } else if (selectedValue === "DonationStatus") {
+                        $("#searchValue").hide();
+                        $("#BrandIdDropdown").hide();
+                        $("#MainCategoryIdDropdown").hide();
+                        $("#DeliveryTypeIdDropdown").hide();
+                        $("#DonationStatusDropdown").show();
+                        $("#ProductSaleStatusDropdown").hide();
+                    } else if (selectedValue === "ProductSaleStatus") {
+                        $("#searchValue").hide();
+                        $("#BrandIdDropdown").hide();
+                        $("#MainCategoryIdDropdown").hide();
+                        $("#DeliveryTypeIdDropdown").hide();
+                        $("#DonationStatusDropdown").hide();
+                        $("#ProductSaleStatusDropdown").show();
+                    } else {
+                        $("#searchValue").hide();
+                        $("#BrandIdDropdown").hide();
+                        $("#MainCategoryIdDropdown").hide();
+                        $("#DeliveryTypeIdDropdown").hide();
+                        $("#DonationStatusDropdown").hide();
+                        $("#ProductSaleStatusDropdown").hide();
+                    }
+                }
+
+                $("#BrandIdDropdown select").change(function () {
+                    var selectedValue = $(this).val();
+                    $("#txtKeyword").val(selectedValue);
+                });
+
+                $("#MainCategoryIdDropdown select").change(function () {
+                    var selectedValue = $(this).val();
+                    $("#txtKeyword").val(selectedValue);
+                });
+
+                $("#DeliveryTypeIdDropdown select").change(function () {
+                    var selectedValue = $(this).val();
+                    $("#txtKeyword").val(selectedValue);
+                });
+
+                $("#DonationStatusDropdown select").change(function () {
+                    var selectedValue = $(this).val();
+                    $("#txtKeyword").val(selectedValue);
+                });
+
+                $("#ProductSaleStatusDropdown select").change(function () {
+                    var selectedValue = $(this).val();
+                    $("#txtKeyword").val(selectedValue);
+                });
+
+            });
+        </script>
+    };
+

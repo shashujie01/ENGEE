@@ -1,6 +1,6 @@
 ﻿namespace EnGee.Models
 {
-    public class CHI_CMemberWrap : TMember
+    public class CHI_CMemberWrap:TMember
     {
 
         private TMember _member;
@@ -8,11 +8,6 @@
         {
             _member = new TMember();
         }
-
-        public string OldPassword { get; set; }
-        public string NewPassword { get; set; }
-        public string ConfirmPassword { get; set; }
-
         public string Username
         {
             get { return _member.Username; }

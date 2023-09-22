@@ -1,6 +1,5 @@
 ﻿@{
     ViewData["Title"] = "Login";
-    ViewBag.HeaderTitle = "會員登入";
 }
 
 @using (Html.BeginForm()){
@@ -11,19 +10,19 @@
                 <div class="row g-0">
                     <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                         <div class="h-100 d-flex flex-column justify-content-center p-5">
-                            <h1 class="mb-4 text-center">Welcome</h1>
+                            <h1 class="mb-4 text-center">會員登入</h1>
                             <form>
                                 <div class="row g-3">
                                     <div class="col-sm-6">
                                         <label for="gname">Email</label>
                                         <div>
-                                            @Html.TextBox("txtAccount", "KIKI@gmail.com", new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.TextBox("txtAccount", "abc@gmail.com", new { htmlAttributes = new { @class = "form-control" } })
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                          <label for="gmail">Password</label>
                                         <div>
-                                            @Html.Password("txtPassword", "", new { htmlAttributes = new { @class = "form-control " } })
+                                            @Html.Password("txtPassword", "abc", new { htmlAttributes = new { @class = "form-control " } })
                                         </div>
                                     </div>
                                     <div class="col-12">

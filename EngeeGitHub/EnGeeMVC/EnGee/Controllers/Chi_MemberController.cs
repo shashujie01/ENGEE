@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using prjEnGeeDemo.ViewModels;
 using prjMvcCoreDemo.Models;
 using System.Text.Json;
-using System.Security.Cryptography;
 
 namespace EnGee.Controllers
 {
@@ -74,7 +73,7 @@ namespace EnGee.Controllers
                     }
                     else
                     {
-                        
+                        // 如符合
                         ModelState.AddModelError("photo", "只接受jpg、jpeg和png格式的圖片");
                         return View(memIn);
                     }
@@ -86,7 +85,6 @@ namespace EnGee.Controllers
                 memDb.Email= memIn.Email;
                 memDb.Address=memIn.Address;
                 memDb.Phone= memIn.Phone;
-                memDb.Introduction= memIn.Introduction;
                 
                 db.SaveChanges();
 
@@ -95,71 +93,6 @@ namespace EnGee.Controllers
             }
                 return RedirectToAction("UserProfile");
             }
-
-        public IActionResult EditPassword()
-        {
-            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
-            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
-
-            CHI_CMemberWrap memberWrap = new CHI_CMemberWrap
-            {
-                member = loggedInUser
-            };
-
-            return View(memberWrap);
-        }
-
-
-        [HttpPost]
-        public IActionResult EditPassword(CHI_CMemberWrap memIn)
-        {
-            EngeeContext db = new EngeeContext();
-            TMember memDb = db.TMembers.FirstOrDefault(t => t.MemberId == memIn.MemberId);
-
-            if (memDb != null)
-            {
-                // 驗證舊密碼
-                if (ValidateOldPassword(memDb, memIn.OldPassword))
-                {
-                    // 更新新密码
-                    memDb.Password = HashPassword(memIn.NewPassword); 
-
-                    db.SaveChanges();
-
-                    return RedirectToAction("UserProfile");
-                }
-                else
-                {
-                    ModelState.AddModelError("OldPassword", "舊密碼不正確");
-                }
-            }
-
-            return View(memIn);
-        }
-        private string HashPassword(string password)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(password);
-                byte[] hash = sha256.ComputeHash(bytes);
-                return BitConverter.ToString(hash).Replace("-", "").ToLower();
-            }
-        }
-        private bool VerifyPassword(string hashedPassword, string password)
-        {
-            string hashedInputPassword = HashPassword(password);
-            return string.Equals(hashedInputPassword, hashedPassword, StringComparison.OrdinalIgnoreCase);
-        }
-        private bool ValidateOldPassword(TMember user, string oldPassword)
-        {
-            
-            string hashedOldPassword = HashPassword(oldPassword);
-            return user.Password == hashedOldPassword;
-        }
-
-
-
-
 
     }
 }

@@ -1,7 +1,10 @@
 ﻿using EnGee.Models;
+using EnGee.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using prjEnGeeDemo.Models;
+using System.Threading.Tasks;
 
 namespace EnGee.Controllers
 {
@@ -10,9 +13,10 @@ namespace EnGee.Controllers
         private IWebHostEnvironment _enviro = null;
         public NL_AD_ProductController(IWebHostEnvironment p)
         {
-            _enviro = p;        }
+            _enviro = p;
+        }
 
-        public IActionResult List(string txtKeyword, int page = 1)
+        public async Task<IActionResult> List(NL_CKeywordViewModel vm, int page = 1)
         {
             int pageSize = 10; // 每頁顯示的數量
             EngeeContext db = new EngeeContext();
@@ -20,20 +24,82 @@ namespace EnGee.Controllers
                                          select p;
 
             IQueryable<TProduct> productsQuery = datas.Include(p => p.Brand)
-                                                      .Include(p => p.MainCategory)
-                                                      .Include(p => p.Subcategory);
+                                                    .Include(p => p.MainCategory)
+                                                    .Include(p => p.Subcategory);
 
-            if (!string.IsNullOrEmpty(txtKeyword))
+            if (!string.IsNullOrEmpty(vm.txtKeyword) && !string.IsNullOrEmpty(vm.searchBy))
             {
-                productsQuery = productsQuery.Where(p => p.ProductName.Contains(txtKeyword));
+                if (vm.searchBy == "Name")
+                {
+                    productsQuery = productsQuery.Where(p => p.ProductName.Contains(vm.txtKeyword));
+                }
+                else if (vm.searchBy == "Point")
+                {
+                    decimal keywordAsDecimal;
+                    if (decimal.TryParse(vm.txtKeyword, out keywordAsDecimal))
+                    {
+                        productsQuery = productsQuery.Where(p => p.ProductUnitPoint == keywordAsDecimal);
+                    }
+                }
+                else if (vm.searchBy == "SellerId")
+                {
+                    int keywordAsInt;
+                    if (int.TryParse(vm.txtKeyword, out keywordAsInt))
+                    {
+                        productsQuery = productsQuery.Where(p => p.SellerId == keywordAsInt);
+                    }
+                }
+                else if (vm.searchBy == "BrandId")
+                {
+                    int keywordAsInt;
+                    if (int.TryParse(vm.txtKeyword, out keywordAsInt))
+                    {
+                        productsQuery = productsQuery.Where(p => p.BrandId == keywordAsInt);
+                    }
+                }
+                else if (vm.searchBy == "MainCategoryId")
+                {
+                    int keywordAsInt;
+                    if (int.TryParse(vm.txtKeyword, out keywordAsInt))
+                    {
+                        productsQuery = productsQuery.Where(p => p.MainCategoryId == keywordAsInt);
+                    }
+                }
+                else if (vm.searchBy == "DeliveryTypeId")
+                {
+                    int keywordAsInt;
+                    if (int.TryParse(vm.txtKeyword, out keywordAsInt))
+                    {
+                        productsQuery = productsQuery.Where(p => p.DeliveryTypeId == keywordAsInt);
+                    }
+                }
+                else if (vm.searchBy == "DonationStatus")
+                {
+                    int keywordAsInt;
+                    if (int.TryParse(vm.txtKeyword, out keywordAsInt))
+                    {
+                        productsQuery = productsQuery.Where(p => p.DonationStatus == keywordAsInt);
+                    }
+                }
+                else if (vm.searchBy == "ProductSaleStatus")
+                {
+                    int keywordAsInt;
+                    if (int.TryParse(vm.txtKeyword, out keywordAsInt))
+                    {
+                        productsQuery = productsQuery.Where(p => p.ProductSaleStatus == keywordAsInt);
+                    }
+                }
             }
 
-            var totalProducts = productsQuery.Count();
+            var totalProducts = await productsQuery.CountAsync();
             var totalPages = (int)Math.Ceiling(totalProducts / (double)pageSize);
 
-            var filteredProducts = productsQuery.Skip((page - 1) * pageSize)
-                                                .Take(pageSize)
-                                                .ToList();
+            var filteredProducts = await productsQuery.Skip((page - 1) * pageSize)
+                                                    .Take(pageSize)
+                                                    .ToListAsync();
+
+
+
 
             List<NL_ProductModel> list = new List<NL_ProductModel>();
             foreach (var t in filteredProducts)
@@ -49,7 +115,18 @@ namespace EnGee.Controllers
             ViewBag.PageIndex = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = totalPages;
-            ViewBag.Keyword = txtKeyword;
+            ViewBag.Keyword = vm.txtKeyword;
+            ViewBag.SearchBy = vm.searchBy;
+
+            var brandData = db.TBrands.ToList();
+            ViewBag.BrandId = new SelectList(brandData, "BrandId", "BrandCategory");
+
+            var mainCategoryData = db.TCosmeticMainCategories.ToList();
+            ViewBag.MainCategoryId = new SelectList(mainCategoryData, "MainCategoryId", "MainCategory");
+
+            var deliveryTypeData = db.TDeliveryTypes.ToList();
+            ViewBag.DeliveryTypeId = new SelectList(deliveryTypeData, "DeliveryTypeId", "DeliveryType");
+
 
             return View(list);
         }

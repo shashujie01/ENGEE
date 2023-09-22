@@ -8,9 +8,7 @@ using EnGee.Models;
 using EnGee.Services.EmailService;
 using EnGee.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
-
-
-
+using EnGee.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("EnGeeContextConnection") ?? throw new InvalidOperationException("Connection string 'EnGeeContextConnection' not found.");
@@ -22,6 +20,10 @@ builder.Services.AddDefaultIdentity<EnGeeUser>(options => options.SignIn.Require
 //builder.Services.AddScoped<IEmailService, EmailService>();
 // Rong新增
 builder.Services.AddDbContext<EngeeContext>(options => options.UseSqlServer(connectionString));
+
+//加入 SignalR  NL
+builder.Services.AddSignalR();
+
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -43,6 +45,8 @@ builder.Services.AddSingleton<IHostedService, CollectStatusUpdate>();
 
 //CHI新增
 builder.Services.AddSingleton<CHI_CUserViewModel>();
+
+
 
 var app = builder.Build();
 
@@ -66,4 +70,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=index}/{id?}");
 app.MapRazorPages();
+
+//加入 Hub NL
+app.MapHub<ChatHub>("/chatHub");
+
 app.Run();
+
+

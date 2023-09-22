@@ -4,18 +4,96 @@
     ViewData["Title"] = "List";
     ViewBag.HeaderTitle = "商品管理";
 }
+<style>
+    .swal2-popup.swal2-modal {
+        font-size: 12pt;
+    }
+
+    .swal2-modal .swal2-title {
+        font-size: 1.4em;
+    }
+    
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <br />
 <div class="d-flex justify-content-end">
     @using (Html.BeginForm("List", "NL_AD_Product", FormMethod.Post))
     {
-        @:名稱
-        @Html.TextBox("txtKeyword")
-        <input type="submit" class="btn btn-primary" value="查詢" />
+        <div class="d-flex align-items-center">
+            <span class="mr-2">搜尋條件：</span>
+            <select id="searchBy" name="searchBy">
+                <option value="" disabled selected>請選擇</option>
+                <option value="Name">名稱</option>
+                <option value="Point">點數</option>
+                <option value="SellerId">賣家ID</option>
+                <option value="BrandId">品牌</option>
+                <option value="MainCategoryId">彩妝主分類</option>
+                <option value="DeliveryTypeId">運送方式</option>
+                <option value="DonationStatus">捐贈</option>
+                <option value="ProductSaleStatus">銷售狀況</option>
+            </select>
+
+            <div style="margin-right: 10px;"></div>
+
+
+            <div id="searchValue" style="display: none;">
+                @Html.TextBox("txtKeyword", null, new { name = "txtKeyword" })
+            </div>
+            <div id="BrandIdDropdown" style="display: none;">
+                <select name="BrandId">
+                    <option value="" disabled selected>請選擇</option>
+                    @foreach (var item in ViewBag.BrandId as SelectList)
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div id="MainCategoryIdDropdown" style="display: none;">
+                <select name="MainCategoryId">
+                    <option value="" disabled selected>請選擇</option>
+                    @foreach (var item in ViewBag.MainCategoryId as SelectList)
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div id="DeliveryTypeIdDropdown" style="display: none;">
+                <select name="DeliveryTypeId">
+                    <option value="" disabled selected>請選擇</option>
+                    @foreach (var item in ViewBag.DeliveryTypeId as SelectList)
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div id="DonationStatusDropdown" style="display: none;">
+                <select name="DonationStatus">
+                    <option value="" disabled selected>請選擇</option>
+                    <option value="0">非捐贈</option>
+                    <option value="1">捐贈</option>
+                </select>
+            </div>
+
+            <div id="ProductSaleStatusDropdown" style="display: none;">
+                <select name="ProductSaleStatus">
+                    <option value="" disabled selected>請選擇</option>
+                    <option value="1">下架</option>
+                    <option value="2">上架</option>
+                    <option value="3">訂單成立</option>
+                </select>
+            </div>
+
+            <div style="margin-right: 10px;"></div>
+
+            <input type="submit" class="btn btn-primary" value="查詢" />
+        </div>
     }
 </div>
 
-<table class="table table-danger table-striped" style=" font-size: 14px;">
+<table class="table table-danger table-striped mt-2" style=" font-size: 14px;">
     <thead>
         <tr>
             <th style="white-space: nowrap;text-align: center;">
@@ -168,10 +246,8 @@
                         }
                     </td>
                     <td style="text-align: center;">
-
-                        @Html.ActionLink("修改", "Edit", new { id=item.ProductId }, new { @class = "btn btn-sm btn-success me-2", @style="white-space: nowrap;" })
-                        @Html.ActionLink("刪除", "Delete", "Product", new { id=item.ProductId }, new { @class = "btn btn-sm btn-danger ms-2", @style="white-space: nowrap;", onclick = "return confirm(`確定要刪除嗎?`)" })
-
+                        @Html.ActionLink("修改", "Edit", new { id = item.ProductId }, new { @class = "btn btn-sm btn-success me-2", @style = "white-space: nowrap;" })
+                        <a href="#" class="btn btn-sm btn-danger ms-2" style="white-space: nowrap;" onclick="confirmDelete(@item.ProductId);">刪除</a>
                     </td>
                 </tr>
                 index++;
@@ -184,23 +260,162 @@
         @if (Model.Any())
         {
             <li class="page-item @(ViewBag.PageIndex == 1 ? "disabled" : "")">
-                <a class="page-link" asp-action="List" asp-route-page="1" asp-route-txtKeyword="@ViewBag.Keyword">第一頁</a>
+                <a class="page-link" asp-action="List" asp-route-page="1" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">第一頁</a>
             </li>
             <li class="page-item @(ViewBag.PageIndex == 1 ? "disabled" : "")">
-                <a class="page-link" asp-action="List" asp-route-page="@(ViewBag.PageIndex - 1)" asp-route-txtKeyword="@ViewBag.Keyword">上一頁</a>
+                <a class="page-link" asp-action="List" asp-route-page="@(ViewBag.PageIndex - 1)" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">上一頁</a>
             </li>
             @for (int i = 1; i <= ViewBag.TotalPages; i++)
             {
                 <li class="page-item @(ViewBag.PageIndex == i ? "active" : "")">
-                    <a class="page-link" asp-action="List" asp-route-page="@i" asp-route-txtKeyword="@ViewBag.Keyword">@i</a>
+                    <a class="page-link" asp-action="List" asp-route-page="@i" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">@i</a>
                 </li>
             }
             <li class="page-item @(ViewBag.PageIndex == ViewBag.TotalPages ? "disabled" : "")">
-                <a class="page-link" asp-action="List" asp-route-page="@(ViewBag.PageIndex + 1)" asp-route-txtKeyword="@ViewBag.Keyword">下一頁</a>
+                <a class="page-link" asp-action="List" asp-route-page="@(ViewBag.PageIndex + 1)" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">下一頁</a>
             </li>
             <li class="page-item @(ViewBag.PageIndex == ViewBag.TotalPages ? "disabled" : "")">
-                <a class="page-link" asp-action="List" asp-route-page="@ViewBag.TotalPages" asp-route-txtKeyword="@ViewBag.Keyword">最後一頁</a>
+                <a class="page-link" asp-action="List" asp-route-page="@ViewBag.TotalPages" asp-route-searchBy="@ViewBag.SearchBy" asp-route-txtKeyword="@ViewBag.Keyword">最後一頁</a>
             </li>
         }
     </ul>
 </div>
+
+@section Scripts {
+    <script>
+        var controllerUrl = "@Url.Action("List", "NL_AD_Product")";
+
+        $(document).ready(function () {
+            $("#searchBy").change(function () {
+                updateSearchFields();
+            });
+
+            $("#searchForm").submit(function (e) {
+                e.preventDefault();
+
+                var searchBy = $("#searchBy").val();
+                var keyword = $("#txtKeyword").val();
+                var url = "@Url.Action("List", "NL_AD_Product")?searchBy=" + searchBy + "&txtKeyword=" + keyword + "&page=1";
+
+
+                $.get(url, function (result) {
+                    $("#productListContainer").html(result);
+                });
+            });
+
+
+            function updateSearchFields() {
+                var selectedValue = $("#searchBy").val();
+                if (selectedValue === "Name" || selectedValue === "Point" || selectedValue === "SellerId") {
+                    $("#searchValue").show();
+                    $("#BrandIdDropdown").hide();
+                    $("#MainCategoryIdDropdown").hide();
+                    $("#DeliveryTypeIdDropdown").hide();
+                    $("#DonationStatusDropdown").hide();
+                    $("#ProductSaleStatusDropdown").hide();
+                } else if (selectedValue === "BrandId") {
+                    $("#searchValue").hide();
+                    $("#BrandIdDropdown").show();
+                    $("#MainCategoryIdDropdown").hide();
+                    $("#DeliveryTypeIdDropdown").hide();
+                    $("#DonationStatusDropdown").hide();
+                    $("#ProductSaleStatusDropdown").hide();
+                } else if (selectedValue === "MainCategoryId") {
+                    $("#searchValue").hide();
+                    $("#BrandIdDropdown").hide();
+                    $("#MainCategoryIdDropdown").show();
+                    $("#DeliveryTypeIdDropdown").hide();
+                    $("#DonationStatusDropdown").hide();
+                    $("#ProductSaleStatusDropdown").hide();
+                } else if (selectedValue === "DeliveryTypeId") {
+                    $("#searchValue").hide();
+                    $("#BrandIdDropdown").hide();
+                    $("#MainCategoryIdDropdown").hide();
+                    $("#DeliveryTypeIdDropdown").show();
+                    $("#DonationStatusDropdown").hide();
+                    $("#ProductSaleStatusDropdown").hide();
+                } else if (selectedValue === "DonationStatus") {
+                    $("#searchValue").hide();
+                    $("#BrandIdDropdown").hide();
+                    $("#MainCategoryIdDropdown").hide();
+                    $("#DeliveryTypeIdDropdown").hide();
+                    $("#DonationStatusDropdown").show();
+                    $("#ProductSaleStatusDropdown").hide();
+                } else if (selectedValue === "ProductSaleStatus") {
+                    $("#searchValue").hide();
+                    $("#BrandIdDropdown").hide();
+                    $("#MainCategoryIdDropdown").hide();
+                    $("#DeliveryTypeIdDropdown").hide();
+                    $("#DonationStatusDropdown").hide();
+                    $("#ProductSaleStatusDropdown").show();
+                } else {
+                    $("#searchValue").hide();
+                    $("#BrandIdDropdown").hide();
+                    $("#MainCategoryIdDropdown").hide();
+                    $("#DeliveryTypeIdDropdown").hide();
+                    $("#DonationStatusDropdown").hide();
+                    $("#ProductSaleStatusDropdown").hide();
+                }
+            }
+
+            $("#BrandIdDropdown select").change(function () {
+                var selectedValue = $(this).val();
+                $("#txtKeyword").val(selectedValue);
+            });
+
+            $("#MainCategoryIdDropdown select").change(function () {
+                var selectedValue = $(this).val();
+                $("#txtKeyword").val(selectedValue);
+            });
+
+            $("#DeliveryTypeIdDropdown select").change(function () {
+                var selectedValue = $(this).val();
+                $("#txtKeyword").val(selectedValue);
+            });
+
+            $("#DonationStatusDropdown select").change(function () {
+                var selectedValue = $(this).val();
+                $("#txtKeyword").val(selectedValue);
+            });
+
+            $("#ProductSaleStatusDropdown select").change(function () {
+                var selectedValue = $(this).val();
+                $("#txtKeyword").val(selectedValue);
+            });
+
+        });
+
+        function confirmDelete(productId) {
+            Swal.fire({
+                type: 'warning',
+                title: '確定要刪除嗎？',
+                text: '此操作無法撤銷！',
+                showCancelButton: true,
+                confirmButtonText: '確定',
+                cancelButtonText: '取消'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 如果用户点击了“确认”按钮，则执行删除操作
+                    var deleteUrl = '@Url.Action("Delete", "NL_AD_Product")' + '?id=' + productId;
+                    window.location.href = deleteUrl;
+                }
+            });
+
+            Swal.fire({ 
+                title: '確定要刪除麼?', 
+                text: "刪除後將無法撤銷!", 
+                type: 'warning', 
+                showCancelButton: true, 
+                confirmButtonColor: '#3085d6', 
+                cancelButtonColor: '#d33', 
+                confirmButtonText: '確定', 
+                cancelButtonText: '取消' }).then((result) => { 
+                    if (result.value) { 
+                        Swal.fire('刪除成功!', '文件已被刪除', 'success')
+                    var deleteUrl = '@Url.Action("Delete", "NL_AD_Product")' + '?id=' + productId;
+                    window.location.href = deleteUrl;
+                    } 
+                })            
+        }
+    </script>
+}

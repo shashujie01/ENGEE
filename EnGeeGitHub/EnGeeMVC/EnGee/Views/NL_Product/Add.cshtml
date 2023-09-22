@@ -23,7 +23,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label>預覽圖：</label>
-                <img id="imagePreview" src="#" alt="預覽圖" style="max-width: 300px; max-height: 300px; display: none; margin: auto;">
+                <img id="imagePreview" src="#" alt="預覽圖" style="max-width: 300px; max-height: 300px; display: none; margin: auto;" class="img-thumbnail">
             </div>
             <div class="form-group">
                 <label asp-for="ProductImagePath" class="control-label"></label>
@@ -98,7 +98,7 @@
                 <label asp-for="DonationStatus" class="control-label"></label>
                 <input asp-for="DonationStatus" class="form-control" type="hidden" value="0" />
                 <span asp-validation-for="DonationStatus" class="text-danger"></span>
-            </div>           
+            </div>
             <div class="form-group">
                 <label asp-for="DateOfSale" class="control-label"></label>
                 <input asp-for="DateOfSale" class="form-control" type="date" asp-format="{0:yyyy-MM-dd}" />
