@@ -6,6 +6,7 @@ using prjEnGeeDemo.ViewModels;
 using prjMvcCoreDemo.Models;
 using System.Text.Json;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace EnGee.Controllers
 {
@@ -122,8 +123,8 @@ namespace EnGee.Controllers
                 if (ValidateOldPassword(memDb, memIn.OldPassword))
                 {
                     // 更新新密码
-                    memDb.Password = HashPassword(memIn.NewPassword); 
-
+                    string hashedNewPassword = HashPassword(memIn.NewPassword);
+                    memDb.Password = hashedNewPassword;
                     db.SaveChanges();
 
                     return RedirectToAction("UserProfile");
@@ -140,21 +141,19 @@ namespace EnGee.Controllers
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(password);
-                byte[] hash = sha256.ComputeHash(bytes);
-                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < hashedBytes.Length; i++)
+                {
+                    builder.Append(hashedBytes[i].ToString("x2"));
+                }
+
+                return builder.ToString();
             }
-        }
-        private bool VerifyPassword(string hashedPassword, string password)
-        {
-            string hashedInputPassword = HashPassword(password);
-            return string.Equals(hashedInputPassword, hashedPassword, StringComparison.OrdinalIgnoreCase);
         }
         private bool ValidateOldPassword(TMember user, string oldPassword)
         {
-            
-            string hashedOldPassword = HashPassword(oldPassword);
-            return user.Password == hashedOldPassword;
+            return user.Password == oldPassword;
         }
 
 
