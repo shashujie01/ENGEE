@@ -396,8 +396,8 @@
                 cancelButtonColor: '#d33', 
                 confirmButtonText: '確定', 
                 cancelButtonText: '取消' }).then((result) => { 
-                    if (result.value) { 
-                        Swal.fire('刪除成功!', '文件已被刪除', 'success')
+                    if (result.value) {                        
+                    Swal.fire({ type: 'success', title: '刪除成功!', text: '商品已刪除', showConfirmButton: false })
                     var deleteUrl = '@Url.Action("Delete", "NL_AD_Product")' + '?id=' + productId;
                     window.location.href = deleteUrl;
                     } 

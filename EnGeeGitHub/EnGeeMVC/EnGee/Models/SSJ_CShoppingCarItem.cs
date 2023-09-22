@@ -7,6 +7,8 @@ public class SSJ_CShoppingCarItem
 {
     public SSJ_ProductDetailsViewModel ProductDetails { get; set; }
     public int ProductId { get; set; }
+    public int BuyerId { get; set; }
+    public int SellerId { get; set; }
     public int count { get; set; }
     public int point { get; set; }
     public string ProductImagePath { get; set; } = null!;
