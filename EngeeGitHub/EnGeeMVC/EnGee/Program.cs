@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using EnGee.Hubs;
 
 
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("EnGeeContextConnection") ?? throw new InvalidOperationException("Connection string 'EnGeeContextConnection' not found.");
 
