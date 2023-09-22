@@ -4,7 +4,16 @@
     ViewData["Title"] = "Edit";
     ViewBag.HeaderTitle = "修改商品";
 }
+<style>
+    .swal2-popup.swal2-modal {
+        font-size: 12pt;
+    }
 
+    .swal2-modal .swal2-title {
+        font-size: 1.4em;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <div class="d-flex justify-content-center">
     <h1>商品資料</h1>
@@ -12,7 +21,7 @@
 <hr />
 <div class="row">
     <div class=" d-flex justify-content-center">
-        <form asp-action="Edit" enctype="multipart/form-data">
+        <form id="productForm" asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="ProductId" value="@Model.ProductId" />
             <div class="row mt-3">
@@ -140,7 +149,7 @@
                 <span asp-validation-for="ProductSaleStatus" class="text-danger"></span>
             </div>
             <div class="form-group d-flex justify-content-center mt-3">
-                <button type="submit" class="btn btn-success">修改</button>
+                <button type="button" class="btn btn-success" id="submitBtn">修改</button>
                 <button type="button" class="btn btn-danger ms-5" onclick="location.href='@Url.Action("List")'">取消</button>
             </div>
         </form>
@@ -165,6 +174,29 @@
                 };
 
                 reader.readAsDataURL(fileInput.files[0]);
+            }
+        });
+
+        document.getElementById('submitBtn').addEventListener('click', function () {
+            var productName = document.getElementById('ProductName').value;
+            var brandId = document.getElementById('BrandId').value;
+            var mainCategoryId = document.getElementById('MainCategoryId').value;
+            var subcategoryId = document.getElementById('SubcategoryId').value;
+            var productDescribe = document.getElementById('ProductDescribe').value;
+            var productUnitPoint = document.getElementById('ProductUnitPoint').value;
+            var productRemainingQuantity = document.getElementById('ProductRemainingQuantity').value;
+            var productExpirationDate = document.getElementById('ProductExpirationDate').value;
+            var productUsageStatus = document.getElementById('ProductUsageStatus').value;
+            var dateOfSale = document.getElementById('DateOfSale').value;
+            var deliveryTypeId = document.querySelector('input[name="DeliveryTypeId"]:checked');
+
+            if (productName === "" || brandId === "" || mainCategoryId === "" || subcategoryId === "" ||
+                productDescribe === "" || productUnitPoint === "" || productRemainingQuantity === "" ||
+                productExpirationDate === "" || productUsageStatus === "" || dateOfSale === "" || !deliveryTypeId) {
+                Swal.fire('錯誤', '請填寫所有必填欄位', 'error');
+            } else {
+                Swal.fire({ type: 'success', title: '修改成功!', text: '商品資料已修改', showConfirmButton: false })
+                document.getElementById('productForm').submit();
             }
         });
     </script>

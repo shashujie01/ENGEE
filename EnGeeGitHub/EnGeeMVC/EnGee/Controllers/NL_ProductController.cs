@@ -173,7 +173,7 @@ namespace EnGee.Controllers
                 p.ProductImagePath = photoName;
             }
             db.TProducts.Add(p.Product);
-            db.SaveChanges();
+            db.SaveChanges();            
             return RedirectToAction("Index");
         }
 

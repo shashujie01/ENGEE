@@ -4,6 +4,17 @@
     ViewData["Title"] = "Add";
     ViewBag.HeaderTitle = "商品上架 - 二手商品上架";
 }
+<style>
+    .swal2-popup.swal2-modal {
+        font-size: 12pt;
+    }
+
+    .swal2-modal .swal2-title {
+        font-size: 1.4em;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
 <br />
 <div class="row">
     <div class="col-lg-3">
@@ -19,7 +30,7 @@
         </nav>
     </div>
     <div class="col-lg-7 d-flex justify-content-center">
-        <form asp-action="Add" enctype="multipart/form-data">
+        <form id="productForm" asp-action="Add" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label>預覽圖：</label>
@@ -126,10 +137,10 @@
                 <label asp-for="ProductSaleStatus" class="control-label"></label>
                 <input asp-for="ProductSaleStatus" class="form-control" type="hidden" value="2" />
                 <span asp-validation-for="ProductSaleStatus" class="text-danger"></span>
-            </div>
+            </div>            
             <div class="form-group mt-3 d-flex justify-content-center">
                 <button type="button" class="btn btn-primary me-5" onclick="location.href='@Url.Action("Index")'">返回</button>
-                <input type="submit" value="上架" class="btn btn-success ms-5 me-5" />
+                <button type="button" class="btn btn-success ms-5 me-5" id="submitBtn">上架</button>
                 <input type="reset" value="取消" class="btn btn-danger ms-5" />
             </div>
         </form>
@@ -157,5 +168,29 @@
                 reader.readAsDataURL(fileInput.files[0]);
             }
         });
+
+        document.getElementById('submitBtn').addEventListener('click', function () {           
+            var productName = document.getElementById('ProductName').value;
+            var brandId = document.getElementById('BrandId').value;
+            var mainCategoryId = document.getElementById('MainCategoryId').value;
+            var subcategoryId = document.getElementById('SubcategoryId').value;
+            var productDescribe = document.getElementById('ProductDescribe').value;
+            var productUnitPoint = document.getElementById('ProductUnitPoint').value;
+            var productRemainingQuantity = document.getElementById('ProductRemainingQuantity').value;
+            var productExpirationDate = document.getElementById('ProductExpirationDate').value;
+            var productUsageStatus = document.getElementById('ProductUsageStatus').value;
+            var dateOfSale = document.getElementById('DateOfSale').value;
+            var deliveryTypeId = document.querySelector('input[name="DeliveryTypeId"]:checked');
+
+            if (productName === "" || brandId === "" || mainCategoryId === "" || subcategoryId === "" ||
+                productDescribe === "" || productUnitPoint === "" || productRemainingQuantity === "" ||
+                productExpirationDate === "" || productUsageStatus === "" || dateOfSale === "" || !deliveryTypeId) {                
+                Swal.fire('錯誤', '請填寫所有必填欄位', 'error');
+            } else {                
+                Swal.fire({ type: 'success', title: '新增成功!', text: '商品已上架', showConfirmButton: false })
+                document.getElementById('productForm').submit();
+            }
+        });
+        
     </script>
 }

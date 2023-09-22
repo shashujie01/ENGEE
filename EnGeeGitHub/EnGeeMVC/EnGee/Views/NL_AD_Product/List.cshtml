@@ -385,24 +385,10 @@
 
         });
 
-        function confirmDelete(productId) {
-            Swal.fire({
-                type: 'warning',
-                title: '確定要刪除嗎？',
-                text: '此操作無法撤銷！',
-                showCancelButton: true,
-                confirmButtonText: '確定',
-                cancelButtonText: '取消'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // 如果用户点击了“确认”按钮，则执行删除操作
-                    var deleteUrl = '@Url.Action("Delete", "NL_AD_Product")' + '?id=' + productId;
-                    window.location.href = deleteUrl;
-                }
-            });
+        function confirmDelete(productId) {          
 
             Swal.fire({ 
-                title: '確定要刪除麼?', 
+                title: '確定要刪除嗎?', 
                 text: "刪除後將無法撤銷!", 
                 type: 'warning', 
                 showCancelButton: true, 
