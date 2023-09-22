@@ -184,10 +184,10 @@ namespace EnGee.Controllers
                 TOrder order = new TOrder
                 {
                     OrderDate = DateTime.Now,
-                    DeliveryTypeId = vm.DeliveryType,
-                    DeliveryAddress = vm.DeliveryAddress,
+                    //DeliveryTypeId = vm.DeliveryType,
+                    //DeliveryAddress = vm.DeliveryAddress,
                     BuyerId = 59,//TODO:尚未串接
-                    SellerId = 60,//尚未串接
+                    //SellerId = 60,//尚未串接
                     OrderStatus = "3",//結帳後為3
                     OrderCatagory = 1,//買賣為1
                     ConvienenNum = "0",//超商尚未串接
@@ -219,8 +219,8 @@ namespace EnGee.Controllers
                             ProductId = item.ProductId,
                             ProductUnitPoint = item.point,
                             OrderQuantity = item.count,
-                            BuyerId = order.BuyerId,
-                            SellerId = order.SellerId
+                            //BuyerId = order.BuyerId,
+                            //SellerId = order.SellerId
                         };
                         db.TOrderDetails.Add(orderDetail);
                         totalUsagePoints += item.小計;// 計算小計

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace EnGee.Models;
 
@@ -16,7 +16,7 @@ public partial class TMember
     [DisplayName("註冊密碼")]
     [Required(ErrorMessage = ("註冊密碼必填"))]
     [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
-    
+
     public string Password { get; set; } = null!;
     [NotMapped] //不存至SQL
     [DisplayName("確認密碼")]
@@ -33,7 +33,7 @@ public partial class TMember
     [Required(ErrorMessage = ("全名必填"))]
     public string Fullname { get; set; } = null!;
 
-  
+
     [Required(ErrorMessage = ("性別必填"))]
     public string Gender { get; set; } = null!;
 
@@ -60,7 +60,12 @@ public partial class TMember
     [DisplayName("會員自介")]
     public string? Introduction { get; set; }
     [DisplayName("公益團體證明(文件上傳)")]
+
+    //--0916新增--//
+    [NotMapped]
+    public string? RandomToken { get; set; }
     public string? CharityProof { get; set; }
+
 
     public virtual ICollection<TCase> TCases { get; set; } = new List<TCase>();
 
@@ -77,14 +82,6 @@ public partial class TMember
     public virtual ICollection<TMemberPoint> TMemberPoints { get; set; } = new List<TMemberPoint>();
 
     public virtual ICollection<TMessage> TMessages { get; set; } = new List<TMessage>();
-
-    public virtual ICollection<TOrder> TOrderBuyers { get; set; } = new List<TOrder>();
-
-    public virtual ICollection<TOrderDetail> TOrderDetailBuyers { get; set; } = new List<TOrderDetail>();
-
-    public virtual ICollection<TOrderDetail> TOrderDetailSellers { get; set; } = new List<TOrderDetail>();
-
-    public virtual ICollection<TOrder> TOrderSellers { get; set; } = new List<TOrder>();
 
     public virtual ICollection<TProduct> TProducts { get; set; } = new List<TProduct>();
 

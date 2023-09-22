@@ -37,6 +37,8 @@ public partial class TProduct
 
     public int ProductSaleStatus { get; set; }
 
+    public int? BoolFavor { get; set; }
+
     public virtual TBrand Brand { get; set; } = null!;
 
     public virtual TDeliveryType DeliveryType { get; set; } = null!;
@@ -54,6 +56,4 @@ public partial class TProduct
     public virtual ICollection<TMemberFavorite> TMemberFavorites { get; set; } = new List<TMemberFavorite>();
 
     public virtual ICollection<TMessage> TMessages { get; set; } = new List<TMessage>();
-
-    public virtual ICollection<TOrderDetail> TOrderDetails { get; set; } = new List<TOrderDetail>();
 }

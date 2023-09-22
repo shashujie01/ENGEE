@@ -17,7 +17,5 @@ public partial class TDeliveryType
 
     public virtual ICollection<TDonationOrder> TDonationOrders { get; set; } = new List<TDonationOrder>();
 
-    public virtual ICollection<TOrder> TOrders { get; set; } = new List<TOrder>();
-
     public virtual ICollection<TProduct> TProducts { get; set; } = new List<TProduct>();
 }
