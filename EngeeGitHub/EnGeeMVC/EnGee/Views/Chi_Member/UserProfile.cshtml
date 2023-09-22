@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "個人檔案";
-    ViewBag.HeaderTitle = "個人檔案";
+    ViewBag.HeaderTitle = "個人主頁";
 }
 <head>
     <link rel="stylesheet" href="~/css/CHIACHI_UserProfile.css">
@@ -158,6 +158,11 @@
                                 <label asp-for="Phone">手機號碼</label>
                                 <input asp-for="Phone" class="form-control" />
                             </div>
+                            <div class="form-group">
+                                <label asp-for="Introduction">個人簡介</label>
+                                <input asp-for="Introduction" class="form-control" maxlength="200" style="height:200px"/>
+                            </div>
+
 
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">保存</button>
@@ -181,23 +186,25 @@
                 </div>
                 <div class="modal-body">
                     <!-- 會員帳密編輯表單內容 -->
-                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <form id="EditPassword" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="MemberId" />
                         <div>
                             <div class="form-group">
-                                <label asp-for="Password">舊密碼輸入</label>
-                                <input asp-for="Password" class="form-control" />                               
+                                <label for="oldPassword">舊密碼</label>
+                                <input type="password" id="oldPassword" class="form-control" />
                             </div>
                             <div class="form-group">
-                                <label asp-for="Email">新密碼輸入</label>
-                                <input asp-for="Email" class="form-control" />
-                            </div>
+                                <label for="NewPassword">新密碼</label>
+                                <input type="password" id="newPassword" name="NewPassword" class="form-control">
+                                <span class="badge bg-primary text-wrap mt-1">須符合6~25個字符,包含至少一大寫及一小寫英文字母與數字</span>
+                            </div>  
                             <div class="form-group">
-                                <label asp-for="Email">新密碼輸入</label>
-                                <input asp-for="Email" class="form-control" />
+                                <label for="confirm_password">確認新密碼</label>
+                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" />
+                                <span class="badge bg-primary text-wrap mt-1">新密碼尚未確認</span>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">保存</button>
+                                <button type="submit" id="submit" class="btn btn-primary">保存</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                             </div>
                         </div>
@@ -209,7 +216,7 @@
 </body>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
+<script> //大頭照的js
     $(document).ready(function () {
 
         var readURL = function (input) {
@@ -233,6 +240,53 @@
         });
     });
 </script>
+<script>
+    //修改密碼的js
+</script>
+<script> //確認密碼的js
+    var $password = $("#newPassword");
+    var $confirmPass = $("#confirm_password");
+
+    //Check the length of the Password
+    function checkLength() {
+        return $password.val().length > 5;
+    }
+    //If checkLength() is > 5 then we'll hide the hint
+    function PassLength() {
+        if (checkLength()) {
+            $password.next().hide();
+        } else {
+            $password.next().show();
+        }
+    }
+    //Check to see if the value for pass and confirmPass are the same
+    function samePass() {
+        return $password.val() === $confirmPass.val();
+    }    
+
+    //If samePass returns true, we'll hide the hint
+    function PassMatch() {
+        if (samePass()) {
+            $confirmPass.next().hide();
+        } else {
+            $confirmPass.next().show();
+        }
+    }
+    function canSubmit() {
+        return samePass() && checkLength();
+    }
+    function enableSubmitButton() {
+        $("#submit").prop("disabled", !canSubmit());
+    }
+    //Calls the enableSubmitButton() function to disable the button
+    enableSubmitButton();
+
+    $password.keyup(PassLength).keyup(PassMatch).keyup(enableSubmitButton);
+    $confirmPass.focus(PassMatch).keyup(PassMatch).keyup(enableSubmitButton);
+
+</script>
+
+
 
 
 

@@ -114,7 +114,7 @@
     width: 200px;
     margin: 50px auto;
     border-radius: 50%;
-    overflow: hidden;
+    overflow:clip;
     box-shadow: 1px 1px 15px -5px black;
     transition: all .3s ease;
     &:hover{
