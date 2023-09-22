@@ -85,7 +85,7 @@
                                 //保存原始的DeliveryTypeID值
                                 <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
                                 //將值傳遞至後台
-                               
+                                <input type="hidden" name="SellerId" value="@item.SellerId">
                                 <input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />
                                 <div class="card p-2">
                                     <div class="cartcontent">
@@ -124,7 +124,7 @@
                                     <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">*@
                                                 @*保存原始的SelectedDeliveryTypeID值 *@
                                                 @*<input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />*@
-                                                
+                                                <label class="me-2 mb-2" name="SellerId">賣家: @item.SellerId</label><br>
                                                 <label>
                                                     <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
                                                            data-product-id="@item.ProductId" data-delivery-type="宅配" value="1" id="homeDelivery"
