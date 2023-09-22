@@ -32,7 +32,7 @@ namespace EnGee.Controllers
             return JsonSerializer.Deserialize<TMember>(userJson);
         }
 
-        private List<SSJ_CShoppingCarItem> GetCartItems()
+        private List<SSJ_CShoppingCarItem> GetCartItems()//TODO存入不同的cart
         {// 從Session獲取購物車項目
             if (!HttpContext.Session.Keys.Contains(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST))
             {
@@ -47,6 +47,23 @@ namespace EnGee.Controllers
             string json = JsonSerializer.Serialize(cart);
             HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
         }
+        //---------超商取貨購物車------------------
+        private List<SSJ_CShoppingCarItem> GetCartItems_ConvenienceStore()
+        {
+            if (!HttpContext.Session.Keys.Contains(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST_CONVENIENCE_STORE))
+            {
+                return new List<SSJ_CShoppingCarItem>();
+            }
+            string json_ConvenienceStore = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST_CONVENIENCE_STORE);
+            return JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json_ConvenienceStore) ?? new List<SSJ_CShoppingCarItem>();
+        }
+
+        private void SaveCartItems_ConvenienceStore(List<SSJ_CShoppingCarItem> cart_ConvenienceStore)
+        {
+            string json_ConvenienceStore = JsonSerializer.Serialize(cart_ConvenienceStore);
+            HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST_CONVENIENCE_STORE, json_ConvenienceStore);
+        }
+        //---------超商取貨購物車------------------
 
         private int GetDeliveryFee(int deliveryTypeId)
         { // 根據送貨類型獲取運費
@@ -103,6 +120,31 @@ namespace EnGee.Controllers
                 Console.WriteLine(innerException.Message);
                 innerException = innerException.InnerException;
             }
+        }
+        private void HandleCart(TProduct product, int productId, int count, int deliveryTypeId,
+    Func<List<SSJ_CShoppingCarItem>> getCartFunc, Action<List<SSJ_CShoppingCarItem>> saveCartFunc)
+        {//加入不同購物車
+            //TODO可能要分加入購物車與直接購買
+            List<SSJ_CShoppingCarItem> cart = getCartFunc();
+            SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == productId);
+            if (existingItem != null)
+            {
+                existingItem.count += count;
+            }
+            else
+            {
+                cart.Add(new SSJ_CShoppingCarItem
+                {
+                    tproduct = product,
+                    SellerId = product.SellerId,
+                    point = (int)product.ProductUnitPoint,
+                    ProductId = productId,
+                    count = count,
+                    ProductImagePath = $"/images/ProductImages/{product.ProductImagePath}",
+                    DeliveryTypeID = deliveryTypeId
+                });
+            }
+            saveCartFunc(cart);
         }
         //------------------------
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -174,6 +216,8 @@ namespace EnGee.Controllers
             TMember loggedInUser = GetLoggedInUser();
             TMember userFromDatabase = _db.TMembers.FirstOrDefault(t => t.Email.Equals(loggedInUser.Email));
             ViewBag.userFromDatabase = userFromDatabase;
+            int points = (int)(userFromDatabase?.Point ?? 0);
+            ViewBag.MemberPoints = points;
             List<SSJ_CShoppingCarItem> cart_ConvenienceStore = GetCartItems();
             return View(cart_ConvenienceStore);
         }
@@ -181,52 +225,27 @@ namespace EnGee.Controllers
 
         public ActionResult AddToCart(SSJ_CShoppingCarItem vm, int txtProductId, int txtCount, int deliverytypeid)
         {
+            if (txtCount <= 0)
+            {return Json(new { success = false, message = "Invalid quantity." });}
             if (deliverytypeid != 0)
-            {
-                HttpContext.Session.SetInt32("DeliveryType", deliverytypeid);
-            }
+            {HttpContext.Session.SetInt32("DeliveryType", deliverytypeid); }
             if (vm == null)
-            {
-                return Json(new { success = false, message = "No product details provided." });
-            }
-            else//test
-            {
-                Console.WriteLine(vm.ProductId);//0
-                Console.WriteLine(vm.count);//0
-                Console.WriteLine(vm.DeliveryTypeID);//1
-                Console.WriteLine(vm.DeliveryType);//宅配
-                Console.WriteLine(vm.小計);//0
-            }
+            {return Json(new { success = false, message = "No product details provided." });}
             TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == txtProductId);
             if (p == null)
-            {
-                return Json(new { success = false, message = "Product not found." });
-            }
-            List<SSJ_CShoppingCarItem> cart = GetCartItems();
-            SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == txtProductId);
-            if (existingItem != null)
-            {
-                existingItem.count += txtCount;
-            }
+            { return Json(new { success = false, message = "Product not found." });}
+            if (deliverytypeid == 1)
+            {HandleCart(p, txtProductId, txtCount, deliverytypeid, GetCartItems, SaveCartItems);}
+            else if (deliverytypeid == 2)
+            {HandleCart(p, txtProductId, txtCount, deliverytypeid, GetCartItems_ConvenienceStore, SaveCartItems_ConvenienceStore);}
             else
-            {
-                cart.Add(new SSJ_CShoppingCarItem
-                {
-                    tproduct = p,
-                    SellerId = p.SellerId,
-                    point = (int)p.ProductUnitPoint,
-                    ProductId = txtProductId,
-                    count = txtCount,
-                    ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
-                    DeliveryTypeID = deliverytypeid
-                });
-            }
-            SaveCartItems(cart);
+            {return Json(new { success = false, message = "Invalid delivery type." });}
             return Json(new { success = true, message = "Product added to cart." });
         }
 
+
         public ActionResult AddToCartAndReturnCarView(SSJ_CShoppingCarItem vm, int txtProductId, int txtCount, int deliverytypeid)
-        {//Detail中的直接購買(跳轉至cartview)
+        {
             if (deliverytypeid != 0)
             {
                 HttpContext.Session.SetInt32("DeliveryType", deliverytypeid);
@@ -236,14 +255,6 @@ namespace EnGee.Controllers
             {
                 return Json(new { success = false, message = "No product details provided." });
             }
-            else//test
-            {
-                Console.WriteLine(vm.ProductId);
-                Console.WriteLine(vm.count);
-                Console.WriteLine(vm.DeliveryTypeID);
-                Console.WriteLine(vm.DeliveryType);
-                Console.WriteLine(vm.小計);
-            }
 
             TProduct p = _db.TProducts.FirstOrDefault(t => t.ProductId == txtProductId);
             if (p == null)
@@ -251,28 +262,20 @@ namespace EnGee.Controllers
                 return Json(new { success = false, message = "Product not found." });
             }
 
-            List<SSJ_CShoppingCarItem> cart = GetCartItems();
-            SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == txtProductId);
-
-            if (existingItem != null)
-            {//檢查是否購物車內已經存在
-                existingItem.count += (int)txtCount;
+            if (deliverytypeid == 1)
+            {
+                HandleCart(p, txtProductId, txtCount, deliverytypeid, GetCartItems, SaveCartItems);
+                return RedirectToAction("CartView");
+            }
+            else if (deliverytypeid == 2) //2代表超商門市取貨
+            {
+                HandleCart(p, txtProductId, txtCount, deliverytypeid, GetCartItems_ConvenienceStore, SaveCartItems_ConvenienceStore);
+                return RedirectToAction("CartView_ConvenienceStore");
             }
             else
             {
-                cart.Add(new SSJ_CShoppingCarItem
-                {
-                    tproduct = p,
-                    SellerId = p.SellerId,
-                    point = (int)p.ProductUnitPoint,
-                    ProductId = txtProductId,
-                    count = txtCount,
-                    ProductImagePath = $"/images/ProductImages/{p.ProductImagePath}",
-                    DeliveryTypeID = (int)deliverytypeid
-                });
+                return Json(new { success = false, message = "Invalid delivery type." });
             }
-            SaveCartItems(cart);
-            return RedirectToAction("CartView");
         }
 
         public ActionResult QuickAddToCart(int txtProductId)
