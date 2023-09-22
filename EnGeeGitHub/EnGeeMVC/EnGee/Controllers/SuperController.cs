@@ -16,8 +16,6 @@ namespace EnGee.Controllers
         {
             _userViewModel = userViewModel;
         }
-       
-
         public override void OnActionExecuting(ActionExecutingContext context)
         { // 使用ActionExecutingContext:有繼承SuperController的Controller中的每個Action執行前會被呼叫
           // 調用基類的OnActionExecuting方法
@@ -43,26 +41,5 @@ namespace EnGee.Controllers
                 _userViewModel.LoggedInUser = loggedInUser;
             }
         }
-        //public override void OnActionExecuting(ActionExecutingContext context)//SSJ沒寫完
-        //{//登入後重新導向到指定位置
-        //    base.OnActionExecuting(context);
-        //    if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
-        //    {
-        //        HttpContext.Session.SetString("RedirectAction", context.ActionDescriptor.RouteValues["action"]);
-        //        HttpContext.Session.SetString("RedirectController", context.ActionDescriptor.RouteValues["controller"]);
-
-        //        context.Result = new RedirectToRouteResult(new RouteValueDictionary(new
-        //        {
-        //            controller = "Home",
-        //            action = "Login"
-        //        }));
-        //    }
-        //}
-        //protected bool IsUserLoggedIn()
-        //    //SSJ
-        //    //檢查是否為登入狀態
-        //{
-        //    return HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER);
-        //}
     }
 }
