@@ -17,15 +17,9 @@ public partial class TOrderDetail
 
     public int OrderQuantity { get; set; }
 
-    public int BuyerId { get; set; }
-
     public int SellerId { get; set; }
 
-    public virtual TMember Buyer { get; set; } = null!;
+    public int DeliveryTypeId { get; set; }
 
-    public virtual TOrder Order { get; set; } = null!;
-
-    public virtual TProduct Product { get; set; } = null!;
-
-    public virtual TMember Seller { get; set; } = null!;
+    public string DeliveryAddress { get; set; } = null!;
 }

@@ -192,17 +192,22 @@
                             <div class="form-group">
                                 <label for="oldPassword">舊密碼</label>
                                 <input type="password" id="oldPassword" class="form-control" asp-for="OldPassword" />
+                                <span class="badge bg-primary text-wrap mt-1" id="error-message" style="display:none;">舊密碼不符合</span>
                             </div>
                             <div class="form-group">
                                 <label for="NewPassword">新密碼</label>
-                                <input type="password" id="newPassword" name="NewPassword" class="form-control" asp-for="NewPassword">
+                                <input type="password" id="newPassword" class="form-control" asp-for="NewPassword">
                                 <span class="badge bg-primary text-wrap mt-1">須符合6~25個字符,包含至少一大寫及一小寫英文字母與數字</span>
                             </div>  
                             <div class="form-group">
                                 <label for="confirm_password">確認新密碼</label>
-                                <input type="password" id="confirm_password" name="confirm_password" class="form-control" asp-for="ConfirmPassword" />
+                                <input type="password" id="confirm_password" class="form-control" asp-for="ConfirmPassword" />
                                 <span class="badge bg-primary text-wrap mt-1">新密碼尚未確認</span>
                             </div>
+                            @if (TempData["SuccessMessage"] != null)
+                            {
+                                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                            }
                             <div class="modal-footer">
                                 <button type="submit" id="submit" class="btn btn-primary">保存</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
@@ -240,9 +245,7 @@
         });
     });
 </script>
-<script>
-    //修改密碼的js
-</script>
+
 <script> //確認密碼的js
     var $password = $("#newPassword");
     var $confirmPass = $("#confirm_password");
@@ -284,6 +287,15 @@
     $password.keyup(PassLength).keyup(PassMatch).keyup(enableSubmitButton);
     $confirmPass.focus(PassMatch).keyup(PassMatch).keyup(enableSubmitButton);
 
+</script>
+<script>//舊密碼錯誤的js
+    
+    $(document).ready(function () {
+        var errorMessage = "@Html.Raw(Html.ValidationSummary().ToString())";
+        if (errorMessage.length > 0) {
+            $("#error-message").show(); 
+        }
+    });
 </script>
 
 

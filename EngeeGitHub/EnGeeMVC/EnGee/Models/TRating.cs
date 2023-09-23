@@ -27,7 +27,5 @@ public partial class TRating
 
     public virtual TMember Buyer { get; set; } = null!;
 
-    public virtual TOrder Order { get; set; } = null!;
-
     public virtual TMember Seller { get; set; } = null!;
 }

@@ -53,7 +53,7 @@ public partial class EngeeContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=engee.database.windows.net;Database=Engee;User ID=Fuen2901;Password=EnGee2023;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Data Source=engee.database.windows.net;Initial Catalog=Engee;User ID=Fuen2901;Password=EnGee2023;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -124,10 +124,10 @@ public partial class EngeeContext : DbContext
 
             entity.Property(e => e.CollectId).HasColumnName("CollectID");
             entity.Property(e => e.CollectCaption).HasMaxLength(1000);
-            entity.Property(e => e.CollectEndDate).HasColumnType("datetime");
+            entity.Property(e => e.CollectEndDate).HasColumnType("date");
             entity.Property(e => e.CollectImagePath).HasMaxLength(1000);
             entity.Property(e => e.CollectItemName).HasMaxLength(50);
-            entity.Property(e => e.CollectStartDate).HasColumnType("datetime");
+            entity.Property(e => e.CollectStartDate).HasColumnType("date");
             entity.Property(e => e.CollectTitle).HasMaxLength(100);
             entity.Property(e => e.ConvenienNum).HasMaxLength(50);
             entity.Property(e => e.DeliveryAddress).HasMaxLength(100);
@@ -264,20 +264,30 @@ public partial class EngeeContext : DbContext
             entity.ToTable("tMembers");
 
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.Access).HasDefaultValueSql("((1))");
             entity.Property(e => e.Address).HasMaxLength(200);
             entity.Property(e => e.Birth).HasColumnType("date");
             entity.Property(e => e.CharityProof).HasMaxLength(1000);
-            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.Fullname).HasMaxLength(100);
-            entity.Property(e => e.Gender)
-                .HasMaxLength(1)
-                .IsFixedLength();
+            entity.Property(e => e.Gender).HasMaxLength(10);
             entity.Property(e => e.Introduction).HasMaxLength(200);
-            entity.Property(e => e.Password).HasMaxLength(25);
-            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.Password)
+                .HasMaxLength(64)
+                .IsUnicode(false);
+            entity.Property(e => e.Phone)
+                .HasMaxLength(10)
+                .IsUnicode(false);
             entity.Property(e => e.PhotoPath).HasMaxLength(1000);
-            entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
-            entity.Property(e => e.Username).HasMaxLength(15);
+            entity.Property(e => e.Point).HasDefaultValueSql("((0))");
+            entity.Property(e => e.RegistrationDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("date");
+            entity.Property(e => e.Username)
+                .HasMaxLength(15)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<TMemberFavorite>(entity =>
@@ -331,6 +341,7 @@ public partial class EngeeContext : DbContext
                 .HasMaxLength(1)
                 .IsFixedLength();
             entity.Property(e => e.MessageContent).HasMaxLength(1000);
+            entity.Property(e => e.MessageDate).HasColumnType("datetime");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
             entity.HasOne(d => d.Member).WithMany(p => p.TMessages)
@@ -353,28 +364,10 @@ public partial class EngeeContext : DbContext
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.BuyerId).HasColumnName("BuyerID");
             entity.Property(e => e.ConvienenNum).HasMaxLength(50);
-            entity.Property(e => e.DeliveryAddress).HasMaxLength(100);
-            entity.Property(e => e.DeliveryTypeId).HasColumnName("DeliveryTypeID");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.OrderStatus)
                 .HasMaxLength(1)
                 .IsFixedLength();
-            entity.Property(e => e.SellerId).HasColumnName("SellerID");
-
-            entity.HasOne(d => d.Buyer).WithMany(p => p.TOrderBuyers)
-                .HasForeignKey(d => d.BuyerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tOrders_tMembers");
-
-            entity.HasOne(d => d.DeliveryType).WithMany(p => p.TOrders)
-                .HasForeignKey(d => d.DeliveryTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tOrders_tDeliveryTypes");
-
-            entity.HasOne(d => d.Seller).WithMany(p => p.TOrderSellers)
-                .HasForeignKey(d => d.SellerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tOrders_tMembers1");
         });
 
         modelBuilder.Entity<TOrderDetail>(entity =>
@@ -384,31 +377,12 @@ public partial class EngeeContext : DbContext
             entity.ToTable("tOrderDetail");
 
             entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetailID");
-            entity.Property(e => e.BuyerId).HasColumnName("BuyerID");
+            entity.Property(e => e.DeliveryAddress).HasMaxLength(100);
+            entity.Property(e => e.DeliveryTypeId).HasColumnName("DeliveryTypeID");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.SellerId).HasColumnName("SellerID");
-
-            entity.HasOne(d => d.Buyer).WithMany(p => p.TOrderDetailBuyers)
-                .HasForeignKey(d => d.BuyerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tOrderDetail_tMembers");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.TOrderDetails)
-                .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tOrderDetail_tOrders");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.TOrderDetails)
-                .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tOrderDetail_tOrderDetail");
-
-            entity.HasOne(d => d.Seller).WithMany(p => p.TOrderDetailSellers)
-                .HasForeignKey(d => d.SellerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tOrderDetail_tMembers1");
         });
 
         modelBuilder.Entity<TProduct>(entity =>
@@ -418,6 +392,9 @@ public partial class EngeeContext : DbContext
             entity.ToTable("tProducts");
 
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
+            entity.Property(e => e.BoolFavor)
+                .HasDefaultValueSql("((0))")
+                .HasColumnName("boolFavor");
             entity.Property(e => e.BrandId).HasColumnName("BrandID");
             entity.Property(e => e.DateOfSale).HasColumnType("datetime");
             entity.Property(e => e.DeliveryTypeId).HasColumnName("DeliveryTypeID");
@@ -475,11 +452,6 @@ public partial class EngeeContext : DbContext
                 .HasForeignKey(d => d.BuyerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_tRatings_tMembers");
-
-            entity.HasOne(d => d.Order).WithMany(p => p.TRatings)
-                .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_tRatings_tOrders");
 
             entity.HasOne(d => d.Seller).WithMany(p => p.TRatingSellers)
                 .HasForeignKey(d => d.SellerId)

@@ -110,33 +110,31 @@ namespace EnGee.Controllers
             return View(memberWrap);
         }
 
-
         [HttpPost]
-        public IActionResult EditPassword(CHI_CMemberWrap memIn)
+        public IActionResult EditPassword(string oldPassword, string NewPassword)
         {
-            EngeeContext db = new EngeeContext();
-            TMember memDb = db.TMembers.FirstOrDefault(t => t.MemberId == memIn.MemberId);
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
 
-            if (memDb != null)
+            if (loggedInUser != null && ValidateOldPassword(loggedInUser, oldPassword))
             {
-                // 驗證舊密碼
-                if (ValidateOldPassword(memDb, memIn.OldPassword))
-                {
-                    // 更新新密码
-                    string hashedNewPassword = HashPassword(memIn.NewPassword);
-                    memDb.Password = hashedNewPassword;
-                    db.SaveChanges();
+                string hashedNewPassword = HashPassword(NewPassword);
+                loggedInUser.Password = hashedNewPassword;
 
-                    return RedirectToAction("UserProfile");
-                }
-                else
-                {
-                    ModelState.AddModelError("OldPassword", "舊密碼不正確");
-                }
+                string updatedUserJson = JsonSerializer.Serialize(loggedInUser);
+                HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER, updatedUserJson);
+
+                TempData["SuccessMessage"] = "密碼更新成功";
+                return View();
             }
-
-            return View(memIn);
+            else
+            {                
+                ModelState.AddModelError(string.Empty, "舊密碼不正確");
+                return View();
+            }
         }
+
+
         private string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
