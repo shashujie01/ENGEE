@@ -17,6 +17,8 @@ public partial class TMessage
 
     public int ProductId { get; set; }
 
+    public DateTime? MessageDate { get; set; }
+
     public virtual TMember Member { get; set; } = null!;
 
     public virtual TProduct Product { get; set; } = null!;
