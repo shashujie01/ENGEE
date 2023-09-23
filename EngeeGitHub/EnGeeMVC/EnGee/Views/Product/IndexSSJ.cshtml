@@ -9,7 +9,7 @@
 @{
     ViewBag.HeaderTitle = "買賣專區";
 }
-
+<meta charset="UTF-8">
 <style>
     /*---- Categories調整start---- */
     .cattext a:hover {
@@ -99,6 +99,9 @@
             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
                 @using (Html.BeginForm("IndexSSJ", "Product", FormMethod.Post, new { @class = "form-inline" }))
                 {
+                    <div>
+                        <a class="text-decoration-none fw-bolder mb-3" href="@Url.Action("ShoppingList_admin", "SSJ_ShoppingList")">訂單</a>
+                    </div>
                     <div>
                         <a class="text-decoration-none fw-bolder mb-3" href="@Url.Action("CartView", "Shopping")">檢視購物車</a>
                     </div>
@@ -327,6 +330,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     @*切換頁面JS*@
+    @if (TempData["Message"] != null)
+    {
+        @:alert('商品銷售一空');
+    }
         $(document).ready(function ()
         {
             $('#contentOne, #contentTwo').on('show.bs.collapse', function ()

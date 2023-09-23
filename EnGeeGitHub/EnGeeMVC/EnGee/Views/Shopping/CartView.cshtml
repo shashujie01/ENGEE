@@ -124,7 +124,7 @@
                                     <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">*@
                                                 @*保存原始的SelectedDeliveryTypeID值 *@
                                                 @*<input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />*@
-                                                <label class="me-2 mb-2" name="SellerId">賣家: @item.SellerId</label><br>
+                                                <label class="me-2 mb-2 product-seller-name" data-seller-id="@item.SellerId">賣家: @item.SellerId</label><br>
                                                 <label>
                                                     <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
                                                            data-product-id="@item.ProductId" data-delivery-type="宅配" value="1" id="homeDelivery"
@@ -145,15 +145,18 @@
                             <div class="container p-0 ">
                                 <div class="row m-0 p-0">
                                     <div class="payInfoBox d-flex align-items-center justify-content-end">
-                                        <div class="form-check col-xl-4 col-lg-7 col-md-5 col-3 ms-3">
+                                        <div class="form-check col-xl-4 col-lg-4 col-md-3 col-2 ms-2">
                                             <input class=" form-check-input select-all-checkbox" type="checkbox"
                                                    data-target=".cartcheckout" id="storePickupSelectAll" checked>
                                             <label class="form-check-label" for="storePickupSelectAll">全選</label>
                                         </div>
-                                        <div class="totalPriceMoney col-xl-2 col-lg-2 col-md-3 col-4 ">
+                                        <div class="totalPriceMoney col-xl-3 col-lg-3 col-md-4 col-4 ">
                                             商品總點數：<span> $ </span><span id="productTotalPoint"> @pay.ToString() </span>
                                         </div>
-                                        <div class="col-xl-5 col-lg-3 col-md-4 col-5 d-flex justify-content-end">
+                                        <div class="totalPriceMoney col-xl-1 col-lg-3 col-md-2 col-3">
+                                            商品運費：<span>  </span><span id="productDeliveryFee"> </span>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-2 col-md-3 col-3 d-flex justify-content-end">
                                             <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
                                         </div>
                                     </div>
@@ -448,33 +451,85 @@
             $("#selectedDeliveryTypeID_" + productId).val(deliveryTypeId);
             var $label = $(`label[data-product-id=${productId}]`);
             updateCartItem(productId, null, deliveryTypeId)
+
         });
+    });
+    //--------------------------------
+
+    // 變更運費標籤
+    $(document).ready(function ()
+    {
+        // 函數：獲取選中的配送方式並更新運費
+        function updateDeliveryFee()
+        {
+            var selectedDeliveryTypeIDs = [];
+
+            // Get selected radio buttons
+            $(".delivery-radio:checked").each(function ()
+            {
+                var productId = $(this).data("product-id");
+                var deliveryTypeId = $(this).val();
+
+                selectedDeliveryTypeIDs.push({
+                    productId: productId,
+                    deliveryTypeId: deliveryTypeId
+                });
+            });
+
+            // Send data to backend
+            $.ajax({
+                url: "/Shopping/GetTotalDeliveryFee",
+                method: "POST",
+                data: { selectedDeliveryTypeIDs: selectedDeliveryTypeIDs },
+                success: function (response)
+                {
+                    $('#productDeliveryFee').text(response.totalFee);
+                    // After updating the delivery fee, recalculate the total
+                    calculateAndDisplayTotal();
+                }
+            });
+        }
+
+        // 監聽選中的配送方式的變化
+        $(".delivery-radio").change(updateDeliveryFee);
+
+        // 在頁面加載時立即獲取選中的配送方式並更新運費
+        updateDeliveryFee();
     });
 
     //------------function------------------
     // 更新總點數函數
     function updateTotalPrice()
     {
+        calculateAndDisplayTotal();
+    }
+    function calculateAndDisplayTotal()
+    {
         let total = 0;
+        let productTotalPoint = 0;
+
         // 對於已勾選的商品，加上它的小計到總點數
         $(".cartcheckout:checked").each(function ()
         {
             let productId = $(this).data("product-id");
             let labelValue = $(`.subtotalPoints[data-product-id=${productId}]`).text();
-            total += parseFloat(labelValue);
+            productTotalPoint += parseFloat(labelValue);
         });
+
+        let deliveryFee = parseFloat($('#productDeliveryFee').text());
+        total = deliveryFee + productTotalPoint;
+
         // 更新總點數顯示
-        $("#productTotalPoint").text(total);
+        $("#productTotalPoint").text(productTotalPoint);
         $('#checkoutTotalPoint').val(total);
 
         let memberPoints = parseFloat($("#memberPoints").val());
         // 計算餘額
         let remainingPoints = memberPoints - total;
-
         // 將結果更新到目標輸入框中
         $("#remainingPoints").val(remainingPoints);
-
     }
+
     function updateCartItem(productId, newCount = null, deliveryTypeId = null)
     {//將label的值與product-id傳至後台Shopping/UpdateCartItem
         $.ajax({
@@ -507,4 +562,29 @@
         });
         return selectedProducts;
     }
+//--------------------
+//讀取賣家名子
+    $(document).ready(function ()
+    {
+        $(".product-seller-name").each(function ()
+        {
+            const sellerId = $(this).data("seller-id");
+
+            $.ajax({
+                type: "GET",
+                url: "/Shopping/GetProductSellerID",
+                data: { value: sellerId },
+                context: this, // 這將確保在 'success' callback 中使用正確的標籤
+                success: function (response)
+                {
+                    $(this).html("賣家: " + response);
+                },
+                error: function ()
+                {
+                    $(this).html("賣家: NULL");
+                }
+            });
+        });
+    });
+
 </script>
