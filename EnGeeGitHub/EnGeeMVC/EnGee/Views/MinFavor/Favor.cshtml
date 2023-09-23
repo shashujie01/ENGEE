@@ -28,7 +28,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProductSaleStatus)
             </th>
-                @Html.DisplayNameFor(model => model.boolFavor)
+                @* @Html.DisplayNameFor(model => model.boolFavor) *@
             <th></th>
         </tr>
     </thead>
@@ -62,7 +62,7 @@
                     </td>
                     
                     <td>
-                        @Html.DisplayFor(modelItem => item.boolFavor)
+                        @*@Html.DisplayFor(modelItem => item.boolFavor)有錯誤先註解掉SSJ*@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id=item.ProductId }) |

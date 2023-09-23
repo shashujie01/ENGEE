@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-
 namespace EnGee.Models;
 
 public partial class TMember
@@ -19,7 +18,7 @@ public partial class TMember
     [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
 
     public string Password { get; set; } = null!;
-    [NotMapped] 
+    [NotMapped] //不存至SQL
     [DisplayName("確認密碼")]
     [Required(ErrorMessage = ("確認密碼必填"))]
     [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
@@ -91,5 +90,4 @@ public partial class TMember
     public virtual ICollection<TRating> TRatingSellers { get; set; } = new List<TRating>();
 
     public virtual ICollection<TShoppingCart> TShoppingCarts { get; set; } = new List<TShoppingCart>();
-
 }

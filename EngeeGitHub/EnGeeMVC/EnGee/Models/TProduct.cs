@@ -5,9 +5,9 @@ namespace EnGee.Models;
 
 public partial class TProduct
 {
-    public int ProductId { get; set; } //Min
+    public int ProductId { get; set; }
 
-    public string ProductName { get; set; } = null!;  //Min
+    public string ProductName { get; set; } = null!;
 
     public int BrandId { get; set; }
 
@@ -15,7 +15,7 @@ public partial class TProduct
 
     public int SubcategoryId { get; set; }
 
-    public string ProductDescribe { get; set; } = null!; //Min
+    public string ProductDescribe { get; set; } = null!;
 
     public string ProductImagePath { get; set; } = null!;
 
@@ -27,7 +27,7 @@ public partial class TProduct
 
     public string ProductUsageStatus { get; set; } = null!;
 
-    public int DonationStatus { get; set; } //Min
+    public int DonationStatus { get; set; }
 
     public DateTime DateOfSale { get; set; }
 

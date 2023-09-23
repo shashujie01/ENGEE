@@ -24,9 +24,6 @@ namespace EnGee.Controllers
             _userManager = userManager;
 
         }
-        //-----------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫-------------------------//
-        public IActionResult VerifyEmail()
-        {
 
         public IActionResult EmailValidFail()
         {
@@ -116,10 +113,6 @@ namespace EnGee.Controllers
         }
 
         private IActionResult SendVerificationEmail(string emailto, string token)
-        //{
-        //    _emailsenderIn= emailSenderIn;
-        //}
-        public IActionResult SendEmail(/*EmailDto request*/)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("EnGee", "engeegift@gmail.com"));
