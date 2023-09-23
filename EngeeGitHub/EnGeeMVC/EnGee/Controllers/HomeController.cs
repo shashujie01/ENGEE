@@ -8,6 +8,8 @@ using prjMvcCoreDemo.Models;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace EnGee.Controllers
 {
@@ -44,17 +46,24 @@ namespace EnGee.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
         [HttpPost]
-
         public IActionResult Login(CLoginViewModel vm)
         {
+            if (string.IsNullOrWhiteSpace(vm.txtPassword))
+            {
+                ModelState.AddModelError("", "請輸入密碼。");
+                return View();
+                //vavbar是否一定要用<form asp-controller="Home" asp-action="Login" method="post">
+            }
+            string hashedPassword = ComputeSha256Hash(vm.txtPassword);
             TMember user = (new EngeeContext()).TMembers.FirstOrDefault(
-                t => t.Email.Equals(vm.txtAccount) && t.Password.Equals(vm.txtPassword));
-            if (user != null && user.Password.Equals(vm.txtPassword))
+                t => t.Email.Equals(vm.txtAccount) && t.Password.Equals(hashedPassword));
+            if (user != null && user.Password.Equals(hashedPassword))
             {
                 string json = JsonSerializer.Serialize(user);
                 HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER, json);
@@ -112,6 +121,23 @@ namespace EnGee.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public static string ComputeSha256Hash(string rawData)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }

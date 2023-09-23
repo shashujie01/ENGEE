@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using prjEnGeeDemo.ViewModels;
 using prjMvcCoreDemo.Models;
 using System.Text.Json;
+using System.Security.Cryptography;
+using System.Text;
 using MimeKit;
 
 namespace EnGee.Controllers
@@ -19,7 +21,6 @@ namespace EnGee.Controllers
         }
         public IActionResult UserProfile()
         {
-            
 
             using (var dbContext = new EngeeContext())
             {
@@ -75,7 +76,7 @@ namespace EnGee.Controllers
                     }
                     else
                     {
-                        // 如符合
+                        
                         ModelState.AddModelError("photo", "只接受jpg、jpeg和png格式的圖片");
                         return View(memIn);
                     }
@@ -87,6 +88,7 @@ namespace EnGee.Controllers
                 memDb.Email= memIn.Email;
                 memDb.Address=memIn.Address;
                 memDb.Phone= memIn.Phone;
+                memDb.Introduction= memIn.Introduction;
                 
                 db.SaveChanges();
 
@@ -95,6 +97,67 @@ namespace EnGee.Controllers
             }
                 return RedirectToAction("UserProfile");
             }
+
+        public IActionResult EditPassword()
+        {
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+
+            CHI_CMemberWrap memberWrap = new CHI_CMemberWrap
+            {
+                member = loggedInUser
+            };
+
+            return View(memberWrap);
+        }
+
+        [HttpPost]
+        public IActionResult EditPassword(string oldPassword, string NewPassword)
+        {
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+
+            if (loggedInUser != null && ValidateOldPassword(loggedInUser, oldPassword))
+            {
+                string hashedNewPassword = HashPassword(NewPassword);
+                loggedInUser.Password = hashedNewPassword;
+
+                string updatedUserJson = JsonSerializer.Serialize(loggedInUser);
+                HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER, updatedUserJson);
+
+                TempData["SuccessMessage"] = "密碼更新成功";
+                return View();
+            }
+            else
+            {                
+                ModelState.AddModelError(string.Empty, "舊密碼不正確");
+                return View();
+            }
+        }
+
+
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < hashedBytes.Length; i++)
+                {
+                    builder.Append(hashedBytes[i].ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
+        }
+        private bool ValidateOldPassword(TMember user, string oldPassword)
+        {
+            return user.Password == oldPassword;
+        }
+
+
+
+
 
     }
 }
