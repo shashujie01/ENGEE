@@ -43,7 +43,7 @@
                             </div>
                             <div class="product-info-row">
                                 <div class="product-delivery-type">送貨方式: @Model.DeliveryTypeName</div>
-                                <div class="product-delivery-fee">運費: NT$ </div>
+                                <div class="product-delivery-fee">運費:  </div>
                                 <div class="product-seller-name">賣家: </div>
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                 data: { value: selectedValue },
                 success: function (response)
                 {
-                    $(".product-delivery-fee").html("運費: NT$ " + response);
+                    $(".product-delivery-fee").html("運費: " + response+"點");
                 },
                 error: function ()
                 {

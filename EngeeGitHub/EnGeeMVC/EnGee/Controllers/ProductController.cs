@@ -31,8 +31,9 @@ namespace prjEnGeeDemo.Controllers
         }
         public IActionResult IndexSSJ(SSJ_ProductPageViewModel vm, int page = 1, int pageSize = 6)
         {// 產品頁面的主要邏輯
-            // 從資料庫獲取所有商品
-            IQueryable<TProduct> query = db.TProducts;
+         // 從資料庫獲取所有商品
+
+            IQueryable<TProduct> query = db.TProducts.Where(p => p.ProductSaleStatus != 1);
             // 應用過濾條件
             query = ApplyFilters(vm, query);
             // 計算總頁數與總數
@@ -82,10 +83,11 @@ namespace prjEnGeeDemo.Controllers
                             .Include(p => p.MainCategory)
                             .Include(p => p.Subcategory)
                             .Include(p => p.DeliveryType)
-                            .SingleOrDefault(p => p.ProductId == id);
-            if (product == null)
-            { // 若商品不存在，返回404
-                return NotFound();
+                            .SingleOrDefault(p => p.ProductId == id && p.ProductSaleStatus != 1);
+            if (product == null || product.ProductSaleStatus == 1)
+            {
+                TempData["Message"] = "所選商品銷售一空";
+                return RedirectToAction("IndexSSJ");
             }
             var PDviewModel = new SSJ_ProductDetailsViewModel
             {// 將商品的各種資訊填充到視圖模型中
@@ -124,12 +126,12 @@ namespace prjEnGeeDemo.Controllers
             }
         }
         [HttpGet]
-        public IActionResult GetProductSellerID(int value)
+        public async Task<IActionResult> GetProductSellerID(int value)
         {
-            var product = db.TProducts.FirstOrDefault(t => t.ProductId == value);
+            var product = await db.TProducts.FirstOrDefaultAsync(t => t.ProductId == value);
             if (product != null)
             {
-                var member = db.TMembers.FirstOrDefault(m => m.MemberId == product.SellerId);
+                var member = await db.TMembers.FirstOrDefaultAsync(m => m.MemberId == product.SellerId);
                 if (member != null)
                 {
                     return Json(member.Username);
@@ -144,6 +146,7 @@ namespace prjEnGeeDemo.Controllers
                 return NotFound();
             }
         }
+
     }
 }
 

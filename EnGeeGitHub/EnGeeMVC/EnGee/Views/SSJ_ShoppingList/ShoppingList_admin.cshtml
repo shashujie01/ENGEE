@@ -1,0 +1,143 @@
+﻿@model IEnumerable<EnGee.ViewModel.ShoppingListViewModel>
+
+@{
+    ViewData["Title"] = "ShoppingList_admin";
+}
+
+<h1>訂單明細</h1>
+
+<p>
+    <a asp-action="Create">新增訂單</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                序號
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProdOrderTotalUsagePointsuctDescribe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuyerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderCatagory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConvienenNum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryFee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductImagePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDetailID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductUnitPoint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SellerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryTypeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderTotalUsagePoints)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count = 0;
+            foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <td>
+                        @count
+                    </td>
+                    <td>
+                @Html.DisplayFor(modelItem => item.OrderID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProdOrderTotalUsagePointsuctDescribe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BuyerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderCatagory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConvienenNum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryFee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductImagePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDetailID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductUnitPoint)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SellerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryTypeID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeliveryAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderTotalUsagePoints)
+            </td>
+            <td>
+                        @Html.ActionLink("修改", "Edit", new { id=item.OrderID  }) |
+                @Html.ActionLink("明細'", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("刪除", "Delete", "SSJ_ShoppingList"
+                , new { id=item.OrderID },new {onclick="return confirm('確定要刪除嗎?')"})
+            </td>
+        </tr>
+        }
+}
+    </tbody>
+</table>
