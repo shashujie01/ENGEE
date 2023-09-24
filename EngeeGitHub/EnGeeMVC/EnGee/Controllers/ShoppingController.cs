@@ -14,7 +14,6 @@ namespace EnGee.Controllers
 {
     public class ShoppingController : SuperController
     {//TODO特定時間清除多餘SESSION
-        //TODO超過庫存還是可以買
         private readonly EngeeContext _db;
         public ShoppingController(EngeeContext db, CHI_CUserViewModel userViewModel) : base(userViewModel)
         {
