@@ -244,7 +244,7 @@
                                 <div class="card-img-overlay ">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <a class="btn bg-white text-black" href="shop-single.html">
+                                            <a class="btn bg-white text-black add-to-favorites" data-productid="@products.ProductId" href="@Url.Action("DetailsJING", "JING_Product", new { id = products.ProductId })">
                                                 <i class="far fa-heart"></i>
                                             </a>
                                         </li>
@@ -357,6 +357,33 @@
                 }
 
                 window.location.href = newUrl;
+            });
+            $('.add-to-favorites').on('click', function () {
+                const productId = $(this).data('productid');
+                $.ajax({
+                    url: '/Favorite/AddToFavorites',
+                    method: 'POST',
+                    data: {
+                        productId: productId,
+                        addFavoriteType: true
+                    },
+                    success: function (response) {
+                        if (response.redirectToLogin) {
+                            // 儲存產品ID到sessionStorage或其他地方
+                            sessionStorage.setItem('favoriteProductId', productId);
+                            // 轉到登入頁面
+                            window.location.href = '/Home/Login';
+                        } else if (response.success) {
+                            alert('成功加入到我的最愛！');
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function (error) {
+                        alert('加入失敗，請稍後再試！');
+                    }
+                });
+            });
             });
         });
 
