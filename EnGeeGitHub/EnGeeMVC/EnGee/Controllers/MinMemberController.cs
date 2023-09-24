@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using MailKit.Security;
 using MailKit.Net.Smtp;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Identity;
-using EnGee.Areas.Identity.Data;
+//using Microsoft.AspNetCore.Identity;
+//using EnGee.Areas.Identity.Data;
 
 namespace EnGee.Controllers
 {
@@ -16,14 +16,14 @@ namespace EnGee.Controllers
     {
 
         //------------------ 0917---------------------------------------//
-        private readonly UserManager<EnGeeUser> _userManager;
+        //private readonly UserManager<EnGeeUser> _userManager;
 
 
-        public MinMemberController(UserManager<EnGeeUser> userManager, SignInManager<EnGeeUser> signInManager)
-        {
-            _userManager = userManager;
+        //public MinMemberController(UserManager<EnGeeUser> userManager, SignInManager<EnGeeUser> signInManager)
+        //{
+        //    _userManager = userManager;
 
-        }
+        //}
 
         public IActionResult EmailValidFail()
         {
