@@ -1,4 +1,6 @@
-﻿namespace EnGee.ViewModel
+﻿using EnGee.Models;
+
+namespace EnGee.ViewModel
 {
     public class JING_ProductDetailsViewModel
     {
@@ -19,5 +21,7 @@
         public decimal DeliveryFee { get; set; }
         public string SellerName { get; set; }
         public int ProductSaleStatus { get; set; }
+
+        public List<TMessage> Messages { get; set; }
     }
 }
