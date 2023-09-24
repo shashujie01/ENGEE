@@ -88,6 +88,8 @@
                                 <div class="product-action-section d-flex">
                                     <button class="btn btn-m btnHoverStyle2 m-2 add-to-cart" type="button">加入購物車</button>
                                     <button class="btn btn-m btnHoverStyle2 m-2" type="submit" name="actionType" value="buyNow" class="buy-now">我要索取</button>
+                                    <button class="btn btn-m btnHoverStyle2 m-2 add-to-favorites" data-productid="@Model.ProductId" type="button">加入我的最愛</button>
+
                                 </div>
                             </form>
                         </div>
@@ -117,8 +119,7 @@
                     </div>
 
                     <!-- 插入刪除留言的表單 -->
-                    
-                        <form class="delete-message-form" method="post" action="@Url.Action("DeleteMessage", "Message")">
+                    <form method="post" action="@Url.Action("DeleteMessage", "Message")">
                         <!-- 注意：控制器名稱應該只是 "Message" 而不是 "MessageController" -->
                         <input type="hidden" name="messageId" value="@message.MessageId" />
                         <input type="submit" value="Delete" />
@@ -176,45 +177,6 @@
 
         $('.add-to-cart, .buy-now').on('click', function (e) {
             e.preventDefault();
-            // ... (您的其他代碼，例如 AJAX 請求設定等)
-            $.ajax({
-                // ...
-                success: function (response) {
-                    alert("已加入購物車");
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert("添加失敗，請稍後再試");
-                }
-            });
-        });
-
-        $('.add-to-favorites').on('click', function () {
-            const productId = $(this).data('productid');
-            $.ajax({
-                url: '/MemberFavorite/AddToFavorites',
-                method: 'POST',
-                data: {
-                    productId: productId
-                },
-                success: function (response) {
-                    alert('成功加入到我的最愛！');
-                },
-                error: function (error) {
-                    alert('加入失敗，請稍後再試！');
-                }
-            });
-        });
-
-        // 為刪除留言表單添加確認提示
-        $('.delete-message-form').on('submit', function () {
-            return confirm('您確定要刪除此留言嗎？');
-        });
-
-    });
-
-
-        $('.add-to-cart, .buy-now').on('click', function (e) {
-            e.preventDefault();
             // ...
             $.ajax({
                 // ...
@@ -226,87 +188,58 @@
                 }
             }); // <-- 這裡應該要有一個結束括號。
         });
-
         $('.add-to-favorites').on('click', function () {
+            console.log("Clicked add-to-favorites!");  // 添加此行
             const productId = $(this).data('productid');
             $.ajax({
-                url: '/MemberFavorite/AddToFavorites',
+                url: '/Favorite/AddToFavorites',
                 method: 'POST',
                 data: {
-                    productId: productId
+                    productId: productId,
+                    addFavoriteType: true // 這裡固定為true，代表1
                 },
                 success: function (response) {
-                    alert('成功加入到我的最愛！');
+                  
+                    if (response.redirectToLogin) {
+                        window.location.href = "/Home/Login";  // 這是導向登入頁面的路徑
+                    } else if (response.success) {
+                        alert('成功加入到我的最愛！');
+                    } else {
+                        alert(response.message || '加入失敗，請稍後再試！');
+                    }
                 },
                 error: function (error) {
                     alert('加入失敗，請稍後再試！');
                 }
             });
         });
+ @*        $('.add-to-favorites').on('click', function () {
+            const productId = $(this).data('productid');
+            $.ajax({
+                url: '/Favorite/AddToFavorites',
+                method: 'POST',
+                data: {
+                    productId: productId,
+                    addFavoriteType: true // 這裡固定為true，代表1
+                },
+                success: function (response) {
+                    if (response.redirectToLogin) {
+                        // 重新導向到登入頁面
+                        window.location.href = "/Home/Login";  // 假設您的登入頁面路由是/Home/Login
+                    } else if (response.success) {
+                        alert('成功加入到我的最愛！');
+                    } else {
+                        alert(response.message);  // 顯示後端返回的具體錯誤消息
+                    }
+                },
+                error: function (error) {
+                    alert('加入失敗，請稍後再試！');
+                }
+            });
+        }); *@
 
     });
 </script>
 
-@* <script>
 
-
-    $(document).ready(function () {
-
-        // 初始化設置
-        var initialDelivery = $("input[name='deliveryType']:checked").attr("delytype");
-        $(".deliveryOptionInput").val(initialDelivery);
-
-        // 當選擇配送方式時
-        $("input[name='deliveryType']").on("change", function () {
-            var selectedDelivery = $(this).attr("delytype");
-            $(".deliveryOptionInput").val(selectedDelivery);
-        });
-
-        // 當點擊 "增加" 按鈕
-        $("#btnPlus").on("click", function () {
-            var currentCount = parseInt($("#txtCount").val(), 10);
-            $("#txtCount").val(currentCount + 1);
-        });
-
-        // 當點擊 "減少" 按鈕
-        $("#btnMinus").on("click", function () {
-            var currentCount = parseInt($("#txtCount").val(), 10);
-            if (currentCount > 1) { // 確保數量不會小於1
-                $("#txtCount").val(currentCount - 1);
-            }
-        });
-
-
-        // 當點擊 "加入購物車" 或 "立即購買" 時
-        $(".add-to-cart, .buy-now").on("click", function (e) {
-            e.preventDefault(); // 阻止預設事件
-
-            var selectedDelivery = $("input[name='deliveryType']:checked").attr("delytype");
-            var form = $("#productForm");
-            $(".deliveryOptionInput", form).val(selectedDelivery);
-
-            // 如果是 "立即購買" 就直接提交表單
-            if ($(this).hasClass("buy-now")) {
-                form.submit();
-                return;
-            }
-
-            var formData = form.serialize();
-
-
-            // 使用 AJAX 提交
-            $.ajax({
-                type: "POST",
-                url: form.attr("action"),
-                data: formData + "&deliveryOption=" + selectedDelivery, // 這裡加上 deliveryOption 參數
-                success: function (response) {
-                    alert("已排隊索取");
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert("添加失敗，請稍後再試");
-                }
-            });
-        });
-    });
-</script> *@
 

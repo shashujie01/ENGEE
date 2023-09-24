@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using prjEnGeeDemo.Models;
 using prjEnGeeDemo.ViewModels;
+using prjMvcCoreDemo.Models;
+using System.Text.Json;
 
 namespace EnGee.Controllers
 {
@@ -268,16 +270,28 @@ namespace EnGee.Controllers
 
         public IActionResult DetailsJING(int id)
         {
+            // 首先，取得當前用戶的ID
+            int currentMemberId = GetCurrentMemberId();
+
+            // 如果用戶未登入，則重定向到登錄頁面或其他適當的地方
+            if (currentMemberId == -1)
+            {
+                return RedirectToAction("Login", "Home"); // 登入控制器名稱
+            }
+
+            // 接下來，取得商品詳情
             var product = db.TProducts
                             .Include(p => p.Brand)
                             .Include(p => p.MainCategory)
                             .Include(p => p.Subcategory)
                             .Include(p => p.DeliveryType)
                             .SingleOrDefault(p => p.ProductId == id);
+
             if (product == null)
             {
                 return NotFound();
             }
+
             var PDviewModel = new JING_ProductDetailsViewModel
             {
                 ProductId = product.ProductId,
@@ -302,20 +316,26 @@ namespace EnGee.Controllers
                                   .Include(m => m.Member)  // 包含會員信息
                                   .Where(m => m.ProductId == id)
                                   .ToList();
+
+
+            // 使用currentMemberId檢查商品是否已被當前用戶加入「我的最愛」
+            PDviewModel.IsFavorite = db.TMemberFavorites
+                                     .Any(f => f.MemberId == currentMemberId && f.ProductId == id);
+
             return View(PDviewModel);
         }
-        //以下好像用不到
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
-        //[HttpPost]
-        //public IActionResult Create(TProduct p)
-        //{
-        //    EngeeContext db = new EngeeContext();
-        //    db.TProducts.Add(p);
-        //    db.SaveChanges();
-        //    return RedirectToAction("IndexSSJ");
-        //}
+
+        private int GetCurrentMemberId()
+        {
+            string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            if (string.IsNullOrEmpty(userJson))
+            {
+                return -1;
+            }
+
+            TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
+            return loggedInUser.MemberId;
+        }
+    
     }
 }

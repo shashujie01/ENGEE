@@ -23,5 +23,7 @@ namespace EnGee.ViewModel
         public int ProductSaleStatus { get; set; }
 
         public List<TMessage> Messages { get; set; }
+
+        public bool IsFavorite { get; set; }
     }
 }
