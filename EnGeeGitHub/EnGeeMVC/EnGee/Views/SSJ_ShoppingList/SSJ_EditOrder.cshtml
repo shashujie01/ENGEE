@@ -1,0 +1,144 @@
+﻿@model EnGee.ViewModel.SSJ_ShoppingListCombinedViewModel
+<main>
+<h2>修改訂單</h2>
+
+<form id="orderForm">
+    <div class="form-group">
+        <label for="OrderID">訂單編號</label>
+        <input id="OrderID" name="OrderID" class="form-control" readonly value="@Model.Orders.FirstOrDefault()?.OrderID" />
+    </div>
+    <div class="form-group">
+        <label for="OrderDate">訂單成立時間</label>
+        <input id="OrderDate" name="OrderDate" type="datetime" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderDate" />
+    </div>
+    <div class="form-group">
+        <label for="OrderTotalUsagePoints">訂單總花費</label>
+        <input id="OrderTotalUsagePoints" name="OrderTotalUsagePoints" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderTotalUsagePoints" />
+    </div>
+    <div class="form-group">
+        <label for="BuyerID">買家ID</label>
+        <input id="BuyerID" name="BuyerID" class="form-control" value="@Model.Orders.FirstOrDefault()?.BuyerID" />
+    </div>
+    <div class="form-group">
+        <label for="BuyerUsername">買家</label>
+        <input id="BuyerUsername" name="BuyerUsername" class="form-control" value="@Model.Orders.FirstOrDefault()?.BuyerUsername" />
+    </div>
+    <div class="form-group">
+        <label for="OrderStatus">訂單狀態ID</label>
+        <input id="OrderStatus" name="OrderStatus" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderStatus" />
+    </div>
+    <div class="form-group">
+        <label for="OrderCatagory">訂單類型編號</label>
+        <input id="OrderCatagory" name="OrderCatagory" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderCatagory" />
+    </div>
+    <div class="form-group">
+        <label for="ConvienenNum">超取超商店號</label>
+        <input id="ConvienenNum" name="ConvienenNum" class="form-control" value="@Model.Orders.FirstOrDefault()?.ConvienenNum" />
+    </div>
+    <div class="form-group">
+        <label for="DeliveryFee">運費點數</label>
+        <input id="DeliveryFee" name="DeliveryFee" class="form-control" value="@Model.Orders.FirstOrDefault()?.DeliveryFee" />
+    </div>
+
+    @foreach (var orderDetail in Model.OrderDetails)
+    {
+        <h3>Order Detail for @orderDetail.OrderDetailID</h3>
+
+        <div class="form-group">
+            <label for="OrderDetailID-@orderDetail.OrderDetailID">Order Detail ID</label>
+            <input id="OrderDetailID-@orderDetail.OrderDetailID" name="OrderDetailID-@orderDetail.OrderDetailID" class="form-control" readonly value="@orderDetail.OrderDetailID" />
+        </div>
+
+        <div class="form-group">
+                <label for="ProductID-@orderDetail.ProductID">產品編號</label>
+                <input id="ProductID-@orderDetail.ProductID" name="ProductID-@orderDetail.ProductID" class="form-control" value="@orderDetail.ProductID" />
+        </div>
+
+            <div class="form-group">
+                <label for="ProductName-@orderDetail.ProductName">產品名稱</label>
+                <input id="ProductName-@orderDetail.ProductName" name="ProductName-@orderDetail.ProductName" class="form-control" value="@orderDetail.ProductName" />
+            </div>
+
+            <div class="form-group">
+                <label for="ProductUnitPoint-@orderDetail.ProductUnitPoint">商品單價</label>
+                <input id="ProductUnitPoint-@orderDetail.ProductUnitPoint" name="ProductUnitPoint-@orderDetail.ProductUnitPoint" class="form-control" value="@orderDetail.ProductUnitPoint" />
+            </div>
+
+            <div class="form-group">
+                <label for="OrderQuantity-@orderDetail.OrderQuantity">商品購買數量</label>
+                <input id="OrderQuantity-@orderDetail.OrderQuantity" name="OrderQuantity-@orderDetail.OrderQuantity" class="form-control" value="@orderDetail.OrderQuantity" />
+            </div>
+
+            <div class="form-group">
+                <label for="SellerID-@orderDetail.OrderDetailID">SellerID</label>
+                <input id="SellerID-@orderDetail.SellerID" name="SellerID-@orderDetail.SellerID" class="form-control" value="@orderDetail.SellerID" />
+            </div>
+
+            <div class="form-group">
+                <label for="SellerUsername-@orderDetail.SellerUsername">賣家</label>
+                <input id="SellerUsername-@orderDetail.SellerUsername" name="SellerUsername-@orderDetail.SellerUsername" class="form-control" value="@orderDetail.SellerUsername" />
+            </div>
+
+
+            <div class="form-group">
+                <label for="DeliveryTypeID-@orderDetail.DeliveryTypeID">DeliveryTypeID</label>
+                <input id="DeliveryTypeID-@orderDetail.DeliveryTypeID" name="ProductName-@orderDetail.DeliveryTypeID" class="form-control" value="@orderDetail.DeliveryTypeID" />
+            </div>
+
+            <div class="form-group">
+                <label for="ProductName-@orderDetail.OrderDetailID">寄送方式</label>
+                <input id="ProductName-@orderDetail.OrderDetailID" name="ProductName-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductName" />
+            </div>
+
+            <div class="form-group">
+                <label for="DeliveryType-@orderDetail.DeliveryType">寄送地址</label>
+                <input id="DeliveryType-@orderDetail.DeliveryType" name="DeliveryType-@orderDetail.DeliveryType" class="form-control" value="@orderDetail.DeliveryType" />
+            </div>
+    }
+
+    <button type="button" id="submitBtn">提交修改</button>
+</form>
+</main>
+@section Scripts {
+    <script>
+        document.getElementById("submitBtn").addEventListener("click", function ()
+        {
+            // Gather your form data here
+            let formData = {
+                //... populate with form values
+            };
+
+            // Submit data using fetch
+            fetch(`/api/SSJ_ShoppingListApi`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data =>
+                {
+                    // Handle the response, for example show a success message or handle errors
+                    if (data.success)
+                    {
+                        alert('Order updated successfully!');
+                    } else
+                    {
+                        alert('Error updating order.');
+                    }
+                });
+        });
+
+        // Fetch data when page loads
+        let orderId = @Model.Orders.FirstOrDefault()?.OrderID;
+        fetch(`/api/SSJ_ShoppingListApi/${orderId}`)
+            .then(response => response.json())
+            .then(data =>
+            {
+                // Update your page with the data
+                // For example, populate the form fields
+            });
+    </script>
+}
+
