@@ -298,6 +298,10 @@ namespace EnGee.Controllers
                 //SellerName = product.Seller?.MemberName,
                 ProductSaleStatus = product.ProductSaleStatus,
             };
+            PDviewModel.Messages = db.TMessages
+                                  .Include(m => m.Member)  // 包含會員信息
+                                  .Where(m => m.ProductId == id)
+                                  .ToList();
             return View(PDviewModel);
         }
         //以下好像用不到

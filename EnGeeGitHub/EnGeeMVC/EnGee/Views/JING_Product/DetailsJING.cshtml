@@ -14,6 +14,14 @@
 
     .product-Detail-section {
     }
+
+    .message-content {
+        font-size: 1.2em; /* 設定字體大小為1.5倍的基本大小 */
+    }
+
+    .message-details {
+        font-size: 0.9em; /* 設定字體大小為基本大小 */
+    }
 </style>
 <main>
     <div class="container py-5">
@@ -88,8 +96,158 @@
             </div>
         </div>
     </div>
+
+
+
 </main>
+<!-- 留言板區域 -->
+<section class="container py-5">
+    <h2 class="mb-4">留言板</h2>
+    <ul class="list-group">
+        @if (Model.Messages != null && Model.Messages.Count > 0)
+        {
+            foreach (var message in Model.Messages)
+            {
+                <li class="list-group-item">
+                    <div class="message-content">@message.MessageContent</div>
+                    <div class="message-details">
+                        <p><strong>會員名稱</strong>: @message.Member.Username</p>
+                        <p><strong>留言時間</strong> @message.MessageDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        <!-- 您可以根據需要添加其他相關信息，例如留言時間、用戶名等 -->
+                    </div>
+
+                    <!-- 插入刪除留言的表單 -->
+                    
+                        <form class="delete-message-form" method="post" action="@Url.Action("DeleteMessage", "Message")">
+                        <!-- 注意：控制器名稱應該只是 "Message" 而不是 "MessageController" -->
+                        <input type="hidden" name="messageId" value="@message.MessageId" />
+                        <input type="submit" value="Delete" />
+                    </form>
+
+                </li>
+            }
+        }
+        else
+        {
+            <li class="list-group-item">目前還沒有留言</li>
+        }
+    </ul>
+    <!-- 留言提交表單 -->
+    <div class="mt-4">
+        <form asp-controller="Message" asp-action="AddMessage" method="post">
+            <input type="hidden" name="ProductId" value="@Model.ProductId" />
+            <input type="hidden" name="MessageArea" value="2" />
+            <div class="mb-3">
+                <textarea class="form-control" name="MessageContent" rows="4" placeholder="請輸入您的留言"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">提交留言</button>
+        </form>
+    </div>
+</section>
+
+
+
 <script>
+    $(document).ready(function () {
+
+        // 初始化設置
+        var initialDelivery = $("input[name='deliveryType']:checked").attr("delytype");
+        $(".deliveryOptionInput").val(initialDelivery);
+
+        // 當選擇配送方式時
+        $("input[name='deliveryType']").on("change", function () {
+            var selectedDelivery = $(this).attr("delytype");
+            $(".deliveryOptionInput").val(selectedDelivery);
+        });
+
+        // 當點擊 "增加" 按鈕
+        $("#btnPlus").on("click", function () {
+            var currentCount = parseInt($("#txtCount").val(), 10);
+            $("#txtCount").val(currentCount + 1);
+        });
+
+        // 當點擊 "減少" 按鈕
+        $("#btnMinus").on("click", function () {
+            var currentCount = parseInt($("#txtCount").val(), 10);
+            if (currentCount > 1) { // 確保數量不會小於1
+                $("#txtCount").val(currentCount - 1);
+            }
+        });
+
+        $('.add-to-cart, .buy-now').on('click', function (e) {
+            e.preventDefault();
+            // ... (您的其他代碼，例如 AJAX 請求設定等)
+            $.ajax({
+                // ...
+                success: function (response) {
+                    alert("已加入購物車");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("添加失敗，請稍後再試");
+                }
+            });
+        });
+
+        $('.add-to-favorites').on('click', function () {
+            const productId = $(this).data('productid');
+            $.ajax({
+                url: '/MemberFavorite/AddToFavorites',
+                method: 'POST',
+                data: {
+                    productId: productId
+                },
+                success: function (response) {
+                    alert('成功加入到我的最愛！');
+                },
+                error: function (error) {
+                    alert('加入失敗，請稍後再試！');
+                }
+            });
+        });
+
+        // 為刪除留言表單添加確認提示
+        $('.delete-message-form').on('submit', function () {
+            return confirm('您確定要刪除此留言嗎？');
+        });
+
+    });
+
+
+        $('.add-to-cart, .buy-now').on('click', function (e) {
+            e.preventDefault();
+            // ...
+            $.ajax({
+                // ...
+                success: function (response) {
+                    alert("已加入購物車");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("添加失敗，請稍後再試");
+                }
+            }); // <-- 這裡應該要有一個結束括號。
+        });
+
+        $('.add-to-favorites').on('click', function () {
+            const productId = $(this).data('productid');
+            $.ajax({
+                url: '/MemberFavorite/AddToFavorites',
+                method: 'POST',
+                data: {
+                    productId: productId
+                },
+                success: function (response) {
+                    alert('成功加入到我的最愛！');
+                },
+                error: function (error) {
+                    alert('加入失敗，請稍後再試！');
+                }
+            });
+        });
+
+    });
+</script>
+
+@* <script>
 
 
     $(document).ready(function () {
@@ -150,5 +308,5 @@
             });
         });
     });
-</script>
+</script> *@
 
