@@ -153,44 +153,16 @@
             }
         });
 
-        // function login(){
-        //     const userId = prompt("請輸入您的名稱：");
-        //     if (userId) {
-        //         // 使用者提供了ID，將其傳遞到後端
+        function login(){
+            const userId = prompt("請輸入您的名稱：");
+            if (userId) {
+                // 使用者提供了ID，將其傳遞到後端
         
-        //         connection.invoke("SetUserId", userId).catch(err => console.error(err));
-        //     }
-        //     else {
-        //         window.location.href = "@Url.Action("Index", "Home")";
-        //     }
-        // }
-
-        function login() {
-            Swal.fire({
-                title: '請輸入您的名稱',
-                input: 'text',
-                inputAttributes: {
-                    autocapitalize: 'off'
-                },
-                showCancelButton: true,
-                confirmButtonText: '確定',
-                cancelButtonText: '取消',
-                showLoaderOnConfirm: true,
-                preConfirm: (userId) => {
-                    
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({ type: 'success', title: '登入成功!', text: '進入聊天室', showConfirmButton: false })
-                    return connection.invoke("SetUserId", userId);
-                } else {
-                    window.location.href = "@Url.Action("Index", "Home")";
-                }
-            });
-        }
-
-        
+                connection.invoke("SetUserId", userId).catch(err => console.error(err));
+            }
+            else {
+                window.location.href = "@Url.Action("Index", "Home")";
+            }
         }
     </script>
 }

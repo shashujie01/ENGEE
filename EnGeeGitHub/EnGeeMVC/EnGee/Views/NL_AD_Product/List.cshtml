@@ -15,7 +15,7 @@
     
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
+<div class="container">
 <br />
 <div class="d-flex justify-content-end">
     @using (Html.BeginForm("List", "NL_AD_Product", FormMethod.Post))
@@ -280,7 +280,7 @@
         }
     </ul>
 </div>
-
+</div>
 @section Scripts {
     <script>
         var controllerUrl = "@Url.Action("List", "NL_AD_Product")";
