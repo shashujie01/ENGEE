@@ -7,12 +7,14 @@
     var mainCategoryList = ViewBag.MainCategory as List<TCosmeticMainCategory>;
     var subcategoryList = ViewBag.Subcategory as List<TCosmeticSubcategory>;
 }
-
 <div class="container-md my-5">
 
     <div class="row">
         <div class="col-lg-3">
             <h3 class="pb-4">彩妝品分類</h3>
+            <a class="d-flex justify-content-between h5 text-decoration-none mb-4" href="@Url.Action("CollectIndex")">
+                全部
+            </a>
             <ul class="list-unstyled">
                 @foreach (var main in mainCategoryList)
                 {
@@ -74,13 +76,61 @@
                                         </a>
                                     </div>
                                     <div class="row">
-                                        <a href="@Url.Action("UserProfile","Chi_Member", new { id=item.MemberId})" class="text-decoration-none text-black-50">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#publisherInfo@(item.MemberId)" class="text-decoration-none text-black-50">
                                             發布者：@Html.DisplayFor(modelItem => item.Username)
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-footer border-top-0">
                                     <small class="fz-color1">募集日：@Html.DisplayFor(modelItem => item.CollectStartDate)－@Html.DisplayFor(modelItem => item.CollectEndDate) </small>
+                                </div>
+                            </div>
+                        </div>
+                        @* 發布者的資訊 *@
+                        <div class="modal fade" id="publisherInfo@(item.MemberId)" tabindex="-1" role="dialog" aria-labelledby="publisherInfoModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="publisherInfoModalLabel">許願發布者資料</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="rounded-circle overflow-hidden mb-2" style="width: 100px; height: 100px;">
+                                            @if (item.member != null && !string.IsNullOrEmpty(item.member.PhotoPath))
+                                            {
+                                                <img src="~/images/UserImage/@item.member.PhotoPath" alt="Publisher Photo" class="w-100 h-100"/>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/UserImage/profile.png" alt="Default User Photo" class="w-100 h-100"/>
+                                            }
+                                        </div>
+                                        <div>
+                                            公益團體 / 機構名稱：@item.member.Username
+                                        </div>
+
+
+                                        @if (item.member.Introduction == null)
+                                        {
+                                            <div>簡介：尚無內容</div>
+                                        }
+                                        else
+                                        {
+                                            <div>簡介：@item.member.Introduction</div>
+                                        }
+
+                                        <div>
+                                            聯絡地址：@item.member.Address
+
+                                        </div>
+                                        <div>
+                                            聯絡電話：@item.member.Phone
+                                        </div>
+                                        <div>
+                                            目前已許願 @item.TotalPublished 次
+                                        </div>
+                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -118,6 +168,8 @@
         </div>
     </div>
 </div>
+
+
 
 @* 可以用的版本但不能選取分類後照時間分類 *@
 <script>
