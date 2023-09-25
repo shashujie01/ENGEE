@@ -1,9 +1,8 @@
 ﻿@model IEnumerable<prjEnGeeDemo.Models.NL_ProductModel>
-
 @{
     Layout = "_LayoutAdmin";
     ViewData["Title"] = "List";
-    ViewBag.HeaderTitle = "商品管理";
+    ViewBag.HeaderTitle = "商品管理";   
 }
 <style>
     .swal2-popup.swal2-modal {
@@ -94,7 +93,7 @@
     }
 </div>
 
-<table class="table table-danger table-striped mt-2" style=" font-size: 14px;">
+    <table class="table table-danger table-striped mt-2" style=" font-size: 14px;">
     <thead>
         <tr>
             <th style="white-space: nowrap;text-align: center;">
@@ -121,12 +120,12 @@
             <th style="white-space: nowrap;text-align: center;">
                 @Html.DisplayNameFor(model => model.ProductRemainingQuantity)
             </th>
-            <th style="white-space: nowrap;text-align: center;">
+            @* <th style="white-space: nowrap;text-align: center;">
                 @Html.DisplayNameFor(model => model.ProductExpirationDate)
             </th>
             <th style="white-space: nowrap;text-align: center;">
                 @Html.DisplayNameFor(model => model.ProductUsageStatus)
-            </th>
+            </th> *@
             <th style="white-space: nowrap;text-align: center;">
                 @Html.DisplayNameFor(model => model.DonationStatus)
             </th>
@@ -142,8 +141,8 @@
             <th style="white-space: nowrap;text-align: center;">
                 @Html.DisplayNameFor(model => model.ProductSaleStatus)
             </th>
-            <th style="white-space: nowrap;">
-
+                <th style="white-space: nowrap; text-align: right;">
+                    共有 @ViewBag.totalProducts 筆資料
             </th>
         </tr>
     </thead>
@@ -178,15 +177,15 @@
                     <td style="text-align: center;">
                         @Html.DisplayFor(modelItem => item.ProductRemainingQuantity)
                     </td>
-                    <td style="text-align: center;">
+                    @*<td style="text-align: center;">
                         @if (item.ProductExpirationDate != null)
                         {
                             @item.ProductExpirationDate.ToString("yyyy-MM-dd")
                         }
-                    </td>
+                </td>
                     <td style="text-align: center;">
                         @Html.DisplayFor(modelItem => item.ProductUsageStatus)
-                    </td>
+                </td>*@
                     <td style="text-align: center;">
                         @if (item.DonationStatus == 1)
                         {
@@ -247,8 +246,11 @@
                         }
                     </td>
                     <td style="text-align: center;">
-                        @Html.ActionLink("修改", "Edit", new { id = item.ProductId }, new { @class = "btn btn-sm btn-success me-2", @style = "white-space: nowrap;" })
-                        <a href="#" class="btn btn-sm btn-danger ms-2" style="white-space: nowrap;" onclick="confirmDelete(@item.ProductId);">刪除</a>
+                        <button class="btn btn-sm btn-info show-details" data-target="#productDetailsModal_@item.ProductId" data-toggle="modal">
+                            詳細資料
+                        </button>
+                        @Html.ActionLink("修改", "Edit", new { id = item.ProductId }, new { @class = "btn btn-sm btn-success ms-4", @style = "white-space: nowrap;" })
+                        <a href="#" class="btn btn-sm btn-danger ms-4" style="white-space: nowrap;" onclick="confirmDelete(@item.ProductId);">刪除</a>
                     </td>
                 </tr>
                 index++;
@@ -256,6 +258,116 @@
         }
     </tbody>
 </table>
+
+    @foreach (var item in Model)
+    {
+        <!-- 商品詳細資料框 -->
+        <div class="modal fade" id="productDetailsModal_@item.ProductId" tabindex="-1" role="dialog" aria-labelledby="productDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="productDetailsModalLabel">商品詳細資料</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 商品詳細資料内容 -->
+
+                        <h4>@item.ProductName</h4>
+                        <div class="col-12 d-flex justify-content-center">
+                            <img id="imagePreview" src="@Url.Content("~/images/ProductImages/" + @item.ProductImagePath)" alt="Product Image" class="img-fluid img-thumbnail" style="max-width: 300px; max-height: 300px;">
+                        </div>
+                        <p>
+                            品牌: @Html.DisplayFor(modelItem => item.Brand.BrandCategory)
+                        </p>
+                        <p>
+                            彩妝品分類: @Html.DisplayFor(modelItem => item.MainCategory.MainCategory)
+                        </p>
+                        <p>
+                            子分類: @Html.DisplayFor(modelItem => item.Subcategory.Subcategory)
+                        </p>
+                        <p>點數: @item.ProductUnitPoint</p>
+                        <p>
+                            數量: @Html.DisplayFor(modelItem => item.ProductRemainingQuantity)
+                        </p>
+                        <p>
+                            有效期限: @item.ProductExpirationDate.ToString("yyyy-MM-dd")
+                        </p>
+                        <p>
+                            使用狀態: @Html.DisplayFor(modelItem => item.ProductUsageStatus)
+                        </p>
+                        <p>產品敘述: @item.ProductDescribe</p>
+                        <p>
+                            是否為捐贈:
+                            @if (item.DonationStatus == 1)
+                            {
+                                <span>是</span>
+                            }
+                            else if (item.DonationStatus == 0)
+                            {
+                                <span>否</span>
+                            }
+                            else
+                            {
+                                <span>未知</span>
+                            }
+                        </p>
+                        <p>
+                            銷售日期:
+                            @item.DateOfSale.ToString("yyyy-MM-dd")
+                        </p>
+                        <p>
+                            運送方式:
+                            @if (item.DeliveryTypeId == 1)
+                            {
+                                <span>宅配</span>
+                            }
+                            else if (item.DeliveryTypeId == 2)
+                            {
+                                <span>超商取貨</span>
+                            }
+                            else if (item.DeliveryTypeId == 3)
+                            {
+                                <span>皆可</span>
+                            }
+                            else
+                            {
+                                <span>未知</span>
+                            }
+                        </p>
+                        <p>
+                            賣家ID:@item.SellerId
+                        </p>
+                        <p>
+                            銷售狀態:
+                            @if (item.ProductSaleStatus == 1)
+                            {
+                                <span>下架</span>
+                            }
+                            else if (item.ProductSaleStatus == 2)
+                            {
+                                <span>上架</span>
+                            }
+                            else if (item.ProductSaleStatus == 3)
+                            {
+                                <span>訂單成立</span>
+                            }
+                            else
+                            {
+                                <span>未知</span>
+                            }
+                        </p>
+                        <!-- 其他商品詳細資料 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmButton">確認</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
 <div class="pagination d-flex justify-content-center">
     <ul class="pagination">
         @if (Model.Any())
@@ -284,9 +396,26 @@
 </div>
 @section Scripts {
     <script>
+        $(document).ready(function () {
+            $('.show-details').click(function () {
+                var modalId = $(this).data('target');
+                $(modalId).modal('show');
+            });
+        });
+
+        $(document).on('click', '.modal .close', function () {
+            $(this).closest('.modal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmButton', function () {
+            var modalId = $(this).closest('.modal');
+            modalId.modal('hide');
+        });
+
         var controllerUrl = "@Url.Action("List", "NL_AD_Product")";
 
-        $(document).ready(function () {
+        $(document).ready(function () {           
+
             $("#searchBy").change(function () {
                 updateSearchFields();
             });
