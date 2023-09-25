@@ -44,16 +44,7 @@
             <span asp-validation-for="Password" class="spanvaildation"></span>
 
         </div>
-        <div class="form-group">
-            <label asp-for="RePassword" class="control-label"></label>
-            <div class="input-group">
-                <input asp-for="RePassword" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" type="password" id="rePasswordInput" />
-                <span class="input-group-text" onclick="togglePasswordVisibility('rePasswordInput', 'rePasswordIcon')">
-                    <i id="rePasswordIcon" class="fa fa-eye"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
-                </span>
-            </div>
-            <span asp-validation-for="RePassword" class="spanvaildation"></span>
-        </div>
+        
 
         <div class="form-group">
             <label asp-for="Email" class="control-label"></label>

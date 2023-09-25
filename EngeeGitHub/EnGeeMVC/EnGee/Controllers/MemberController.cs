@@ -54,7 +54,6 @@ namespace WebApplication2.Controllers
             if (p.Gender == null)
             {
 
-                p.Gender = "0";
             }
 
             EngeeContext db = new EngeeContext();

@@ -5,12 +5,12 @@
     ViewBag.HeaderTitle = "捐贈表單修改";
 }
 <div class="container py-5">
-    <form asp-action="Donate" id="editform" method="post" class="m-auto col-md-8 g-3">
+    <form asp-action="EditDonation" id="editForm" method="post" class="m-auto col-md-8 g-3">
         <div asp-validation-summary="ModelOnly" class="text-danger "></div>
 
         <input type="hidden" name="DonationOrderId" value="@Model.DonationOrderId" />
-        <input type="hidden" name="DonationStatus" value="1" />
-
+@*         <input type="hidden" name="DonationStatus" value="1" />
+ *@
         <div class="row form-group mb-4">
             <div class="form-group col-md-6 mb-3">
                 <label asp-for="DonarName" class="form-label h5 fz-color1">捐贈人姓名</label>
@@ -68,30 +68,26 @@
             </div>
         </div>
         <div class="form-group mb-4 m-auto d-flex justify-content-end">
-            <button type="submit" form="editform" id="submitform" class="btn btn-border a px-3 me-2 fw-bold fz-color2">送出</button>
+            <button type="submit" form="editForm" id="submitForm" class="btn btn-border a px-3 me-2 fw-bold fz-color2">送出</button>
             <button type="button" id="cancelForm" class="btn btn-border a px-3 fw-bold fz-color2">取消</button>
         </div>
     </form>
 
     <script>
         document.getElementById("cancelForm").addEventListener("click", function () {
-            window.location.href = '/Collect/CollectInformation';
+            window.location.href = '/Collect/DonationManagement';
         });
-        document.getElementById("submitform").addEventListener("click", function () {
-            var form = document.getElementById("donationform");
+        document.getElementById("submitForm").addEventListener("click", function () {
+            var form = document.getElementById("editForm");
             if (form.checkValidity()) {
                 alert("捐贈表單填寫成功！");
                 form.submit();
             } else {
                 alert("請再仔細檢查所有欄位！");
-            });
+            }
+        });
     </script>
 
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
 

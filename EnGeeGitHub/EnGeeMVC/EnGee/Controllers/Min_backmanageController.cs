@@ -88,7 +88,6 @@ namespace EnGee.Controllers
             //加入Gender篩選條件
             if (!string.IsNullOrEmpty(genderFilter))
             {
-                query = query.Where(t => t.Gender == genderFilter);
             }
 
             // 加入Access篩選條件，只有當 accessFilter 有值時才進行篩選
@@ -169,7 +168,6 @@ namespace EnGee.Controllers
                     checkDbId.MemberId=model.MemberId;
                     checkDbId.Username=model.Username;
                     checkDbId.Password = model.Password;
-                    checkDbId.RePassword = model.RePassword;
                     checkDbId.Email = model.Email;
                     checkDbId.Fullname = model.Fullname;
                     checkDbId.Gender = model.Gender;

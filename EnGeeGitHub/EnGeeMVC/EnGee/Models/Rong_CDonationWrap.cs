@@ -20,24 +20,24 @@ namespace EnGee.Models
             get { return _don.DonationOrderId; }
             set { _don.DonationOrderId = value; }
         }
-        public int CollectId
-        {
-            get { return _don.CollectId; }
-            set { _don.CollectId = value; }
-        }
+        //public int CollectId
+        //{
+        //    get { return _don.CollectId; }
+        //    set { _don.CollectId = value; }
+        //}
         public string CollectItemName { get; set; }
 
         public int CollectAmount { get; set; }
-        public int MemberId
-        {
-            get { return _don.MemberId; }
-            set { _don.MemberId = value; }
-        }
-        public DateTime OrderDate
-        {
-            get { return _don.OrderDate; }
-            set { _don.OrderDate = value; }
-        }
+        //public int MemberId
+        //{
+        //    get { return _don.MemberId; }
+        //    set { _don.MemberId = value; }
+        //}
+        //public DateTime OrderDate
+        //{
+        //    get { return _don.OrderDate; }
+        //    set { _don.OrderDate = value; }
+        //}
         public string DonarName
         {
             get { return _don.DonarName; }
