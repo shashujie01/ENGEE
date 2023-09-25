@@ -1,4 +1,7 @@
-﻿namespace EnGee.ViewModels
+﻿using EnGee.Models;
+using MimeKit.Cryptography;
+
+namespace EnGee.ViewModels
 {
     public class Rong_CollectIndexViewModel
     {
@@ -18,5 +21,8 @@
 
         public int MainCategoryId { get; set; }
         public int SubcategoryId { get; set; }
+        public TMember member { get; set; }
+        public int TotalPublished { get; set; }
+
     }
 }

@@ -3,7 +3,6 @@
 @{
     ViewBag.HeaderTitle = "許願內容";
 }
-
 <div class="container pb-5">
     <div class="row">
         <div class="col-md-5 mt-5">
@@ -61,7 +60,7 @@
                 </div>
             </div>
             <div class="row d-flex justify-content-end">
-                <a href="@Url.Action("UserProfile","Chi_Member",new { id=Model.MemberId})" class="text-decoration-none fz-color2">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#publisherInfo" class="text-decoration-none fz-color2">
                     發布者：@Html.DisplayFor(model => model.Username)
                 </a>
             </div>
@@ -94,13 +93,15 @@
                     <thead>
                         <tr>
                             <th style="color:#946E6E;">品項名稱</th>
-                            <th style="color:#946E6E;">徵求數量</th>
+                            <th style="color:#946E6E;">目前仍需要的數量</th>
+                            <th style="color:#946E6E;">目前已募集到的數量</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="fz-color2">@Html.DisplayFor(model => model.CollectItemName)</td>
                             <td class="fz-color2">@Html.DisplayFor(model => model.CollectAmount)</td>
+                            <td class="fz-color2">@ViewBag.TotalDonationAmount</td>
                         </tr>
                     </tbody>
                 </table>
@@ -125,6 +126,56 @@
             }
         </div>
     </div>
+    @* 發布者的資訊 *@
+    <div class="modal fade" id="publisherInfo" tabindex="-1" role="dialog" aria-labelledby="publisherInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="publisherInfoModalLabel">許願發布者資料</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="rounded-circle overflow-hidden mb-5" style="width: 150px; height: 150px;">
+                            @if (Model.member != null && !string.IsNullOrEmpty(Model.member.PhotoPath))
+                            {
+                                <img src="~/images/UserImage/@Model.member.PhotoPath" alt="Publisher Photo" class="w-100 h-100"/>
+                            }
+                            else
+                            {
+                                <img src="~/images/UserImage/profile.png" alt="Default User Photo" class="w-100 h-100" />
+                            }
+                        </div>
+                        <div >
+                            公益團體 / 機構名稱：@Html.DisplayFor(model=>model.member.Username)
+                        </div>
+                       
+                            
+                        @if (Model.member.Introduction == null)
+                        {
+                            <div>簡介：尚無內容</div>
+                        }
+                        else
+                        {
+                            <div>簡介：@Html.DisplayFor(model=>model.member.Introduction)</div>
+                        }
+
+                        <div>
+                            聯絡地址：@Html.DisplayFor(model=>model.member.Address)
+
+                        </div>
+                        <div>
+                            聯絡電話：@Html.DisplayFor(model=>model.member.Phone)
+                        </div>
+                        <div>
+                            目前已許願 @ViewBag.Published 次
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         document.getElementById("donateBtn").addEventListener("click", function (e) {

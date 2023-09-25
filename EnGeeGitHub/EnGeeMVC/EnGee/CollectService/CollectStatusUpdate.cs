@@ -5,8 +5,9 @@ namespace EnGee.CollectService
 {
     public class CollectStatusUpdate : IHostedService, IDisposable
     {
-        private readonly IServiceScopeFactory _scopeFactory;
-        private Timer _timer = null;
+        
+        private readonly IServiceScopeFactory _scopeFactory; // 讀取資料庫內容
+        private Timer _timer;
 
         public CollectStatusUpdate(IServiceScopeFactory scopeFactory)
         {
@@ -15,7 +16,17 @@ namespace EnGee.CollectService
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromHours(24)); 
+            var now = DateTime.UtcNow; //   UTC不受時間限制
+            var scheduledTime = new DateTime(now.Year, now.Month, now.Day, 00,0,0, DateTimeKind.Utc); //    每日凌晨12點
+
+            if (now > scheduledTime) 
+            {
+                scheduledTime = scheduledTime.AddDays(1);  //   設定每日同一時間執行
+            }
+
+            var delayTime = scheduledTime - now;  //  計算距離下次執行時間還有多久
+
+            _timer = new Timer(DoWork, null, delayTime, TimeSpan.FromDays(1));  // 每天同一時間執行
             return Task.CompletedTask;
         }
 
