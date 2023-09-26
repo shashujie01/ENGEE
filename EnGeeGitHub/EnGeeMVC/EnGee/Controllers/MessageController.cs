@@ -88,44 +88,11 @@ namespace EnGee.Controllers
             return RedirectToAction("DetailsJING", "JING_Product", new { id = productId });
         }
 
-    
-
-        //[HttpPost]
-        //public ActionResult AddMessage(string MessageArea, string MessageContent, string userJson, int ProductId)
-        //{
-        //    var userSessionJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
-        //    if (string.IsNullOrEmpty(userSessionJson))
-        //    {
-        //        return RedirectToAction("Login", "Home");
-        //    }
-
-        //    // 使用 Newtonsoft.Json 來反序列化
-        //    TMember loginerUser = JsonConvert.DeserializeObject<TMember>(userSessionJson);
-
-        //    TMessage message = new TMessage
-        //    {
-        //        MemberId = loginerUser.MemberId,
-        //        MessageArea = MessageArea,
-        //        MessageContent = MessageContent,
-        //        ThumpUp = 0,
-        //        ProductId = ProductId
-        //    };
-
-        //    _dbContext.TMessages.Add(message);
-        //    _dbContext.SaveChanges();
-
-        //    // 依據不同的留言區域重定向到不同的页面
-        //    switch (MessageArea)
-        //    {
-        //        //case "許願池": return RedirectToAction("DetailsJING");
-        //        case "一點贈送": return RedirectToAction("DetailsJING", "JING_Product", new { id = ProductId });
-        //        //case "買賣專區": return RedirectToAction("TradeZonePage");
-        //        default: return RedirectToAction("Index", "Home");
-        //    }
-        //}
-
-
-
-
     }
 }
+    
+
+      
+
+
+
