@@ -61,11 +61,13 @@ public partial class TMember
     public string? Introduction { get; set; }
     [DisplayName("公益團體證明(文件上傳)")]
 
-    public string? IsValidCharity { get; set; }
+    public bool? IsValidCharity { get; set; }         //--0926新增--//
 
-    //--0916新增--//
+   
     [NotMapped]
-    public string? RandomToken { get; set; }
+    public string? RandomToken { get; set; }       //--0916新增--//
+
+
     public string? CharityProof { get; set; }
 
 
