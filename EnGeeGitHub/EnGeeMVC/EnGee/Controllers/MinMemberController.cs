@@ -52,9 +52,9 @@ namespace EnGee.Controllers
                 tm.Point = 0;
             }
 
-            var randomToken = GenerateRandomToken();
+            var randomToken = GenerateRandomToken();           
             tm.RandomToken = randomToken;
-            var hashpassword = HashPassword(password);
+            var hashpassword = HashPassword(password);          //hash256加密
             tm.Password = hashpassword;
 
             EngeeContext db = new EngeeContext();

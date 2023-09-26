@@ -124,7 +124,7 @@
                     @{
                         int count = 0;
                         string displayAccess = "";
-                        string displayGender = string.Empty;
+                        string displayGender = "";
 
                         foreach (var item in Model)
                         {
@@ -176,9 +176,6 @@
                                 <td style="white-space: nowrap;text-align: center">
                                     @Html.DisplayFor(modelItem => item.Fullname)
                                 </td>
-                                <td style="white-space: nowrap;text-align: center">
-                                    @item.Gender  <!-- 這裡確認一下資料是否正確傳遞 -->
-                                </td>
 
                                 <td style="white-space: nowrap;text-align: center">
                                     @displayGender
@@ -205,7 +202,7 @@
                                     <img src="~/images/UserImage/@item.PhotoPath" alt="User Photo" width="70Px" height="70Px" />
                                 </td>
                                 <td style="white-space: nowrap;text-align: center">
-                                    @Html.DisplayFor(modelItem => item.IsValidCharity)
+                                     @Html.DisplayFor(modelItem => item.IsValidCharity)
                                 </td>
 
                                 <td style="white-space: nowrap;text-align: center">

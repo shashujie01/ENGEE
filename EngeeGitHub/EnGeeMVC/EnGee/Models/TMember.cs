@@ -45,11 +45,15 @@ public partial class TMember
     [Required(ErrorMessage = ("手機號碼必填"))]
     [StringLength(10, ErrorMessage = ("手機位數共10位:09xxxxxxxx"), MinimumLength = 10)]
     public string Phone { get; set; } = null!;
-
+    
     [DisplayName("註冊日期")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? RegistrationDate { get; set; }
     [DisplayName("出生日期")]
     [Required(ErrorMessage = ("出生日期必填"))]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime Birth { get; set; } = DateTime.MinValue;
     [DisplayName("權限")]
     public int? Access { get; set; }
@@ -59,7 +63,7 @@ public partial class TMember
     public string? PhotoPath { get; set; }
     [DisplayName("會員自介")]
     public string? Introduction { get; set; }
-    [DisplayName("公益團體證明(文件上傳)")]
+    [DisplayName("公益團體審核")]
 
     public bool? IsValidCharity { get; set; }         //--0926新增--//
 
