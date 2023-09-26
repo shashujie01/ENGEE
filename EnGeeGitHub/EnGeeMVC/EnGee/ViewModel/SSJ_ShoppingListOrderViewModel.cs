@@ -33,7 +33,7 @@
             }
         }
         public int BuyerID { get; set; }
-        public string BuyerUsername { get; set; }
+
         public string ConvienenNum { get; set; }
         public int DeliveryFee { get; set; }
         public int OrderTotalUsagePoints { get; set; }

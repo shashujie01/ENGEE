@@ -38,10 +38,10 @@
         <label for="BuyerID">買家ID</label>
                     <input id="BuyerID" name="Orders[0].BuyerID" class="form-control" value="@Model.Orders.FirstOrDefault()?.BuyerID" />
     </div>
-    <div class="form-group">
+@*     <div class="form-group">
         <label for="BuyerUsername">買家</label>
                     <input id="BuyerUsername" name="Orders[0].BuyerUsername" class="form-control" value="@Model.Orders.FirstOrDefault()?.BuyerUsername" />
-    </div>
+    </div> *@
     <div class="form-group">
         <label for="OrderStatus">訂單狀態ID</label>
                     <input id="OrderStatus" name="Orders[0].OrderStatus" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderStatus" />
@@ -73,10 +73,10 @@
                         <input id="OrderDetails_@index" name="OrderDetails[@index].ProductID" class="form-control" value="@orderDetail.ProductID" />
                     </div>
 
-                    <div class="form-group">
+                  @*   <div class="form-group">
                         <label for="OrderDetails_@index">產品名稱</label>
                         <input id="OrderDetails_@index" name="OrderDetails[@index].ProductName" class="form-control" value="@orderDetail.ProductName" readonly />
-                    </div>
+                    </div> *@
 
                     <div class="form-group">
                         <label for="OrderDetails_@index">商品單價</label>
@@ -93,20 +93,20 @@
                         <input id="OrderDetails_@index" name="OrderDetails[@index].SellerID" class="form-control" value="@orderDetail.SellerID" />
                     </div>
 
-                    <div class="form-group">
+@*                     <div class="form-group">
                         <label for="OrderDetails_@index">賣家</label>
                         <input id="OrderDetails_@index" name="OrderDetails[@index].SellerUsername" class="form-control" value="@orderDetail.SellerUsername" />
-                    </div>
+                    </div> *@
 
                     <div class="form-group">
                         <label for="OrderDetails_@index">寄送方式編號</label>
                         <input id="OrderDetails_@index" name="OrderDetails[@index].DeliveryTypeID" class="form-control" value="@orderDetail.DeliveryTypeID" />
                     </div>
 
-                    <div class="form-group">
+@*                     <div class="form-group">
                         <label for="OrderDetails_@index">寄送方式</label>
                         <input id="OrderDetails_@index" name="OrderDetails[@index].DeliveryType" class="form-control" value="@orderDetail.DeliveryType" />
-                    </div>
+                    </div> *@
 
                     <div class="form-group">
                         <label for="OrderDetails_@index">寄送地址</label>
@@ -116,6 +116,7 @@
     }
 
                 <button type="submit" id="submitBtn">提交修改</button>
+                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="SSJ_ShoppingList" asp-action="ShoppingList_admin">取消</a>
 </form>
         </div>
     </div>

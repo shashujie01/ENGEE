@@ -76,7 +76,7 @@ namespace EnGee.Controllers
             }
             //----------------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫---------------------//
             var randomToken = GenerateRandomToken();  // GenerateRandomToken()方法隨機產生20位數字字母字串，傳給變數randomToken
-            tm.RandomToken = randomToken;
+            //tm.RandomToken = randomToken;
 
             //----------------0916修改比對資料庫與模型是否有重複username及email---------------------------//
 
@@ -140,7 +140,7 @@ namespace EnGee.Controllers
             var memberStorageCookie = Request.Cookies["memberstorageData"];
 
             var tmCookie = JsonConvert.DeserializeObject<TMember>(memberStorageCookie);
-            tmCookie.RandomToken = token;
+            //tmCookie.RandomToken = token;
             EngeeContext db = new EngeeContext();
             db.Add(tmCookie);
             db.SaveChanges();
