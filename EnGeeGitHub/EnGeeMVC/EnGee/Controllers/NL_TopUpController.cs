@@ -70,7 +70,7 @@ namespace EnGee.Controllers
                     productImageUrl = "https://i.imgur.com/9gxZy1W.png/84*84",
                     amount = amount,
                     currency = "TWD",
-                    confirmUrl = "https://engee2023.azurewebsites.net/NL_TopUp/ConfirmPayment",                    
+                    confirmUrl = "https://8bf1-140-116-180-210.ngrok-free.app/NL_TopUp/ConfirmPayment",                    
                     orderId = orderId
                 };
 
