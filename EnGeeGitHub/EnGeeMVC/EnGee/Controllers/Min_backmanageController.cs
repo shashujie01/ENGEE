@@ -9,7 +9,7 @@ namespace EnGee.Controllers
 {
     public class Min_backmanageController : Controller
     {
-        public IActionResult List(CkeywordViewModel vm,  int? minPoint, int? maxPoint, string genderFilter ,int?  accessFilter ,int? txtkeywordfor)
+        public IActionResult List(CkeywordViewModel vm,  int? minPoint, int? maxPoint, int?  accessFilter ,int? txtkeywordfor, int genderFilter=2)
         {
             // 建立 EngeeContext 物件，用於與資料庫進行交互
             EngeeContext db = new EngeeContext();
@@ -86,10 +86,10 @@ namespace EnGee.Controllers
             }
             
             //加入Gender篩選條件
-            if (!string.IsNullOrEmpty(genderFilter))
-            {
+            //if (!string.IsNullOrEmpty(genderFilter))
+            //{
                 query = query.Where(t => t.Gender == genderFilter);
-            }
+            //}
 
             // 加入Access篩選條件，只有當 accessFilter 有值時才進行篩選
             if (accessFilter.HasValue)

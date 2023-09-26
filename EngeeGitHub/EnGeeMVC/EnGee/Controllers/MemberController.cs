@@ -51,11 +51,11 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public IActionResult Create(TMember p)
         {//0:null  1:女生  2:男生
-            if (p.Gender == null)
-            {
+            //if (p.Gender == null)
+            //{
 
-                p.Gender = "0";
-            }
+                p.Gender = 2;
+            //}
 
             EngeeContext db = new EngeeContext();
             db.TMembers.Add(p);

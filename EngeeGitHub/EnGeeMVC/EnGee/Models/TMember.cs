@@ -35,7 +35,7 @@ public partial class TMember
 
 
     [Required(ErrorMessage = ("性別必填"))]
-    public string Gender { get; set; } = null!;
+    public int Gender { get; set; } = 2;
 
 
     [DisplayName("通訊地址")]
@@ -60,6 +60,8 @@ public partial class TMember
     [DisplayName("會員自介")]
     public string? Introduction { get; set; }
     [DisplayName("公益團體證明(文件上傳)")]
+
+    public string? IsValidCharity { get; set; }
 
     //--0916新增--//
     [NotMapped]

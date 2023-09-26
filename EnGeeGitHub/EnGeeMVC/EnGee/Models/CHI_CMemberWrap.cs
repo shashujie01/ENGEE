@@ -63,7 +63,7 @@
             set { _member.Address = value; }
         }
 
-        public string Gender
+        public int Gender
         {
             get { return _member.Gender; }
             set { _member.Gender = value; }
