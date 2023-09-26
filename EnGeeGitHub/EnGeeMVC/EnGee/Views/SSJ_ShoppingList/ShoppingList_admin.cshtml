@@ -4,10 +4,12 @@
     ViewData["Title"] = "ShoppingList_admin";
     ViewBag.HeaderTitle = "訂單管理(管理員)";
 }
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+@{
+    Layout = "_Layout";
+}
 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
 <style>
     .swal2-popup.swal2-modal {
@@ -26,229 +28,40 @@
     .card-img-overlay {
         display: none;
     }
+
+    .table .tableoutside th:nth-child(1) {
+        width: 10px;
+    }
+
+    .table .tableoutside th:nth-child(2) {
+        width: 10px;
+    }
+
+    .table .tableoutside th:nth-child(4) {
+        width: 10px;
+    }
+
+    .table .tableoutside th:nth-child(8) {
+        width: 10px;
+    }
+
+    .table .tableoutside th:nth-child(10) {
+        width: 10px;
+    }
+
+    .table .tableoutside th:nth-child(11) {
+        width: 10px;
+    }
+
+    .table-vertical-center th, .table-vertical-center td {
+        vertical-align: middle;
+    }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-<main>
- 
-<table class="table table-danger table-striped mt-2" style=" font-size: 14px;">
-    <thead>
-        <tr>
-            <th style="white-space: nowrap;text-align: center;">
-                序號
-            </th>
-            <th style="white-space: nowrap;text-align: center;">訂單編號</th>
-            <th style="white-space: nowrap;text-align: center;">訂單成立時間</th>
-            <th style="white-space: nowrap;text-align: center;">訂單狀態ID</th>
-            <th style="white-space: nowrap;text-align: center;">訂單狀態</th>
-            <th style="white-space: nowrap;text-align: center;">訂單類型編號</th>
-            <th style="white-space: nowrap;text-align: center;">訂單類型</th>
-            <th style="white-space: nowrap;text-align: center;">買家ID</th>
-            <th style="white-space: nowrap;text-align: center;">買家</th>
-            <th style="white-space: nowrap;text-align: center;">超取超商店號</th>
-            <th style="white-space: nowrap;text-align: center;">運費點數</th>
-            <th style="white-space: nowrap;text-align: center;">訂單總花費</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int count=0;
-                @foreach (var order in Model.Orders)
-            {
-                count++;
-                <tr>
-                    <td style="text-align: center;">
-                        @count
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.OrderID)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.OrderDate)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.OrderStatus)
-                    </td>
-                    <td style="text-align: center;">
-                        @Html.DisplayFor(modelItem => order.OrderStatusDescription)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.OrderCatagory)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.OrderCatagoryDescription)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.BuyerID)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.BuyerUsername)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.ConvienenNum)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.DeliveryFee)
-                    </td>
-                    <td style="text-align: center;">
-                            @Html.DisplayFor(modelItem => order.OrderTotalUsagePoints)
-                    </td>
-                        <td style="text-align: center;">
-                            <div class="btn btn-sm btn-success me-2">
-                                <a class="text-black" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#details-@order.OrderID">明細</a> 
-                            </div>
-                            <div class=" text-black btn btn-sm btn-success me-2">
-                                @Html.ActionLink("修改", "SSJ_EditOrder", new { id = order.OrderID }, new { style = "color:black;" })
-                              @*<button class="text-black edit-order-btn" data-orderid="@order.OrderID">修改</button>*@
-                            </div>
-                            <div class="btn btn-sm btn-danger ms-2">
-                                <a class="text-black" href="#" onclick="confirmDelete(@order.OrderID); return false;">刪除</a>
-                            </div>
 
-                        </td>
+<div class="container m-0">
 
-                 </tr>
-                    @foreach (var orderDetail in Model.OrderDetails.Where(od => od.OrderID == order.OrderID))
-                {
-                        <tr class="collapse" id="details-@order.OrderID">
-                        <td colspan="24">
-                            <!-- 你需要確認這個colspan值是多少 -->
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>OrderDetailID</th>
-                                        <th>產品編號</th>
-                                        <th>產品名稱</th>
-                                        <th>商品單價</th>
-                                        <th>商品購買數量</th>
-                                        <th>SellerID</th>
-                                        <th>賣家</th>
-                                        <th>DeliveryTypeID</th>
-                                        <th>寄送方式</th>
-                                        <th>寄送地址</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                            <td><img class="card-img img-fluid" src="@orderDetail.ProductImagePath" alt="@orderDetail.ProductName" width="50" /></td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.OrderDetailID)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.ProductID)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.ProductName)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.ProductUnitPoint)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.OrderQuantity)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.SellerID)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.SellerUsername)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.DeliveryTypeID)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.DeliveryType)</td>
-                                            <td>@Html.DisplayFor(modelItem => orderDetail.DeliveryAddress)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                }
-            }
-        }
-    </tbody>
-</table>
-</main>
-@section Scripts {
-    <script>
-
-        function confirmDelete(orderId)
-        {
-            Swal.fire({
-                title: '確定要刪除嗎?',
-                text: "刪除後將無法撤銷!",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '確定',
-                cancelButtonText: '取消'
-            }).then((result) =>
-            {
-                if (result.value)
-                {
-                    Swal.fire({
-                        type: 'success',
-                        title: '刪除成功!',
-                        text: '訂單已刪除',
-                        showConfirmButton: false
-                    });
-                    window.location.href = '@Url.Action("Delete", "SSJ_ShoppingList")' + '?id=' + orderId;
-                }
-            });
-        }
-        //--------------------------------------
-
-
-    </script>
-}
-@* API使用 *@
-       @*document.querySelectorAll('.edit-order-btn').forEach(button =>
-//         {
-//             button.addEventListener('click', function ()
-//             {
-//                 const orderId = this.getAttribute('data-orderid');
-
-//                 fetch(`/api/SSJ_ShoppingListApi/${orderId}`)
-//                     .then(response => response.json())
-//                     .then(data =>
-//                     {
-
-//                         // 使用data更新模态窗口的表单字段
-//                             document.getElementById('OrderID').value = data.orderId;
-//                             document.getElementById('OrderDate').value = data.orderDate;
-//                             document.getElementById('OrderTotalUsagePoints').value = data.orderTotalUsagePoints;
-//                             document.getElementById('BuyerID').value = data.buyerId;
-//                             document.getElementById('BuyerUsername').value = data.buyerUsername;
-//                             document.getElementById('OrderStatus').value = data.orderStatus;
-//                             document.getElementById('OrderStatusDescription').value = data.orderStatusDescription;
-//                             document.getElementById('OrderCatagory').value = data.orderCatagory;
-//                             document.getElementById('OrderCatagoryDescription').value = data.orderCatagoryDescription;
-//                             document.getElementById('ConvienenNum').value = data.convienenNum;
-//                             document.getElementById('DeliveryFee').value = data.deliveryFee;
-// $('#editOrderModal').modal('show');
-
-//                         data.OrderDetails.forEach((detail, index) =>
-//                         {
-//                             const orderId = detail.orderID; // 获取订单的实际 ID
-
-//                             // 使用订单的实际 ID 构建字段的 id
-//                             document.getElementById(`OrderID-${orderId}`).value = detail.orderID;
-//                             document.getElementById(`OrderDetailID-${orderId}`).value = detail.orderDetailID;
-//                             document.getElementById(`ProductID-${orderId}`).value = detail.productID;
-//                             document.getElementById(`ProductName-${orderId}`).value = detail.productName;
-//                             document.getElementById(`ProductUnitPoint-${orderId}`).value = detail.productUnitPoint;
-//                             document.getElementById(`OrderQuantity-${orderId}`).value = detail.orderQuantity;
-//                             document.getElementById(`SellerID-${orderId}`).value = detail.sellerID;
-//                             document.getElementById(`SellerUsername-${orderId}`).value = detail.sellerUsername;
-//                             document.getElementById(`DeliveryTypeID-${orderId}`).value = detail.deliveryTypeID;
-//                             document.getElementById(`DeliveryType-${orderId}`).value = detail.deliveryType;
-//                             document.getElementById(`DeliveryAddress-${orderId}`).value = detail.deliveryAddress;
-//                             document.getElementById(`ProductImagePath-${orderId}`).value = detail.productImagePath;
-//                         });
-
-
-//                     });
-//             });
-//         });
-//             document.getElementById('helloButton').addEventListener('click', function ()
-//             {
-//                 // 发出GET请求到API
-//                 fetch('/api/HelloApi')
-//                     .then(response => response.text())
-//                     .then(data =>
-//                     {
-//                         // 将结果显示在页面上
-//                         document.getElementById('helloResult').innerText = data;
-//                     })
-//                     .catch(error =>
-//                     {
-//                         console.error('发生错误:', error);
-//                     });
-//             });*@
 @*     <div class="modal" tabindex="-1" role="dialog" id="editOrderModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -276,10 +89,10 @@
                             <label for="BuyerID">買家ID</label>
                             <input id="BuyerID" name="BuyerID" class="form-control" value="@Model.Orders.FirstOrDefault()?.BuyerID" />
                         </div>
-                        <div class="form-group">
+                    <div class="form-group">
                             <label for="BuyerUsername">買家</label>
                             <input id="BuyerUsername" name="BuyerUsername" class="form-control" value="@Model.Orders.FirstOrDefault()?.BuyerUsername" />
-                        </div>
+                        </div> 
                         <div class="form-group">
                             <label for="OrderStatus">訂單狀態ID</label>
                             <input id="OrderStatus" name="OrderStatus" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderStatus" />
@@ -320,10 +133,10 @@
                                 <label for="ProductID-@orderDetail.OrderDetailID">產品編號</label>
                                 <input id="ProductID-@orderDetail.OrderDetailID" name="ProductID-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductID" />
                             </div>
-                            <div class="form-group">
+@*                             <div class="form-group">
                                 <label for="ProductName-@orderDetail.OrderDetailID">產品名稱</label>
                                 <input id="ProductName-@orderDetail.OrderDetailID" name="ProductName-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductName" />
-                            </div>
+                            </div> 
                             <div class="form-group">
                                 <label for="ProductUnitPoint-@orderDetail.OrderDetailID">商品單價</label>
                                 <input id="ProductUnitPoint-@orderDetail.OrderDetailID" name="ProductUnitPoint-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductUnitPoint" />
@@ -336,25 +149,21 @@
                                 <label for="SellerID-@orderDetail.OrderDetailID">SellerID</label>
                                 <input id="SellerID-@orderDetail.OrderDetailID" name="SellerID-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.SellerID" />
                             </div>
-                            <div class="form-group">
+@*                             <div class="form-group">
                                 <label for="SellerUsername-@orderDetail.OrderDetailID">賣家</label>
                                 <input id="SellerUsername-@orderDetail.OrderDetailID" name="SellerUsername-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.SellerUsername" />
-                            </div>
+                            </div> 
                             <div class="form-group">
                                 <label for="DeliveryTypeID-@orderDetail.OrderDetailID">DeliveryTypeID</label>
                                 <input id="DeliveryTypeID-@orderDetail.OrderDetailID" name="DeliveryTypeID-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.DeliveryTypeID" />
                             </div>
-                            <div class="form-group">
+@*                             <div class="form-group">
                                 <label for="DeliveryType-@orderDetail.OrderDetailID">寄送方式</label>
                                 <input id="DeliveryType-@orderDetail.OrderDetailID" name="DeliveryType-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductName" />
-                            </div>
+                            </div> 
                             <div class="form-group">
                                 <label for="DeliveryAddress-@orderDetail.OrderDetailID">寄送地址</label>
                                 <input id="DeliveryAddress-@orderDetail.OrderDetailID" name="DeliveryAddress-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.DeliveryAddress" />
-                            </div>
-                            <div class="form-group">
-                                <label for="ProductImagePath-@orderDetail.OrderDetailID">寄送地址</label>
-                                <input id="ProductImagePath-@orderDetail.OrderDetailID" name="ProductImagePath-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductImagePath" />
                             </div>
                         }
                     </form>
@@ -365,5 +174,624 @@
                 </div>
             </div>
         </div>
-    </div> *@
+    </div>  *@
 @* ----------------------------------------- *@
+
+    <table class="table table-danger table-striped mt-2 table-vertical-center" style="font-size: 14px;">
+    <thead>
+        <tr>
+            <th style="white-space: nowrap;text-align: center;">
+                序號
+            </th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單編號</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單成立時間</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單狀態ID</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單狀態</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單類型編號</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單類型</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">買家ID</th>
+                @* <th class="tableoutside" style="white-space: nowrap;text-align: center;">買家</th> *@
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">超取超商店號</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">運費點數</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單總花費</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">功能鈕</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count=0;
+                        @foreach (var order in Model.Orders)
+            {
+                count++;
+                        <tr>
+                            <td style="text-align: center;">
+                                @count
+                            </td>
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.OrderID)
+                            </td>
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.OrderDate)
+                            </td>
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.OrderStatus)
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => order.OrderStatusDescription)
+                            </td>
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.OrderCatagory)
+                            </td>
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.OrderCatagoryDescription)
+                            </td>
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.BuyerID)
+                            </td>
+                            @*<td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.BuyerUsername)
+                            </td>*@
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.ConvienenNum)
+                            </td>
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.DeliveryFee)
+                            </td>
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.OrderTotalUsagePoints)
+                            </td>
+                                <td style="text-align: center;">
+                            <div class="btn btn-sm btn-success me-2 ">
+                                        <a class="text-black" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#details-@order.OrderID">明細</a> 
+                                    </div>
+                                    
+                                        @*  @Html.ActionLink("修改", "SSJ_EditOrder", new { id = order.OrderID }, new { style = "color:black;" })*@
+                            <button class="text-black btn btn-sm btn-success me-2 edit-order-btn" data-orderid="@order.OrderID">修改</button>
+
+                            <div class="btn btn-sm btn-danger me-2 ">
+                                        <a class="text-black" href="#" onclick="confirmDelete(@order.OrderID); return false;">刪除</a>
+                                    </div>
+
+                                </td>
+
+                         </tr>
+                            @foreach (var orderDetail in Model.OrderDetails.Where(od => od.OrderID == order.OrderID))
+                {
+                                <tr class="collapse" id="details-@order.OrderID">
+                                <td colspan="24">
+                                    <!-- 你需要確認這個colspan值是多少 -->
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                            @*<th></th>*@
+                                            <th>訂單明細編號</th>
+                                            <th>產品編號</th>
+                                            @* <th>產品名稱</th>*@
+                                            <th>商品單價</th>
+                                            <th>商品購買數量</th>
+                                            <th>賣家ID</th>
+                                            @*<th>賣家</th>*@
+                                            <th>寄送方式ID</th>
+                                            @*<th>寄送方式</th>*@
+                                            <th>寄送地址</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                    @*<td><img class="card-img img-fluid" src="@orderDetail.ProductImagePath" alt="@orderDetail.ProductName" width="50" /></td>*@
+                                                    <td>@Html.DisplayFor(modelItem => orderDetail.OrderDetailID)</td>
+                                                    <td>@Html.DisplayFor(modelItem => orderDetail.ProductID)</td>
+                                                  @*  <td>@Html.DisplayFor(modelItem => orderDetail.ProductName)</td>*@
+                                                    <td>@Html.DisplayFor(modelItem => orderDetail.ProductUnitPoint)</td>
+                                                    <td>@Html.DisplayFor(modelItem => orderDetail.OrderQuantity)</td>
+                                                    <td>@Html.DisplayFor(modelItem => orderDetail.SellerID)</td>
+                                                   @* <td>@Html.DisplayFor(modelItem => orderDetail.SellerUsername)</td>*@
+                                                    <td>@Html.DisplayFor(modelItem => orderDetail.DeliveryTypeID)</td>
+                                                   @* <td>@Html.DisplayFor(modelItem => orderDetail.DeliveryType)</td>*@
+                                                    <td>@Html.DisplayFor(modelItem => orderDetail.DeliveryAddress)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+</div>
+
+@section Scripts {
+    <script>
+
+        function confirmDelete(orderId)
+        {
+            Swal.fire({
+                title: '確定要刪除嗎?',
+                text: "刪除後將無法撤銷!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '確定',
+                cancelButtonText: '取消'
+            }).then((result) =>
+            {
+                if (result.value)
+                {
+                    Swal.fire({
+                        type: 'success',
+                        title: '刪除成功!',
+                        text: '訂單已刪除',
+                        showConfirmButton: false
+                    });
+                    window.location.href = '@Url.Action("Delete", "SSJ_ShoppingList")' + '?id=' + orderId;
+                }
+            });
+        }
+                //--------------------------------------
+        @* API使用 *@
+            document.querySelectorAll('.edit-order-btn').forEach(button =>
+            {
+                button.addEventListener('click', function ()
+                {
+                    const orderId = this.getAttribute('data-orderid');
+                    loadOrderDataAndDisplayForm(orderId);
+                });
+            });
+
+        function loadOrderDataAndDisplayForm(orderId)
+        {//負責從API加載數據
+            fetch(`/api/SSJ_ShoppingListApi/${orderId}`)
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data =>
+                {
+                    displayEditForm(data);
+                })
+                .catch(error =>
+                {
+                    console.error('Error fetching order data:', error);
+                });
+        }
+
+        function displayEditForm(data)
+        {//負責顯示帶有數據的Swal表單。
+            let htmlContent = generateHtmlContent(data);
+            // alert("About to show Swal!");
+            Swal.fire({
+                title: 'Edit Order Details',
+                html: htmlContent,
+                focusConfirm: false,
+                showCancelButton: true,
+                cancelButtonText: '取消'
+            }).then((result) =>
+            {
+                if (result.value)
+                {
+                    // alert("Swal Confirmed!");
+                    const updatedData = getUpdatedOrderDataFromForm(data);
+                    submitUpdatedDataToAPI(updatedData);
+                }
+                else
+                {
+                    // alert("Swal not work!");
+                }
+            });
+        }
+
+        function generateHtmlContent(data)
+        {//根據API數據生成HTML內容。
+            let htmlContent = `
+                        <label>訂單編號:</label>
+                        <input type="text" id="swal-input-orderid" value="${data.orders[0].orderID}"readonly><br>
+
+                        <label>訂購日期:</label>
+                        <input type="text" id="swal-input-orderdate" value="${data.orders[0].orderDate}"><br>
+
+                        <label>總花費點數:</label>
+                        <input type="text" id="swal-input-orderTotalUsagePoints" value="${data.orders[0].orderTotalUsagePoints}"><br>
+
+                        <label>買家ID:</label>
+                        <input type="text" id="swal-input-buyerID" value="${data.orders[0].buyerID}"><br>
+
+                        @*<label>buyerUsername:</label>
+                        <input type="text" id="swal-input-buyerUsername" value="${data.orders[0].buyerUsername}"readonly><br>*@
+
+                        <label>訂單狀態編號:</label>
+                        <input type="text" id="swal-input-orderStatus" value="${data.orders[0].orderStatus}"><br>
+
+                        <label>訂單狀態:</label>
+                        <input type="text" id="swal-input-orderStatusDescription" value="${data.orders[0].orderStatusDescription}"readonly><br>
+
+                        <label>訂單編號:</label>
+                        <input type="text" id="swal-input-orderCatagory" value="${data.orders[0].orderCatagory}"><br>
+
+                                <label>訂單分類:</label>
+                        <input type="text" id="swal-input-orderCatagoryDescription" value="${data.orders[0].orderCatagoryDescription}"readonly><br>
+
+                        <label>convienenNum:</label>
+                        <input type="text" id="swal-input-convienenNum" value="${data.orders[0].convienenNum}"><br>
+
+                        <label>運費:</label>
+                        <input type="text" id="swal-input-deliveryFee" value="${data.orders[0].deliveryFee}"><br><hr><hr>
+            `;
+
+            data.orderDetails.forEach(detail =>
+            {
+                htmlContent += `
+                        <label>訂單明細編號:</label>
+                                    <input type="text" id="swal-input-orderDetailID-${detail.orderDetailID}" value="${detail.orderDetailID}"readonly><br>
+
+                            <label>商品編號:</label>
+                                    <input type="text" id="swal-input-productID-${detail.orderDetailID}" value="${detail.productID}"><br>
+
+                            @*<label>productName:</label>
+                            <input type="text" id="swal-input-productname-${detail.orderDetailID}" value="${detail.productName}"readonly><br>*@
+
+                            <label>商品單價(點):</label>
+                            <input type="text" id="swal-input-productUnitPoint-${detail.orderDetailID}" value="${detail.productUnitPoint}"><br>
+
+                             <label>購買數量:</label>
+                            <input type="text" id="swal-input-orderQuantity-${detail.orderDetailID}" value="${detail.orderQuantity}"><br>
+
+                            <label>賣家ID:</label>
+                            <input type="text" id="swal-input-sellerID-${detail.orderDetailID}" value="${detail.sellerID}"><br>
+
+                             @*<label>sellerUsername:</label>
+                            <input type="text" id="swal-input-sellerUsername-${detail.orderDetailID}" value="${detail.sellerUsername}"readonly><br>*@
+
+                                    <label>寄送方式ID:</label>
+                            <input type="text" id="swal-input-deliveryTypeID-${detail.orderDetailID}" value="${detail.deliveryTypeID}"><br>
+
+                             @* <label>deliveryType:</label>
+                            <input type="text" id="swal-input-deliveryType-${detail.orderDetailID}" value="${detail.deliveryType}"readonly><br>*@
+
+                             <label>寄送地址:</label>
+                            <input type="text" id="swal-input-deliveryAddress-${detail.orderDetailID}" value="${detail.deliveryAddress}"><br><hr>
+                        `
+            });
+            return htmlContent;
+        }
+
+        function getUpdatedOrderDataFromForm(data)
+        {
+            const updatedOrderDetails = data.orderDetails.map(detail =>
+            {
+                return {
+                    orderID: parseInt(document.getElementById('swal-input-orderid').value, 10),
+                    orderDetailID: parseInt(document.getElementById(`swal-input-orderDetailID-${detail.orderDetailID}`).value, 10),
+                    productID: parseInt(document.getElementById(`swal-input-productID-${detail.orderDetailID}`).value, 10),
+                    productUnitPoint: parseInt(document.getElementById(`swal-input-productUnitPoint-${detail.orderDetailID}`).value, 10),
+                    orderQuantity: parseInt(document.getElementById(`swal-input-orderQuantity-${detail.orderDetailID}`).value, 10),
+                    sellerID: parseInt(document.getElementById(`swal-input-sellerID-${detail.orderDetailID}`).value, 10),
+                    deliveryTypeID: parseInt(document.getElementById(`swal-input-deliveryTypeID-${detail.orderDetailID}`).value, 10),
+                    deliveryAddress: document.getElementById(`swal-input-deliveryAddress-${detail.orderDetailID}`).value
+                };
+            });
+
+            const updatedData = {
+                orders: [{
+                    orderID: parseInt(document.getElementById('swal-input-orderid').value, 10),
+                    orderDate: new Date(document.getElementById('swal-input-orderdate').value),  // Assuming the input is in a valid date-time format
+                    orderTotalUsagePoints: parseInt(document.getElementById('swal-input-orderTotalUsagePoints').value, 10),
+                    buyerID: parseInt(document.getElementById('swal-input-buyerID').value, 10),
+                    orderStatus: document.getElementById('swal-input-orderStatus').value.toString(),  // Ensure it's a string
+                    orderCatagory: parseInt(document.getElementById('swal-input-orderCatagory').value, 10),
+                    convienenNum: document.getElementById('swal-input-convienenNum').value.toString(), // Ensure it's a string
+                    deliveryFee: parseInt(document.getElementById('swal-input-deliveryFee').value, 10)
+
+                }],
+                orderDetails: updatedOrderDetails
+            };
+
+            return updatedData;
+        }
+
+        function submitUpdatedDataToAPI(updatedData)
+        {
+            // console.log("submitUpdatedDataToAPI is called")
+            // console.log(JSON.stringify(updatedData, null, 2));
+
+            fetch(`/api/SSJ_ShoppingListApi/UpdateOrder/${updatedData.orders[0].orderID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData),
+            })
+                .then(response => response.json())
+                .then(data =>
+                {
+                    alert("訂單已更新成功");
+                    window.location.reload();  // 刷新頁面
+                })
+                .catch(error =>
+                {
+                    alert("訂單更新失敗");
+                    console.error('Error:', error);
+                });
+        }
+    </script>}
+
+@*<script>
+   @*       @* API使用(讀值正常寫入不正常 *@
+@*
+//         document.querySelectorAll('.edit-order-btn').forEach(button => {
+//     button.addEventListener('click', function () {
+//         const orderId = this.getAttribute('data-orderid');
+
+//         fetch(`/api/SSJ_ShoppingListApi/${orderId}`)
+//         .then(response => response.json())
+//         .then(data => {
+//             let htmlContent = `
+//                 <label>Order ID:</label>
+//                 <input type="text" id="swal-input-orderid" value="${data.orders[0].orderID}"readonly><br>
+
+//                 <label>Order Date:</label>
+//                 <input type="text" id="swal-input-orderdate" value="${data.orders[0].orderDate}"><br>
+
+//                 <label>orderStatus:</label>
+//                 <input type="text" id="swal-input-orderStatus" value="${data.orders[0].orderStatus}"><br>
+
+//                 <label>Status:</label>
+//                 <input type="text" id="swal-input-orderStatusDescription" value="${data.orders[0].orderStatusDescription}"><br>
+
+//                                 <label>orderCatagory:</label>
+//                 <input type="text" id="swal-input-orderCatagory" value="${data.orders[0].orderCatagory}"><br>
+
+//                 <label>Category:</label>
+//                 <input type="text" id="swal-input-orderCatagoryDescription" value="${data.orders[0].orderCatagoryDescription} "><br>
+
+//                   <label>buyerID:</label>
+//                 <input type="text" id="swal-input-buyerID" value="${data.orders[0].buyerID}"><br>
+
+//                 <label>buyerUsername:</label>
+//                 <input type="text" id="swal-input-buyerUsername" value="${data.orders[0].buyerUsername}"readonly><br>
+
+//                 <label>convienenNum:</label>
+//                 <input type="text" id="swal-input-convienenNum" value="${data.orders[0].convienenNum}"><br>
+
+//                 <label>deliveryFee:</label>
+//                 <input type="text" id="swal-input-deliveryFee" value="${data.orders[0].deliveryFee}"><br>
+
+//                 <label>orderTotalUsagePoints:</label>
+//                 <input type="text" id="swal-input-orderTotalUsagePoints" value="${data.orders[0].orderTotalUsagePoints} "><br><hr><hr>
+//             `;
+
+//             data.orderDetails.forEach(detail => {
+//                 htmlContent += `
+//                 <label>orderDetailID:</label>
+//                             <input type="text" id="swal-input-orderDetailID-${detail.orderDetailID}" value="${detail.orderDetailID}"readonly><br>
+
+//                     <label>productID:</label>
+//                             <input type="text" id="swal-input-productID-${detail.orderDetailID}" value="${detail.productID}"><br>
+
+//                     <label>productName:</label>
+//                     <input type="text" id="swal-input-productname-${detail.orderDetailID}" value="${detail.productName}"readonly><br>
+
+//                      <label>productImagePath:</label>
+//                     <input type="text" id="swal-input-productImagePath-${detail.orderDetailID}" value="${detail.productImagePath}"readonly><br>
+
+//                     <label>productUnitPoint:</label>
+//                     <input type="text" id="swal-input-productUnitPoint-${detail.orderDetailID}" value="${detail.productUnitPoint}"><br>
+
+//                              <label>orderQuantity:</label>
+//                     <input type="text" id="swal-input-orderQuantity-${detail.orderDetailID}" value="${detail.orderQuantity}"><br>
+
+//                     <label>sellerID:</label>
+//                     <input type="text" id="swal-input-sellerID-${detail.orderDetailID}" value="${detail.sellerID}"><br>
+
+//                      <label>sellerUsername:</label>
+//                     <input type="text" id="swal-input-sellerUsername-${detail.orderDetailID}" value="${detail.sellerUsername}"readonly><br>
+
+//                     <label>deliveryTypeID:</label>
+//                     <input type="text" id="swal-input-deliveryTypeID-${detail.orderDetailID}" value="${detail.deliveryTypeID}"><br>
+
+//                              <label>deliveryType:</label>
+//                     <input type="text" id="swal-input-deliveryType-${detail.orderDetailID}" value="${detail.deliveryType}"readonly><br>
+
+//                      <label>deliveryAddress:</label>
+//                     <input type="text" id="swal-input-deliveryAddress-${detail.orderDetailID}" value="${detail.deliveryAddress}"><br><hr>
+//                 `;
+//             });
+
+//             // Use Swal to display the input fields
+//        Swal.fire({
+//                 title: 'Edit Order Details',
+//                 html: htmlContent,
+//                 focusConfirm: false,
+//                   showCancelButton: true, // 這裡添加顯示取消按鈕的選項
+//     cancelButtonText: '取消', // 如果需要，你可以定義取消按鈕的文本
+//                preConfirm: () => {
+//     const updatedOrderDetails = data.orderDetails.map(detail => ({
+//         orderID: document.getElementById(`swal-input-orderDetailID-${detail.orderDetailID}`).value,
+//             // productName: document.getElementById(`swal-input-productname-${detail.orderDetailID}`).value,
+//             // productImagePath: document.getElementById(`swal-input-productImagePath-${detail.orderDetailID}`).value,
+//             orderDetailID: document.getElementById(`swal-input-orderDetailID-${detail.orderDetailID}`).value,
+//             productID: document.getElementById(`swal-input-productID-${detail.orderDetailID}`).value,
+//             productUnitPoint: document.getElementById(`swal-input-productUnitPoint-${detail.orderDetailID}`).value,
+//             orderQuantity: document.getElementById(`swal-input-orderQuantity-${detail.orderDetailID}`).value,
+//             sellerID: document.getElementById(`swal-input-sellerID-${detail.orderDetailID}`).value,
+//             // sellerUsername: document.getElementById(`swal-input-sellerUsername-${detail.orderDetailID}`).value,
+//             deliveryTypeID: document.getElementById(`swal-input-deliveryTypeID-${detail.orderDetailID}`).value,
+//             // deliveryType: document.getElementById(`swal-input-deliveryType-${detail.orderDetailID}`).value,
+//             deliveryAddress: document.getElementById(`swal-input-deliveryAddress-${detail.orderDetailID}`).value
+
+//     }));
+
+//     return {
+//                orderID: document.getElementById('swal-input-orderid').value,
+//                     orderDate: document.getElementById('swal-input-orderdate').value,
+//                     orderStatus: document.getElementById('swal-input-orderStatus').value,
+//                     orderStatusDescription: document.getElementById('swal-input-orderStatusDescription').value,
+//                     orderCatagory: document.getElementById('swal-input-orderCatagory').value,
+//                     orderCatagoryDescription: document.getElementById('swal-input-orderCatagoryDescription').value,
+//                     buyerID: document.getElementById('swal-input-buyerID').value,
+//                     // buyerUsername: document.getElementById('swal-input-buyerUsername').value,
+//                     convienenNum: document.getElementById('swal-input-convienenNum').value,
+//                     deliveryFee: document.getElementById('swal-input-deliveryFee').value,
+//                     orderTotalUsagePoints: document.getElementById('swal-input-orderTotalUsagePoints').value,
+//         orderDetails: updatedOrderDetails
+//                     };
+//                 }
+//             }).then(result => {
+//                 if (result.value) {
+//                     const updatedData = result.value;
+
+//                     fetch(`/api/SSJ_ShoppingListApi/`, {
+//                         method: 'PUT',
+//                         headers: {
+//                             'Content-Type': 'application/json',
+//                         },
+//                         body: JSON.stringify(updatedData),
+//                     })
+//                     .then(response => response.json())
+//                     .then(data => {
+//                         Swal.fire({
+//                             type: 'success',
+//                             title: '更新成功!',
+//                             text: '訂單已更新',
+//                             showConfirmButton: true
+//                         });
+//                     })
+//                     .catch((error) => {
+//                         console.error('Error:', error);
+//                         Swal.fire({
+//                             type: 'error',
+//                             title: '更新失敗!',
+//                             text: '訂單更新時發生錯誤',
+//                             showConfirmButton: true
+//                         });
+//                     });
+//                 }
+//             });
+//         });
+//     });
+// });
+// ------------------------------------------
+//        document.querySelectorAll('.edit-order-btn').forEach(button => {
+//     button.addEventListener('click', function () {
+//         const orderId = this.getAttribute('data-orderid');
+
+//         fetch(`/api/SSJ_ShoppingListApi/${orderId}`)
+//         .then(response => response.json())
+//         .then(data => {
+//             let htmlContent = `
+//                 <strong>Order ID:</strong> ${data.orders[0].orderID} <br>
+//                 <strong>Order Date:</strong> ${data.orders[0].orderDate} <br>
+//                 <strong>Order Status:</strong> ${data.orders[0].orderStatusDescription} <br>
+//                 <strong>Order Category:</strong> ${data.orders[0].orderCatagoryDescription} <br>
+//                 <strong>Buyer Username:</strong> ${data.orders[0].buyerUsername} <br>
+//                 <strong>Convenience Number:</strong> ${data.orders[0].convienenNum} <br>
+//                 <strong>Delivery Fee:</strong> ${data.orders[0].deliveryFee} <br>
+//                 <strong>Total Usage Points:</strong> ${data.orders[0].orderTotalUsagePoints} <br>
+//                 <hr>
+//             `;
+
+//             data.orderDetails.forEach(detail => {
+//                 htmlContent += `
+//                     <strong>Product Name:</strong> ${detail.productName} <br>
+//                     <strong>Product Image:</strong> <img src="${detail.productImagePath}" width="100" /><br>
+//                     <strong>Order Quantity:</strong> ${detail.orderQuantity} <br>
+//                     <strong>Seller:</strong> ${detail.sellerUsername} <br>
+//                     <strong>Delivery Type:</strong> ${detail.deliveryType} <br>
+//                     <strong>Delivery Address:</strong> ${detail.deliveryAddress} <br>
+//                     <hr>
+//                 `;
+//             });
+
+//             // Use Swal to display the data
+//             Swal.fire({
+//                 title: 'Order Details',
+//                 html: htmlContent,
+//                 icon: 'info',
+//                 showCancelButton: true,
+//                 confirmButtonText: 'Delete Order',
+//                 cancelButtonText: 'Cancel'
+//             }).then(result => {
+//                 if (result.value) {
+//                     Swal.fire({
+//                         type: 'success',
+//                         title: '刪除成功!',
+//                         text: '訂單已刪除',
+//                         showConfirmButton: false
+//                     });
+//                     window.location.href = deleteUrl + '?id=' + orderId;
+//                 }
+//             });
+//         });
+//     });
+// });
+
+        // document.querySelectorAll('.edit-order-btn').forEach(button =>
+        //     {
+        //         button.addEventListener('click', function ()
+        //         {
+        //             const orderId = this.getAttribute('data-orderid');
+
+        //             fetch(`/api/SSJ_ShoppingListApi/${orderId}`)
+        //                 .then(response => response.json())
+        //                 .then(data =>
+        //                 {    const orderId = data.orderID
+
+        //                     // 使用data更新模态窗口的表单字段
+        //                         document.getElementById('OrderID').value = data.orderId;
+        //                         document.getElementById('OrderDate').value = data.orderDate;
+        //                         document.getElementById('OrderTotalUsagePoints').value = data.orderTotalUsagePoints;
+        //                         document.getElementById('BuyerID').value = data.buyerId;
+        //                         document.getElementById('BuyerUsername').value = data.buyerUsername;
+        //                         document.getElementById('OrderStatus').value = data.orderStatus;
+        //                         document.getElementById('OrderStatusDescription').value = data.orderStatusDescription;
+        //                         document.getElementById('OrderCatagory').value = data.orderCatagory;
+        //                         document.getElementById('OrderCatagoryDescription').value = data.orderCatagoryDescription;
+        //                         document.getElementById('ConvienenNum').value = data.convienenNum;
+        //                         document.getElementById('DeliveryFee').value = data.deliveryFee;
+   
+
+        //                     data.OrderDetails.forEach((detail, index) =>
+        //                     {
+        //                         const orderId = detail.orderID; // 获取订单的实际 ID
+
+        //                         // 使用订单的实际 ID 构建字段的 id
+        //                         document.getElementById(`OrderID-${orderId}`).value = detail.orderID;
+        //                         document.getElementById(`OrderDetailID-${orderId}`).value = detail.orderDetailID;
+        //                         document.getElementById(`ProductID-${orderId}`).value = detail.productID;
+        //                         document.getElementById(`ProductName-${orderId}`).value = detail.productName;
+        //                         document.getElementById(`ProductUnitPoint-${orderId}`).value = detail.productUnitPoint;
+        //                         document.getElementById(`OrderQuantity-${orderId}`).value = detail.orderQuantity;
+        //                         document.getElementById(`SellerID-${orderId}`).value = detail.sellerID;
+        //                         document.getElementById(`SellerUsername-${orderId}`).value = detail.sellerUsername;
+        //                         document.getElementById(`DeliveryTypeID-${orderId}`).value = detail.deliveryTypeID;
+        //                         document.getElementById(`DeliveryType-${orderId}`).value = detail.deliveryType;
+        //                         document.getElementById(`DeliveryAddress-${orderId}`).value = detail.deliveryAddress;
+        //                         document.getElementById(`ProductImagePath-${orderId}`).value = detail.productImagePath;
+        //                     }); 
+                           
+        //                 }); $('#editOrderModal').modal('show');
+        //         });
+        //     });
+                // document.getElementById('helloButton').addEventListener('click', function ()
+                // {
+                //     // 发出GET请求到API
+                //     fetch('/api/HelloApi')
+                //         .then(response => response.text())
+                //         .then(data =>
+                //         {
+                //             // 将结果显示在页面上
+                //             document.getElementById('helloResult').innerText = data;
+                //         })
+                //         .catch(error =>
+                //         {
+                //             console.error('发生错误:', error);
+                //         });
+                // });
+
+</script>
+*@
