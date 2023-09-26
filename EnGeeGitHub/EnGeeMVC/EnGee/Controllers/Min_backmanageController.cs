@@ -86,9 +86,10 @@ namespace EnGee.Controllers
             }
             
             //加入Gender篩選條件
-            if (!string.IsNullOrEmpty(genderFilter))
-            {
-            }
+            //if (!string.IsNullOrEmpty(genderFilter))
+            //{
+            //    query = query.Where(t => t.Gender == genderFilter);
+            //}
 
             // 加入Access篩選條件，只有當 accessFilter 有值時才進行篩選
             if (accessFilter.HasValue)

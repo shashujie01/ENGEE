@@ -63,6 +63,11 @@
             set { _member.Address = value; }
         }
 
+        public int Gender
+        {
+            get { return _member.Gender; }
+            set { _member.Gender = value; }
+        }
         public string Phone
         {
             get { return _member.Phone; }
@@ -73,6 +78,12 @@
         {
             get { return _member.Password; }
             set { _member.Password = value; }
+        }
+
+        public double? Point
+        {
+            get { return _member.Point; }
+            set { _member.Point = value; }
         }
 
 

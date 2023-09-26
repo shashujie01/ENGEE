@@ -1,0 +1,142 @@
+﻿@model EnGee.Models.CHI_CMemberWrap
+
+@{
+    ViewData["Title"] = "個人檔案";
+    ViewBag.HeaderTitle = "個人資料";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;        
+    }
+
+    .data-section {
+        text-align: left;
+    }
+
+    .modal {
+        text-align: center;
+        padding: 0 !important;
+    } 
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .modal:before {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        margin-right: -4px;
+    }
+</style>
+
+<head>
+    <link rel="stylesheet" href="~/css/CHIACHI_UserProfile.css">
+</head>
+<body>
+    <form id="paymentForm" action="@Url.Action("Payment", "NL_TopUp")" method="POST">
+        <input type="hidden" name="amount" id="paymentAmount" value="">
+    </form>
+    <div class="container">
+        <div class="text-center">
+            <h2>個人資料</h2>
+            <div class="text-center">
+                <img id="imagePreview" src="~/images/UserImage/@Model.PhotoPath" alt="Product Image" class="img-fluid img-thumbnail" style="max-width: 300px; max-height: 300px;">
+            </div>
+        </div>
+
+        <div class="text-center">
+            <div class="data-section">
+                <div class="form-group">
+                    <p>Email: @Model.Email</p>
+                </div>
+
+                <div class="form-group">
+                    <p>全名: @Model.Fullname</p>
+                </div>
+
+                <div class="form-group">
+                    <p>生日: @(Model.Birth?.ToShortDateString())</p>
+                </div>
+
+                <div class="form-group">
+                    <p>性別: @(Model.Gender == 0 ? "男" : (Model.Gender == 1 ? "女" : "不透漏"))</p>
+                </div>
+
+                <div class="form-group">
+                    <p>點數: @($"{Model.Point:N0}") 點</p>
+                </div>
+
+                <div class="form-group">
+                    <p>聯繫地址: @Model.Address</p>
+                </div>
+
+                <div class="form-group">
+                    <p>手機號碼: @Model.Phone</p>
+                </div>
+
+                <div class="form-group">
+                    <p>個人簡介: @Model.Introduction</p>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary ml-2" id="topUpButton">儲值</button>
+    </div>
+</body>
+
+
+<div class="modal fade" id="topUpModal" tabindex="-1" role="dialog" aria-labelledby="topUpModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="topUpModalLabel">儲值</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="topUpAmount">請輸入儲值金額:</label>
+                <input type="number" class="form-control" id="topUpAmount">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmTopUp">確定</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {        
+        $("#topUpButton").click(function () {
+            $("#topUpModal").modal("show");
+        });
+        $("#confirmTopUp").click(function () {
+            var amount = $("#topUpAmount").val();
+            $("#paymentAmount").val(amount);
+            $("#paymentForm").submit();
+            $("#topUpModal").modal("hide");
+        });
+    });
+
+    function closeModal() {
+        $("#topUpModal").modal("hide");
+    }
+
+    $("#topUpModal .modal-footer .btn-secondary").click(function () {
+        closeModal();
+    });
+   
+    $("#topUpModal .modal-header .close").click(function () {
+        closeModal();
+    });    
+</script>

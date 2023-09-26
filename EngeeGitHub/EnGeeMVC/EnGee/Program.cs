@@ -35,7 +35,7 @@ builder.Services.AddScoped<MemberFavoriteRepository>();
 //¥[¤J SignalR  NL
 builder.Services.AddSignalR();
 
-
+builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
