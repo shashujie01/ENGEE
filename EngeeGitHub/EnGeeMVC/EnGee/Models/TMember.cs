@@ -34,6 +34,11 @@ public partial class TMember
 
     public string? Introduction { get; set; }
 
+    public string? IsValidCharity { get; set; }
+
+    //--0916新增--//
+    [NotMapped]
+    public string? RandomToken { get; set; }
     public string? CharityProof { get; set; }
 
     public bool? IsValidCharity { get; set; }

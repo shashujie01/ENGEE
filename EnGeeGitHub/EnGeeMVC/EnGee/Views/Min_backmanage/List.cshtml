@@ -5,27 +5,31 @@
 }
 
 <style>
-    .btn-pink{
-        background-color:pink;
-        color:white;
-        justify-content:center;
+    .btn-pink {
+        background-color: pink;
+        color: white;
+        justify-content: center;
     }
-    .btn-pink:hover{
-        background-color:hotpink;
+
+        .btn-pink:hover {
+            background-color: hotpink;
+        }
+
+    .box {
+        height: 100px;
     }
-    .box{
-        height:100px;
-    }
+
 </style>
-<h1>會員資料</h1>
-<div>
-    <div>
-        <a asp-action="Create" asp-controller="MinMember" class="btn btn-pink ">新增會員</a>
-    </div>
-    <div>
-        @using (Html.BeginForm())
-        {
-            @:搜尋對象:
+<h2 style="text-align:center " class="mt-3">會員中心管理</h2>
+
+
+<div class="container-md py-5 ">
+    @using (Html.BeginForm())
+    {
+
+        <div class="mb-5">
+            <input type="submit" value="查詢" style="margin-right:10px; background-color:white; " />
+            查詢類別:
             <select name="txtkeywordfor">
                 <option value="">全部</option>
                 <option value="0">帳號</option>
@@ -36,25 +40,22 @@
                 <option value="5">註冊時間</option>
                 <option value="6">生日</option>
             </select>
-
-            @: 關鍵字查詢
-            @Html.TextBox("txtKeyword")
-
-
-
-            @: 範圍查詢 Point：
-            @Html.TextBox("minPoint", null, new { placeholder = "最小值" })
-            @Html.TextBox("maxPoint", null, new { placeholder = "最大值" })
-
-            @: 篩選性別：
+            |
+            關鍵字查詢: @Html.TextBox("txtKeyword")
+            |
+            查詢點數範圍：
+            @Html.TextBox("minPoint", null, new { placeholder = "最小值" , style="width:60px; margin-right: 8px;" })
+            @Html.TextBox("maxPoint", null, new { placeholder = "最大值" , style="width:60px; margin-right: 8px;" })
+            |
+            篩選性別：
             <select name="genderFilter">
                 <option value="">全部</option>
                 <option value="0">男</option>
                 <option value="1">女</option>
                 <option value="2">未透漏</option>
             </select>
-
-            @:篩選權限:
+            |
+            篩選使用權限:
             <select name="accessFilter">
                 <option value="">全部</option>
                 <option value="0">網站管理員</option>
@@ -62,144 +63,186 @@
                 <option value="2">員工</option>
                 <option value="3">公益團體</option>
             </select>
+        </div>
 
-            <input type="submit" value="查詢" />
-        }
+    }
+    <div class="row">
+        <div class="d-flex justify-content-center align-items-center">
+            <table id="managetable" class="table table-hover text-center align-middle">
+                <thead class="fz-color2">
+
+                    <tr>
+                        <th style="white-space: nowrap;text-align: center">
+                            編號
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.Username)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.Fullname)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.Gender)
+                        </th>
+
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.Phone)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.RegistrationDate)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.Birth)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.Access)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.Point)
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.PhotoPath)
+                        </th>
+
+                        <th style="white-space: nowrap;text-align: center">
+                            @Html.DisplayNameFor(model => model.IsValidCharity)
+                        </th>
+                        <th>
+                            刪除
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int count = 0;
+                        string displayAccess = "";
+                        string displayGender = string.Empty;
+
+                        foreach (var item in Model)
+                        {
+                            count++;
+
+                            if (item.Gender == 0)
+                            {
+                                displayGender = "男生";
+                            }
+                            else if (item.Gender == 1)
+                            {
+                                displayGender = "女生";
+                            }
+                            else if (item.Gender == 2)
+                            {
+                                displayGender = "未透漏";
+                            }
+
+
+                            if (item.Access == 0)
+                            {
+                                displayAccess = "網站管理員";
+                            }
+                            else if (item.Access == 1)
+                            {
+                                displayAccess = "一般使用者";
+                            }
+                            else if (item.Access == 2)
+                            {
+                                displayAccess = "員工";
+                            }
+                            else if (item.Access == 3)
+                            {
+                                displayAccess = "公益團體";
+                            }
+
+                            <tr>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @count
+                                </td>
+
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.Username)
+                                </td>
+
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.Fullname)
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @item.Gender  <!-- 這裡確認一下資料是否正確傳遞 -->
+                                </td>
+
+                                <td style="white-space: nowrap;text-align: center">
+                                    @displayGender
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.Address)
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.RegistrationDate)
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.Birth)
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @displayAccess
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.Point)
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    <img src="~/images/UserImage/@item.PhotoPath" alt="User Photo" width="70Px" height="70Px" />
+                                </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.DisplayFor(modelItem => item.IsValidCharity)
+                                </td>
+
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.ActionLink("刪除", "Delete","Min_backmanage", new { id=item.MemberId  }, new {onclick="return confirm('確定要刪除嗎?')"})
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
     </div>
+    <script>
+        var jq = jQuery.noConflict();
+        jq(document).ready(function () {
+            jq('#managetable').DataTable({
+                "paging": false,
+                "scrollCollapse": true,
+                "scrollY": "1000px",
+                "Info": true,
+                language: {
+                    "sInfo": "共有 _TOTAL_ 筆資料",
+                },
+                "searching": false,
+                "ordering": true,
+                "columnDefs": [
+                    {
+                        "orderable": false,
+                        "targets": [-2, -1],
+                    }
+                ]
+            });
+        });
+    </script>
 </div>
-<div class="box">
-
-</div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                編號
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fullname)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model =>  model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RegistrationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Birth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Access)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Point)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Introduction)
-            </th>
-@*             <th>
-                @Html.DisplayNameFor(model => model.RandomToken)
-            </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.CharityProof)
-            </th>
-            <th>
-                編輯
-            </th>
-            <th>
-                刪除
-            </th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int count = 0;
-
-            foreach (var item in Model)
-            {
-                count++;
-                <tr>
-                    <td>
-                        @count
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Username)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Password)
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Fullname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Gender)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RegistrationDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Birth)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Access)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Point)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhotoPath)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Introduction)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CharityProof)
-                    </td>
-                    <td>
-                        @Html.ActionLink("編輯", "Edit", new { id=item.MemberId }) 
-                       
-                    </td>
-                    <td>
-                        @Html.ActionLink("刪除", "Delete","Min_backmanage", new { id=item.MemberId  }, new {onclick="return confirm('確定要刪除嗎?')"})
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
 
 
 
-                        @* =======================JS================== *@
+@* =======================JS================== *@
