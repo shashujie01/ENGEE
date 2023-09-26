@@ -93,7 +93,7 @@ namespace EnGee.Controllers
                 db.SaveChanges();
 
                 // 儲存新的頭像
-                ViewBag.NewPhotoPath = memDb.PhotoPath;
+                HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER_PHOTO, memDb.PhotoPath);
             }
                 return RedirectToAction("UserProfile");
             }
@@ -154,8 +154,57 @@ namespace EnGee.Controllers
         {
             return user.Password == oldPassword;
         }
+         public IActionResult Apply(int? id)
+            {
+                if (id == null)
+                    return RedirectToAction("UserProfile");
+                EngeeContext db = new EngeeContext();
+                TMember mem = db.TMembers.FirstOrDefault(t => t.MemberId == id);
+                if (mem == null)
+                    return RedirectToAction("UserProfile");
+                CHI_CMemberWrap memWp = new CHI_CMemberWrap();
+                memWp.member = mem;
+                return View(memWp);
+            }
+        [HttpPost]
+        public IActionResult Apply(CHI_CMemberWrap memIn)
+        {
+            EngeeContext db = new EngeeContext();
+            TMember memDb = db.TMembers.FirstOrDefault(t => t.MemberId == memIn.MemberId);
+            if (memDb != null)
+            {
+                if (memIn.photoCharityProof != null && memIn.photoCharityProof.Length > 0)
+                {
+                    Console.WriteLine(memIn.photoCharityProof);
+                    // 取得圖檔類型
+                    var fileExtension = Path.GetExtension(memIn.photoCharityProof.FileName).ToLower();
 
+                    // 檢查圖檔類型
+                    if (fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png")
+                    {
+                        string photoName = Guid.NewGuid().ToString() + fileExtension;
+                        Console.WriteLine("Generated photoName: " + photoName);
+                        string path = _enviro.WebRootPath + "/images/CharityProof/" + photoName;
+                        memIn.photoCharityProof.CopyTo(new FileStream(path, FileMode.Create));
+                        memDb.CharityProof = photoName;
+                    }
+                    else
+                    {
 
+                        ModelState.AddModelError("photo", "只接受jpg、jpeg和png格式的圖片");
+                        return View(memIn);
+                    }
+                }
+                memDb.Fullname = memIn.Fullname;
+                memDb.Username = memIn.Username;
+
+                db.SaveChanges();
+
+                // 儲存新的頭像
+                //HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER_PHOTO, memDb.CharityProof);
+            }
+            return RedirectToAction("UserProfile");
+        }
 
 
 

@@ -7,7 +7,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
+
+
 <style>
+
+   
+    
     .product-image-section img {
         width: 250px;
         height: 100%;
@@ -19,11 +24,11 @@
     }
 
     .message-content {
-        font-size: 1.2em; /* 設定字體大小為1.5倍的基本大小 */
+        font-size: 1.5em; /* 設定字體大小為1.5倍的基本大小 */
     }
 
     .message-details {
-        font-size: 0.9em; /* 設定字體大小為基本大小 */
+        font-size: 1.0em; /* 設定字體大小為基本大小 */
     }
 
     .add-to-favorites.active {
@@ -31,8 +36,23 @@
         color: white;
     }
 
-        .add-to-favorites.active .fa-heart {
+    .add-to-favorites.active .fa-heart {
             color: white;
+        }
+
+    /* 這是一種更淡的紅色 */
+    .btn-lighter-danger {
+        background-color: #ffcccc; /* 極淡的紅色 */
+        border-color: #ffb3b3;
+        color: #800000; /* 文字顏色 */
+        transition: background-color 0.3s ease; /* 平滑的過渡效果 */
+    }
+
+        /* 滑鼠懸停時的色彩 */
+        .btn-lighter-danger:hover {
+            background-color: #ff9999; /* 當滑鼠懸停時的顏色稍微深一點 */
+            border-color: #ff8080;
+            color: #660000; /* 文字顏色 */
         }
 </style>
 <main>
@@ -134,12 +154,13 @@
                         <!-- 您可以根據需要添加其他相關信息，例如留言時間、用戶名等 -->
                     </div>
 
-                    <!-- 插入刪除留言的表單 -->
-                    <form method="post" action="@Url.Action("DeleteMessage", "Message")">
-                        <!-- 注意：控制器名稱應該只是 "Message" 而不是 "MessageController" -->
-                        <input type="hidden" name="messageId" value="@message.MessageId" />
-                        <input type="submit" value="Delete" />
-                    </form>
+                <!-- 插入刪除留言的表單 -->
+<form method="post" action="@Url.Action("DeleteMessage", "Message")">
+    <input type="hidden" name="messageId" value="@message.MessageId" />
+                        <button type="submit" class="btn btn-lighter-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
+</form>
 
                 </li>
             }
@@ -156,6 +177,7 @@
             <input type="hidden" name="MessageArea" value="2" />
             <div class="mb-3">
                 <textarea class="form-control" name="MessageContent" rows="4" placeholder="請輸入您的留言"></textarea>
+                <span id="remainingChars"></span>
             </div>
             <button type="submit" class="btn btn-primary">提交留言</button>
         </form>
@@ -166,6 +188,20 @@
 
 <script>
     $(document).ready(function () {
+        // 字數限制功能
+        const maxCharacters = 200;
+        const remainingCharsSpan = $('<span class="remaining-chars">還可以輸入 ' + maxCharacters + ' 個字</span>');
+        $("textarea[name='MessageContent']").after(remainingCharsSpan);
+
+        $("textarea[name='MessageContent']").on('input', function () {
+            const inputLength = $(this).val().length;
+            const remainingChars = maxCharacters - inputLength;
+
+            // 更新顯示的剩餘字數
+            remainingCharsSpan.text('還可以輸入 ' + remainingChars + ' 個字');
+        });
+
+   
 
         // 初始化設置
         var initialDelivery = $("input[name='deliveryType']:checked").attr("delytype");
@@ -197,20 +233,20 @@
                 // ...
                 success: function (response) {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'success',
                         title: '已加入購物車',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 3000
                     });
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: '添加失敗，請稍後再試',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 3000
                     });
                 }
             });
@@ -232,31 +268,31 @@
                         window.location.href = "/Home/Login";
                     } else if (response.success) {
                         Swal.fire({
-                            position: 'top-right',
+                            position: 'center',
                             icon: 'success',
                             title: '成功加入我的最愛！',
                             showConfirmButton: false,
-                            timer: 1500
+                            timer: 3000
                         });
                         $thisButton.addClass('active');
                         $thisButton.html('<i class="fas fa-heart"></i> 已加入我的最愛');
                     } else {
                         Swal.fire({
-                            position: 'top-end',
+                            position: 'center',
                             icon: 'error',
                             title: response.message || '加入失敗，請稍後再試！',
                             showConfirmButton: false,
-                            timer: 1500
+                            timer: 3000
                         });
                     }
                 },
                 error: function () {
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'error',
                         title: '加入失敗，請稍後再試！',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 3000
                     });
                 }
             });
