@@ -23,5 +23,9 @@ namespace EnGee.ViewModels
         public string? CollectImagePath { get; set; }
         public string? CollectItemName { get; set; }
         public int? CollectAmount { get; set; }
+
+        public TMember member { get; set; }
+        //public TCollect collect { get; set; }
+
     }
 }

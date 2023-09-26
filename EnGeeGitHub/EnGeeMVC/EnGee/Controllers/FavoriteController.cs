@@ -1,5 +1,6 @@
 ﻿using EnGee.Data;
 using EnGee.Models;
+using EnGee.Repositories;
 using EnGee.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,16 @@ namespace EnGee.Controllers
 {
     public class FavoriteController : Controller
     {
-
+        private readonly MemberFavoriteRepository _favoriteRepository;
         private readonly EngeeContext _dbContext;  // DbContext 名稱。
 
-        public FavoriteController(EngeeContext dbContext)  // 使用 DI（依賴注入）將 DbContext 注入控制器。
+        public FavoriteController(EngeeContext dbContext, MemberFavoriteRepository favoriteRepository)
         {
             _dbContext = dbContext;
+            _favoriteRepository = favoriteRepository;
+
         }
+
         [HttpPost]
         public async Task<IActionResult> AddToFavorites(int productId, bool addFavoriteType)
         {
@@ -36,8 +40,8 @@ namespace EnGee.Controllers
                 TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
                 var memberId = loggedInUser.MemberId;
 
-                var existingFavorite = await _dbContext.TMemberFavorites
-                                   .AnyAsync(f => f.ProductId == productId && f.MemberId == memberId);
+                // 使用存儲庫來檢查收藏夾中是否已存在該產品
+                var existingFavorite = _favoriteRepository.IsProductFavoriteForUser(memberId, productId);
                 if (existingFavorite)
                 {
                     return Json(new { success = false, message = "產品已在收藏夾中!" });
@@ -51,10 +55,12 @@ namespace EnGee.Controllers
                     AddFavoriteType = addFavoriteType
                 };
 
+                // TODO: 你也可以在存儲庫裡加入方法來處理加入收藏夾的操作
+                // _favoriteRepository.AddToFavorites(favorite);
                 _dbContext.TMemberFavorites.Add(favorite);
                 await _dbContext.SaveChangesAsync();
 
-                return Json(new { success = true });
+                return Json(new { success = true, message = "已經成功加入我的最愛囉" });
             }
             catch (Exception ex)
             {

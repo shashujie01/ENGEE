@@ -7,6 +7,7 @@
     ViewData["Title"] = "Login";
 }
 @{
+    string updatedPhotoPath = HttpContextAccessor.HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER_PHOTO);
     string loggedInUserJson = HttpContextAccessor.HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
     TMember loggedInUser = null;
 
@@ -21,7 +22,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - prjEnGeeDemo</title>
+    <title>EnGee</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     @*     新增vue script *@
     <script src="https://unpkg.com/vue@3"></script>
@@ -99,6 +100,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="NL_ChatHub" asp-action="Index">聊天室</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="NL_TopUp" asp-action="Index">儲值</a>
+                    </li>
                 </ul>
             </div>
             <div class="d-flex align-items-center">
@@ -106,7 +110,18 @@
                     <div class="d-flex align-content-center">
                         @if (loggedInUser != null)
                         {
-                            <img src="@(!string.IsNullOrEmpty(loggedInUser.PhotoPath) ? Url.Content("~/images/UserImage/" + loggedInUser.PhotoPath) : Url.Content("~/images/UserImage/profile.png"))" alt="User Photo" class="mt-1 me-3" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" />
+                            @if (!string.IsNullOrEmpty(updatedPhotoPath))
+                            {
+                                <img src="~/images/UserImage/@updatedPhotoPath" alt="User Photo" class="mt-1 me-3" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" />
+                            }
+                            else if (!string.IsNullOrEmpty(loggedInUser?.PhotoPath))
+                            {
+                                <img src="~/images/UserImage/@loggedInUser.PhotoPath" alt="User Photo" class="mt-1 me-3" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <img src="~/images/UserImage/profile.png" alt="Default User Photo" class="mt-1 me-3" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" />
+                            }
 
                             <div class="btn-group">
                                 <button type="button" class="btn text-black dropdown-toggle me-3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

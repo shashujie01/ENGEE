@@ -420,5 +420,16 @@ namespace EnGee.Controllers
 
             return View("List", list); // 將排序後的結果傳遞給View
         }
+
+        [HttpGet]
+        public IActionResult GetSubcategories(int mainCategoryId)
+        {            
+            EngeeContext db = new EngeeContext();
+            var subcategories = db.TCosmeticSubcategories
+                .Where(s => s.MainCategoryId == mainCategoryId)
+                .ToDictionary(s => s.SubcategoryId, s => s.Subcategory);
+
+            return Json(subcategories);
+        }
     }
 }

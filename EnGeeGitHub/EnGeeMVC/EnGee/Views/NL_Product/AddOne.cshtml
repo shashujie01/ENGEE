@@ -12,6 +12,10 @@
     .swal2-modal .swal2-title {
         font-size: 1.4em;
     }
+
+    .error {
+        border: 1px solid red;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <div class="container">
@@ -24,7 +28,7 @@
         </button>
         <nav class="collapse navbar-vertical navbar-light align-items-center p-0  border border-top-0 border-bottom-3 bg-light" id="navbar-vertical">
             <div class="navbar-nav w-100 overflow-hidden" style="height: auto; transition: max-height 0.3s ease;">
-                <a asp-action="Add" class="nav-item nav-link">二手商品上架</a>
+                <a asp-action="Add" class="nav-item nav-link">二手商品</a>
                 <a asp-action="AddOne" class="nav-item nav-link">一點捐贈</a>
             </div>
         </nav>
@@ -168,26 +172,140 @@
                 reader.readAsDataURL(fileInput.files[0]);
             }
         });
+
         document.getElementById('submitBtn').addEventListener('click', function () {
-            var productName = document.getElementById('ProductName').value;
-            var brandId = document.getElementById('BrandId').value;
-            var mainCategoryId = document.getElementById('MainCategoryId').value;
-            var subcategoryId = document.getElementById('SubcategoryId').value;
-            var productDescribe = document.getElementById('ProductDescribe').value;            
-            var productRemainingQuantity = document.getElementById('ProductRemainingQuantity').value;
-            var productExpirationDate = document.getElementById('ProductExpirationDate').value;
-            var productUsageStatus = document.getElementById('ProductUsageStatus').value;
-            var dateOfSale = document.getElementById('DateOfSale').value;
+            var productName = document.getElementById('ProductName');
+            var brandId = document.getElementById('BrandId');
+            var mainCategoryId = document.getElementById('MainCategoryId');
+            var subcategoryId = document.getElementById('SubcategoryId');
+            var productDescribe = document.getElementById('ProductDescribe');
+            var productUnitPoint = document.getElementById('ProductUnitPoint');
+            var productRemainingQuantity = document.getElementById('ProductRemainingQuantity');
+            var productExpirationDate = document.getElementById('ProductExpirationDate');
+            var productUsageStatus = document.getElementById('ProductUsageStatus');
+            var dateOfSale = document.getElementById('DateOfSale');
             var deliveryTypeId = document.querySelector('input[name="DeliveryTypeId"]:checked');
 
-            if (productName === "" || brandId === "" || mainCategoryId === "" || subcategoryId === "" ||
-                productDescribe === "" || productRemainingQuantity === "" ||
-                productExpirationDate === "" || productUsageStatus === "" || dateOfSale === "" || !deliveryTypeId) {
+            var isValid = true; // 檢查是否填寫所有必填欄位
+
+            // 檢查並添加紅框樣式
+            if (productName.value === "") {
+                productName.classList.add('error');
+                isValid = false;
+            } else {
+                productName.classList.remove('error');
+            }
+
+            if (brandId.value === "") {
+                brandId.classList.add('error');
+                isValid = false;
+            } else {
+                brandId.classList.remove('error');
+            }
+
+            if (mainCategoryId.value === "") {
+                mainCategoryId.classList.add('error');
+                isValid = false;
+            } else {
+                mainCategoryId.classList.remove('error');
+            }
+
+            if (subcategoryId.value === "") {
+                subcategoryId.classList.add('error');
+                isValid = false;
+            } else {
+                subcategoryId.classList.remove('error');
+            }
+
+            if (productDescribe.value === "") {
+                productDescribe.classList.add('error');
+                isValid = false;
+            } else {
+                productDescribe.classList.remove('error');
+            }
+
+            if (productUnitPoint.value === "") {
+                productUnitPoint.classList.add('error');
+                isValid = false;
+            } else {
+                productUnitPoint.classList.remove('error');
+            }
+
+            if (productRemainingQuantity.value === "") {
+                productRemainingQuantity.classList.add('error');
+                isValid = false;
+            } else {
+                productRemainingQuantity.classList.remove('error');
+            }
+
+            if (productExpirationDate.value === "") {
+                productExpirationDate.classList.add('error');
+                isValid = false;
+            } else {
+                productExpirationDate.classList.remove('error');
+            }
+
+            if (productUsageStatus.value === "") {
+                productUsageStatus.classList.add('error');
+                isValid = false;
+            } else {
+                productUsageStatus.classList.remove('error');
+            }
+
+            if (dateOfSale.value === "") {
+                dateOfSale.classList.add('error');
+                isValid = false;
+            } else {
+                dateOfSale.classList.remove('error');
+            }
+
+            if (!deliveryTypeId) {
+                var deliveryTypeRadio = document.getElementsByName('DeliveryTypeId');
+                for (var i = 0; i < deliveryTypeRadio.length; i++) {
+                    deliveryTypeRadio[i].classList.add('error');
+                }
+                isValid = false;
+            } else {
+                var deliveryTypeRadio = document.getElementsByName('DeliveryTypeId');
+                for (var i = 0; i < deliveryTypeRadio.length; i++) {
+                    deliveryTypeRadio[i].classList.remove('error');
+                }
+            }
+
+            if (!isValid) {
                 Swal.fire('錯誤', '請填寫所有必填欄位', 'error');
-            } else {                
-                Swal.fire({ type: 'success', title: '新增成功!', text: '商品已上架', showConfirmButton: false})
+            } else {
+                Swal.fire({ type: 'success', title: '新增成功!', text: '商品已上架', showConfirmButton: false });
                 document.getElementById('productForm').submit();
             }
+        });
+
+        $(document).ready(function () {
+            $("#MainCategoryId").change(function () {
+                var mainCategoryId = $(this).val();
+
+                $.ajax({
+                    url: "/NL_Product/GetSubcategories",
+                    type: "GET",
+                    data: { mainCategoryId: mainCategoryId },
+                    success: function (data) {
+                        $("#SubcategoryId").empty();
+                        $("#SubcategoryId").append($('<option>', {
+                            value: '',
+                            text: '請選擇',
+                            disabled: true,
+                            selected: true
+                        }));
+
+                        $.each(data, function (key, value) {
+                            $("#SubcategoryId").append($('<option>', {
+                                value: key,
+                                text: value
+                            }));
+                        });
+                    }
+                });
+            });
         });
     </script>
 }

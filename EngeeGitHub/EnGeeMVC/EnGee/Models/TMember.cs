@@ -35,7 +35,7 @@ public partial class TMember
 
 
     [Required(ErrorMessage = ("性別必填"))]
-    public string Gender { get; set; } = null!;
+    public int Gender { get; set; }
 
 
     [DisplayName("通訊地址")]
@@ -66,6 +66,7 @@ public partial class TMember
     public string? RandomToken { get; set; }
     public string? CharityProof { get; set; }
 
+    public bool? IsValidCharity { get; set; }
 
     public virtual ICollection<TCase> TCases { get; set; } = new List<TCase>();
 

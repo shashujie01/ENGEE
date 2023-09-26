@@ -9,10 +9,7 @@ using EnGee.Services.EmailService;
 using EnGee.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using EnGee.Hubs;
-
-
-
-
+using EnGee.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("EnGeeContextConnection") ?? throw new InvalidOperationException("Connection string 'EnGeeContextConnection' not found.");
@@ -32,10 +29,13 @@ builder.Services.AddDbContext<EnGeeContext>(options => options.UseSqlServer(conn
 // Rong新增
 builder.Services.AddDbContext<EngeeContext>(options => options.UseSqlServer(connectionString));
 
+// 怡菁新增 MemberFavoriteRepository 到依賴注入容器
+builder.Services.AddScoped<MemberFavoriteRepository>();
+
 //加入 SignalR  NL
 builder.Services.AddSignalR();
 
-
+builder.Services.AddHttpClient();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

@@ -117,16 +117,16 @@ namespace EnGee.Controllers
             ViewBag.TotalPages = totalPages;
             ViewBag.Keyword = vm.txtKeyword;
             ViewBag.SearchBy = vm.searchBy;
+            ViewBag.totalProducts = totalProducts;
 
-            var brandData = db.TBrands.ToList();
+           var brandData = db.TBrands.ToList();
             ViewBag.BrandId = new SelectList(brandData, "BrandId", "BrandCategory");
 
             var mainCategoryData = db.TCosmeticMainCategories.ToList();
             ViewBag.MainCategoryId = new SelectList(mainCategoryData, "MainCategoryId", "MainCategory");
 
             var deliveryTypeData = db.TDeliveryTypes.ToList();
-            ViewBag.DeliveryTypeId = new SelectList(deliveryTypeData, "DeliveryTypeId", "DeliveryType");
-
+            ViewBag.DeliveryTypeId = new SelectList(deliveryTypeData, "DeliveryTypeId", "DeliveryType");            
 
             return View(list);
         }
@@ -207,6 +207,17 @@ namespace EnGee.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("List");
+        }
+
+        [HttpGet]
+        public IActionResult GetSubcategories(int mainCategoryId)
+        {           
+            EngeeContext db = new EngeeContext();
+            var subcategories = db.TCosmeticSubcategories
+                .Where(s => s.MainCategoryId == mainCategoryId)
+                .ToDictionary(s => s.SubcategoryId, s => s.Subcategory);
+
+            return Json(subcategories);
         }
     }
 }
