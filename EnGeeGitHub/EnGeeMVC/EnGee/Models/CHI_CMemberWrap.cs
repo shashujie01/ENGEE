@@ -80,6 +80,19 @@
             set { _member.Password = value; }
         }
 
+        public string? CharityProof
+        {
+            get { return _member.CharityProof; }
+            set { _member.CharityProof = value; }
+        }
+
+       
+        public int? Access
+        {
+            get { return _member.Access; }
+            set { _member.Access = value; }
+        }
+
         public double? Point
         {
             get { return _member.Point; }
@@ -87,7 +100,7 @@
         }
 
 
-
         public IFormFile photo { get; set; }
+        public IFormFile photoCharityProof { get; set; }
     }
 }
