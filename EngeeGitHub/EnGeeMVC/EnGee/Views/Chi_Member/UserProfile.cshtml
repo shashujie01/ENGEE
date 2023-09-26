@@ -4,6 +4,28 @@
     ViewData["Title"] = "個人檔案";
     ViewBag.HeaderTitle = "個人主頁";
 }
+@{
+    string accessText;
+    switch (Model.Access)
+    {
+        case 0:
+            accessText = "管理員";
+            break;
+        case 1:
+            accessText = "一般會員";
+            break;
+        case 2:
+            accessText = "員工";
+            break;
+        case 3:
+            accessText = "公益團體";
+            break;
+
+        default:
+            accessText = Model.Access.ToString();
+            break;
+    }
+}
 <head>
     <link rel="stylesheet" href="~/css/CHIACHI_UserProfile.css">
 </head>
@@ -42,23 +64,20 @@
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPasswordModal">
                                 修改密碼
                             </button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ApplyModal">
                                 會員身分變更
                             </button><br />
                         </div>                        
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">買方評價</a>
+                                <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#buyer" role="tab" aria-controls="buyer" aria-selected="false">買方評價</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">賣方評價</a>
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#seller" role="tab" aria-controls="seller" aria-selected="false">賣方評價</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">我的點數</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">訂單管理</a>
-                            </li>
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#points" role="tab" aria-controls="points" aria-selected="false">我的點數</a>
+                            </li>                           
                         </ul>
                     </div>
                 </div>
@@ -76,26 +95,31 @@
                 </div>
                 <div class="col-md-8">
                     <div class="tab-content profile-tab" id="myTabContent">
-                       
-                        <div class="tab-pane fade show active  col-md-6" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            <div class="row">
-                                第一列評價
+                        <!-- 買方評價内容 -->
+                        <div class="tab-pane fade show active" id="buyer" role="tabpanel" aria-labelledby="profile-tab">
+                            <h3>買方評價</h3>
+                            <p>这里是買方評價的内容。</p>
+                        </div>
+
+                        <!-- 賣方評價内容 -->
+                        <div class="tab-pane fade" id="seller" role="tabpanel" aria-labelledby="seller-tab">
+                            <h3>賣方評價</h3>
+                            <p>这里是賣方評價的内容。</p>
+                        </div>
+
+                        <!-- 我的點數内容 -->
+                        <div class="tab-pane fade" id="points" role="tabpanel" aria-labelledby="points-tab">
+                            <div class="container align-items-center">
+                                <h3>我的凹凹點 $@Model.Point</h3>
+                                <button type="button" class="btn btn-primary m-" data-toggle="modal" >
+                                    手刀儲值
+                                </button>
                             </div>
-                            <div class="row">
-                                第二列評價
-                            </div>
-                            <div class="row">
-                                第三列評價
-                            </div>
-                            <div class="row">
-                                第四列評價
-                            </div>
-                            <div class="row">
-                                第五列評價
-                            </div>
+                            
                         </div>
                     </div>
-                </div>
+                    
+                </div>               
             </div>
         </form>
     </div>
@@ -143,9 +167,9 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="Gender">性別</label><br>
-                                <input type="radio" asp-for="Gender" class="" value="0" id="Male">
+                                <input type="radio" asp-for="Gender" class="" value="0" id="Male" >
                                 <label for="Male">男</label>
-                                <input type="radio" asp-for="Gender" class="" value="1" id="Female">
+                                <input type="radio" asp-for="Gender" class="" value="1" id="Female" checked>
                                 <label for="Female">女</label>
                                 <input type="radio" asp-for="Gender" class="" value="2" id="Unknow">
                                 <label for="Unknow">不透漏</label>
@@ -162,8 +186,6 @@
                                 <label asp-for="Introduction">個人簡介</label>
                                 <input asp-for="Introduction" class="form-control" maxlength="200" style="height:200px"/>
                             </div>
-
-
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">保存</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
@@ -199,12 +221,59 @@
                                 <input type="password" id="confirm_password" class="form-control" asp-for="ConfirmPassword" />
                                 <span class="badge bg-primary text-wrap mt-1">新密碼尚未確認</span>
                             </div>
-                            @if (TempData["SuccessMessage"] != null)
-                            {
-                                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-                            }
                             <div class="modal-footer">
                                 <button type="submit" id="submit" class="btn btn-primary">保存</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 會員身分變更編輯視窗 -->
+    <div class="modal fade" id="ApplyModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">會員身分變更</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 會員身分變更編輯表單內容 -->
+                    <form asp-action="Apply" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="MemberId" />
+                        <div>
+                            <span class="badge bg-info text-wrap mt-1" style="text-align: center; display:block">當前帳號身分: @accessText</span>
+                            <div class="avatar-wrapper">
+                                
+                                @if (!string.IsNullOrEmpty(Model.CharityProof))
+                                {
+                                    <img src="~/images/CharityProof/@Model.CharityProof" alt="User Photo" class="profile-pic" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/UserImage/charityProof.png" alt="Default User Photo" class="profile-pic" />
+                                }
+                                <div class="upload-button">
+                                    <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                                </div>
+                                <input class="file-upload" type="file" asp-for="photoCharityProof" accept=".jpg, .jpeg, .png" />
+                            </div>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label asp-for="Username">慈善機構登記名稱</label>
+                                    <input asp-for="Username" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Fullname">慈善機構代表人</label>
+                                    <input asp-for="Fullname" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">送出變更需求</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                             </div>
                         </div>
@@ -241,7 +310,7 @@
     });
 </script>
 
-<script> //確認密碼的js
+<script> //檢查密碼的js
     var $password = $("#newPassword");
     var $confirmPass = $("#confirm_password");
 
@@ -282,15 +351,6 @@
     $password.keyup(PassLength).keyup(PassMatch).keyup(enableSubmitButton);
     $confirmPass.focus(PassMatch).keyup(PassMatch).keyup(enableSubmitButton);
 
-</script>
-<script>//舊密碼錯誤的js
-    
-    $(document).ready(function () {
-        var errorMessage = "@Html.Raw(Html.ValidationSummary().ToString())";
-        if (errorMessage.length > 0) {
-            $("#error-message").show(); 
-        }
-    });
 </script>
 
 

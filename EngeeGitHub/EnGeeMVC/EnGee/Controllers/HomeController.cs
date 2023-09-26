@@ -23,13 +23,13 @@ namespace EnGee.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(CLoginViewModel vm)
         {
             if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOINGED_USER))
             {
                 return RedirectToAction("IndexLoggin");
             }
-            return View(); // 繼續顯示首頁
+            return View(vm); // 繼續顯示首頁
         }
 
         public IActionResult IndexLoggin()
@@ -54,23 +54,26 @@ namespace EnGee.Controllers
         [HttpPost]
         public IActionResult Login(CLoginViewModel vm)
         {
-            if (string.IsNullOrWhiteSpace(vm.txtPassword))
+            if (string.IsNullOrWhiteSpace(vm.txtAccount) || string.IsNullOrWhiteSpace(vm.txtPassword))
             {
-                ModelState.AddModelError("", "請輸入密碼。");
+                ModelState.AddModelError("", "請輸入帳號及密碼。");
                 return View();
-                //vavbar是否一定要用<form asp-controller="Home" asp-action="Login" method="post">
             }
             string hashedPassword = ComputeSha256Hash(vm.txtPassword);
             TMember user = (new EngeeContext()).TMembers.FirstOrDefault(
                 t => t.Email.Equals(vm.txtAccount) && t.Password.Equals(hashedPassword));
+
             if (user != null && user.Password.Equals(hashedPassword))
             {
                 string json = JsonSerializer.Serialize(user);
                 HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER, json);
+                vm.TMember = user;
+
                 string redirectPage = HttpContext.Session.GetString("RedirectAfterLogin") ?? "Index";
                 int? txtProductId = HttpContext.Session.GetInt32("TempProductId");
                 int? deliverytypeid = HttpContext.Session.GetInt32("TempDeliverytypeid");
                 int? txtCount = HttpContext.Session.GetInt32("TempTxtCount");
+
                 if (redirectPage.Contains("QuickAddToCart"))
                 {
                     return RedirectToAction("QuickAddToCart", "Shopping", new { txtProductId });
@@ -107,7 +110,11 @@ namespace EnGee.Controllers
                 }
                 return RedirectToAction("Index");  
             }
-            return View();
+            else
+            {
+                ModelState.AddModelError("", "帳號或密碼不正確。");
+                return View(vm);
+            }
         }
         public IActionResult Logout()
         {

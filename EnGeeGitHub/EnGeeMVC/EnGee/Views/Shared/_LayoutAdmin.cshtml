@@ -7,6 +7,7 @@
     ViewData["Title"] = "Login";
 }
 @{
+    string updatedPhotoPath = HttpContextAccessor.HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER_PHOTO);
     string loggedInUserJson = HttpContextAccessor.HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
     TMember loggedInUser = null;
 
@@ -21,7 +22,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - prjEnGeeDemo</title>
+    <title>EnGee</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     @*  Min新增 *@
     <script src="https://unpkg.com/vue@3"></script>
@@ -51,7 +52,7 @@
     <link rel="stylesheet" href="~/css/custom.css">
 
     <!-- 框架CSS  -->
-    <link rel="stylesheet" href="~/css/EnGeeframe _Admin.css">
+    <link rel="stylesheet" href="~/css/EnGeeframe_Admin.css">
 
 </head>
 <body>
@@ -64,7 +65,7 @@
     <nav class="navbar navbar-expand-md sticky-top ">
         <div class="container-md d-flex justify-content-between align-items-center">
             <a class="navbar-brand me-2 p-0" asp-area="" asp-controller="Admin" asp-action="Index">
-                <img class="logo-size" src="~/images/bigframe/logo01.png" alt="logo" asp-area="" asp-controller="Home" asp-action="Index">
+                <img class="logo-size" src="~/images/bigframe/logo01_admin.png" alt="logo" asp-area="" asp-controller="Home" asp-action="Index">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -100,21 +101,29 @@
                     <div class="d-flex align-content-center">
                         @if (loggedInUser != null)
                         {
-                            <img src="@(!string.IsNullOrEmpty(loggedInUser.PhotoPath) ? Url.Content("~/images/UserImage/" + loggedInUser.PhotoPath) : Url.Content("~/images/UserImage/profile.png"))" alt="User Photo" class="mt-1 me-3" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" />
+                            @if (!string.IsNullOrEmpty(updatedPhotoPath))
+                            {
+                                <img src="~/images/UserImage/@updatedPhotoPath" alt="User Photo" class="mt-1 me-3" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" />
+                            }
+                            else if (!string.IsNullOrEmpty(loggedInUser?.PhotoPath))
+                            {
+                                <img src="~/images/UserImage/@loggedInUser.PhotoPath" alt="User Photo" class="mt-1 me-3" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <img src="~/images/UserImage/profile.png" alt="Default User Photo" class="mt-1 me-3" style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;" />
+                            }
 
                             <div class="btn-group">
                                 <button type="button" class="btn text-black dropdown-toggle me-3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Hello~@loggedInUser.Username
                                 </button>
                                 <div class="dropdown-menu">
-                                    @if (loggedInUser.Access == 0 || loggedInUser.Access == 3)
-                                    {
-                                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">回到EnGee前台</a>
-                                    }
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">返回EnGee前台</a>                                    
                                 </div>
                             </div>
                             <form asp-controller="Home" asp-action="Logout" method="post">
-                                <button type="submit" class="nav-link btn bg-color2 btn-sm">
+                                <button type="submit" class="nav-link btn bg-color2 btn-sm text-white">
                                     登出
                                 </button>
                             </form>
@@ -139,7 +148,7 @@
         </div>
     </nav>
 
-    <header>
+    @*<header>
         <div class="headerimg">
             <div class="overlay">
                 <div class="d-flex align-items-center justify-content-center text-white fz-size32px"
@@ -148,7 +157,7 @@
                 </div>
             </div>
         </div>
-    </header>
+    </header>*@
 
     @*         <div class="container"> *@
     <main role="main" class="pb-3">

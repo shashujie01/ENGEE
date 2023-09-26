@@ -35,7 +35,7 @@ public partial class TMember
 
 
     [Required(ErrorMessage = ("性別必填"))]
-    public string Gender { get; set; } = null!;
+    public int Gender { get; set; }
 
 
     [DisplayName("通訊地址")]
