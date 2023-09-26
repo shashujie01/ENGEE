@@ -44,7 +44,7 @@ namespace EnGee.Controllers
                 var existingFavorite = _favoriteRepository.IsProductFavoriteForUser(memberId, productId);
                 if (existingFavorite)
                 {
-                    return Json(new { success = false, message = "產品已在收藏夾中!" });
+                    return Json(new { success = false,message = "產品已在收藏夾中!" });
                 }
 
                 var favorite = new TMemberFavorite
