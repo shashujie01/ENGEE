@@ -71,9 +71,7 @@ namespace EnGee.Controllers
         // 許願池首頁
         public IActionResult CollectIndex(Rong_keywordViewModel k, int mainId, int subId, int page = 1, int sortBy = 1)
         {
-            int pageSize = 12;
-            int stillCollect = db.TCollects.Count(c => c.CollectStatus == true);
-            int totalPage = (int)Math.Ceiling((double)stillCollect / pageSize);
+            
 
             IEnumerable<Rong_CollectIndexViewModel> collectindex =
                 from co in db.TCollects
@@ -98,6 +96,7 @@ namespace EnGee.Controllers
                  };
             
             // 日期排序
+            
             List<Rong_CollectIndexViewModel> orderedCollectIndex = collectindex.ToList();
             if (sortBy == 1)
             {
@@ -109,9 +108,17 @@ namespace EnGee.Controllers
             }
 
             // 化妝品分類
-            if (mainId != 0 || subId != 0)
+            if (subId != 0)
             {
-                orderedCollectIndex = orderedCollectIndex.Where(co => co.MainCategoryId == mainId && co.SubcategoryId == subId).ToList();
+                orderedCollectIndex = orderedCollectIndex.Where(co =>co.SubcategoryId == subId).ToList();
+            }
+            else if (mainId != 0)
+            { 
+                orderedCollectIndex = orderedCollectIndex.Where(co => co.MainCategoryId == mainId).ToList(); 
+            }
+            else 
+            {
+                orderedCollectIndex = orderedCollectIndex.Where(co => co.CollectStatus == true).ToList();
             }
 
             // 搜尋功能
@@ -121,8 +128,16 @@ namespace EnGee.Controllers
             }
 
             // 分頁
+            int pageSize = 12;
+            //  依照前端商品有幾項來分頁
+            int stillCollect = orderedCollectIndex.Count();
+            Console.WriteLine("Total Still Collects: " + stillCollect);
+            int totalPage = (int)Math.Ceiling((double)stillCollect / pageSize);
             ViewData["CurrentPage"] = page;
             ViewData["TotalPage"] = totalPage;
+            //ViewData["StillCollect"] = stillCollect;
+            //  讓分類維持依照時間排序
+            ViewData["CurrentSortBy"] = sortBy;
 
             // 化妝品分類
             var mainca = db.TCosmeticMainCategories.ToList();

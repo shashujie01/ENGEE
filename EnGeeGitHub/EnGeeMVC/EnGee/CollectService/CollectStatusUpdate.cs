@@ -5,6 +5,7 @@ namespace EnGee.CollectService
 {
     public class CollectStatusUpdate : IHostedService, IDisposable
     {
+        
         private readonly IServiceScopeFactory _scopeFactory; // 讀取資料庫內容
         private Timer _timer;
 

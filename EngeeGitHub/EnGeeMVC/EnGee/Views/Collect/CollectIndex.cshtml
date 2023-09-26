@@ -7,6 +7,8 @@
     var mainCategoryList = ViewBag.MainCategory as List<TCosmeticMainCategory>;
     var subcategoryList = ViewBag.Subcategory as List<TCosmeticSubcategory>;
 }
+
+
 <div class="container-md my-5">
 
     <div class="row">
@@ -18,18 +20,32 @@
             <ul class="list-unstyled">
                 @foreach (var main in mainCategoryList)
                 {
-                    <li class="pb-3">
-                        <a id="selectMain" name="MainCategoryId" class="collapsed d-flex justify-content-between h5 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse@(main.MainCategoryId)" href="@Url.Action("CollectIndex",new{mainId = main.MainCategoryId, subId = 0})">
-                            @main.MainCategory
-                            <i class="fa-solid fa-chevron-down down-arrow"></i>
-                        </a>
-                        <ul id="collapse@(main.MainCategoryId)" class="collapse list-unstyled ps-3 ">
-                            @foreach (var sub in subcategoryList.Where(s => s.MainCategoryId == main.MainCategoryId))
-                            {
-                                <li><a id="selectSub" name="SubcategoryId" class="text-decoration-none sub-link" href="@Url.Action("CollectIndex", new{mainId = sub.MainCategoryId, subId = sub.SubcategoryId})">@sub.Subcategory</a></li>
-                            }
-                        </ul>
-                    </li>
+                    if (!main.Equals(mainCategoryList.Last()))
+                    {
+                        <li class="pb-3">
+                            <a id="selectMain" name="MainCategoryId" class="collapsed d-flex justify-content-between h5 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse@(main.MainCategoryId)" href="@Url.Action("CollectIndex",new{mainId = main.MainCategoryId})">
+                                @main.MainCategory
+                                <i class="fa-solid fa-chevron-down down-arrow"></i>
+                            </a>
+                            <ul id="collapse@(main.MainCategoryId)" class="collapse list-unstyled ps-3 ">
+                                <li><a name="MainCategoryId" class="text-decoration-none sub-link" href="@Url.Action("CollectIndex", new{mainId = main.MainCategoryId})">所有@(main.MainCategory)</a></li>
+
+                                @foreach (var sub in subcategoryList.Where(s => s.MainCategoryId == main.MainCategoryId))
+                                {
+                                    <li><a id="selectSub" name="SubcategoryId" class="text-decoration-none sub-link" href="@Url.Action("CollectIndex", new{subId = sub.SubcategoryId})">@sub.Subcategory</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="pb-3">
+                            <a id="selectMain" name="MainCategoryId" class="d-flex justify-content-between h5 text-decoration-none" href="@Url.Action("CollectIndex",new{mainId = main.MainCategoryId})">
+                                @main.MainCategory
+                            </a>
+                        </li>
+                    }
+
                 }
             </ul>
             <div class="d-grid">
@@ -145,22 +161,23 @@
             </div>
             <div class="row">
                 <ul class="pagination justify-content-end">
-                    @if (ViewData["CurrentPage"] != null && ViewData["TotalPage"] != null)
-                    {
+                    @{
                         int currentPage = (int)ViewData["CurrentPage"];
                         int totalPage = (int)ViewData["TotalPage"];
+                        // int stillCollect = (int)ViewData["StillCollect"];
+                        int currentSortBy = (int)(ViewData["CurrentSortBy"]?? 1);
 
-                        <li class="page-item @(currentPage == 1 ? "disabled":"")">
-                            <a class="page-link" href="@Url.Action("CollectIndex", new{page = currentPage - 1})">上一頁</a>
+                        <li class="page-item" style="@(currentPage == 1 ? "display:none":"")">
+                            <a class="page-link" href="@Url.Action("CollectIndex", new{page = currentPage - 1, sortBy = currentSortBy})">＜</a>
                         </li>
-                        @for (int i = 1; i <= totalPage; i++)
+                        for (int i = 1; i <= totalPage; i++)
                         {
                             <li class="page-item @(i == currentPage ? "active":"")">
-                                <a class="page-link" href="@Url.Action("CollectIndex", new{page=i})">@i</a>
+                                <a class="page-link" href="@Url.Action("CollectIndex", new{page = i, sortBy = currentSortBy})">@i</a>
                             </li>
                         }
-                        <li class="page-item @(currentPage == @totalPage ? "disabled":"")">
-                            <a class="page-link" href="@Url.Action("CollectIndex", new{page = currentPage + 1})">下一頁</a>
+                        <li class="page-item" style="@(currentPage == @totalPage || @totalPage == 0 ? "display:none":"")">
+                            <a class="page-link" href="@Url.Action("CollectIndex", new{page = currentPage + 1, sortBy = currentSortBy})">＞</a>
                         </li>
                     }
                 </ul>
@@ -175,7 +192,10 @@
 <script>
     document.getElementById("orderByStartDate").addEventListener("change", function () {
         var orderBySelect = this.value;
-        window.location.href = "@Url.Action("CollectIndex")" + "?page=1&sortBy=" + orderBySelect /* + "&mainId=" + mainId + "&subId=" + subId */;
+        var currentPage = new URL(window.location.href).searchParams.get("page") || 1;  //  當前頁數
+        var currentMain = new URL(window.location.href).searchParams.get("mainId"); //  當前主分類
+        var currentSub = new URL(window.location.href).searchParams.get("subId");   //  當前子分類
+
+        window.location.href = "@Url.Action("CollectIndex")" + "?page=" + currentPage + "&sortBy=" + orderBySelect + "&mainId=" + currentMain + "&subId=" + currentSub;
     })
 </script>
-
