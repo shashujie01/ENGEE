@@ -48,24 +48,24 @@ namespace WebApplication2.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public IActionResult Create(TMember p)
-        {//0:null  1:女生  2:男生
-            if (p.Gender == null)
-            {
+        //[HttpPost]
+        //public IActionResult Create(TMember p)
+        //{//0:null  1:女生  2:男生
+        //    if (p.Gender == null)
+        //    {
 
-                p.Gender = "0";
-            }
+        //        p.Gender = "0";
+        //    }
 
-            EngeeContext db = new EngeeContext();
-            db.TMembers.Add(p);
-            db.SaveChanges();
-            return RedirectToAction("List");
-
-
+        //    EngeeContext db = new EngeeContext();
+        //    db.TMembers.Add(p);
+        //    db.SaveChanges();
+        //    return RedirectToAction("List");
 
 
-        }
+
+
+        //}
 
 
 

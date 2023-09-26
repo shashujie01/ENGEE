@@ -267,13 +267,13 @@ public partial class EngeeContext : DbContext
             entity.Property(e => e.Access).HasDefaultValueSql("((1))");
             entity.Property(e => e.Address).HasMaxLength(200);
             entity.Property(e => e.Birth).HasColumnType("date");
-            entity.Property(e => e.CharityProof).HasMaxLength(1000);
+            entity.Property(e => e.CharityProof).HasMaxLength(50);
             entity.Property(e => e.Email)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.Fullname).HasMaxLength(100);
-            entity.Property(e => e.Gender).HasMaxLength(10);
             entity.Property(e => e.Introduction).HasMaxLength(200);
+            entity.Property(e => e.IsValidCharity).HasDefaultValueSql("((0))");
             entity.Property(e => e.Password)
                 .HasMaxLength(64)
                 .IsUnicode(false);

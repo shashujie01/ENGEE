@@ -63,11 +63,11 @@
             set { _member.Address = value; }
         }
 
-        public string Gender
-        {
-            get { return _member.Gender; }
-            set { _member.Gender = value; }
-        }
+        //public string Gender
+        //{
+        //    get { return _member.Gender; }
+        //    set { _member.Gender = value; }
+        //}
         public string Phone
         {
             get { return _member.Phone; }

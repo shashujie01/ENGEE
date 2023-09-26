@@ -4,6 +4,9 @@
     ViewBag.Title = Model.ProductName + " Details";
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
 <style>
     .product-image-section img {
         width: 250px;
@@ -22,6 +25,15 @@
     .message-details {
         font-size: 0.9em; /* 設定字體大小為基本大小 */
     }
+
+    .add-to-favorites.active {
+        background-color: #FFC197;
+        color: white;
+    }
+
+        .add-to-favorites.active .fa-heart {
+            color: white;
+        }
 </style>
 <main>
     <div class="container py-5">
@@ -88,7 +100,11 @@
                                 <div class="product-action-section d-flex">
                                     <button class="btn btn-m btnHoverStyle2 m-2 add-to-cart" type="button">加入購物車</button>
                                     <button class="btn btn-m btnHoverStyle2 m-2" type="submit" name="actionType" value="buyNow" class="buy-now">我要索取</button>
-                                    <button class="btn btn-m btnHoverStyle2 m-2 add-to-favorites" data-productid="@Model.ProductId" type="button">加入我的最愛</button>
+                                    @*       <button class="btn btn-m btnHoverStyle2 m-2 add-to-favorites" data-productid="@Model.ProductId" type="button">加入我的最愛</button> *@
+                                    <button class="btn btn-m btnHoverStyle2 m-2 add-to-favorites @(Model.IsFavorite ? "active" : "")" data-productid="@Model.ProductId" type="button">
+                                        <i class="fas fa-heart"></i> @(Model.IsFavorite ? "已加入我的最愛" : "加入我的最愛")
+                                    </button>
+
 
                                 </div>
                             </form>
@@ -114,7 +130,7 @@
                     <div class="message-content">@message.MessageContent</div>
                     <div class="message-details">
                         <p><strong>會員名稱</strong>: @message.Member.Username</p>
-                        <p><strong>留言時間</strong> @message.MessageDate.ToString("yyyy-MM-dd HH:mm:ss")</p>
+                        <p><strong>留言時間</strong> @message.MessageDate.Value.ToString("yyyy-MM-dd HH:mm:ss")</p>
                         <!-- 您可以根據需要添加其他相關信息，例如留言時間、用戶名等 -->
                     </div>
 
@@ -177,67 +193,74 @@
 
         $('.add-to-cart, .buy-now').on('click', function (e) {
             e.preventDefault();
-            // ...
             $.ajax({
                 // ...
                 success: function (response) {
-                    alert("已加入購物車");
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: '已加入購物車',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert("添加失敗，請稍後再試");
-                }
-            }); // <-- 這裡應該要有一個結束括號。
-        });
-        $('.add-to-favorites').on('click', function () {
-            console.log("Clicked add-to-favorites!");  // 添加此行
-            const productId = $(this).data('productid');
-            $.ajax({
-                url: '/Favorite/AddToFavorites',
-                method: 'POST',
-                data: {
-                    productId: productId,
-                    addFavoriteType: true // 這裡固定為true，代表1
-                },
-                success: function (response) {
-                  
-                    if (response.redirectToLogin) {
-                        window.location.href = "/Home/Login";  // 這是導向登入頁面的路徑
-                    } else if (response.success) {
-                        alert('成功加入到我的最愛！');
-                    } else {
-                        alert(response.message || '加入失敗，請稍後再試！');
-                    }
-                },
-                error: function (error) {
-                    alert('加入失敗，請稍後再試！');
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: '添加失敗，請稍後再試',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
             });
         });
- @*        $('.add-to-favorites').on('click', function () {
-            const productId = $(this).data('productid');
-            $.ajax({
-                url: '/Favorite/AddToFavorites',
-                method: 'POST',
-                data: {
-                    productId: productId,
-                    addFavoriteType: true // 這裡固定為true，代表1
-                },
-                success: function (response) {
-                    if (response.redirectToLogin) {
-                        // 重新導向到登入頁面
-                        window.location.href = "/Home/Login";  // 假設您的登入頁面路由是/Home/Login
-                    } else if (response.success) {
-                        alert('成功加入到我的最愛！');
-                    } else {
-                        alert(response.message);  // 顯示後端返回的具體錯誤消息
-                    }
-                },
-                error: function (error) {
-                    alert('加入失敗，請稍後再試！');
-                }
-            });
-        }); *@
 
+        $('.add-to-favorites').on('click', function () {
+            const $thisButton = $(this);
+            const productId = $thisButton.data('productid');
+
+            $.ajax({
+                url: '/Favorite/AddToFavorites',
+                method: 'POST',
+                data: {
+                    productId: productId,
+                    addFavoriteType: true
+                },
+                success: function (response) {
+                    if (response.redirectToLogin) {
+                        window.location.href = "/Home/Login";
+                    } else if (response.success) {
+                        Swal.fire({
+                            position: 'top-right',
+                            icon: 'success',
+                            title: '成功加入我的最愛！',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        $thisButton.addClass('active');
+                        $thisButton.html('<i class="fas fa-heart"></i> 已加入我的最愛');
+                    } else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            title: response.message || '加入失敗，請稍後再試！',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'error',
+                        title: '加入失敗，請稍後再試！',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        });
     });
 </script>
 
