@@ -112,25 +112,37 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditPassword(string oldPassword, string NewPassword)
+        public IActionResult EditPassword(CHI_CMemberWrap vm)
         {
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             TMember loggedInUser = JsonSerializer.Deserialize<TMember>(userJson);
 
-            if (loggedInUser != null && ValidateOldPassword(loggedInUser, oldPassword))
+            if (loggedInUser != null)
             {
-                string hashedNewPassword = HashPassword(NewPassword);
+                // 檢查新密碼是否有效，這裡你需要實現 HashPassword 方法
+                string hashedNewPassword = HashPassword(vm.NewPassword);
+
+                // 更新用戶的密碼
                 loggedInUser.Password = hashedNewPassword;
 
+                // 保存更新後的用戶數據到資料庫
+                EngeeContext db = new EngeeContext();
+                TMember memDb = db.TMembers.FirstOrDefault(t => t.MemberId == loggedInUser.MemberId);
+
+                if (memDb != null)
+                {
+                    memDb.Password = hashedNewPassword;
+                    db.SaveChanges();
+                }
+
+                // 將更新後的用戶數據序列化並存儲回 Session
                 string updatedUserJson = JsonSerializer.Serialize(loggedInUser);
                 HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER, updatedUserJson);
 
-                TempData["SuccessMessage"] = "密碼更新成功";
-                return View();
+                return RedirectToAction("UserProfile");
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "舊密碼不正確");
                 return View();
             }
         }
@@ -150,59 +162,68 @@ namespace EnGee.Controllers
                 return builder.ToString();
             }
         }
-        private bool ValidateOldPassword(TMember user, string oldPassword)
-        {
-            return user.Password == oldPassword;
-        }
-        public IActionResult Apply(int? id)
-        {
-            if (id == null)
-                return RedirectToAction("UserProfile");
-            EngeeContext db = new EngeeContext();
-            TMember mem = db.TMembers.FirstOrDefault(t => t.MemberId == id);
-            if (mem == null)
-                return RedirectToAction("UserProfile");
-            CHI_CMemberWrap memWp = new CHI_CMemberWrap();
-            memWp.member = mem;
-            return View(memWp);
-        }
+      
+         public IActionResult Apply(int? id)
+            {
+                if (id == null)
+                    return RedirectToAction("UserProfile");
+                EngeeContext db = new EngeeContext();
+                TMember mem = db.TMembers.FirstOrDefault(t => t.MemberId == id);
+                if (mem == null)
+                    return RedirectToAction("UserProfile");
+                CHI_CMemberWrap memWp = new CHI_CMemberWrap();
+                memWp.member = mem;
+                return View(memWp);
+            }
         [HttpPost]
         public IActionResult Apply(CHI_CMemberWrap memIn)
         {
             EngeeContext db = new EngeeContext();
             TMember memDb = db.TMembers.FirstOrDefault(t => t.MemberId == memIn.MemberId);
+
             if (memDb != null)
             {
                 if (memIn.photoCharityProof != null && memIn.photoCharityProof.Length > 0)
                 {
-                    Console.WriteLine(memIn.photoCharityProof);
                     // 取得圖檔類型
-                    var fileExtension = Path.GetExtension(memIn.photoCharityProof.FileName).ToLower();
+                    string fileExtension = Path.GetExtension(memIn.photoCharityProof.FileName).ToLower();
 
                     // 檢查圖檔類型
                     if (fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png")
                     {
-                        string photoName = Guid.NewGuid().ToString() + fileExtension;
-                        Console.WriteLine("Generated photoName: " + photoName);
-                        string path = _enviro.WebRootPath + "/images/CharityProof/" + photoName;
-                        memIn.photoCharityProof.CopyTo(new FileStream(path, FileMode.Create));
+                        // 生成唯一文件名
+                        string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                        string photoName = timestamp + fileExtension;
+
+                        // 保存路徑
+                        string path = Path.Combine(_enviro.WebRootPath, "images", "CharityProof", photoName);
+
+                        // 保存文件
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            memIn.photoCharityProof.CopyTo(stream);
+                        }
+
+                        // 更新資料庫
                         memDb.CharityProof = photoName;
                     }
                     else
                     {
-
-                        ModelState.AddModelError("photo", "只接受jpg、jpeg和png格式的圖片");
+                        ModelState.AddModelError("photoCharityProof", "只接受jpg、jpeg和png格式的圖片");
                         return View(memIn);
                     }
+
                 }
+
                 memDb.Fullname = memIn.Fullname;
                 memDb.Username = memIn.Username;
 
                 db.SaveChanges();
 
-                // 儲存新的頭像
-                //HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER_PHOTO, memDb.CharityProof);
+                // 儲存新的照片
+                HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER_PHOTO, memDb.CharityProof);
             }
+
             return RedirectToAction("UserProfile");
         }
 

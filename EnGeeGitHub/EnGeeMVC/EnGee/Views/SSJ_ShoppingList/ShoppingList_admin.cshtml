@@ -1,13 +1,10 @@
 ﻿@model EnGee.ViewModel.SSJ_ShoppingListCombinedViewModel
 
 @{
+    Layout = "_LayoutAdmin";
     ViewData["Title"] = "ShoppingList_admin";
     ViewBag.HeaderTitle = "訂單管理(管理員)";
 }
-@{
-    Layout = "_Layout";
-}
-
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
@@ -98,7 +95,7 @@
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
-<div class="container m-0">
+<div class="container">
 
 @*     <div class="modal" tabindex="-1" role="dialog" id="editOrderModal">
         <div class="modal-dialog" role="document">
@@ -214,7 +211,6 @@
         </div>
     </div>  *@
 @* ----------------------------------------- *@
-
     <table class="table table-danger table-striped mt-2 table-vertical-center" style="font-size: 14px;">
     <thead>
         <tr>
@@ -335,7 +331,6 @@
     </tbody>
 </table>
 </div>
-
 @section Scripts {
     <script>
 

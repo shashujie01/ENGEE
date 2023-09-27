@@ -1,25 +1,27 @@
 ﻿@model EnGee.Models.TMember
 
 <style>
-    .spanvaildation{
-        font-size:10px;
-        color:red;
-        opacity:0.5;
+    .spanvaildation {
+        font-size: 10px;
+        color: red;
+        opacity: 0.5;
     }
 
     ::placeholder {
         font-size: 10px;
         color: tomato;
     }
-    .displayinline{
-        display:inline;
+
+    .displayinline {
+        display: inline;
     }
-    .W550{
-        width:550px;
+
+    .W550 {
+        width: 550px;
     }
 </style>
 
- 
+
 <h1 style="text-align:center; ">註冊表單</h1>
 
 
@@ -27,79 +29,79 @@
 <form asp-action="Create" class=" container-md W550">
 
 
-    <main >
+    <main>
         <div class="row">
 
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Username" class="control-label"></label>
-                    <input asp-for="Username" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" />
-                    <span asp-validation-for="Username" class="spanvaildation"></span>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" />
+                <span asp-validation-for="Username" class="spanvaildation"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <div class="input-group">
+                    <input asp-for="Password" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" type="password" id="passwordInput" name="password" />  <!--新增模型綁定name，傳給控制器-->
+                    <span class="input-group-text" onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
+                        <i id="passwordIcon" class="fa fa-eye"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
+                    </span>
                 </div>
+                <span asp-validation-for="Password" class="spanvaildation"></span>
 
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label"></label>
-                    <div class="input-group">
-                        <input asp-for="Password" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" type="password" id="passwordInput" name="password" />  <!--新增模型綁定name，傳給控制器-->
-                        <span class="input-group-text" onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
-                            <i id="passwordIcon" class="fa fa-eye"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
-                        </span>
-                    </div>
-                    <span asp-validation-for="Password" class="spanvaildation"></span>
+            </div>
 
-                </div>
-                
 
-                <div class="form-group">
-                    <label asp-for="Email" class="control-label"></label>
-                    <input asp-for="Email" class="form-control " placeholder="此欄位必塡" name="email" />   <!--新增模型綁定name，傳給控制器-->
-                    <span asp-validation-for="Email" class="spanvaildation"></span>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control " placeholder="此欄位必塡" name="email" />   <!--新增模型綁定name，傳給控制器-->
+                <span asp-validation-for="Email" class="spanvaildation"></span>
 
-                </div>
-                <div class="form-group">
-                    <label asp-for="Fullname" class="control-label"></label>
-                    <input asp-for="Fullname" class="form-control" />
-                    <span asp-validation-for="Fullname" class="spanvaildation"></span>
-                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fullname" class="control-label"></label>
+                <input asp-for="Fullname" class="form-control" />
+                <span asp-validation-for="Fullname" class="spanvaildation"></span>
+            </div>
 
-                <div class="form-group mt-3">
-                    <input type="radio" name="gender" value="0"> Male
-                    <input type="radio" name="gender" value="1"> Female
-                    <input type="radio" name="gender" value="2"> 不透漏
+            <div class="form-group mt-3">
+                <input type="radio" name="gender" value="0"> Male
+                <input type="radio" name="gender" value="1"> Female
+                <input type="radio" name="gender" value="2"> 不透漏
 
-                    <span asp-validation-for="Gender" class="spanvaildation"></span>
+                <span asp-validation-for="Gender" class="spanvaildation"></span>
 
-                </div>
+            </div>
 
 
 
-                <div class="form-group">
-                    <label asp-for="Address" class="control-label"></label>
-                    <input asp-for="Address" class="form-control " placeholder="此欄位必塡" />
-                    <span asp-validation-for="Address" class="spanvaildation"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Phone" class="control-label"></label>
-                    <input asp-for="Phone" class="form-control" placeholder="此欄位必塡" />
-                    <span asp-validation-for="Phone" class="spanvaildation"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control " placeholder="此欄位必塡" />
+                <span asp-validation-for="Address" class="spanvaildation"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" placeholder="此欄位必塡" />
+                <span asp-validation-for="Phone" class="spanvaildation"></span>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="Birth" class="control-label"></label>
-                    <input asp-for="Birth" class="form-control" type="date" />
-                    <span asp-validation-for="Birth" class=" spanvaildation"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="Birth" class="control-label"></label>
+                <input asp-for="Birth" class="form-control" type="date" />
+                <span asp-validation-for="Birth" class=" spanvaildation"></span>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="PhotoPath" class="control-label"></label>
-                    <input asp-for="PhotoPath" class="form-control form-control" type="file" />
-                    <span asp-validation-for="PhotoPath" class="spanvaildation"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Introduction" class="control-label"></label>
-                    <input asp-for="Introduction" class="form-control" />
-                    <span asp-validation-for="Introduction" class=" spanvaildation"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="PhotoPath" class="control-label"></label>
+                <input asp-for="PhotoPath" class="form-control form-control" type="file" />
+                <span asp-validation-for="PhotoPath" class="spanvaildation"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Introduction" class="control-label"></label>
+                <input asp-for="Introduction" class="form-control" />
+                <span asp-validation-for="Introduction" class=" spanvaildation"></span>
+            </div>
 
 
         </div>
@@ -112,11 +114,11 @@
                 <a asp-action="Index" asp-controller="Home" class="btn btn-primary">取消</a>
             </div>
         </div>
-            
+
 
     </main>
-    
-   
+
+
 </form>
 
 
@@ -125,7 +127,7 @@
         Vue.createApp({
             data() {
                 return {
-                    
+
                     gender: '', // 不預設
                 }
             },
@@ -140,7 +142,7 @@
 <script>
     function togglePasswordVisibility(inputId, iconId) {
         //綁定id//
-        const passwordInput = document.getElementById(inputId);   
+        const passwordInput = document.getElementById(inputId);
         const icon = document.getElementById(iconId);
         //建立規則
         if (passwordInput.type === 'password') {
@@ -156,5 +158,7 @@
 </script>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

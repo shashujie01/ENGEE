@@ -143,9 +143,9 @@
                 <span asp-validation-for="ProductSaleStatus" class="text-danger"></span>
             </div>
             <div class="form-group mt-3 d-flex justify-content-center">
-                <button type="button" class="btn btn-primary me-5" onclick="location.href='@Url.Action("Index")'">返回</button>
+                <input type="reset" value="取消" class="btn btn-info me-5" />
                 <button type="button" class="btn btn-success ms-5 me-5" id="submitBtn">上架</button>
-                <input type="reset" value="取消" class="btn btn-danger ms-5" />
+                    <button type="button" class="btn btn-danger ms-5" onclick="location.href='@Url.Action("Index")'">返回</button>
             </div>
         </form>
     </div>

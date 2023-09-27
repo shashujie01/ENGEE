@@ -23,7 +23,6 @@
 </style>
 <h2 style="text-align:center " class="mt-3">會員中心管理</h2>
 
-
 <div class="container py-5 ">
     @using (Html.BeginForm())
     {
@@ -115,7 +114,10 @@
                         <th style="white-space: nowrap;text-align: center">
                             @Html.DisplayNameFor(model => model.IsValidCharity)
                         </th>
-                        <th>
+                          <th style="white-space: nowrap;text-align: center">
+                            修改
+                        </th>
+                        <th style="white-space: nowrap;text-align: center">
                             刪除
                         </th>
 
@@ -125,7 +127,7 @@
                     @{
                         int count = 0;
                         string displayAccess = "";
-                        string displayGender = string.Empty;
+                        string displayGender = "";
 
                         foreach (var item in Model)
                         {
@@ -177,9 +179,6 @@
                                 <td style="white-space: nowrap;text-align: center">
                                     @Html.DisplayFor(modelItem => item.Fullname)
                                 </td>
-                                <td style="white-space: nowrap;text-align: center">
-                                    @item.Gender  <!-- 這裡確認一下資料是否正確傳遞 -->
-                                </td>
 
                                 <td style="white-space: nowrap;text-align: center">
                                     @displayGender
@@ -208,17 +207,20 @@
                                 <td style="white-space: nowrap;text-align: center">
                                     @Html.DisplayFor(modelItem => item.IsValidCharity)
                                 </td>
-
-                                <td style="white-space: nowrap;text-align: center">
-                                    @Html.ActionLink("刪除", "Delete","Min_backmanage", new { id=item.MemberId  }, new {onclick="return confirm('確定要刪除嗎?')"})
+                                 <td style="white-space: nowrap;text-align: center">
+                                    @Html.ActionLink("修改", "Edit","Min_backmanage", new { id=item.MemberId},new { @class = "btn btn-outline-info" })
                                 </td>
+                                <td style="white-space: nowrap;text-align: center">
+                                    @Html.ActionLink("刪除", "Delete", "Min_backmanage", new { id = item.MemberId }, new { @class = "btn btn-outline-info", onclick = "return confirm('確定要刪除嗎?');" })
+
+                                </td>
+
                             </tr>
                         }
                     }
                 </tbody>
             </table>
-        </div>
-
+        </div>        
     </div>
     <script>
         var jq = jQuery.noConflict();
@@ -243,7 +245,3 @@
         });
     </script>
 </div>
-
-
-
-@* =======================JS================== *@

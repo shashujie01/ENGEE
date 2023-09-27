@@ -1,13 +1,19 @@
 ﻿@{
     Layout = "_LayoutIndex";
 }
-<style>   
+<style>
     .connected-message {
         background-color: #ede1e3;
-    }  
+    }
+
     .disconnected-message {
         background-color: #e1f1e7;
-    }    
+    }
+
+    .private-message {
+        background-color: #d1dfe8;
+    }
+
     .default-message {
         background-color: #c9cbe0;
     }
@@ -19,38 +25,39 @@
     .swal2-modal .swal2-title {
         font-size: 1.4em;
     }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <body class="container">
 
-<div class="row">
-    <div class="col-12">
-        <h3>聊天室</h3>
-            <div class="list-group" id="Content" style="height: 330px; overflow-y: auto; background-color: #edeef0;">            
+    <div class="row">
+        <div class="col-12">
+            <h3>聊天室</h3>
+            <div class="list-group" id="Content" style="height: 330px; overflow-y: auto; background-color: #edeef0;">
             </div>
+        </div>
     </div>
-</div>
 
-<div class="row mt-3">
-    <div class="col-8">
+    <div class="row mt-3">
+        <div class="col-8">
             <h4>名稱: <span id="SelfID"></span></h4>
-        <div class="mb-3">
-            <label for="message" class="form-label">發送訊息</label>
-            <input type="text" class="form-control" id="message">
+            <div class="mb-3">
+                <label for="message" class="form-label">發送訊息</label>
+                <input type="text" class="form-control" id="message">
+            </div>
+            <div class="mb-3">
+                <label for="sendToID" class="form-label">私訊(輸入使用者名稱)</label>
+                <input type="text" class="form-control" id="sendToID">
+            </div>
+            <button type="button" class="btn btn-primary " id="sendButton">傳送訊息</button>
         </div>
-        <div class="mb-3">
-            <label for="sendToID" class="form-label">私訊(輸入使用者名稱)</label>
-            <input type="text" class="form-control" id="sendToID">
-        </div>
-        <button type="button" class="btn btn-primary " id="sendButton">傳送訊息</button>
-    </div>
-    <div class="col-4">
-        <h4>線上使用者</h4>
+        <div class="col-4">
+            <h4>線上使用者</h4>
             <ul class="list-group" id="IDList" style="height: 200px; overflow-y: auto;">
             </ul>
+        </div>
     </div>
-</div>
 </body>
 
 @section scripts{
@@ -109,6 +116,8 @@
                 listItem.addClass("connected-message");
             } else if (msg.indexOf("離開聊天室") !== -1) {
                 listItem.addClass("disconnected-message");
+            } else if (msg.indexOf("私訊") !== -1) {
+                listItem.addClass("private-message");
             } else {
                 listItem.addClass("default-message");
             }
@@ -130,8 +139,8 @@
                     $('#message').val('');
                 })
                 .catch(function (err) {
-                alert('傳送錯誤: ' + err.toString());                
-            });
+                    alert('傳送錯誤: ' + err.toString());
+                });
         });
 
         $('#message').on('keydown', function (event) {
@@ -153,11 +162,11 @@
             }
         });
 
-        function login(){
+        function login() {
             const userId = prompt("請輸入您的名稱：");
             if (userId) {
                 // 使用者提供了ID，將其傳遞到後端
-        
+
                 connection.invoke("SetUserId", userId).catch(err => console.error(err));
             }
             else {
