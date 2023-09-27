@@ -65,8 +65,8 @@ public partial class TMember
     [NotMapped]
     public string? RandomToken { get; set; }
     public string? CharityProof { get; set; }
-
-    public string? IsValidCharity { get; set; }
+    [DisplayName("公益團體認證")]
+    public bool? IsValidCharity { get; set; }
     public virtual ICollection<TCase> TCases { get; set; } = new List<TCase>();
 
     public virtual ICollection<TCollect> TCollects { get; set; } = new List<TCollect>();
