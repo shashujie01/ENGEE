@@ -212,7 +212,9 @@ namespace EnGee.Controllers
                         ModelState.AddModelError("photoCharityProof", "只接受jpg、jpeg和png格式的圖片");
                         return View(memIn);
                     }
+
                 }
+
                 memDb.Fullname = memIn.Fullname;
                 memDb.Username = memIn.Username;
 

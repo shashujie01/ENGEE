@@ -15,8 +15,9 @@
     .displayinline {
         display: inline;
     }
-    .box{
-        width:550px;
+
+    .box {
+        width: 550px;
     }
 
     .custom-button {
@@ -25,8 +26,7 @@
         padding: 0;
         text-align: center;
         cursor: pointer;
-        color:pink;
-
+        color: pink;
     }
 </style>
 
@@ -50,7 +50,7 @@
             <div class="input-group">
                 <input asp-for="Password" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" type="password" id="passwordInput" name="password" />  <!--新增模型綁定name，傳給控制器-->
                 <span class="input-group-text" onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
-                    <i id="passwordIcon" class="fa fa-eye-slash"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
+                    <i id="passwordIcon" class="fa fa-eye"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
                 </span>
             </div>
             <span asp-validation-for="Password" class="spanvaildation"></span>
@@ -61,7 +61,7 @@
             <div class="input-group">
                 <input asp-for="RePassword" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" type="password" id="rePasswordInput" />
                 <span class="input-group-text" onclick="togglePasswordVisibility('rePasswordInput', 'rePasswordIcon')">
-                    <i id="passwordIcon" class="fa fa-eye-slash"></i>  <!--javascript建立事件/眼睛icon查看輸入的密碼-->
+                    <i id="rePasswordIcon" class="fa fa-eye"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
                 </span>
             </div>
             <span asp-validation-for="RePassword" class="spanvaildation"></span>
@@ -88,28 +88,28 @@
 
         </div>
 
-        
 
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control " placeholder="此欄位必塡" />
-                <span asp-validation-for="Address" class="spanvaildation"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" placeholder="此欄位必塡" />
-                <span asp-validation-for="Phone" class="spanvaildation"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Birth" class="control-label"></label>
-                <input asp-for="Birth" class="form-control" type="date" />
-                <span asp-validation-for="Birth" class=" spanvaildation"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Address" class="control-label"></label>
+            <input asp-for="Address" class="form-control " placeholder="此欄位必塡" />
+            <span asp-validation-for="Address" class="spanvaildation"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Phone" class="control-label"></label>
+            <input asp-for="Phone" class="form-control" placeholder="此欄位必塡" />
+            <span asp-validation-for="Phone" class="spanvaildation"></span>
+        </div>
 
-           
+        <div class="form-group">
+            <label asp-for="Birth" class="control-label"></label>
+            <input asp-for="Birth" class="form-control" type="date" />
+            <span asp-validation-for="Birth" class=" spanvaildation"></span>
+        </div>
 
-        
+
+
+
         <div class="d-flex justify-content-center align-items-center btn btn-outline-dark">
             <input type="submit" value="送出修改" asp-action="List" asp-controller="Min_backmanage" class="custom-button" />
         </div>
@@ -135,12 +135,12 @@
         //建立規則
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        } else {
-            passwordInput.type = 'password';
             icon.classList.remove('fa-eye');
             icon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
         }
     }
 </script>
