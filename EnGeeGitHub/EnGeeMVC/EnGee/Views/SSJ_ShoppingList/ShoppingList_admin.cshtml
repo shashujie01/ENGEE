@@ -57,6 +57,44 @@
         vertical-align: middle;
     }
 
+    /* 使所有label和input靠左對齊 */
+    label, input[type="text"] {
+        text-align: left;
+        margin-top: 12px;
+        display: inline-block;
+    }
+
+
+    label {
+        width: 135px; 
+    }
+
+
+    table {
+        margin: 0px;
+    }
+
+    .table {
+        margin: 0px;
+    }
+
+    td {
+        border: 0;
+    }
+
+    .detail-row {
+        border-bottom: 2px solid #BAA1A3;
+    }
+
+    tr td {
+        text-align: center
+    }
+
+    th {
+        text-align: center
+    }
+
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
@@ -191,7 +229,7 @@
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單類型</th>
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">買家ID</th>
                 @* <th class="tableoutside" style="white-space: nowrap;text-align: center;">買家</th> *@
-                <th class="tableoutside" style="white-space: nowrap;text-align: center;">超取超商店號</th>
+                @*@<th class="tableoutside" style="white-space: nowrap;text-align: center;">超取超商店號</th>*@
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">運費點數</th>
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單總花費</th>
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">功能鈕</th>
@@ -231,9 +269,9 @@
                             @*<td style="text-align: center;">
                                     @Html.DisplayFor(modelItem => order.BuyerUsername)
                             </td>*@
-                            <td style="text-align: center;">
+                           @* <td style="text-align: center;">
                                     @Html.DisplayFor(modelItem => order.ConvienenNum)
-                            </td>
+                            </td>*@
                             <td style="text-align: center;">
                                     @Html.DisplayFor(modelItem => order.DeliveryFee)
                             </td>
@@ -251,15 +289,10 @@
                             <div class="btn btn-sm btn-danger me-2 ">
                                         <a class="text-black" href="#" onclick="confirmDelete(@order.OrderID); return false;">刪除</a>
                                     </div>
-
                                 </td>
-
                          </tr>
-                            @foreach (var orderDetail in Model.OrderDetails.Where(od => od.OrderID == order.OrderID))
-                {
-                                <tr class="collapse" id="details-@order.OrderID">
+                    <tr class="collapse detail-row-title" id="details-@order.OrderID">
                                 <td colspan="24">
-                                    <!-- 你需要確認這個colspan值是多少 -->
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -276,6 +309,8 @@
                                             <th>寄送地址</th>
                                             </tr>
                                         </thead>
+                            @foreach (var orderDetail in Model.OrderDetails.Where(od => od.OrderID == order.OrderID))
+                {
                                         <tbody>
                                             <tr>
                                                     @*<td><img class="card-img img-fluid" src="@orderDetail.ProductImagePath" alt="@orderDetail.ProductName" width="50" /></td>*@
@@ -291,10 +326,10 @@
                                                     <td>@Html.DisplayFor(modelItem => orderDetail.DeliveryAddress)</td>
                                             </tr>
                                         </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                }
+                                }
+                            </table>
+                        </td>
+                    </tr>
             }
         }
     </tbody>
@@ -366,11 +401,12 @@
             let htmlContent = generateHtmlContent(data);
             // alert("About to show Swal!");
             Swal.fire({
-                title: 'Edit Order Details',
+                title: '修改訂單',
                 html: htmlContent,
                 focusConfirm: false,
                 showCancelButton: true,
-                cancelButtonText: '取消'
+                cancelButtonText: '取消',
+                confirmButtonText: '儲存'
             }).then((result) =>
             {
                 if (result.value)
@@ -389,71 +425,73 @@
         function generateHtmlContent(data)
         {//根據API數據生成HTML內容。
             let htmlContent = `
+                                <div class="">訂單資料:</div>
                         <label>訂單編號:</label>
                         <input type="text" id="swal-input-orderid" value="${data.orders[0].orderID}"readonly><br>
 
                         <label>訂購日期:</label>
-                        <input type="text" id="swal-input-orderdate" value="${data.orders[0].orderDate}"><br>
+                                <input type="text" id="swal-input-orderdate" value="${data.orders[0].orderDate}"readonly><br>
 
                         <label>總花費點數:</label>
-                        <input type="text" id="swal-input-orderTotalUsagePoints" value="${data.orders[0].orderTotalUsagePoints}"><br>
+                                <input type="text" id="swal-input-orderTotalUsagePoints" value="${data.orders[0].orderTotalUsagePoints}" readonly><br>
 
                         <label>買家ID:</label>
-                        <input type="text" id="swal-input-buyerID" value="${data.orders[0].buyerID}"><br>
+                                <input type="text" id="swal-input-buyerID" value="${data.orders[0].buyerID}"readonly><br>
 
                         @*<label>buyerUsername:</label>
                         <input type="text" id="swal-input-buyerUsername" value="${data.orders[0].buyerUsername}"readonly><br>*@
 
-                        <label>訂單狀態編號:</label>
+                        <label>訂單狀態編號*:</label>
                         <input type="text" id="swal-input-orderStatus" value="${data.orders[0].orderStatus}"><br>
 
                         <label>訂單狀態:</label>
                         <input type="text" id="swal-input-orderStatusDescription" value="${data.orders[0].orderStatusDescription}"readonly><br>
 
-                        <label>訂單編號:</label>
+                                <label>訂單分類編號*:</label>
                         <input type="text" id="swal-input-orderCatagory" value="${data.orders[0].orderCatagory}"><br>
 
                                 <label>訂單分類:</label>
                         <input type="text" id="swal-input-orderCatagoryDescription" value="${data.orders[0].orderCatagoryDescription}"readonly><br>
 
-                        <label>convienenNum:</label>
-                        <input type="text" id="swal-input-convienenNum" value="${data.orders[0].convienenNum}"><br>
+                        @*<label>convienenNum:</label>
+                        <input type="text" id="swal-input-convienenNum" value="${data.orders[0].convienenNum}"><br>*@
 
-                        <label>運費:</label>
-                        <input type="text" id="swal-input-deliveryFee" value="${data.orders[0].deliveryFee}"><br><hr><hr>
+                        <label>運費*:</label>
+                                <input type="text" id="swal-input-deliveryFee" value="${data.orders[0].deliveryFee}"><br><hr><br><hr>
+                                         <div class="">訂單明細資料: </div>
             `;
 
             data.orderDetails.forEach(detail =>
-            {
+            {  
                 htmlContent += `
                         <label>訂單明細編號:</label>
                                     <input type="text" id="swal-input-orderDetailID-${detail.orderDetailID}" value="${detail.orderDetailID}"readonly><br>
 
-                            <label>商品編號:</label>
+                            <label>商品編號*:</label>
                                     <input type="text" id="swal-input-productID-${detail.orderDetailID}" value="${detail.productID}"><br>
 
                             @*<label>productName:</label>
                             <input type="text" id="swal-input-productname-${detail.orderDetailID}" value="${detail.productName}"readonly><br>*@
 
                             <label>商品單價(點):</label>
-                            <input type="text" id="swal-input-productUnitPoint-${detail.orderDetailID}" value="${detail.productUnitPoint}"><br>
+                                    <input type="text" id="swal-input-productUnitPoint-${detail.orderDetailID}" value="${detail.productUnitPoint}"readonly><br>
 
-                             <label>購買數量:</label>
+                             <label>購買數量*:</label>
                             <input type="text" id="swal-input-orderQuantity-${detail.orderDetailID}" value="${detail.orderQuantity}"><br>
 
                             <label>賣家ID:</label>
-                            <input type="text" id="swal-input-sellerID-${detail.orderDetailID}" value="${detail.sellerID}"><br>
+                                    <input type="text" id="swal-input-sellerID-${detail.orderDetailID}" value="${detail.sellerID}"readonly><br>
 
                              @*<label>sellerUsername:</label>
                             <input type="text" id="swal-input-sellerUsername-${detail.orderDetailID}" value="${detail.sellerUsername}"readonly><br>*@
 
-                                    <label>寄送方式ID:</label>
+                                    <label>寄送方式ID*:</label>
                             <input type="text" id="swal-input-deliveryTypeID-${detail.orderDetailID}" value="${detail.deliveryTypeID}"><br>
 
                              @* <label>deliveryType:</label>
                             <input type="text" id="swal-input-deliveryType-${detail.orderDetailID}" value="${detail.deliveryType}"readonly><br>*@
 
-                             <label>寄送地址:</label>
+                             <label>寄送地址*:</label>
                             <input type="text" id="swal-input-deliveryAddress-${detail.orderDetailID}" value="${detail.deliveryAddress}"><br><hr>
                         `
             });
@@ -479,12 +517,12 @@
             const updatedData = {
                 orders: [{
                     orderID: parseInt(document.getElementById('swal-input-orderid').value, 10),
-                    orderDate: new Date(document.getElementById('swal-input-orderdate').value),  // Assuming the input is in a valid date-time format
+                    orderDate: new Date(document.getElementById('swal-input-orderdate').value), 
                     orderTotalUsagePoints: parseInt(document.getElementById('swal-input-orderTotalUsagePoints').value, 10),
                     buyerID: parseInt(document.getElementById('swal-input-buyerID').value, 10),
-                    orderStatus: document.getElementById('swal-input-orderStatus').value.toString(),  // Ensure it's a string
+                    orderStatus: document.getElementById('swal-input-orderStatus').value.toString(), 
                     orderCatagory: parseInt(document.getElementById('swal-input-orderCatagory').value, 10),
-                    convienenNum: document.getElementById('swal-input-convienenNum').value.toString(), // Ensure it's a string
+                    @*convienenNum: document.getElementById('swal-input-convienenNum').value.toString(),*@ 
                     deliveryFee: parseInt(document.getElementById('swal-input-deliveryFee').value, 10)
 
                 }],
@@ -510,7 +548,7 @@
                 .then(data =>
                 {
                     alert("訂單已更新成功");
-                    window.location.reload();  // 刷新頁面
+                    window.location.reload(); 
                 })
                 .catch(error =>
                 {
