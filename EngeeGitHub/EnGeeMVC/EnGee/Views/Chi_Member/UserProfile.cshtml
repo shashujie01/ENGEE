@@ -26,14 +26,14 @@
             break;
     }
 }
+
 <head>
     <link rel="stylesheet" href="~/css/CHIACHI_UserProfile.css">
-</head>
-<body>@*
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
+</head>
+<body>
+
 
     <div class="container emp-profile bg-white">
         <form method="post">
@@ -82,11 +82,12 @@
                     </div>
                 </div>
             </div>
+            <!-- 會員左側顯示板 -->
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-work">
                         <p class="proile-rating">綜合評價</p>
-                        <span>8/10</span>
+                        <span>⭐⭐⭐⭐</span>
                         <p>個人簡介</p>                        
                         <div>
                             @Model.Introduction
@@ -97,20 +98,49 @@
                     <div class="tab-content profile-tab" id="myTabContent">
                         <!-- 買方評價内容 -->
                         <div class="tab-pane fade show active" id="buyer" role="tabpanel" aria-labelledby="profile-tab">
-                            <h3>買方評價</h3>
-                            <p>这里是買方評價的内容。</p>
+                            <p>ADELYN </p>
+                            ⭐⭐⭐⭐⭐
+                            <span>CP值超高❤️❤️❤️</span>
+                            <hr />
+                            <p>MURPHY </p>
+                            ⭐⭐⭐⭐⭐
+                            <span>讚👍👍👍👍👍👍👍</span>
+                            <hr />
+                            <p>Lauren</p>
+                            ⭐
+                            <span>包裝品質不好</span>
+                            <hr />
+                            <p>VICTORIA RYAN</p>
+                            ⭐⭐⭐⭐⭐
+                            <span>出貨快速❤️</span>
                         </div>
 
                         <!-- 賣方評價内容 -->
                         <div class="tab-pane fade" id="seller" role="tabpanel" aria-labelledby="seller-tab">
-                            <h3>賣方評價</h3>
-                            <p>这里是賣方評價的内容。</p>
+                            <p>FISCHER</p>
+                            ⭐⭐⭐⭐
+                            <span>好買家~取貨快速</span>
+                            <hr />
+                            <p>SERRANO</p>
+                            ⭐⭐⭐⭐⭐
+                            <span>貼心的買家👍</span>
+                            <hr />
+                            <p>PATTON</p>
+                            ⭐⭐
+                            <span>殺價人狠話不多</span>
+                            <hr />
+                            <p>HODGES</p>
+                            ⭐⭐⭐⭐⭐
+                            <span>愉快的交易~~~👍❤️</span>
                         </div>
 
                         <!-- 我的點數内容 -->
                         <div class="tab-pane fade" id="points" role="tabpanel" aria-labelledby="points-tab">
-                            <div class="container align-items-center">
-                                <h3>我的凹凹點 $@Model.Point</h3>
+                            <div class="container">
+                                <div style="background-color: #ead8d8;width: 450px;height: 100px;border-radius: 20px; text-align: center;" class="shadow border rounded">
+                                    <h2 class="text-white mt-3">💎我的凹凹點💎</h2>
+                                    <p class="mt-3">尚餘 @Model.Point 點</p>
+                                </div>
                                 <button type="button" class="btn btn-primary mt-4" onclick="window.location.href='/NL_TopUp/Index'">
                                     手刀儲值
                                 </button>
@@ -208,7 +238,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- 會員帳密編輯表單內容 -->
-                    <form id="EditPassword" method="post" enctype="multipart/form-data">
+                    <form asp-action="EditPassword" method="post" enctype="multipart/form-data">
                         <input type="hidden" asp-for="MemberId" />
                         <div>
                             <div class="form-group">
@@ -352,11 +382,3 @@
     $confirmPass.focus(PassMatch).keyup(PassMatch).keyup(enableSubmitButton);
 
 </script>
-
-
-
-
-
-
-
-
