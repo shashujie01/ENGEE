@@ -47,9 +47,13 @@ public partial class TMember
     public string Phone { get; set; } = null!;
 
     [DisplayName("註冊日期")]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime? RegistrationDate { get; set; }
     [DisplayName("出生日期")]
     [Required(ErrorMessage = ("出生日期必填"))]
+    [DataType(DataType.Date)]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
     public DateTime Birth { get; set; } = DateTime.MinValue;
     [DisplayName("權限")]
     public int? Access { get; set; }
