@@ -16,7 +16,7 @@ namespace EnGee.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class SSJ_ShoppingListApiController : ControllerBase
-    {
+    {//ListApi_admin修改資料庫使用
         private readonly EngeeContext _db;
 
         public SSJ_ShoppingListApiController(EngeeContext db)
@@ -26,7 +26,7 @@ namespace EnGee.Controllers
 
         [HttpGet("{id}")]
         public IActionResult GetOrder(int id)
-        {
+        {//先讀取定id之資料渲染到前端
             var order = (from o in _db.TOrders
                          join m in _db.TMembers on o.BuyerId equals m.MemberId
                          where o.OrderId == id
@@ -79,7 +79,7 @@ namespace EnGee.Controllers
 
         [HttpPut("UpdateOrder/{id}")]
         public IActionResult UpdateOrder(int id, [FromBody] SSJ_ShoppingListCombinedViewModel model)
-        {//
+        {//將修改欄位全部資料JSON回來，並存入資料庫
             if (model == null || model.Orders == null || model.OrderDetails == null)
             {
                 return BadRequest("Invalid data.");
