@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "ShoppingList_admin";
-    ViewBag.HeaderTitle = "訂單明細";
+    ViewBag.HeaderTitle = "購物清單";
 }
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -54,11 +54,43 @@
     .table-vertical-center th, .table-vertical-center td {
         vertical-align: middle;
     }
+
+    .detail-row {
+        background-color: #F8D7DA;
+    }
+
+    .detail-row-title {
+        background-color: #DEC0C3;
+    }
+
+    table{
+        margin : 0px;
+    }
+
+    .table {
+        margin: 0px;
+    }
+
+    td{
+        border:0;
+    }
+
+    .detail-row {
+        border-bottom: 2px solid #BAA1A3;
+    }
+
+    tr td {
+        text-align: center
+    }
+
+    th{
+        text-align: center
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <main>
 
-    <table class="table table-danger table-striped mt-2 table-vertical-center" style="font-size: 14px;">
+    <table class="table table-danger  mt-2 table-vertical-center" style="font-size: 14px;">
     <thead>
         <tr>
             <th style="white-space: nowrap;text-align: center;">
@@ -72,7 +104,7 @@
             <th style="white-space: nowrap;text-align: center;">訂單類型</th>
             <th style="white-space: nowrap;text-align: center;">買家ID</th>
            @*<th style="white-space: nowrap;text-align: center;">買家</th>*@
-            <th style="white-space: nowrap;text-align: center;">超取超商店號</th>
+            @*@<th style="white-space: nowrap;text-align: center;">超取超商店號</th>*@
             <th style="white-space: nowrap;text-align: center;">運費點數</th>
             <th style="white-space: nowrap;text-align: center;">訂單總花費</th>
                 <th style="white-space: nowrap;text-align: center;">功能鈕</th>
@@ -85,56 +117,54 @@
             {
                 count++;
                 <tr>
-                    <td style="text-align: center;">
+                    <td>
                         @count
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                             @Html.DisplayFor(modelItem => order.OrderID)
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                             @Html.DisplayFor(modelItem => order.OrderDate)
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                             @Html.DisplayFor(modelItem => order.OrderStatus)
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                         @Html.DisplayFor(modelItem => order.OrderStatusDescription)
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                             @Html.DisplayFor(modelItem => order.OrderCatagory)
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                             @Html.DisplayFor(modelItem => order.OrderCatagoryDescription)
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                             @Html.DisplayFor(modelItem => order.BuyerID)
                     </td>
-                   @* <td style="text-align: center;">
+                   @* <td>
                           @Html.DisplayFor(modelItem => order.BuyerUsername)
                     </td>*@
-                    <td style="text-align: center;">
+                    @*<td>
                             @Html.DisplayFor(modelItem => order.ConvienenNum)
-                    </td>
-                    <td style="text-align: center;">
+                    </td>*@
+                    <td>
                             @Html.DisplayFor(modelItem => order.DeliveryFee)
                     </td>
-                    <td style="text-align: center;">
+                    <td>
                             @Html.DisplayFor(modelItem => order.OrderTotalUsagePoints)
                     </td>
-                        <td style="text-align: center;">
+                        <td>
                             <div class="btn btn-sm btn-success me-2">
                                 <a class="text-black" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#details-@order.OrderID">明細</a> 
                             </div>
                         </td>
 
                  </tr>
-                    @foreach (var orderDetail in Model.OrderDetails.Where(od => od.OrderID == order.OrderID))
-                {
-                        <tr class="collapse" id="details-@order.OrderID">
+                 <tr class="collapse" id="details-@order.OrderID">
                         <td colspan="24">
                             <table class="table">
                                 <thead>
-                                    <tr>
+                                        <tr class="collapse detail-row-title" id="details-@order.OrderID">
                                         @*<th></th>*@
                                         <th>訂單明細編號</th>
                                         <th>產品編號</th>
@@ -148,8 +178,11 @@
                                         <th>寄送地址</th>
                                     </tr>
                                 </thead>
+                    @foreach (var orderDetail in Model.OrderDetails.Where(od => od.OrderID == order.OrderID))
+                  {
+                        
                                 <tbody>
-                                    <tr>
+                                        <tr class="collapse detail-row" id="details-@order.OrderID">
                                             @*<td><img class="card-img img-fluid" src="@orderDetail.ProductImagePath" alt="@orderDetail.ProductName" width="50" /></td>*@
                                             <td>@Html.DisplayFor(modelItem => orderDetail.OrderDetailID)</td>
                                             <td>@Html.DisplayFor(modelItem => orderDetail.ProductID)</td>
@@ -162,10 +195,11 @@
                                             <td>@Html.DisplayFor(modelItem => orderDetail.DeliveryAddress)</td>
                                     </tr>
                                 </tbody>
+                                <hr>
+                            }
                             </table>
                         </td>
                     </tr>
-                }
             }
         }
     </tbody>
@@ -173,8 +207,6 @@
 </main>
 @section Scripts {
     <script>
-
-     
 
     </script>
 }

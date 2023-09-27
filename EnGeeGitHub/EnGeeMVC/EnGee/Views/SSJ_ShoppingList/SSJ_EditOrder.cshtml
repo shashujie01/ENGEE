@@ -1,5 +1,5 @@
 ﻿@model EnGee.ViewModel.SSJ_ShoppingListCombinedViewModel
-
+@*已經修改至API*@
 @{
     ViewData["Title"] = "Edit";
     ViewBag.HeaderTitle = "修改訂單";
@@ -8,7 +8,7 @@
     .swal2-popup.swal2-modal {
         font-size: 12pt;
     }
-
+    
     .swal2-modal .swal2-title {
         font-size: 1.4em;
     }
@@ -50,10 +50,10 @@
         <label for="OrderCatagory">訂單類型編號</label>
                     <input id="OrderCatagory" name="Orders[0].OrderCatagory" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderCatagory" />
     </div>
-    <div class="form-group">
+    @*@<div class="form-group">
         <label for="ConvienenNum">超取超商店號</label>
                     <input id="ConvienenNum" name="Orders[0].ConvienenNum" class="form-control" value="@Model.Orders.FirstOrDefault()?.ConvienenNum" />
-    </div>
+    </div>*@
     <div class="form-group">
         <label for="DeliveryFee">運費點數</label>
                     <input id="DeliveryFee" name="Orders[0].DeliveryFee" class="form-control" value="@Model.Orders.FirstOrDefault()?.DeliveryFee" />
