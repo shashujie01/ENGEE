@@ -7,77 +7,55 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using MailKit.Security;
 using MailKit.Net.Smtp;
 using Newtonsoft.Json;
-//using Microsoft.AspNetCore.Identity;
-//using EnGee.Areas.Identity.Data;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace EnGee.Controllers
 {
     public class MinMemberController : Controller
     {
-
-        //------------------ 0917---------------------------------------//
-        //private readonly UserManager<EnGeeUser> _userManager;
-
-
-        //public MinMemberController(UserManager<EnGeeUser> userManager, SignInManager<EnGeeUser> signInManager)
-        //{
-        //    _userManager = userManager;
-
-        //}
-
         public IActionResult EmailValidFail()
         {
-            return View();//註冊加密失敗頁面
+            return View();
         }
 
-        //-------------------------------------------------------------//
         public IActionResult EmailValid()
         {
-            return View();//填寫表單後請使用者至信箱收信畫面
+            return View();
         }
-        //-----------------------------------------------------------------------------------------//
+
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(TMember tm, string username, string email, string gender)
+        public IActionResult Create(TMember tm, string username, string email, string gender, string password)
         {
-
-
-            //---------------條件限制規則--------------------//
-            //if (tm.Gender == null)
-            //{
-            //    tm.Gender = "2";
-            //}
-            //else
-            //{
-            //    tm.Gender = gender;
-            //}
             if (tm.RegistrationDate == null)
             {
-                tm.RegistrationDate = DateTime.Now;  //註冊日預設當日
+                tm.RegistrationDate = DateTime.Now;
             }
             if (tm.Access == null)
             {
                 if (tm.CharityProof != null)
                 {
-                    tm.Access = 3;  //公益團體權限3
+                    tm.Access = 3;
                 }
                 else
                 {
-                    tm.Access = 1; //一般使用者
+                    tm.Access = 1;
                 }
             }
             if (tm.Point == null)
             {
                 tm.Point = 0;
             }
-            //----------------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫---------------------//
-            var randomToken = GenerateRandomToken();  // GenerateRandomToken()方法隨機產生20位數字字母字串，傳給變數randomToken
 
-            //----------------0916修改比對資料庫與模型是否有重複username及email---------------------------//
+            var randomToken = GenerateRandomToken();
+            tm.RandomToken = randomToken;
+            var hashpassword = HashPassword(password);          //hash256加密
+            tm.Password = hashpassword;
 
             EngeeContext db = new EngeeContext();
             var reusername = db.TMembers.Any(x => x.Username == username);
@@ -93,16 +71,15 @@ namespace EnGee.Controllers
                 ModelState.AddModelError("Email", "此信箱已經被使用。");
                 return View();
             }
-            //----------------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫---------------------//
-            Response.Cookies.Append("memberstorageData", JsonConvert.SerializeObject(tm));  //將資料轉成jason檔存在cookie
+
+            var tmJson = JsonConvert.SerializeObject(tm);
+            Response.Cookies.Append("memberstorageData", tmJson);
 
             SendVerificationEmail(email, randomToken);
+
             return RedirectToAction("EmailValid");
-            //--------------0917 hash salt-   先將Tmember部分屬性轉移給模型EnGeeUser------------------------------//
         }
 
-
-        //-----------0916新增Email 連結可以跳轉至頁面-------------------------//
         private string GenerateRandomToken()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -115,29 +92,24 @@ namespace EnGee.Controllers
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("EnGee", "engeegift@gmail.com"));
-            message.To.Add(new MailboxAddress(emailto, emailto)); //email是實際模型輸入值，命名為emailto傳給SendEmail
+            message.To.Add(new MailboxAddress(emailto, emailto));
             message.Subject = "EnGee會員註冊驗證信";
-            //-------信件連結會跳轉至MinMember/verifyEmail方法--------------//
-            var verificationLink = Url.Action("VerifyEmail", "MinMember", new { token }, Request.Scheme); //Request.Scheme確保 URL 使用正確的協議（例如，http 或 https）
+
+            var verificationLink = Url.Action("VerifyEmail", "MinMember", new { token }, Request.Scheme);
             message.Body = new TextPart("plain") { Text = $"請點擊以下連結，完成信箱註冊：\n{verificationLink}" };
-            //---------------------//
 
             using var smtp = new SmtpClient();
-            //smtp.Connect(_config.GetSection("EmailHost").Value, 587, SecureSocketOptions.StartTls);
-            //localhost測試時ssl加密先關閉
             smtp.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
             smtp.Authenticate("engeegift@gmail.com", "ijaqyfmyvlwpkjui");
             smtp.Send(message);
             smtp.Disconnect(true);
+
             return RedirectToAction("VerifyEmail");
         }
 
-        //-----------0916新增Email 點連結才會實際將會員註冊資料新增至資料庫-------------------------//
-        public IActionResult VerifyEmail(string token)
+        public IActionResult VerifyEmail(string token, TMember tm)
         {
-
             var memberStorageCookie = Request.Cookies["memberstorageData"];
-
             var tmCookie = JsonConvert.DeserializeObject<TMember>(memberStorageCookie);
             EngeeContext db = new EngeeContext();
             db.Add(tmCookie);
@@ -145,9 +117,8 @@ namespace EnGee.Controllers
 
             Response.Cookies.Delete("memberstorageData");
 
-            return RedirectToAction("Login", "Home"); // (控制器/方法)
+            return RedirectToAction("Login", "Home");
         }
-
 
         public IActionResult CreateStepForm(TMember tm)
         {
@@ -159,10 +130,19 @@ namespace EnGee.Controllers
             return View();
         }
 
-        //----------0920新增追蹤頁面------------------//
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < hashedBytes.Length; i++)
+                {
+                    builder.Append(hashedBytes[i].ToString("x2"));
+                }
 
-
+                return builder.ToString();
+            }
+        }
     }
-
 }
-

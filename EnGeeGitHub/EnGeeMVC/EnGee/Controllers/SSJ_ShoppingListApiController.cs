@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 namespace EnGee.Controllers
-{//訂單使用API沒做完
+{//訂單使用API
     [Route("api/[controller]")]
     [ApiController]
     public class SSJ_ShoppingListApiController : ControllerBase
@@ -39,7 +39,7 @@ namespace EnGee.Controllers
                              //BuyerUsername = m.Username,
                              OrderStatus = o.OrderStatus,
                              OrderCatagory = o.OrderCatagory,
-                             ConvienenNum = o.ConvienenNum,
+                             //ConvienenNum = o.ConvienenNum,
                              DeliveryFee = o.DeliveryFee
                          }).FirstOrDefault();
             
@@ -77,12 +77,9 @@ namespace EnGee.Controllers
             return Ok(result);
         }
 
-        //[HttpPut]
-        //public IActionResult UpdateOrder([FromBody] SSJ_ShoppingListCombinedViewModel model)
-
         [HttpPut("UpdateOrder/{id}")]
         public IActionResult UpdateOrder(int id, [FromBody] SSJ_ShoppingListCombinedViewModel model)
-        {
+        {//
             if (model == null || model.Orders == null || model.OrderDetails == null)
             {
                 return BadRequest("Invalid data.");
@@ -99,7 +96,7 @@ namespace EnGee.Controllers
             ////order.BuyerUsername = model.Orders.First().BuyerUsername;
             order.OrderStatus = model.Orders.First().OrderStatus;
             order.OrderCatagory = model.Orders.First().OrderCatagory;
-            order.ConvienenNum = model.Orders.First().ConvienenNum;
+            //order.ConvienenNum = model.Orders.First().ConvienenNum;
             order.DeliveryFee = model.Orders.First().DeliveryFee;
             _db.Entry(order).State = EntityState.Modified;
             foreach (var detail in model.OrderDetails)
