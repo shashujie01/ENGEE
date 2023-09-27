@@ -1,134 +1,265 @@
 ﻿@model EnGee.Models.TMember
 @{
-    Layout = "_LayoutAdmin";    
+	Layout = "_LayoutAdmin";
 }
 <style>
-    .spanvaildation {
-        font-size: 10px;
-        color: red;
-        opacity: 0.5;
-    }
+	.spanvaildation {
+		font-size: 10px;
+		color: red;
+		opacity: 0.5;
+	}
 
-    ::placeholder {
-        font-size: 10px;
-        color: tomato;
-    }
+	::placeholder {
+		font-size: 10px;
+		color: tomato;
+	}
 
-    .displayinline {
-        display: inline;
-    }
+	.displayinline {
+		display: inline;
+	}
 
-    .box {
-        width: 550px;
-    }
+	.box {
+		width: 550px;
+	}
 
-    .custom-button {
-        background: none;
-        border: none;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-        color: pink;
-    }
+	.custom-button {
+		background: none;
+		border: none;
+		padding: 0;
+		text-align: center;
+		cursor: pointer;
+		color: pink;
+	}
 </style>
 
 <div class="container">
-<h1 style="text-align:center; ">修改會員表單</h1>
+	<h1 style="text-align:center; ">修改會員表單</h1>
 
 
-<hr />
-<form asp-action="Edit">
-    <main class="container-md displayinline box">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" name="MemberId" value="@Model.MemberId" />
-        <div class="form-group">
-            會員帳號
-            <input asp-for="Username" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" />
-            <span asp-validation-for="Username" class="spanvaildation"></span>
-        </div>
+	<hr />
+	<form asp-action="Edit" onsubmit="return onSubmitForm()">
+		<main class="container-md displayinline box">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" name="MemberId" value="@Model.MemberId" />
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						@if (Model.Access == 3)
+						{
+
+							<span>機構名稱</span>
+							<input asp-for="Fullname" class="form-control" />
+							<span asp-validation-for="Fullname" class="spanvaildation"></span>
+
+						}
+						else if (Model.Access == 0)
+						{
+							<span>管理員(姓名/職位)</span>
+							<input asp-for="Fullname" class="form-control" />
+							<span asp-validation-for="Fullname" class="spanvaildation"></span>
+						}
+						else if (Model.Access == 1)
+						{
+							<span>會員姓名</span>
+							<input asp-for="Fullname" class="form-control" />
+							<span asp-validation-for="Fullname" class="spanvaildation"></span>
+						}
 
 
-        <div class="form-group">
-            會員信箱
-            <input asp-for="Email" class="form-control " placeholder="此欄位必塡" name="email" />   <!--新增模型綁定name，傳給控制器-->
-            <span asp-validation-for="Email" class="spanvaildation"></span>
+					</div>
+					<div class="form-group">
+						
+						@if (Model.Access == 3){
+					
+							<span>公益法人帳號/或機構名稱</span>
+							<input asp-for="Username" id="Username" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" />
 
-        </div>
-        <div class="form-group">
-            會員姓名
-            <input asp-for="Fullname" class="form-control" />
-            <span asp-validation-for="Fullname" class="spanvaildation"></span>
-        </div>
-
-        <div class="form-group mt-3">
-
-            <input type="radio" asp-for="Gender" value="0"> Male
-            <input type="radio" asp-for="Gender" value="1"> Female
-            <input type="radio" asp-for="Gender" value="2"> 不透漏
-
-            <span asp-validation-for="Gender" class="spanvaildation"></span>
-
-        </div>
-
-
-
-        <div class="form-group">
-            通訊地址
-            <input asp-for="Address" class="form-control " placeholder="此欄位必塡" />
-            <span asp-validation-for="Address" class="spanvaildation"></span>
-        </div>
-        <div class="form-group">
-            手機號碼
-            <input asp-for="Phone" class="form-control" placeholder="此欄位必塡" />
-            <span asp-validation-for="Phone" class="spanvaildation"></span>
-        </div>
-
-        <div class="form-group">
-            出生日期
-            <input asp-for="Birth" class="form-control" type="date" />
-            <span asp-validation-for="Birth" class=" spanvaildation"></span>
-        </div>
+						}
+						else if(Model.Access==0)
+						{
+							<span>管理員帳號(英文數字5-10碼)</span>
+							<input asp-for="Username" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" />
+							<span asp-validation-for="Username" class="spanvaildation"></span>
+						}
+						else if (Model.Access == 1)
+						{
+							<span>會員帳號(英文數字5-10碼)</span>
+							<input asp-for="Username" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" />
+							<span asp-validation-for="Username" class="spanvaildation"></span>
+						}
+						
+					</div>
 
 
+					<div class="form-group">
+						會員信箱
+						<input asp-for="Email" class="form-control " placeholder="此欄位必塡" name="email" />   <!--新增模型綁定name，傳給控制器-->
+						<span asp-validation-for="Email" class="spanvaildation"></span>
+
+					</div>
 
 
-        <div class="d-flex justify-content-center align-items-center btn btn-outline-dark">
-            <input type="submit" value="送出修改" asp-action="List" asp-controller="Min_backmanage" class="custom-button" />
-        </div>
-        <div class="d-flex justify-content-center align-items-center btn btn-outline-dark">
-            <a asp-action="List">取消修改</a>
-        </div>
+					<div class="form-group mt-3">
 
-    </main>
+						<input type="radio" asp-for="Gender" value="0"> Male
+						<input type="radio" asp-for="Gender" value="1"> Female
+						<input type="radio" asp-for="Gender" value="2"> 不透漏
 
-</form>
+						<span asp-validation-for="Gender" class="spanvaildation"></span>
+
+					</div>
+
+
+
+					<div class="form-group">
+						通訊地址
+						<input asp-for="Address" class="form-control " placeholder="此欄位必塡" />
+						<span asp-validation-for="Address" class="spanvaildation"></span>
+					</div>
+					<div class="form-group">
+						@if (Model.Access == 3)
+						{
+							<span>機構電話/負責人電話</span>
+							<input asp-for="Phone" class="form-control" placeholder="此欄位必塡" id="phoneInput" oninput="phoneInputAccess3" />
+							<span asp-validation-for="Phone" class="spanvaildation"></span>
+						}
+						else if(Model.Access==0)
+						{
+							<span>管理員手機/電話</span>
+							<input asp-for="Phone" class="form-control" placeholder="此欄位必塡" id="phoneInput" oninput="phoneInputAccess3" />
+							<span asp-validation-for="Phone" class="spanvaildation"></span>
+						}
+						else if (Model.Access == 1)
+						{
+							<span>會員手機/電話</span>
+							<input asp-for="Phone" class="form-control" placeholder="此欄位必塡" id="phoneInput" oninput="phoneInputAccess3" />
+							<span asp-validation-for="Phone" class="spanvaildation"></span>
+						}
+
+						
+
+					</div>
+
+					<div class="form-group">
+						出生日期
+						<input asp-for="Birth" class="form-control" type="date" />
+						<span asp-validation-for="Birth" class=" spanvaildation"></span>
+					</div>
+				</div>
+				<div class="col-md-6">
+					@if (Model.Access == 3)
+					{	
+						<div>
+							公益團體認證照片
+						</div>
+						<div>
+							<img src="~/images/CharityProof/@Model.CharityProof" width="300px" height="350px" />
+							<div>
+								<input type="checkbox" id="charityCheckbox" name="IsValidCharity" value="true" />
+								<label for="charityCheckbox">確定為公益團體</label>
+							</div>
+						</div>
+						
+						
+					}
+					else if (Model.Access == 0)
+					{
+
+						<div>
+							管理者照片
+						</div>
+						<div>
+							<img src="~/images/UserImage/@Model.PhotoPath" width="300px" height="350px" />
+						</div>
+					}
+					else if (Model.Access == 1)
+					{
+						<div>
+							會員照片
+						</div>
+						<div>
+							<img src="~/images/UserImage/@Model.PhotoPath" width="300px" height="350px" />
+						</div>
+					}
+
+					
+
+				</div>
+				ToLower()" />
+
+
+
+
+			<div class="d-flex justify-content-center align-items-center btn btn-outline-dark">
+				<input type="submit" value="送出修改" class="custom-button" />
+			</div>
+			<div class="d-flex justify-content-center align-items-center btn btn-outline-dark">
+				<a asp-action="List">取消修改</a>
+			</div>
+
+		</main>
+		@* <input type="hidden" id="isValidCharityHidden" name="IsValidCharity" value="@Model.IsValidCharity" /> *@
+	</form>
 </div>
 
+<script>
+	function toggleCharityInfo() {
+		const charityCheckbox = document.getElementById('charityCheckbox');
 
+		if (charityCheckbox.checked) {
+			charityCheckbox.value = 'true';
+			alert('已確認為公益團體');
+		} else {
+			charityCheckbox.value = 'false';
+		}
+	}
+</script>
 
+<script>
+	function phoneInputAccess3() {
+		const phoneInput = document.getElementById('phoneInput');
+		const iconphoneX = document.getElementById('iconphoneX');
+		const iconphoneO = document.getElementById('iconphoneO');
+
+		const phoneValue = phoneInput.value.trim();
+		const Regex = /^\d{9}$/;  // 正規表達式，檢查是否為 9-10 位數的數字
+
+		if (Regex.test(phoneValue)) {
+			iconphoneX.style.display = 'none';  // 隱藏 iconphoneX
+			iconphoneO.style.display = 'inline-block';  // 顯示 iconphoneO
+		} else {
+			iconphoneX.style.display = 'inline-block';  // 顯示 iconphoneX
+			iconphoneO.style.display = 'none';  // 隱藏 iconphoneO
+		}
+	}
+</script>
 
 
 @*  新增一個眼睛icon，可以讓密碼type="password"互相切換type="test" *@
 <script>
-    function togglePasswordVisibility(inputId, iconId) {
-        //綁定id//
-        const passwordInput = document.getElementById(inputId);
-        const icon = document.getElementById(iconId);
-        //建立規則
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            passwordInput.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    }
+	function togglePasswordVisibility(inputId, iconId) {
+		//綁定id//
+		const passwordInput = document.getElementById(inputId);
+		const icon = document.getElementById(iconId);
+		//建立規則
+		if (passwordInput.type === 'password') {
+			passwordInput.type = 'text';
+			icon.classList.remove('fa-eye');
+			icon.classList.add('fa-eye-slash');
+		} else {
+			passwordInput.type = 'password';
+			icon.classList.remove('fa-eye-slash');
+			icon.classList.add('fa-eye');
+		}
+	}
 </script>
 
+
+
+
+
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }
