@@ -9,7 +9,7 @@ namespace EnGee.Controllers
 {
     public class Min_backmanageController : Controller
     {
-        public IActionResult List(CkeywordViewModel vm,  int? minPoint, int? maxPoint, int?  accessFilter ,int? txtkeywordfor, int genderFilter=2)
+        public IActionResult List(CkeywordViewModel vm, int? minPoint, int? maxPoint, int? accessFilter, int? txtkeywordfor, int? genderFilter)  //把預設int genderFilter=2拿掉
         {
             // 建立 EngeeContext 物件，用於與資料庫進行交互
             EngeeContext db = new EngeeContext();
@@ -40,7 +40,7 @@ namespace EnGee.Controllers
                     case 4: // 電話
                         query = query.Where(t => t.Phone.Contains(vm.txtKeyword));
                         break;
-                   
+
                     case 5: // 註冊時間//無法將 ToString 方法直接用於 LINQ 查詢//並分別比較日期的年、月、日部分，來進行查詢
 
                         DateTime keywordDate;
@@ -74,7 +74,7 @@ namespace EnGee.Controllers
                                 t.RegistrationDate.HasValue &&
                                 t.RegistrationDate.Value.Year == keywordDate.Year);
                         }
-                      
+
                         break;
 
                     case 6: // 生日
@@ -84,12 +84,12 @@ namespace EnGee.Controllers
 
                 }
             }
-            
+
             //加入Gender篩選條件
-            //if (!string.IsNullOrEmpty(genderFilter))
-            //{
-                query = query.Where(t => t.Gender == genderFilter);
-            //}
+            if (genderFilter.HasValue)
+            {
+                query = query.Where(t => t.Gender == genderFilter);          //原本錯誤修正如下
+            }
 
             // 加入Access篩選條件，只有當 accessFilter 有值時才進行篩選
             if (accessFilter.HasValue)
@@ -100,7 +100,7 @@ namespace EnGee.Controllers
 
             // 加入Point篩選條件
             if (minPoint.HasValue)
-        {
+            {
                 query = query.Where(t => t.Point >= minPoint.Value);
             }
 
@@ -119,7 +119,7 @@ namespace EnGee.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if(id== null)
+            if (id == null)
             {
                 return RedirectToAction("List");
             }
@@ -127,18 +127,18 @@ namespace EnGee.Controllers
             {
                 using (var db = new EngeeContext())
                 {
-                   var checkdata= db.TMembers.FirstOrDefault(t=>t.MemberId==id);
-                    if(checkdata!= null)
+                    var checkdata = db.TMembers.FirstOrDefault(t => t.MemberId == id);
+                    if (checkdata != null)
                     {
                         db.TMembers.Remove(checkdata);
                         db.SaveChanges();
                     }
                     return RedirectToAction("List");
                 }
-            }  
-                return View();
+            }
+            return View();
         }
-        public IActionResult Edit(int?id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -148,8 +148,8 @@ namespace EnGee.Controllers
             {
                 using (var db = new EngeeContext())
                 {
-                    var checkDbid = db.TMembers.FirstOrDefault(t=>t.MemberId==id);
-                    if(checkDbid != null)
+                    var checkDbid = db.TMembers.FirstOrDefault(t => t.MemberId == id);
+                    if (checkDbid != null)
                     {
                         return View(checkDbid);
                     }
@@ -161,29 +161,30 @@ namespace EnGee.Controllers
         [HttpPost]
         public IActionResult Edit(TMember model)
         {
-            using(var db = new EngeeContext())
+            if (ModelState.IsValid)  // 添加 ModelState 验证
             {
-                var checkDbId=db.TMembers.FirstOrDefault(t=>t.MemberId == model.MemberId);
-                if (checkDbId != null)
+                using (var db = new EngeeContext())
                 {
-                    checkDbId.MemberId=model.MemberId;
-                    checkDbId.Username=model.Username;
-                    checkDbId.Password = model.Password;
-                    checkDbId.Email = model.Email;
-                    checkDbId.Fullname = model.Fullname;
-                    checkDbId.Gender = model.Gender;
-                    checkDbId.Address = model.Address;
-                    checkDbId.Phone = model.Phone;
-                    checkDbId.Birth = model.Birth;
-                    checkDbId.PhotoPath = model.PhotoPath;
-                    checkDbId.Introduction = model.Introduction;
+                    var checkDbId = db.TMembers.FirstOrDefault(t => t.MemberId == model.MemberId);
+                    if (checkDbId != null)
+                    {
+                        checkDbId.Username = model.Username;
+                        checkDbId.Password = model.Password;
+                        checkDbId.Email = model.Email;
+                        checkDbId.Fullname = model.Fullname;
+                        checkDbId.Gender = model.Gender;
+                        checkDbId.Address = model.Address;
+                        checkDbId.Phone = model.Phone;
+                        checkDbId.Birth = model.Birth;
+                        checkDbId.PhotoPath = model.PhotoPath;
+                        checkDbId.Introduction = model.Introduction;
 
-
-
-                    db.SaveChanges();
+                        db.SaveChanges();
+                    }
                 }
-                return RedirectToAction("List");
             }
+            return RedirectToAction("List");
         }
+
     }
 }
