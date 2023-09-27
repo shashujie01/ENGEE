@@ -7,15 +7,32 @@ using System.ComponentModel;
 namespace EnGee.Models;
 
 public partial class TMember
+
+
 {
-    public int MemberId { get; set; }
+
+	[NotMapped]
+	[DisplayName("會員帳號")]
+	[Required(ErrorMessage = "會員帳號必填")]
+	public  string UsernameAccess3 { get; set; }
+	[NotMapped]
+	[DisplayName("手機號碼")]
+	[Required(ErrorMessage = ("手機號碼必填"))]
+	[RegularExpression(@"^\d{9}$", ErrorMessage = "請輸入機構電話(9碼)")]
+	public string PhoneAccess3 { get; set; } = null!;
+
+
+
+	public int MemberId { get; set; }
     [DisplayName("註冊帳號")]
     [Required(ErrorMessage = ("註冊帳號必填"))]
-    [StringLength(10, ErrorMessage = ("帳號格式:英文數字共5-10字元"), MinimumLength = 5)]
-    public string Username { get; set; } = null!;
+	
+
+	public string Username { get; set; } = null!;
     [DisplayName("註冊密碼")]
     [Required(ErrorMessage = ("註冊密碼必填"))]
-    [StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
+	[RegularExpression(@"^[a-zA-Z0-9]{5,10}$",ErrorMessage =("密碼格式:英文數字共5-10字元"))]
+	[StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 5)]
 
     public string Password { get; set; } = null!;
     [NotMapped] //不存至SQL
@@ -43,8 +60,9 @@ public partial class TMember
     public string Address { get; set; } = null!;
     [DisplayName("手機號碼")]
     [Required(ErrorMessage = ("手機號碼必填"))]
-    [StringLength(10, ErrorMessage = ("手機位數共10位:09xxxxxxxx"), MinimumLength = 10)]
-    public string Phone { get; set; } = null!;
+	[StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 9)]
+
+	public string Phone { get; set; } = null!;
 
     [DisplayName("註冊日期")]
     [DataType(DataType.Date)]
@@ -71,7 +89,11 @@ public partial class TMember
     public string? CharityProof { get; set; }
     [DisplayName("公益團體認證")]
     public bool? IsValidCharity { get; set; }
-    public virtual ICollection<TCase> TCases { get; set; } = new List<TCase>();
+
+	
+
+	
+	public virtual ICollection<TCase> TCases { get; set; } = new List<TCase>();
 
     public virtual ICollection<TCollect> TCollects { get; set; } = new List<TCollect>();
 
