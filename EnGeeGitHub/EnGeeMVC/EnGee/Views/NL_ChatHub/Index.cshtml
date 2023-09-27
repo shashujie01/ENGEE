@@ -8,6 +8,11 @@
     .disconnected-message {
         background-color: #e1f1e7;
     }    
+
+    .private-message {
+        background-color: #d1dfe8;
+    }
+
     .default-message {
         background-color: #c9cbe0;
     }
@@ -19,6 +24,7 @@
     .swal2-modal .swal2-title {
         font-size: 1.4em;
     }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
@@ -109,6 +115,8 @@
                 listItem.addClass("connected-message");
             } else if (msg.indexOf("離開聊天室") !== -1) {
                 listItem.addClass("disconnected-message");
+            } else if (msg.indexOf("私訊") !== -1) {
+                listItem.addClass("private-message");
             } else {
                 listItem.addClass("default-message");
             }
