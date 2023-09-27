@@ -12,11 +12,11 @@ using System;
 
 namespace EnGee.Controllers
 {
-    public class SSJ_ShoppingListController : SuperController
+    public class SSJ_ShoppingListController : Controller
     {
         private readonly EngeeContext _db;
 
-        public SSJ_ShoppingListController(EngeeContext db, CHI_CUserViewModel userViewModel) : base(userViewModel)
+        public SSJ_ShoppingListController(EngeeContext db)
         {
             _db = db;
         }
@@ -31,7 +31,8 @@ namespace EnGee.Controllers
             var user = GetLoggedInUser();
             int loggedUserId = user.MemberId;
 
-            if (loggedUserId !=167)
+            var memberForAccess = _db.TMembers.SingleOrDefault(m => m.MemberId== loggedUserId);
+            if ( memberForAccess.Access != 0)
             {
                 return RedirectToAction("Login", "Home");
             }
@@ -47,7 +48,7 @@ namespace EnGee.Controllers
                                   OrderDate = order.OrderDate,
                                   OrderTotalUsagePoints = order.OrderTotalUsagePoints,
                                   BuyerID = order.BuyerId,
-                                  BuyerUsername = member.Username, 
+                                  //BuyerUsername = member.Username, 
                                   OrderStatus = order.OrderStatus,
                                   OrderCatagory = order.OrderCatagory,
                                   ConvienenNum = order.ConvienenNum,
@@ -64,14 +65,14 @@ namespace EnGee.Controllers
                                         OrderID = orderDetail.OrderId,
                                         OrderDetailID = orderDetail.OrderDetailId,
                                         ProductID = orderDetail.ProductId,
-                                        ProductName = product.ProductName,
-                                        ProductImagePath = $"/images/ProductImages/{product.ProductImagePath}",
+                                        ////ProductName = product.ProductName,
+                                        //ProductImagePath = $"/images/ProductImages/{product.ProductImagePath}",
                                         ProductUnitPoint = orderDetail.ProductUnitPoint,
                                         OrderQuantity = orderDetail.OrderQuantity,
                                         SellerID = orderDetail.SellerId,
-                                        SellerUsername = member.Username,
+                                        //SellerUsername = member.Username,
                                         DeliveryTypeID = orderDetail.DeliveryTypeId,
-                                        DeliveryType = deliveryType.DeliveryType,
+                                        //DeliveryType = deliveryType.DeliveryType,
                                         DeliveryAddress = orderDetail.DeliveryAddress
                                     };
 
@@ -96,7 +97,7 @@ namespace EnGee.Controllers
             var user = GetLoggedInUser();
             int loggedUserId = user.MemberId;
 
-            if (loggedUserId==167)
+            if (loggedUserId==null)
             {
                 return RedirectToAction("Login", "Home");
             }
@@ -113,7 +114,7 @@ namespace EnGee.Controllers
                                   OrderDate = order.OrderDate,
                                   OrderTotalUsagePoints = order.OrderTotalUsagePoints,
                                   BuyerID = order.BuyerId,
-                                  BuyerUsername = member.Username, 
+                                  ///*/*/*BuyerUsern*/*/*/ame = member.Username, 
                                   OrderStatus = order.OrderStatus,
                                   OrderCatagory = order.OrderCatagory,
                                   ConvienenNum = order.ConvienenNum,
@@ -131,14 +132,14 @@ namespace EnGee.Controllers
                                         OrderID = orderDetail.OrderId,
                                         OrderDetailID = orderDetail.OrderDetailId,
                                         ProductID = orderDetail.ProductId,
-                                        ProductName = product.ProductName,
-                                        ProductImagePath = $"/images/ProductImages/{product.ProductImagePath}",
+                                        ////ProductName = product.ProductName,
+                                        ////ProductImagePath = $"/images/ProductImages/{product.ProductImagePath}",
                                         ProductUnitPoint = orderDetail.ProductUnitPoint,
                                         OrderQuantity = orderDetail.OrderQuantity,
                                         SellerID = orderDetail.SellerId,
-                                        SellerUsername = member.Username,
+                                        //SellerUsername = member.Username,
                                         DeliveryTypeID = orderDetail.DeliveryTypeId,
-                                        DeliveryType = deliveryType.DeliveryType,
+                                        //DeliveryType = deliveryType.DeliveryType,
                                         DeliveryAddress = orderDetail.DeliveryAddress
                                     };
 
@@ -185,7 +186,7 @@ namespace EnGee.Controllers
                              OrderDate = o.OrderDate,
                              OrderTotalUsagePoints = o.OrderTotalUsagePoints,
                              BuyerID = o.BuyerId,
-                             BuyerUsername = m.Username,
+                             //////BuyerUsername = m.Username,
                              OrderStatus = o.OrderStatus,
                              OrderCatagory = o.OrderCatagory,
                              ConvienenNum = o.ConvienenNum,
@@ -202,14 +203,14 @@ namespace EnGee.Controllers
                                     OrderID = orderDetail.OrderId,
                                     OrderDetailID = orderDetail.OrderDetailId,
                                     ProductID = orderDetail.ProductId,
-                                    ProductName = product.ProductName,
-                                    ProductImagePath = $"/images/ProductImages/{product.ProductImagePath}",
+                                    ////ProductName = product.ProductName,
+                                    ////ProductImagePath = $"/images/ProductImages/{product.ProductImagePath}",
                                     ProductUnitPoint = orderDetail.ProductUnitPoint,
                                     OrderQuantity = orderDetail.OrderQuantity,
                                     SellerID = orderDetail.SellerId,
-                                    SellerUsername = member.Username,
+                                    //SellerUsername = member.Username,
                                     DeliveryTypeID = orderDetail.DeliveryTypeId,
-                                    DeliveryType = deliveryType.DeliveryType,
+                                    //DeliveryType = deliveryType.DeliveryType,
                                     DeliveryAddress = orderDetail.DeliveryAddress
                                 }).ToList();
 

@@ -41,26 +41,26 @@ namespace EnGee.Controllers
             // 如果未找到用戶或其他錯誤情況導向登錄頁面
             return RedirectToAction("Login", "Home");
         }
-            public IActionResult Edit(int? id)
-            {
-                if (id == null)
-                    return RedirectToAction("UserProfile");
-                EngeeContext db = new EngeeContext();
-                TMember mem = db.TMembers.FirstOrDefault(t => t.MemberId == id);
-                if (mem == null)
-                    return RedirectToAction("UserProfile");
-                CHI_CMemberWrap memWp = new CHI_CMemberWrap();
-                memWp.member = mem;
-                return View(memWp);
-            }
-            [HttpPost]
-            public IActionResult Edit(CHI_CMemberWrap memIn)
-            {
-                EngeeContext db = new EngeeContext();
-                TMember memDb = db.TMembers.FirstOrDefault(t => t.MemberId == memIn.MemberId);
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("UserProfile");
+            EngeeContext db = new EngeeContext();
+            TMember mem = db.TMembers.FirstOrDefault(t => t.MemberId == id);
+            if (mem == null)
+                return RedirectToAction("UserProfile");
+            CHI_CMemberWrap memWp = new CHI_CMemberWrap();
+            memWp.member = mem;
+            return View(memWp);
+        }
+        [HttpPost]
+        public IActionResult Edit(CHI_CMemberWrap memIn)
+        {
+            EngeeContext db = new EngeeContext();
+            TMember memDb = db.TMembers.FirstOrDefault(t => t.MemberId == memIn.MemberId);
 
-                if (memDb != null)
-                {
+            if (memDb != null)
+            {
                 if (memIn.photo != null && memIn.photo.Length > 0)
                 {
                     // 取得圖檔類型
@@ -76,27 +76,27 @@ namespace EnGee.Controllers
                     }
                     else
                     {
-                        
+
                         ModelState.AddModelError("photo", "只接受jpg、jpeg和png格式的圖片");
                         return View(memIn);
                     }
                 }
 
                 memDb.Fullname = memIn.Fullname;
-                memDb.Birth= (DateTime)memIn.Birth;//20230919合併出錯時加入
+                memDb.Birth = (DateTime)memIn.Birth;//20230919合併出錯時加入
                 memDb.Gender = memIn.Gender;
-                memDb.Email= memIn.Email;
-                memDb.Address=memIn.Address;
-                memDb.Phone= memIn.Phone;
-                memDb.Introduction= memIn.Introduction;
-                
+                memDb.Email = memIn.Email;
+                memDb.Address = memIn.Address;
+                memDb.Phone = memIn.Phone;
+                memDb.Introduction = memIn.Introduction;
+
                 db.SaveChanges();
 
                 // 儲存新的頭像
                 HttpContext.Session.SetString(CDictionary.SK_LOINGED_USER_PHOTO, memDb.PhotoPath);
             }
-                return RedirectToAction("UserProfile");
-            }
+            return RedirectToAction("UserProfile");
+        }
 
         public IActionResult EditPassword()
         {
@@ -129,7 +129,7 @@ namespace EnGee.Controllers
                 return View();
             }
             else
-            {                
+            {
                 ModelState.AddModelError(string.Empty, "舊密碼不正確");
                 return View();
             }
@@ -154,18 +154,18 @@ namespace EnGee.Controllers
         {
             return user.Password == oldPassword;
         }
-         public IActionResult Apply(int? id)
-            {
-                if (id == null)
-                    return RedirectToAction("UserProfile");
-                EngeeContext db = new EngeeContext();
-                TMember mem = db.TMembers.FirstOrDefault(t => t.MemberId == id);
-                if (mem == null)
-                    return RedirectToAction("UserProfile");
-                CHI_CMemberWrap memWp = new CHI_CMemberWrap();
-                memWp.member = mem;
-                return View(memWp);
-            }
+        public IActionResult Apply(int? id)
+        {
+            if (id == null)
+                return RedirectToAction("UserProfile");
+            EngeeContext db = new EngeeContext();
+            TMember mem = db.TMembers.FirstOrDefault(t => t.MemberId == id);
+            if (mem == null)
+                return RedirectToAction("UserProfile");
+            CHI_CMemberWrap memWp = new CHI_CMemberWrap();
+            memWp.member = mem;
+            return View(memWp);
+        }
         [HttpPost]
         public IActionResult Apply(CHI_CMemberWrap memIn)
         {
