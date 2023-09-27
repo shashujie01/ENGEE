@@ -319,7 +319,7 @@ namespace EnGee.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm, string SelectedProducts) /*int txtProductId, int txtCount, int deliverytypeid*/
+        public ActionResult ConfirmPurchase(SSJ_ConfirmPurchaseViewModel vm, string SelectedProducts)
         {
             //讀取購物車
             var cart = GetCartItems();
@@ -341,7 +341,7 @@ namespace EnGee.Controllers
 
             // 創建新的訂單並儲存
             int totalUsagePoints = 0;
-            using (var db = _db)
+           
             {
                 TOrder order = new TOrder
                 {
@@ -353,6 +353,38 @@ namespace EnGee.Controllers
                     DeliveryFee = deliveryFee//用函式尋找DeliveryFee
                     //DeliveryFee目前讀不到值都回0，應該做個加總
                 };
+
+                // 計算 totalUsagePoints
+                foreach (var item in selectedItems)
+                {
+                    TOrderDetail orderDetail = new TOrderDetail
+                    {
+                        OrderId = order.OrderId,
+                        OrderDate = order.OrderDate,
+                        DeliveryTypeId = item.DeliveryTypeID,
+                        DeliveryAddress = vm.DeliveryAddress,
+                        ProductId = item.ProductId,
+                        ProductUnitPoint = item.point,
+                        OrderQuantity = item.count,
+                        SellerId = item.SellerId,
+                    };
+
+                    totalUsagePoints += item.小計;
+                }
+                TMember currentMember = _db.TMembers.FirstOrDefault(t => t.MemberId == loggedUserId);
+
+                if (currentMember.Point < totalUsagePoints + deliveryFee)
+                {
+                    TempData["ErrorMessage"] = "您的點數不足"; 
+                    return RedirectToAction("CartView", "Shopping");
+                }
+
+                //-----------
+
+                // 如果點數足夠，設置order.OrderTotalUsagePoints，並將訂單和訂單詳細信息儲存到資料庫
+                
+                using (var db = _db)
+                { 
                 db.TOrders.Add(order);
                 db.SaveChanges();
                 
@@ -371,7 +403,6 @@ namespace EnGee.Controllers
                         SellerId = item.SellerId,
                     };
                     _db.TOrderDetails.Add(orderDetail);
-                    totalUsagePoints += item.小計;
                 }
                 order.OrderTotalUsagePoints = totalUsagePoints+ deliveryFee;
 
@@ -385,7 +416,7 @@ namespace EnGee.Controllers
                 }
 
                 //更新會員點數
-                TMember currentMember = db.TMembers.FirstOrDefault(t => t.MemberId == loggedUserId);
+                 currentMember = db.TMembers.FirstOrDefault(t => t.MemberId == loggedUserId);
                 if (currentMember != null)
                 {
                     currentMember.Point = currentMember.Point -totalUsagePoints- deliveryFee;  // 減去已使用的點數
@@ -409,7 +440,7 @@ namespace EnGee.Controllers
                     }
                 }
                 db.SaveChanges();  // 儲存變更至資料庫
-
+                }
 
                 // 購買後從Session中清除購物車
                 cart.RemoveAll(item => selectedProductIds.Contains(item.ProductId));

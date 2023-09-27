@@ -12,7 +12,6 @@
     .swal2-popup.swal2-modal {
         font-size: 12pt;
     }
-
     .swal2-modal .swal2-title {
         font-size: 1.4em;
     }
@@ -25,193 +24,58 @@
     .card-img-overlay {
         display: none;
     }
-
     .table .tableoutside th:nth-child(1) {
         width: 10px;
     }
-
     .table .tableoutside th:nth-child(2) {
         width: 10px;
     }
-
     .table .tableoutside th:nth-child(4) {
         width: 10px;
     }
-
     .table .tableoutside th:nth-child(8) {
         width: 10px;
     }
-
     .table .tableoutside th:nth-child(10) {
         width: 10px;
     }
-
     .table .tableoutside th:nth-child(11) {
         width: 10px;
     }
-
     .table-vertical-center th, .table-vertical-center td {
         vertical-align: middle;
     }
-
     /* 使所有label和input靠左對齊 */
     label, input[type="text"] {
         text-align: left;
         margin-top: 12px;
         display: inline-block;
     }
-
-
     label {
-        width: 135px; 
+        width: 135px;
     }
-
-
-    table {
+    table, .table {
         margin: 0px;
     }
-
-    .table {
-        margin: 0px;
-    }
-
     td {
         border: 0;
+        text-align: center;
+        background-color: lightgray;
     }
-
     .detail-row {
         border-bottom: 2px solid #BAA1A3;
     }
-
-    tr td {
-        text-align: center
-    }
-
     th {
-        text-align: center
+        text-align: center;
     }
-
-
+    .table-color{
+        background-color: #E2E3E5
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <div class="container">
-
-@*     <div class="modal" tabindex="-1" role="dialog" id="editOrderModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">編輯訂單</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="orderForm">
-                        <div class="form-group">
-                            <label for="OrderID">訂單編號</label>
-                            <input id="OrderID" name="OrderID" class="form-control" readonly value="@Model.Orders.FirstOrDefault()?.OrderID" />
-                        </div>
-                        <div class="form-group">
-                            <label for="OrderDate">訂單成立時間</label>
-                            <input id="OrderDate" name="OrderDate" type="datetime" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderDate" />
-                        </div>
-                        <div class="form-group">
-                            <label for="OrderTotalUsagePoints">訂單總花費</label>
-                            <input id="OrderTotalUsagePoints" name="OrderTotalUsagePoints" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderTotalUsagePoints" />
-                        </div>
-                        <div class="form-group">
-                            <label for="BuyerID">買家ID</label>
-                            <input id="BuyerID" name="BuyerID" class="form-control" value="@Model.Orders.FirstOrDefault()?.BuyerID" />
-                        </div>
-                    <div class="form-group">
-                            <label for="BuyerUsername">買家</label>
-                            <input id="BuyerUsername" name="BuyerUsername" class="form-control" value="@Model.Orders.FirstOrDefault()?.BuyerUsername" />
-                        </div> 
-                        <div class="form-group">
-                            <label for="OrderStatus">訂單狀態ID</label>
-                            <input id="OrderStatus" name="OrderStatus" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderStatus" />
-                        </div>
-                        <div class="form-group">
-                            <label for="OrderStatusDescription">訂單狀態</label>
-                            <input id="OrderStatusDescription" name="OrderStatusDescription" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderStatusDescription" />
-                        </div>
-                        <div class="form-group">
-                            <label for="OrderCatagory">訂單類型編號</label>
-                            <input id="OrderCatagory" name="OrderCatagory" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderCatagory" />
-                        </div>
-                        <div class="form-group">
-                            <label for="OrderCatagoryDescription">訂單類型</label>
-                            <input id="OrderCatagoryDescription" name="OrderCatagoryDescription" class="form-control" value="@Model.Orders.FirstOrDefault()?.OrderCatagoryDescription" />
-                        </div>
-                        <div class="form-group">
-                            <label for="ConvienenNum">超取超商店號</label>
-                            <input id="ConvienenNum" name="ConvienenNum" class="form-control" value="@Model.Orders.FirstOrDefault()?.ConvienenNum" />
-                        </div>
-                        <div class="form-group">
-                            <label for="DeliveryFee">運費點數</label>
-                            <input id="DeliveryFee" name="DeliveryFee" class="form-control" value="@Model.Orders.FirstOrDefault()?.DeliveryFee" />
-                        </div>
-
-                        @foreach (var orderDetail in Model.OrderDetails)
-                        {
-                            <h3>Order Detail for @orderDetail.OrderDetailID</h3>
-                            <div class="form-group">
-                                <label for="OrderID-@orderDetail.OrderDetailID">OrderID</label>
-                                <input id="OrderID-@orderDetail.OrderDetailID" name="OrderID-@orderDetail.OrderDetailID" class="form-control" readonly value="@orderDetail.OrderID" />
-                            </div>
-                            <div class="form-group">
-                                <label for="OrderDetailID-@orderDetail.OrderDetailID">Order Detail ID</label>
-                                <input id="OrderDetailID-@orderDetail.OrderDetailID" name="OrderDetailID-@orderDetail.OrderDetailID" class="form-control" readonly value="@orderDetail.OrderDetailID" />
-                            </div>
-                            <div class="form-group">
-                                <label for="ProductID-@orderDetail.OrderDetailID">產品編號</label>
-                                <input id="ProductID-@orderDetail.OrderDetailID" name="ProductID-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductID" />
-                            </div>
-@*                             <div class="form-group">
-                                <label for="ProductName-@orderDetail.OrderDetailID">產品名稱</label>
-                                <input id="ProductName-@orderDetail.OrderDetailID" name="ProductName-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductName" />
-                            </div> 
-                            <div class="form-group">
-                                <label for="ProductUnitPoint-@orderDetail.OrderDetailID">商品單價</label>
-                                <input id="ProductUnitPoint-@orderDetail.OrderDetailID" name="ProductUnitPoint-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductUnitPoint" />
-                            </div>
-                            <div class="form-group">
-                                <label for="OrderQuantity-@orderDetail.OrderDetailID">商品購買數量</label>
-                                <input id="OrderQuantity-@orderDetail.OrderDetailID" name="OrderQuantity-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.OrderQuantity" />
-                            </div>
-                            <div class="form-group">
-                                <label for="SellerID-@orderDetail.OrderDetailID">SellerID</label>
-                                <input id="SellerID-@orderDetail.OrderDetailID" name="SellerID-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.SellerID" />
-                            </div>
-@*                             <div class="form-group">
-                                <label for="SellerUsername-@orderDetail.OrderDetailID">賣家</label>
-                                <input id="SellerUsername-@orderDetail.OrderDetailID" name="SellerUsername-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.SellerUsername" />
-                            </div> 
-                            <div class="form-group">
-                                <label for="DeliveryTypeID-@orderDetail.OrderDetailID">DeliveryTypeID</label>
-                                <input id="DeliveryTypeID-@orderDetail.OrderDetailID" name="DeliveryTypeID-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.DeliveryTypeID" />
-                            </div>
-@*                             <div class="form-group">
-                                <label for="DeliveryType-@orderDetail.OrderDetailID">寄送方式</label>
-                                <input id="DeliveryType-@orderDetail.OrderDetailID" name="DeliveryType-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.ProductName" />
-                            </div> 
-                            <div class="form-group">
-                                <label for="DeliveryAddress-@orderDetail.OrderDetailID">寄送地址</label>
-                                <input id="DeliveryAddress-@orderDetail.OrderDetailID" name="DeliveryAddress-@orderDetail.OrderDetailID" class="form-control" value="@orderDetail.DeliveryAddress" />
-                            </div>
-                        }
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="saveChanges">保存變更</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                </div>
-            </div>
-        </div>
-    </div>  *@
-@* ----------------------------------------- *@
-    <table class="table table-danger table-striped mt-2 table-vertical-center" style="font-size: 14px;">
+    <table class="table table-color  table-striped mt-2 table-vertical-center" style="font-size: 14px;">
     <thead>
         <tr>
             <th style="white-space: nowrap;text-align: center;">
