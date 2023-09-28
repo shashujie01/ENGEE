@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using EnGee.Models;
 using EnGee.ViewModel;
 using System.Text.Json;
@@ -8,6 +9,7 @@ using prjMvcCoreDemo.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Data;
+using Microsoft.Extensions.Hosting.Internal;
 
 
 namespace EnGee.Controllers
@@ -15,9 +17,11 @@ namespace EnGee.Controllers
     public class ShoppingController : SuperController
     {//TODO特定時間清除多餘SESSION
         private readonly EngeeContext _db;
-        public ShoppingController(EngeeContext db, CHI_CUserViewModel userViewModel) : base(userViewModel)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public ShoppingController(EngeeContext db, CHI_CUserViewModel userViewModel, IWebHostEnvironment hostingEnvironment) : base(userViewModel)
         {
             _db = db;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         private TMember GetLoggedInUser()
@@ -193,7 +197,6 @@ namespace EnGee.Controllers
                 }
             }
         }
-
         public IActionResult CartView()
         {// 顯示購物車畫面
             TMember loggedInUser = GetLoggedInUser();
@@ -201,9 +204,17 @@ namespace EnGee.Controllers
             ViewBag.userFromDatabase = userFromDatabase;
             int points = (int)(userFromDatabase?.Point ?? 0);
             ViewBag.MemberPoints = points;
+
+            string jsonPath = Path.Combine(_hostingEnvironment.WebRootPath, "lib", "stores", "711Sores.json");
+            var jsonData = System.IO.File.ReadAllText(jsonPath);
+            var stores = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(jsonData);
+
+            ViewBag.Stores = stores;
             List<SSJ_CShoppingCarItem> cart = GetCartItems();
             return View(cart);
         }
+
+
 
         //public IActionResult CartView_ConvenienceStore()
         //{// 顯示購物車畫面

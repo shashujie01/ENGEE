@@ -238,6 +238,13 @@
                                 <a class="hrefstyle hrefstyle1:hover mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
                             </div>
                         }
+
+                        <select class="store-select">
+                            @foreach (var store in ViewBag.Stores)
+                            {
+                                <option value="@store.StoreID">@store.StoreName - @store.Address</option>
+                            }
+                        </select>
                     }
                 </div>
             </div>
@@ -620,6 +627,21 @@
             }
         });
     });
-
-
+    //----------
+    //門市
+    $('#txtKeyWords').on('keyup', function ()
+    {
+        var query = $(this).val().toLowerCase();
+        $(".store-select option").each(function ()
+        {
+            var storeInfo = $(this).text().toLowerCase();
+            if (storeInfo.includes(query))
+            {
+                $(this).show();
+            } else
+            {
+                $(this).hide();
+            }
+        });
+    });
 </script>
