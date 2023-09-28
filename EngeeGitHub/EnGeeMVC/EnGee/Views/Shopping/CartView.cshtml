@@ -190,34 +190,33 @@
                                     </div>
                                     <form method="post" action="@Url.Action("ConfirmPurchase", "Shopping")">
                                         <input type="hidden" name="SelectedProducts" id="SelectedProducts" />
-
-
                                         <div class="input-group mb-2">
-                                            <span class="input-group-text">姓名</span>
-                                            <input type="text" class="form-control" name="Fullname">
+                                            <span class="input-group-text">收件人姓名</span>
+                                            <input type="text" class="form-control" name="ReceiverName">
                                         </div>
                                         <div class="input-group mb-2">
-                                            <span class="input-group-text">Email</span>
-                                            <input type="text" class="form-control" name="Email">
+                                            <span class="input-group-text">收件人手機</span>
+                                            <input type="text" class="form-control" name="ReceiverTEL">
                                         </div>
                                         <div class="input-group mb-2">
-                                            <span class="input-group-text">手機</span>
-                                            <input type="text" class="form-control" name="Phone">
+                                            <span class="input-group-text">收件人宅配地址</span>
+                                            <input type="text" class="form-control" name="DeliveryAddress_homeDelivery" placeholder="商品請選擇宅配方式" value="">
                                         </div>
-                                        <div class="input-group mb-2">
-                                            <span class="input-group-text">地址</span>
-                                            <input type="text" class="form-control" name="DeliveryAddress">
+                                        <div class ="input-group mb-2">
+                                            <span class="input-group-text">收件人超商取貨地址 </span>
+                                            <input type="text" class="form-control " id="storeID" placeholder="店號" name="DeliveryStoreID_storePickup" readonly>
+                                            <input type="text" class="form-control w-40" id="txtStoreName" list="storeNameSuggestions" placeholder="輸入店名" oninput="updateStoreNameSuggestions()" name="DeliveryStoreName_storePickup">
+                                        <datalist id="storeNameSuggestions"></datalist>
+                                            <input type="text" class="form-control w-50" id="txtStoreAddress" list="StoreAddressSuggestions" placeholder="輸入地址" oninput="updateStoreAddressSuggestions()" name="DeliveryAddress_storePickup">
+                                        <datalist id="StoreAddressSuggestions"></datalist>
                                         </div>
-
                                         <div class="container mt-4">
                                             <div class="input-group mb-2">
                                                 <span class="input-group-text">結帳扣點</span>
                                                 <input type="form-text" class="form-control" id="checkoutTotalPoint" readonly>
-
                                                 <span class="input-group-text">會員點數</span>
                                                 <input type="form-text" class="form-control" readonly value="@ViewBag.MemberPoints">
                                                 <input type="hidden" id="memberPoints" value="@ViewBag.MemberPoints" />
-
                                                 <span class="input-group-text">購買後剩餘點數</span>
                                                 <input type="form-text" class="form-control" id="remainingPoints" readonly value="@ViewBag.MemberPoints">
                                             </div>
@@ -359,24 +358,31 @@
     // ------------------------------
     // 當帶入會員資料勾選時自動帶入會員資料'
     var jsonData = @Html.Raw(Json.Serialize(ViewBag.userFromDatabase ?? new {}));
-
     document.getElementById('defaultCheck_memberInformation').addEventListener('change', function ()
-    {
+    {  let isHomeDeliverySelected = $(".delivery-radio[data-delivery-type='宅配']:checked").length > 0;
+    // 更新宅配地址欄位
         if (this.checked)
         {
             if (jsonData)
             {
-                document.querySelector("input[name='Fullname']").value = '@Html.Raw(ViewBag.userFromDatabase.Fullname)';
-                document.querySelector("input[name='Email']").value = '@Html.Raw(ViewBag.userFromDatabase.Email)';
-                document.querySelector("input[name='Phone']").value = '@Html.Raw(ViewBag.userFromDatabase.Phone)';
-                document.querySelector("input[name='DeliveryAddress']").value = '@Html.Raw(ViewBag.userFromDatabase.Address)';
+                if (isHomeDeliverySelected)
+                {
+                    document.querySelector("input[name='ReceiverName']").value = '@Html.Raw(ViewBag.userFromDatabase.Fullname)';
+                    document.querySelector("input[name='ReceiverTEL']").value = '@Html.Raw(ViewBag.userFromDatabase.Phone)';
+                    document.querySelector("input[name='DeliveryAddress_homeDelivery']").value = '@Html.Raw(ViewBag.userFromDatabase.Address)';
+                } else
+                {
+                    document.querySelector("input[name='ReceiverName']").value = '@Html.Raw(ViewBag.userFromDatabase.Fullname)';
+                    document.querySelector("input[name='ReceiverTEL']").value = '@Html.Raw(ViewBag.userFromDatabase.Phone)';
+                    document.querySelector("input[name='DeliveryAddress_homeDelivery']").value = "宅配未選擇";
+                }
+              
             }
         } else
         {
-            document.querySelector("input[name='Fullname']").value = "";
-            document.querySelector("input[name='Email']").value = "";
-            document.querySelector("input[name='Phone']").value = "";
-            document.querySelector("input[name='DeliveryAddress']").value = "";
+            document.querySelector("input[name='ReceiverName']").value = "";
+            document.querySelector("input[name='ReceiverTEL']").value = "";
+            document.querySelector("input[name='DeliveryAddress_homeDelivery']").value = "";
         }
     });
     // -------------------------
@@ -620,6 +626,120 @@
             }
         });
     });
+    //----------
+    //門市
+    var allStores = @Html.Raw(Json.Serialize(ViewBag.Stores));
 
+    function updateStoreAddressSuggestions()
+    {
+        let input = document.getElementById("txtStoreAddress").value.toLowerCase();
+        let dataList = document.getElementById("StoreAddressSuggestions");
 
+        // 清除先前的建議
+        dataList.innerHTML = "";
+
+        // 使用 allStores 資料
+        for (let store of allStores)
+        {
+            if (store.address && store.address.toLowerCase().includes(input))
+            {
+                let option = document.createElement("option");
+                option.value = store.address;
+                dataList.appendChild(option);
+            }
+        }
+    }
+    function updateStoreNameSuggestions()
+    {
+        let input = document.getElementById("txtStoreName").value.toLowerCase();
+        let dataList = document.getElementById("storeNameSuggestions");
+        dataList.innerHTML = "";
+
+        for (let store of allStores)
+        {
+            if (store.storeName && store.storeName.toLowerCase().includes(input))
+            {
+                let option = document.createElement("option");
+                option.value = store.storeName;
+                dataList.appendChild(option);
+            }
+        }
+    }
+    document.getElementById("txtStoreAddress").addEventListener('change', fillStoreDetails);
+    document.getElementById("txtStoreName").addEventListener('change', fillStoreDetails);
+
+    function fillStoreDetails()
+    {
+        let input;
+        if (this.id === "txtStoreAddress")
+        {
+            input = this.value;
+        } else
+        {
+            input = document.getElementById("txtStoreName").value;
+        }
+
+        for (let store of allStores)
+        {
+            if (store.storeName === input || store.address === input)
+            {
+                document.getElementById("storeID").value = store.storeID;
+                document.getElementById("txtStoreAddress").value = store.address;
+                document.getElementById("txtStoreName").value = store.storeName;
+                break;
+            }
+        }
+    }
+    //---------
+    //填寫地址欄位啟用禁用
+    function updateDeliveryInputs()
+    {
+        let isHomeDeliverySelected = $(".delivery-radio[data-delivery-type='宅配']:checked").length > 0;
+        let isStorePickupSelected = $(".delivery-radio[data-delivery-type='超商門市取貨']:checked").length > 0;
+
+        // 更新宅配地址欄位
+        if (isHomeDeliverySelected)
+        {
+            $("input[name='DeliveryAddress_homeDelivery']").attr("placeholder", "請輸入宅配地址").prop("disabled", false);
+        } else
+        {
+            $("input[name='DeliveryAddress_homeDelivery']").attr("placeholder", "宅配未選擇").prop("disabled", true).val("宅配未選擇");
+        }
+
+        // 更新 DeliveryStoreName_storePickup
+        if (isStorePickupSelected)
+        {
+            $("input[name='DeliveryStoreName_storePickup']").attr("placeholder", "請輸入門市名稱").prop("disabled", false);
+        } else
+        {
+            $("input[name='DeliveryStoreName_storePickup']").attr("placeholder", "超商門市取貨未選擇").prop("disabled", true).val('');
+        }
+
+        // 更新 DeliveryAddress_storePickup
+        if (isStorePickupSelected)
+        {
+            $("input[name='DeliveryAddress_storePickup']").attr("placeholder", "請輸入門市地址").prop("disabled", false);
+        } else
+        {
+            $("input[name='DeliveryAddress_storePickup']").attr("placeholder", "超商門市取貨未選擇").prop("disabled", true).val('');
+        }
+
+        // 特別處理 DeliveryStoreID_storePickup
+        if (isStorePickupSelected)
+        {
+            $("input[name='DeliveryStoreID_storePickup']").attr("placeholder", "").prop("disabled", false);
+        } else
+        {
+            $("input[name='DeliveryStoreID_storePickup']").attr("placeholder", "超商門市取貨未選擇").prop("disabled", true).val('');
+        }
+    }
+
+    $(document).ready(function ()
+    {
+        $(".delivery-radio").on('change', function ()
+        {
+            updateDeliveryInputs();
+        });
+        updateDeliveryInputs();
+    });
 </script>

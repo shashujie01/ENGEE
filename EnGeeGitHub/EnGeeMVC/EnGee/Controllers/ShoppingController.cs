@@ -205,7 +205,7 @@ namespace EnGee.Controllers
             int points = (int)(userFromDatabase?.Point ?? 0);
             ViewBag.MemberPoints = points;
 
-            string jsonPath = Path.Combine(_hostingEnvironment.WebRootPath, "lib", "stores", "711Sores.json");
+            string jsonPath = Path.Combine(_hostingEnvironment.WebRootPath, "lib", "stores", "711Stores.json");
             var jsonData = System.IO.File.ReadAllText(jsonPath);
             var stores = JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(jsonData);
 
@@ -352,7 +352,6 @@ namespace EnGee.Controllers
 
             // 創建新的訂單並儲存
             int totalUsagePoints = 0;
-           
             {
                 TOrder order = new TOrder
                 {
@@ -360,10 +359,11 @@ namespace EnGee.Controllers
                     BuyerId = loggedUserId,
                     OrderStatus = "3",//結帳後為3
                     OrderCatagory = 1,//買賣為1
-                    ConvienenNum = "0",//超商尚未串接
-                    DeliveryFee = deliveryFee//用函式尋找DeliveryFee
-                    //DeliveryFee目前讀不到值都回0，應該做個加總
-                };
+                    ConvienenNum = "0",//超商用另外邏輯處理->因為要結訓先不刪除
+                    DeliveryFee = deliveryFee,//用函式尋找DeliveryFee
+                    //ReceiverName=vm.ReceiverName,
+                    //ReceiverTEL = vm.ReceiverTEL
+    };
 
                 // 計算 totalUsagePoints
                 foreach (var item in selectedItems)
@@ -379,7 +379,6 @@ namespace EnGee.Controllers
                         OrderQuantity = item.count,
                         SellerId = item.SellerId,
                     };
-
                     totalUsagePoints += item.小計;
                 }
                 TMember currentMember = _db.TMembers.FirstOrDefault(t => t.MemberId == loggedUserId);
@@ -389,11 +388,8 @@ namespace EnGee.Controllers
                     TempData["ErrorMessage"] = "您的點數不足"; 
                     return RedirectToAction("CartView", "Shopping");
                 }
-
                 //-----------
-
                 // 如果點數足夠，設置order.OrderTotalUsagePoints，並將訂單和訂單詳細信息儲存到資料庫
-                
                 using (var db = _db)
                 { 
                 db.TOrders.Add(order);
@@ -402,12 +398,20 @@ namespace EnGee.Controllers
                 // 對於購物車中的每一項商品，都在TOrderDetail表中新增一個詳細資料行
                 foreach (var item in selectedItems)
                 {
-                    TOrderDetail orderDetail = new TOrderDetail
+                        if (item.DeliveryTypeID == 1)
+                        {
+                            item.DeliveryAddress_homeDelivery = vm.DeliveryAddress_homeDelivery;
+                        }
+                        else if (item.DeliveryTypeID == 2)
+                        {
+                            item.DeliveryAddress_storePickup = vm.DeliveryAddress_storePickup;
+                        }
+                        TOrderDetail orderDetail = new TOrderDetail
                     {
                         OrderId = order.OrderId,
                         OrderDate = order.OrderDate,
                         DeliveryTypeId = item.DeliveryTypeID,
-                        DeliveryAddress = vm.DeliveryAddress,
+                        DeliveryAddress = item.DeliveryAddress,
                         ProductId = item.ProductId,
                         ProductUnitPoint = item.point,
                         OrderQuantity = item.count,
@@ -452,7 +456,6 @@ namespace EnGee.Controllers
                 }
                 db.SaveChanges();  // 儲存變更至資料庫
                 }
-
                 // 購買後從Session中清除購物車
                 cart.RemoveAll(item => selectedProductIds.Contains(item.ProductId));
                 string json = JsonSerializer.Serialize(cart);
