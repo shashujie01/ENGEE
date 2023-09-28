@@ -72,6 +72,22 @@ namespace EnGee.Controllers
                 return NotFound(); // or redirect to an error page
             }
 
+            var userSessionJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
+            if (string.IsNullOrEmpty(userSessionJson))
+            {
+                // 用户未登录，重定向到登录页面或显示错误
+                return RedirectToAction("Login", "Home"); // 根据您的路由进行调整
+            }
+
+            var loginUser = JsonConvert.DeserializeObject<TMember>(userSessionJson);
+
+            if (loginUser.MemberId != message.MemberId)
+            {
+                // 登录用户不是消息的作者，显示错误或重定向
+                return View("Error", new ErrorViewModel { Message = "您没有权限删除这条消息" });
+            }
+
+            // 现在可以安全删除消息
             int productId = message.ProductId;
 
             _dbContext.TMessages.Remove(message);
@@ -79,9 +95,9 @@ namespace EnGee.Controllers
 
             if (changesSaved == 0)
             {
-                // Log this or handle it appropriately.
-                // This means the message was not deleted.
-                // For now, let's redirect to an error page or home page.
+                // 记录或合适处理
+                // 这意味着消息未被删除
+                // 现在，重定向到错误页面或主页面
                 return RedirectToAction("DetailsJING", new { id = productId });
             }
 
@@ -89,7 +105,9 @@ namespace EnGee.Controllers
         }
 
     }
+
 }
+
     
 
       
