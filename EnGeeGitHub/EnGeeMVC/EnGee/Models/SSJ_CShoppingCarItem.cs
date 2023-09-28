@@ -40,4 +40,8 @@ public class SSJ_CShoppingCarItem
         }
     }
     public bool IsSelected { get; set; }
+
+    public string StoreID { get; set; }
+    public string StoreName { get; set; }
+    public string Address { get; set; }
 }
