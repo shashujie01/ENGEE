@@ -99,9 +99,9 @@
             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-5">
                 @using (Html.BeginForm("IndexSSJ", "Product", FormMethod.Post, new { @class = "form-inline" }))
                 {
-                    <div>
+                    @* <div>
                         <a class="text-decoration-none fw-bolder mb-3" href="@Url.Action("CartView", "Shopping")">檢視購物車</a>
-                    </div>
+                    </div> *@
                     <div class="d-flex p-0">
                         <div class="form-group mb-2">
                             @Html.TextBox("TxtKeyword", null, new { @class = "form-control", @placeholder = "輸入關鍵字" })
@@ -318,6 +318,9 @@
                                 <a class="page-link" href="@Url.Action(actionName, "Product", routeValues)">@i</a>
                             </li>
                         }
+                        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("IndexSSJ", new { TxtKeyword = Model.TxtKeyword, page = Model.CurrentPage + 1 })">Next</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -326,11 +329,12 @@
 </main>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    @*切換頁面JS*@
+    
     @if (TempData["Message"] != null)
     {
         @:alert('商品銷售一空');
     }
+    @*切換頁面JS*@
         $(document).ready(function ()
         {
             $('#contentOne, #contentTwo').on('show.bs.collapse', function ()
@@ -367,6 +371,4 @@
                 window.location.href = newUrl;
             });
         });
-
-                //todo往前往後頁面還沒做
 </script>

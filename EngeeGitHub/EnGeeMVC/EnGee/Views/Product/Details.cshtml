@@ -66,8 +66,8 @@
                                 <div class="choose-product-delivery-section d-flex flex-wrap">
                                     <div id="delyTitle">配送方式:</div>
                                     <div class="shippingList">
-                                        <label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="checked">宅配</label>
-                                        <label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>
+                                       @*  <label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="checked">宅配</label>
+                                        <label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label> *@
                                     </div>
                                 </div>
 
@@ -87,6 +87,33 @@
 <script>
     $(document).ready(function ()
     {
+        $.ajax({
+            type: "GET",
+            url: "/Product/GetDeliveryTypeIdForProduct",
+            data: { productId: @Model.ProductId },
+            success: function (deliveryTypeId)
+            {
+                switch (deliveryTypeId)
+                {
+                    case 1:
+                        $('.shippingList').append('<label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="checked">宅配</label>');
+                        break;
+                    case 2:
+                        $('.shippingList').append('<label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup" checked="checked">超商門市取貨</label>');
+                        break;
+                    case 3:
+                        $('.shippingList').append('<label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="checked">宅配</label>');
+                        $('.shippingList').append('<label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>');
+                        break;
+                    default:
+                        console.error("Unknown DeliveryTypeId:", deliveryTypeId);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                console.error("Ajax request failed:", textStatus, errorThrown);
+            }
+        });
         // 初始化設置
         var maxQuantity = parseInt($(".product-remaining-quantity").text().replace("剩餘數量: ", ""), 10);
         var initialDelivery = $("input[name='deliverytypeid']:checked").attr("delytype");

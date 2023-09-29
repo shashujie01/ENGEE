@@ -31,6 +31,26 @@ public class SSJ_CShoppingCarItem
             }
         }
     }
+    public string DeliveryAddress
+    {
+        get
+        {
+            if (DeliveryTypeID == 1)
+            {
+                return DeliveryAddress_homeDelivery;
+            }
+            else if (DeliveryTypeID == 2)
+            {
+                return DeliveryAddress_storePickup;
+            }
+            else
+            {
+                return "未知"; // 或其他預設值
+            }
+        }
+    }
+    public string DeliveryAddress_homeDelivery { get; set; }
+    public string DeliveryAddress_storePickup { get; set; }
     public TProduct tproduct { get; set; }
     public int 小計
     {
@@ -40,4 +60,8 @@ public class SSJ_CShoppingCarItem
         }
     }
     public bool IsSelected { get; set; }
+    //下面是給超商JSON使用
+    public string StoreID { get; set; }
+    public string StoreName { get; set; }
+    public string Address { get; set; }
 }

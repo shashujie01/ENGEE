@@ -2,6 +2,7 @@
 using EnGee.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using prjEnGeeDemo.Models;
 using prjEnGeeDemo.ViewModels;
 
@@ -33,7 +34,7 @@ namespace prjEnGeeDemo.Controllers
         {// 產品頁面的主要邏輯
          // 從資料庫獲取所有商品
 
-            IQueryable<TProduct> query = db.TProducts.Where(p => p.ProductSaleStatus != 1);
+            IQueryable<TProduct> query = db.TProducts.Where(p => p.ProductSaleStatus != 1 & p.DonationStatus==0);
             // 應用過濾條件
             query = ApplyFilters(vm, query);
             // 計算總頁數與總數
@@ -146,7 +147,17 @@ namespace prjEnGeeDemo.Controllers
                 return NotFound();
             }
         }
-
+        [HttpGet]
+        public async Task<IActionResult> GetDeliveryTypeIdForProduct(int productId)
+        {
+            var product = await db.TProducts.FirstOrDefaultAsync(t => t.ProductId == productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+            int deliveryTypeId = product.DeliveryTypeId;
+            return Json(deliveryTypeId);
+        }
     }
 }
 
