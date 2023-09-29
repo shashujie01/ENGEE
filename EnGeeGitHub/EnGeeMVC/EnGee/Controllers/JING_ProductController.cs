@@ -209,6 +209,7 @@ namespace EnGee.Controllers
                 prodDb.DeliveryTypeId = prodIn.DeliveryTypeId;
                 prodDb.SellerId = prodIn.SellerId;
                 prodDb.ProductSaleStatus = prodIn.ProductSaleStatus;
+               
 
                 db.SaveChanges();
             }
@@ -311,6 +312,7 @@ namespace EnGee.Controllers
                 DeliveryFee = product.DeliveryType?.DeliveryFee ?? 0,
                 //SellerName = product.Seller?.MemberName,
                 ProductSaleStatus = product.ProductSaleStatus,
+                LoggedInUserId = currentMemberId == -1 ? (int?)null : currentMemberId // 新增這一行
             };
             PDviewModel.Messages = db.TMessages
                                   .Include(m => m.Member)  // 包含會員信息

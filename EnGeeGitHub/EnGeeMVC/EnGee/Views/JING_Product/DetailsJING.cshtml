@@ -142,9 +142,9 @@
 <section class="container py-5">
     <h2 class="mb-4">留言板</h2>
     <ul class="list-group">
-        @if (Model.Messages != null && Model.Messages.Count > 0)
+        @if (Model.Messages != null && Model.Messages.Any())
         {
-            foreach (var message in Model.Messages)
+            @foreach (var message in Model.Messages)
             {
                 <li class="list-group-item">
                     <div class="message-content">@message.MessageContent</div>
@@ -154,21 +154,27 @@
                         <!-- 您可以根據需要添加其他相關信息，例如留言時間、用戶名等 -->
                     </div>
 
-                <!-- 插入刪除留言的表單 -->
-<form method="post" action="@Url.Action("DeleteMessage", "Message")">
-    <input type="hidden" name="messageId" value="@message.MessageId" />
-                        <button type="submit" class="btn btn-lighter-danger">
-                            <i class="bi bi-trash"></i>
-                        </button>
-</form>
-
+                    @if (Model.LoggedInUserId.HasValue && message.MemberId == Model.LoggedInUserId.Value)
+                    {
+                        <text>
+                            <!-- 插入刪除留言的表單 -->
+                            <form method="post" action="@Url.Action("DeleteMessage", "Message")">
+                                <input type="hidden" name="messageId" value="@message.MessageId" />
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="bi bi-trash"></i> 刪除
+                                </button>
+                            </form>
+                        </text>
+                    }
                 </li>
             }
         }
         else
         {
-            <li class="list-group-item">目前還沒有留言</li>
+            <text>
+            <li class="list-group-item">目前還沒有留言</li></text>
         }
+
     </ul>
     <!-- 留言提交表單 -->
     <div class="mt-4">

@@ -7,5 +7,7 @@
         public string ProductDescribe { get; set; }
         public string ProductImagePath { get; set; }
         public int ProductUnitPoint { get; set; }
+       
+       
     }
 }

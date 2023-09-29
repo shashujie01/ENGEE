@@ -25,5 +25,6 @@ namespace EnGee.ViewModel
         public List<TMessage> Messages { get; set; }
 
         public bool IsFavorite { get; set; }
+        public int? LoggedInUserId { get; set; }
     }
 }
