@@ -368,6 +368,8 @@ public partial class EngeeContext : DbContext
             entity.Property(e => e.OrderStatus)
                 .HasMaxLength(1)
                 .IsFixedLength();
+            entity.Property(e => e.ReceiverName).HasMaxLength(100); 
+            entity.Property(e => e.ReceiverTEL).HasMaxLength(10);  
         });
 
         modelBuilder.Entity<TOrderDetail>(entity =>

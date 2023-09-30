@@ -36,6 +36,8 @@ namespace EnGee.Controllers
                              OrderDate = o.OrderDate,
                              OrderTotalUsagePoints = o.OrderTotalUsagePoints,
                              BuyerID = o.BuyerId,
+                             ReceiverName = o.ReceiverName ?? "",
+                             ReceiverTEL = o.ReceiverTEL ?? "",
                              //BuyerUsername = m.Username,
                              OrderStatus = o.OrderStatus,
                              OrderCatagory = o.OrderCatagory,
@@ -93,6 +95,8 @@ namespace EnGee.Controllers
             order.OrderDate = model.Orders.First().OrderDate;
             order.OrderTotalUsagePoints = model.Orders.First().OrderTotalUsagePoints;
             order.BuyerId = model.Orders.First().BuyerID;
+            order.ReceiverName = model.Orders.First().ReceiverName ?? "";
+            order.ReceiverTEL = model.Orders.First().ReceiverTEL ?? "";
             ////order.BuyerUsername = model.Orders.First().BuyerUsername;
             order.OrderStatus = model.Orders.First().OrderStatus;
             order.OrderCatagory = model.Orders.First().OrderCatagory;
