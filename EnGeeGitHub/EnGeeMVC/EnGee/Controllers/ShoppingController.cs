@@ -265,7 +265,16 @@ namespace EnGee.Controllers
         { // 購物頁商品快速加入商品到購物車
             // 設定預設的配送選項
             int defaultCount = 1;
-            int defaultDeliveryOption = 1;
+            int defaultDeliveryOption;
+            var product= _db.TProducts.FirstOrDefault(p=>p.ProductId==txtProductId);
+            if (product.DeliveryTypeId == 2)
+            {
+                defaultDeliveryOption = 2;
+            }
+            else 
+            {
+                defaultDeliveryOption = 1;
+            }
             int productId = txtProductId;
             // 用GetAndUpdateCart將商品加入購物車
             GetAndUpdateCart(productId, defaultCount, defaultDeliveryOption);
