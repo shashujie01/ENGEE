@@ -120,8 +120,8 @@
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單類型編號</th>
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單類型</th>
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">買家ID</th>
-                @* <th class="tableoutside" style="white-space: nowrap;text-align: center;">買家</th> *@
-                @*@<th class="tableoutside" style="white-space: nowrap;text-align: center;">超取超商店號</th>*@
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">收件人姓名</th>
+                <th class="tableoutside" style="white-space: nowrap;text-align: center;">收件人姓名電話</th>
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">運費點數</th>
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">訂單總花費</th>
                 <th class="tableoutside" style="white-space: nowrap;text-align: center;">功能鈕</th>
@@ -158,12 +158,12 @@
                             <td style="text-align: center;">
                                     @Html.DisplayFor(modelItem => order.BuyerID)
                             </td>
-                            @*<td style="text-align: center;">
-                                    @Html.DisplayFor(modelItem => order.BuyerUsername)
-                            </td>*@
-                           @* <td style="text-align: center;">
-                                    @Html.DisplayFor(modelItem => order.ConvienenNum)
-                            </td>*@
+                            <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.ReceiverName)
+                            </td>
+                           <td style="text-align: center;">
+                                    @Html.DisplayFor(modelItem => order.ReceiverTEL)
+                            </td>
                             <td style="text-align: center;">
                                     @Html.DisplayFor(modelItem => order.DeliveryFee)
                             </td>
@@ -175,7 +175,7 @@
                                         <a class="text-black" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#details-@order.OrderID">明細</a> 
                                     </div>
                                     
-                                        @*  @Html.ActionLink("修改", "SSJ_EditOrder", new { id = order.OrderID }, new { style = "color:black;" })*@
+                                        @* MVC使用 @Html.ActionLink("修改", "SSJ_EditOrder", new { id = order.OrderID }, new { style = "color:black;" })*@
                             <button class="text-black btn btn-sm btn-success me-2 edit-order-btn" data-orderid="@order.OrderID">修改</button>
 
                             <div class="btn btn-sm btn-danger me-2 ">
@@ -351,6 +351,12 @@
                         <label>買家ID:</label>
                                 <input type="text" id="swal-input-buyerID" value="${data.orders[0].buyerID}"readonly><br>
 
+                        <label>收件者姓名:</label>
+                                                <input type="text" id="swal-input-receiverName" value="${data.orders[0].receiverName}"><br>
+
+                        <label>收件者電話:</label>
+                                                <input type="text" id="swal-input-receiverTEL" value="${data.orders[0].receiverTEL}"><br>
+
                         @*<label>buyerUsername:</label>
                         <input type="text" id="swal-input-buyerUsername" value="${data.orders[0].buyerUsername}"readonly><br>*@
 
@@ -432,6 +438,8 @@
                     orderDate: new Date(document.getElementById('swal-input-orderdate').value), 
                     orderTotalUsagePoints: parseInt(document.getElementById('swal-input-orderTotalUsagePoints').value, 10),
                     buyerID: parseInt(document.getElementById('swal-input-buyerID').value, 10),
+                        receiverName: document.getElementById('swal-input-receiverName').value,
+                        receiverTEL: document.getElementById('swal-input-receiverTEL').value,
                     orderStatus: document.getElementById('swal-input-orderStatus').value.toString(), 
                     orderCatagory: parseInt(document.getElementById('swal-input-orderCatagory').value, 10),
                     @*convienenNum: document.getElementById('swal-input-convienenNum').value.toString(),*@ 

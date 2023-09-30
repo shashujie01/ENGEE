@@ -103,6 +103,8 @@
             <th style="white-space: nowrap;text-align: center;">訂單類型編號</th>
             <th style="white-space: nowrap;text-align: center;">訂單類型</th>
             <th style="white-space: nowrap;text-align: center;">買家ID</th>
+            <th class="tableoutside" style="white-space: nowrap;text-align: center;">收件人姓名</th>
+            <th class="tableoutside" style="white-space: nowrap;text-align: center;">收件人姓名電話</th>
            @*<th style="white-space: nowrap;text-align: center;">買家</th>*@
             @*@<th style="white-space: nowrap;text-align: center;">超取超商店號</th>*@
             <th style="white-space: nowrap;text-align: center;">運費點數</th>
@@ -140,6 +142,12 @@
                     </td>
                     <td>
                             @Html.DisplayFor(modelItem => order.BuyerID)
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => order.ReceiverName)
+                    </td>
+                    <td style="text-align: center;">
+                        @Html.DisplayFor(modelItem => order.ReceiverTEL)
                     </td>
                    @* <td>
                           @Html.DisplayFor(modelItem => order.BuyerUsername)

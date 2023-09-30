@@ -313,9 +313,9 @@ namespace EnGee.Controllers
                     OrderCatagory = 1,//買賣為1
                     ConvienenNum = "0",//超商用另外邏輯處理->因為要結訓先不刪除
                     DeliveryFee = deliveryFee,//用函式尋找DeliveryFee
-                    //ReceiverName=vm.ReceiverName,
-                    //ReceiverTEL = vm.ReceiverTEL
-    };
+                    ReceiverName = vm.ReceiverName,
+                    ReceiverTEL = vm.ReceiverTEL
+                };
 
                 // 計算 totalUsagePoints
                 foreach (var item in selectedItems)

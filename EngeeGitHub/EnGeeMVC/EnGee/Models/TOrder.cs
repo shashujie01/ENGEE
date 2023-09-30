@@ -20,4 +20,8 @@ public partial class TOrder
     public string ConvienenNum { get; set; } = null!;
 
     public int DeliveryFee { get; set; }
+
+    public string? ReceiverName { get; set; }
+
+    public string? ReceiverTEL { get; set; }
 }
