@@ -12,9 +12,9 @@
 @{
     if (TempData["ErrorMessage"] != null)
     {
-        <script>
-            alert("您的點數不足");
-        </script>
+    <script>
+                alert("您的點數不足");
+    </script>
     }
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -56,8 +56,115 @@
         background-color: white;
         border-radius: 6px;
     }
+
+    input:disabled {
+        opacity: 0.5; /* 使元素半透明 */
+        cursor: not-allowed; /* 顯示不允許的光標 */
+    }
     /* 購物車網頁專用end */
 </style>
+<script>
+    //------------function------------------
+    function getDeliveryOptionsForProduct(productId)
+    {
+        $.ajax({
+            type: "GET",
+            url: "/Product/GetDeliveryTypeIdForProduct",
+            data: { productId: productId },
+            success: function (deliveryTypeId)
+            {
+                // 預設禁用所有選項
+                $('input[name="deliverytypeid_' + productId + '"]').prop('disabled', true).addClass('disabled-input');
+
+                switch (deliveryTypeId)
+                {
+                    case 1:
+                        $('input[data-product-id="' + productId + '"][data-delivery-type="宅配"]').prop('disabled', false).removeClass('disabled-input').prop('checked', true);
+                        break;
+                    case 2:
+                        $('input[data-product-id="' + productId + '"][data-delivery-type="超商門市取貨"]').prop('disabled', false).removeClass('disabled-input').prop('checked', true);
+                        break;
+                    case 3:
+                        $('input[data-product-id="' + productId + '"]').prop('disabled', false).removeClass('disabled-input');
+                        $('input[data-product-id="' + productId + '"][data-delivery-type="宅配"]').prop('checked', true);
+                        break;
+                    default:
+                        console.error("Unknown DeliveryTypeId for product:", productId, " DeliveryTypeId:", deliveryTypeId);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                console.error("Ajax request failed for product:", productId, "Error:", textStatus, errorThrown);
+            }
+        });
+    }
+
+    // 更新總點數函數
+    function updateTotalPrice()
+    {
+        calculateAndDisplayTotal();
+    }
+    function calculateAndDisplayTotal()
+    {
+        let total = 0;
+        let productTotalPoint = 0;
+
+        // 對於已勾選的商品，加上它的小計到總點數
+        $(".cartcheckout:checked").each(function ()
+        {
+            let productId = $(this).data("product-id");
+            let labelValue = $(`.subtotalPoints[data-product-id=${productId}]`).text();
+            productTotalPoint += parseFloat(labelValue);
+        });
+
+        let deliveryFee = parseFloat($('#productDeliveryFee').text());
+        total = deliveryFee + productTotalPoint;
+
+        // 更新總點數顯示
+        $("#productTotalPoint").text(productTotalPoint);
+        $('#checkoutTotalPoint').val(total);
+
+        let memberPoints = parseFloat($("#memberPoints").val());
+        // 計算餘額
+        let remainingPoints = memberPoints - total;
+        // 將結果更新到目標輸入框中
+        $("#remainingPoints").val(remainingPoints);
+    }
+
+    function updateCartItem(productId, newCount = null, deliveryTypeId = null)
+    {//將label的值與product-id傳至後台Shopping/UpdateCartItem
+        $.ajax({
+            type: "POST",
+            url: "/Shopping/UpdateCartItem",
+            data: { productId: productId, newCount: newCount, deliveryTypeId: deliveryTypeId }, // 发送数量
+            success: function (result)
+            {
+                console.log("成功更新購物車項目：", result);
+                // 測試用
+                $(`.subtotalPoints[data-product-id=${productId}]`).text(result.subtotalPoints);
+                //購物車有多個項目有subtotalPoints，故不適合用#subtotalPoints
+                //.text() 方法也可以用在 label 標籤上，不僅僅是 span、div 或 p 等元素。
+                updateTotalPrice();
+            },
+            error: function (error)
+            {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    function getSelectedProducts()
+    {//選出chkbox被選擇的商品
+        let selectedProducts = [];
+        $(".cartcheckout:checked").each(function ()
+        {
+            let productId = $(this).data("product-id");
+            selectedProducts.push(productId);
+        });
+        return selectedProducts;
+    }
+    //--------------------
+</script>
 <main class="bg-color3">
     <div class="container p-0">
         <div class="shopcartList">
@@ -67,22 +174,21 @@
                     <button class="nav-link active " id="nav-storePickup-tab" data-bs-toggle="tab"
                             data-bs-target="#nav-storePickup-content" type="button" role="tab" aria-controls="nav-storePickup-content"
                             aria-selected="true">
-                        <a class="hrefstyle mt-2" href="@Url.Action("CartView", "Shopping")">宅配</a>
+                        <a class="hrefstyle mt-2" href="@Url.Action("CartView", "Shopping")">購物車</a>
                     </button>
-                    <button class="nav-link" id="nav-homeDelivery-tab" data-bs-toggle="tab"
+                    @* <button class="nav-link" id="nav-homeDelivery-tab" data-bs-toggle="tab"
                             data-bs-target="#nav-homeDelivery-content" type="button" role="tab" aria-controls="nav-homeDelivery-content"
                             aria-selected="false">
                         <a class="hrefstyle mt-2" href="@Url.Action("CartView_ConvenienceStore", "Shopping")">超商/i郵箱/myfone門市取貨</a>
-                    </button>
+                    </button> *@
                 </div>
                 <hr class="hr-m4px">
             </nav>
             <div class="tab-content " id="nav-tabContent">
-                <!-- 超商頁面 -->
                 <div class="tab-pane fade show active" id="nav-storePickup-content" role="tabpanel" aria-labelledby="nav-storePickup-tab">
                     @{
             //將值傳遞至後台
-                        <input type="hidden" name="BuyerId" value="填入BUYLLER">
+                            <input type="hidden" name="BuyerId" value="填入BUYLLER">
                         int count = 0;
                         decimal pay = 0;
                         if (Model != null && Model.Any())
@@ -90,152 +196,157 @@
                             foreach (var item in Model)
                             {
                             // 前端變更運送方式用
-                                <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">
+                                    <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">
                                 //保存原始的DeliveryTypeID值
-                                <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
+                                    <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
                                 //將值傳遞至後台
-                                <input type="hidden" name="SellerId" value="@item.SellerId">
-                                <input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />
-                                <div class="card p-2">
-                                    <div class="cartcontent">
-                                        <div class="row m-0 ">
-                                            <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
-                                                <div class="form-check">
-                                                    <input class="cartcheckout form-check-input" type="checkbox" value="" data-product-id="@item.ProductId" checked>
+                                    <input type="hidden" name="SellerId" value="@item.SellerId">
+                                    <input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />
+                                    <div class="card p-2">
+                                        <div class="cartcontent">
+                                            <div class="row m-0 ">
+                                                <div class="col-xl-2 col-lg-3 col-md-4 col-5  d-flex align-items-center justify-content-center">
+                                                    <div class="form-check">
+                                                        <input class="cartcheckout form-check-input" type="checkbox" value="" data-product-id="@item.ProductId" checked>
+                                                    </div>
+                                                    <div class="cartimg d-flex">
+                                                        <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
+                                                    </div>
                                                 </div>
-                                                <div class="cartimg d-flex">
-                                                    <img class="card-img img-fluid" src="@item.ProductImagePath" alt="@item.tproduct.ProductName" />
+                                                <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
+                                                    <div class="card-body p-0">
+                                                        <h5 class="card-title">
+                                                            @Html.DisplayFor(modelItem => item.tproduct.ProductName)
+                                                        </h5>
+                                                        <p class="card-text">
+                                                            //其他資訊擺放位置
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-xl-8 col-lg-7 col-md-6 col-4 p-0 pe-2">
-                                                <div class="card-body p-0">
-                                                    <h5 class="card-title">
-                                                        @Html.DisplayFor(modelItem => item.tproduct.ProductName)
-                                                    </h5>
-                                                    <p class="card-text">
-                                                        //其他資訊擺放位置
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
-                                                <label class="me-1 mb-2">點數:</label>
-                                                <label>@Html.DisplayFor(modelItem => item.point)</label><br>
-                                                <label class="me-1 mb-2">數量:</label>
-                                                <button class="btn btn-rong-s btnHoverStyle2 btnMinus" type="button">-</button>
-                                                <label class="me-2" data-product-id="@item.ProductId">@Html.DisplayFor(modelItem => item.count)</label>
-                                                <button class="btn btn-rong-s btnHoverStyle2 btnPlus" type="button">+</button>
-                                                <label class="me-1 mb-2">小計:</label>
-                                                <label class="me-2 subtotalPoints" data-product-id="@item.ProductId">@Html.DisplayFor(modelItem => item.小計)</label>
-                                                <label class="me-1 mb-2 @item.ProductId">所選配送方式:</label>
-                                                <label class="me-2 mb-2 delivery-label @item.ProductId" data-product-id="@item.ProductId">@item.DeliveryType</label>
-                                                @*保存原始的DeliveryType、DeliveryTypeID值
+                                                <div class="card-footer col-xl-2 col-lg-2 col-md-2 col-3 border-0 p-0">
+                                                    <label class="me-1 mb-2">點數:</label>
+                                                    <label>@Html.DisplayFor(modelItem => item.point)</label><br>
+                                                    <label class="me-1 mb-2">數量:</label>
+                                                    <button class="btn btn-rong-s btnHoverStyle2 btnMinus" type="button">-</button>
+                                                    <label class="me-2" data-product-id="@item.ProductId">@Html.DisplayFor(modelItem => item.count)</label>
+                                                    <button class="btn btn-rong-s btnHoverStyle2 btnPlus" type="button">+</button>
+                                                    <label class="me-1 mb-2">小計:</label>
+                                                    <label class="me-2 subtotalPoints" data-product-id="@item.ProductId">@Html.DisplayFor(modelItem => item.小計)</label>
+                                                    <label class="me-1 mb-2 @item.ProductId">所選配送方式:</label>
+                                                    <label class="me-2 mb-2 delivery-label @item.ProductId" data-product-id="@item.ProductId">@item.DeliveryType</label>
+                                                    @*保存原始的DeliveryType、DeliveryTypeID值
                                     <input type="hidden" name="DeliveryTypeID" value="@item.DeliveryTypeID" />
                                     <input type="hidden" name="originalDeliveryType" data-product-id="@item.ProductId" value="@item.DeliveryType">*@
-                                                @*保存原始的SelectedDeliveryTypeID值 *@
-                                                @*<input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />*@
-                                                <label class="me-2 mb-2 product-seller-name" data-seller-id="@item.SellerId">賣家: @item.SellerId</label><br>
-                                                <label>
-                                                    <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
-                                                           data-product-id="@item.ProductId" data-delivery-type="宅配" value="1" id="homeDelivery"
-                                                           data-label-class="delivery-label @item.ProductId">宅配
-                                                </label>
-                                                <label>
-                                                    <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
-                                                           data-product-id="@item.ProductId" data-delivery-type="超商門市取貨" value="2" id="StorePickup"
-                                                           data-label-class="delivery-label @item.ProductId">超商門市取貨
-                                                </label>
-                                                <a class="hrefstyle delete-item" href="#" data-product-id="@item.ProductId">刪除</a>
+                                                    @*保存原始的SelectedDeliveryTypeID值 *@
+                                                    @*<input type="hidden" name="SelectedDeliveryTypeIDs[@item.ProductId]" value="" />*@
+                                                    <label class="me-2 mb-2 product-seller-name" data-seller-id="@item.SellerId">賣家: @item.SellerId</label><br>
+                                                    <text>
+                                                        <script>
+                                                            getDeliveryOptionsForProduct(@item.ProductId);
+                                                        </script>
+                                                    </text>
+                                                    <label>
+                                                        <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
+                                                               data-product-id="@item.ProductId" data-delivery-type="宅配" value="1" id="homeDelivery"
+                                                               data-label-class="delivery-label @item.ProductId">宅配
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="deliverytypeid_@item.ProductId" class="delivery-radio"
+                                                               data-product-id="@item.ProductId" data-delivery-type="超商門市取貨" value="2" id="StorePickup"
+                                                               data-label-class="delivery-label @item.ProductId">超商門市取貨
+                                                    </label>
+                                                    <a class="hrefstyle delete-item" href="#" data-product-id="@item.ProductId">刪除</a>
+                                                </div>
                                             </div>
                                         </div>
+                                        <hr class="hr-m4px">
                                     </div>
-                                    <hr class="hr-m4px">
-                                </div>
                             }
-                            <div class="container p-0 ">
-                                <div class="row m-0 p-0">
-                                    <div class="payInfoBox d-flex align-items-center justify-content-end">
-                                        <div class="form-check col-xl-4 col-lg-4 col-md-3 col-2 ms-2">
-                                            <input class=" form-check-input select-all-checkbox" type="checkbox"
-                                                   data-target=".cartcheckout" id="storePickupSelectAll" checked>
-                                            <label class="form-check-label" for="storePickupSelectAll">全選</label>
+                                <div class="container p-0 ">
+                                    <div class="row m-0 p-0">
+                                        <div class="payInfoBox d-flex align-items-center justify-content-end">
+                                            <div class="form-check col-xl-4 col-lg-4 col-md-3 col-2 ms-2">
+                                                <input class=" form-check-input select-all-checkbox" type="checkbox"
+                                                       data-target=".cartcheckout" id="storePickupSelectAll" checked>
+                                                <label class="form-check-label" for="storePickupSelectAll">全選</label>
+                                            </div>
+                                            <div class="totalPriceMoney col-xl-3 col-lg-3 col-md-4 col-4 ">
+                                                商品總點數：<span> $ </span><span id="productTotalPoint"> @pay.ToString() </span>
+                                            </div>
+                                            <div class="totalPriceMoney col-xl-1 col-lg-3 col-md-2 col-3">
+                                                商品運費：<span>  </span><span id="productDeliveryFee"> </span>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-2 col-md-3 col-3 d-flex justify-content-end">
+                                                <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
+                                            </div>
                                         </div>
-                                        <div class="totalPriceMoney col-xl-3 col-lg-3 col-md-4 col-4 ">
-                                            商品總點數：<span> $ </span><span id="productTotalPoint"> @pay.ToString() </span>
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <a class="hrefstyle mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
                                         </div>
-                                        <div class="totalPriceMoney col-xl-1 col-lg-3 col-md-2 col-3">
-                                            商品運費：<span>  </span><span id="productDeliveryFee"> </span>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-2 col-md-3 col-3 d-flex justify-content-end">
-                                            <button class="btn btn-m btnHoverStyle2 m-1" id="checkoutButton" type="button" onclick="toggleCheckout('CheckoutStorePickup')">結帳</button>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-end">
-                                        <a class="hrefstyle mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
                                     </div>
                                 </div>
-                            </div>
                 //隱藏宅配表單
-                            <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
-                                <div class="container mt-5">
-                                    <div class="input-group mb-2 d-flex  align-items-end">
-                                        <div class="fz-size32px">
-                                            會員資料
+                                <div class="CheckoutStorePickup" tabindex="0" id="CheckoutStorePickup" style="display: none;">
+                                    <div class="container mt-5">
+                                        <div class="input-group mb-2 d-flex  align-items-end">
+                                            <div class="fz-size32px">
+                                                會員資料
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-center border-0 fz-size16px m-1">
+                                                <input class="form-check-input mt-0  " type="checkbox" id="defaultCheck_memberInformation">
+                                                <label class="form-check-label" for="defaultCheck_memberInformation">
+                                                    帶入會員資料
+                                                </label>
+                                            </div>
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-center border-0 fz-size16px m-1">
-                                            <input class="form-check-input mt-0  " type="checkbox" id="defaultCheck_memberInformation">
-                                            <label class="form-check-label" for="defaultCheck_memberInformation">
-                                                帶入會員資料
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <form method="post" action="@Url.Action("ConfirmPurchase", "Shopping")">
-                                        <input type="hidden" name="SelectedProducts" id="SelectedProducts" />
-                                        <div class="input-group mb-2">
-                                            <span class="input-group-text">收件人姓名</span>
-                                            <input type="text" class="form-control" name="ReceiverName">
-                                        </div>
-                                        <div class="input-group mb-2">
-                                            <span class="input-group-text">收件人手機</span>
-                                            <input type="text" class="form-control" name="ReceiverTEL">
-                                        </div>
-                                        <div class="input-group mb-2">
-                                            <span class="input-group-text">收件人宅配地址</span>
-                                            <input type="text" class="form-control" name="DeliveryAddress_homeDelivery" placeholder="商品請選擇宅配方式" value="">
-                                        </div>
-                                        <div class ="input-group mb-2">
-                                            <span class="input-group-text">收件人超商取貨地址 </span>
-                                            <input type="text" class="form-control " id="storeID" placeholder="店號" name="DeliveryStoreID_storePickup" readonly>
-                                            <input type="text" class="form-control w-40" id="txtStoreName" list="storeNameSuggestions" placeholder="輸入店名" oninput="updateStoreNameSuggestions()" name="DeliveryStoreName_storePickup">
-                                        <datalist id="storeNameSuggestions"></datalist>
-                                            <input type="text" class="form-control w-50" id="txtStoreAddress" list="StoreAddressSuggestions" placeholder="輸入地址" oninput="updateStoreAddressSuggestions()" name="DeliveryAddress_storePickup">
-                                        <datalist id="StoreAddressSuggestions"></datalist>
-                                        </div>
-                                        <div class="container mt-4">
+                                        <form method="post" action="@Url.Action("ConfirmPurchase", "Shopping")">
+                                            <input type="hidden" name="SelectedProducts" id="SelectedProducts" />
                                             <div class="input-group mb-2">
-                                                <span class="input-group-text">結帳扣點</span>
-                                                <input type="form-text" class="form-control" id="checkoutTotalPoint" readonly>
-                                                <span class="input-group-text">會員點數</span>
-                                                <input type="form-text" class="form-control" readonly value="@ViewBag.MemberPoints">
-                                                <input type="hidden" id="memberPoints" value="@ViewBag.MemberPoints" />
-                                                <span class="input-group-text">購買後剩餘點數</span>
-                                                <input type="form-text" class="form-control" id="remainingPoints" readonly value="@ViewBag.MemberPoints">
+                                                <span class="input-group-text">收件人姓名</span>
+                                                <input type="text" class="form-control" name="ReceiverName">
                                             </div>
-                                            <div class="d-flex justify-content-center ">
-                                                <a class=" hrefstyle1-m  m-2 px-3 py-2" onclick="window.location.href='/NL_TopUp/Index'">儲值</a>
-                                                <button class="btn btn-m btnHoverStyle2 m-2" type="submit" id="confirmPurchaseButton">確認結帳</button>
-                                                <a class=" hrefstyle m-2 px-3 py-2" href="@Url.Action("IndexSSJ", "Product")">取消</a>
+                                            <div class="input-group mb-2">
+                                                <span class="input-group-text">收件人手機</span>
+                                                <input type="text" class="form-control" name="ReceiverTEL">
                                             </div>
-                                        </div>
-                                    </form>
+                                            <div class="input-group mb-2">
+                                                <span class="input-group-text">收件人宅配地址</span>
+                                                <input type="text" class="form-control" name="DeliveryAddress_homeDelivery" placeholder="商品請選擇宅配方式" value="">
+                                            </div>
+                                            <div class ="input-group mb-2">
+                                                <span class="input-group-text">收件人超商取貨地址 </span>
+                                                <input type="text" class="form-control " id="storeID" placeholder="店號" name="DeliveryStoreID_storePickup" readonly>
+                                                <input type="text" class="form-control w-40" id="txtStoreName" list="storeNameSuggestions" placeholder="輸入店名" oninput="updateStoreNameSuggestions()" name="DeliveryStoreName_storePickup">
+                                            <datalist id="storeNameSuggestions"></datalist>
+                                                <input type="text" class="form-control w-50" id="txtStoreAddress" list="StoreAddressSuggestions" placeholder="輸入地址" oninput="updateStoreAddressSuggestions()" name="DeliveryAddress_storePickup">
+                                            <datalist id="StoreAddressSuggestions"></datalist>
+                                            </div>
+                                            <div class="container mt-4">
+                                                <div class="input-group mb-2">
+                                                    <span class="input-group-text">結帳扣點</span>
+                                                    <input type="form-text" class="form-control" id="checkoutTotalPoint" readonly>
+                                                    <span class="input-group-text">會員點數</span>
+                                                    <input type="form-text" class="form-control" readonly value="@ViewBag.MemberPoints">
+                                                    <input type="hidden" id="memberPoints" value="@ViewBag.MemberPoints" />
+                                                    <span class="input-group-text">購買後剩餘點數</span>
+                                                    <input type="form-text" class="form-control" id="remainingPoints" readonly value="@ViewBag.MemberPoints">
+                                                </div>
+                                                <div class="d-flex justify-content-center ">
+                                                    <a class=" hrefstyle1-m  m-2 px-3 py-2" onclick="window.location.href='/NL_TopUp/Index'">儲值</a>
+                                                    <button class="btn btn-m btnHoverStyle2 m-2" type="submit" id="confirmPurchaseButton">確認結帳</button>
+                                                    <a class=" hrefstyle m-2 px-3 py-2" href="@Url.Action("IndexSSJ", "Product")">取消</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
                         }
                         else
                         {
-                            <div class="alert alert-warning">您的購物車是空的。</div>
-                            <div class="d-flex align-items-center justify-content-center">
-                                <a class="hrefstyle hrefstyle1:hover mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
-                            </div>
+                                <div class="alert alert-warning">您的購物車是空的。</div>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <a class="hrefstyle hrefstyle1:hover mt-2" href="@Url.Action("IndexSSJ", "Product")">繼續購物</a>
+                                </div>
                         }
                     }
                 </div>
@@ -433,11 +544,30 @@
             var $label = $(this).prev('label');
             var count = parseInt($label.text(), 10);
             var productId = $label.data('product-id');
-            count++;
-            $label.text(count);
-            updateCartItem(productId, count, null);
-            updateTotalPrice();
-        });
+
+            $.ajax({
+                type: "GET",
+                url: "/Product/GetProductRemainingQuantityForProduct",
+                data: { productId: productId },
+                success: function (ProductRemainingQuantity)
+                {
+                    if (count < ProductRemainingQuantity)
+                    {
+                        count++;
+                        $label.text(count);
+                        updateCartItem(productId, count, null);
+                        updateTotalPrice();
+                    } else
+                    {
+                        alert("已達商品庫存上限!");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    console.error("Ajax request failed:", textStatus, errorThrown);
+                }
+            }); // <-- 注意這裡，結束 $.ajax 的大括號和括號
+        }); // <-- 結束 click 事件的大括號和括號
     });
     // ---------------------
     $(document).ready(function ()
@@ -467,10 +597,9 @@
         });
     });
     //--------------------------------
-
-    // 變更運費標籤
     $(document).ready(function ()
     {
+        // 變更運費標籤
         // 函數：獲取選中的配送方式並更新運費
         function updateDeliveryFee()
         {
@@ -509,72 +638,7 @@
         updateDeliveryFee();
     });
 
-    //------------function------------------
-    // 更新總點數函數
-    function updateTotalPrice()
-    {
-        calculateAndDisplayTotal();
-    }
-    function calculateAndDisplayTotal()
-    {
-        let total = 0;
-        let productTotalPoint = 0;
-
-        // 對於已勾選的商品，加上它的小計到總點數
-        $(".cartcheckout:checked").each(function ()
-        {
-            let productId = $(this).data("product-id");
-            let labelValue = $(`.subtotalPoints[data-product-id=${productId}]`).text();
-            productTotalPoint += parseFloat(labelValue);
-        });
-
-        let deliveryFee = parseFloat($('#productDeliveryFee').text());
-        total = deliveryFee + productTotalPoint;
-
-        // 更新總點數顯示
-        $("#productTotalPoint").text(productTotalPoint);
-        $('#checkoutTotalPoint').val(total);
-
-        let memberPoints = parseFloat($("#memberPoints").val());
-        // 計算餘額
-        let remainingPoints = memberPoints - total;
-        // 將結果更新到目標輸入框中
-        $("#remainingPoints").val(remainingPoints);
-    }
-
-    function updateCartItem(productId, newCount = null, deliveryTypeId = null)
-    {//將label的值與product-id傳至後台Shopping/UpdateCartItem
-        $.ajax({
-            type: "POST",
-            url: "/Shopping/UpdateCartItem",
-            data: { productId: productId, newCount: newCount, deliveryTypeId: deliveryTypeId }, // 发送数量
-            success: function (result)
-            {
-                console.log("成功更新購物車項目：", result);
-                // 測試用
-                $(`.subtotalPoints[data-product-id=${productId}]`).text(result.subtotalPoints);
-                //購物車有多個項目有subtotalPoints，故不適合用#subtotalPoints
-                //.text() 方法也可以用在 label 標籤上，不僅僅是 span、div 或 p 等元素。
-                updateTotalPrice();
-            },
-            error: function (error)
-            {
-                console.error('Error:', error);
-            }
-        });
-    }
-
-    function getSelectedProducts()
-    {//選出chkbox被選擇的商品
-        let selectedProducts = [];
-        $(".cartcheckout:checked").each(function ()
-        {
-            let productId = $(this).data("product-id");
-            selectedProducts.push(productId);
-        });
-        return selectedProducts;
-    }
-//--------------------
+   
 //讀取賣家名子
     $(document).ready(function ()
     {
@@ -703,7 +767,7 @@
             $("input[name='DeliveryAddress_homeDelivery']").attr("placeholder", "請輸入宅配地址").prop("disabled", false);
         } else
         {
-            $("input[name='DeliveryAddress_homeDelivery']").attr("placeholder", "宅配未選擇").prop("disabled", true).val("宅配未選擇");
+            $("input[name='DeliveryAddress_homeDelivery']").attr("placeholder", "宅配未選擇").prop("disabled", true).val("");
         }
 
         // 更新 DeliveryStoreName_storePickup

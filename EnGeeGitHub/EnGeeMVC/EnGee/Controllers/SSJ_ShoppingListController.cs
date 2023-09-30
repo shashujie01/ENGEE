@@ -26,6 +26,7 @@ namespace EnGee.Controllers
             string userJson = HttpContext.Session.GetString(CDictionary.SK_LOINGED_USER);
             return JsonSerializer.Deserialize<TMember>(userJson);
         }
+
         public IActionResult ShoppingList_admin(int page = 1)
         {
             var user = GetLoggedInUser();
@@ -37,7 +38,7 @@ namespace EnGee.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            int pageSize = 12; // 每頁顯示的數量
+            int pageSize = 10; // 每頁顯示的數量
 
             // 取得tOrders的資料
             var ordersQuery = from order in _db.TOrders
@@ -77,7 +78,8 @@ namespace EnGee.Controllers
                                     };
 
             var ordersList = ordersQuery.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            var orderDetailsList = orderDetailsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var orderIds = ordersList.Select(o => o.OrderID).ToList();
+            var orderDetailsList = orderDetailsQuery.Where(od => orderIds.Contains(od.OrderID)).ToList();
 
             var combinedModel = new SSJ_ShoppingListCombinedViewModel
             {
@@ -87,12 +89,12 @@ namespace EnGee.Controllers
 
             ViewBag.PageIndex = page;
             ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = (int)Math.Ceiling(ordersList.Count / (double)pageSize); // 注意這裡改成只用ordersList的Count
+            ViewBag.TotalPages = (int)Math.Ceiling(ordersQuery.Count() / (double)pageSize);
 
             return View(combinedModel);
         }
 
-          public IActionResult ShoppingList_member (int page = 1)
+        public IActionResult ShoppingList_member (int page = 1)
         {
             var user = GetLoggedInUser();
             int loggedUserId = user.MemberId;
@@ -102,7 +104,7 @@ namespace EnGee.Controllers
                 return RedirectToAction("Login", "Home");
             }
 
-            int pageSize = 12; // 每頁顯示的數量
+            int pageSize = 10; // 每頁顯示的數量
 
             // 取得tOrders的資料
             var ordersQuery = from order in _db.TOrders
@@ -144,7 +146,7 @@ namespace EnGee.Controllers
                                     };
 
             var ordersList = ordersQuery.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            var orderDetailsList = orderDetailsQuery.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var orderDetailsList = orderDetailsQuery.Where(od => orderIds.Contains(od.OrderID)).ToList();
 
             var combinedModel = new SSJ_ShoppingListCombinedViewModel
             {
@@ -152,9 +154,11 @@ namespace EnGee.Controllers
                 OrderDetails = orderDetailsList
             };
 
+
             ViewBag.PageIndex = page;
             ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = (int)Math.Ceiling(ordersList.Count / (double)pageSize); // 注意這裡改成只用ordersList的Count
+            ViewBag.TotalPages = (int)Math.Ceiling(ordersQuery.Count() / (double)pageSize);
+
 
             return View(combinedModel);
         }
