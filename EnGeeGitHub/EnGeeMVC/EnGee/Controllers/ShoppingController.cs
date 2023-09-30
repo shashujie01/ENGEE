@@ -45,23 +45,6 @@ namespace EnGee.Controllers
             string json = JsonSerializer.Serialize(cart);
             HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST, json);
         }
-        //---------超商取貨購物車------------------
-        //private List<SSJ_CShoppingCarItem> GetCartItems_ConvenienceStore()
-        //{
-        //    if (!HttpContext.Session.Keys.Contains(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST_CONVENIENCE_STORE))
-        //    {
-        //        return new List<SSJ_CShoppingCarItem>();
-        //    }
-        //    string json_ConvenienceStore = HttpContext.Session.GetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST_CONVENIENCE_STORE);
-        //    return JsonSerializer.Deserialize<List<SSJ_CShoppingCarItem>>(json_ConvenienceStore) ?? new List<SSJ_CShoppingCarItem>();
-        //}
-
-        //private void SaveCartItems_ConvenienceStore(List<SSJ_CShoppingCarItem> cart_ConvenienceStore)
-        //{
-        //    string json_ConvenienceStore = JsonSerializer.Serialize(cart_ConvenienceStore);
-        //    HttpContext.Session.SetString(SSJ_CDictionary.SK_PURCAHSED_PRODUCTS_LIST_CONVENIENCE_STORE, json_ConvenienceStore);
-        //}
-        //---------超商取貨購物車------------------
 
         private int GetDeliveryFee(int deliveryTypeId)
         { // 根據送貨類型獲取運費
@@ -119,32 +102,7 @@ namespace EnGee.Controllers
                 innerException = innerException.InnerException;
             }
         }
-        //    private void HandleCart(TProduct product, int productId, int count, int deliveryTypeId,
-        //Func<List<SSJ_CShoppingCarItem>> getCartFunc, Action<List<SSJ_CShoppingCarItem>> saveCartFunc)
-        //    {//加入不同購物車
-        //        //TODO可能要分加入購物車與直接購買
-        //        List<SSJ_CShoppingCarItem> cart = getCartFunc();
-        //        SSJ_CShoppingCarItem existingItem = cart.FirstOrDefault(i => i.ProductId == productId);
-        //        if (existingItem != null)
-        //        {
-        //            existingItem.count += count;
-        //        }
-        //        else
-        //        {
-        //            cart.Add(new SSJ_CShoppingCarItem
-        //            {
-        //                tproduct = product,
-        //                SellerId = product.SellerId,
-        //                point = (int)product.ProductUnitPoint,
-        //                ProductId = productId,
-        //                count = count,
-        //                ProductImagePath = $"/images/ProductImages/{product.ProductImagePath}",
-        //                DeliveryTypeID = deliveryTypeId
-        //            });
-        //        }
-        //        saveCartFunc(cart);
-        //    }
-        //------------------------
+//--------------------------------------
         public override void OnActionExecuting(ActionExecutingContext context)
         {//// overview:
          //// 判斷目前執行的動作是否為特定Action，如果會員沒登入，紀錄原本要使用的action至session(Key:RedirectAfterLogin)、
@@ -214,20 +172,6 @@ namespace EnGee.Controllers
             return View(cart);
         }
 
-
-
-        //public IActionResult CartView_ConvenienceStore()
-        //{// 顯示購物車畫面
-        //    TMember loggedInUser = GetLoggedInUser();
-        //    TMember userFromDatabase = _db.TMembers.FirstOrDefault(t => t.Email.Equals(loggedInUser.Email));
-        //    ViewBag.userFromDatabase = userFromDatabase;
-        //    int points = (int)(userFromDatabase?.Point ?? 0);
-        //    ViewBag.MemberPoints = points;
-        //    List<SSJ_CShoppingCarItem> cart_ConvenienceStore = GetCartItems();
-        //    return View(cart_ConvenienceStore);
-        //}
-
-
         public ActionResult AddToCart(SSJ_CShoppingCarItem vm, int txtProductId, int txtCount, int deliverytypeid)
         {
             if (deliverytypeid != 0)
@@ -266,7 +210,6 @@ namespace EnGee.Controllers
             SaveCartItems(cart);
             return Json(new { success = true, message = "Product added to cart." });
         }
-
 
         public ActionResult AddToCartAndReturnCarView(SSJ_CShoppingCarItem vm, int txtProductId, int txtCount, int deliverytypeid)
         {//Detail中的直接購買(跳轉至cartview)
@@ -567,44 +510,5 @@ namespace EnGee.Controllers
 
             return Json(new { totalFee = totalFee });
         }
-
-
-        //        當你的購物平台允許買家從多個賣家那裡購買商品時，"訂單拆分" 是一個常見而且有助於管理的策略。
-
-        //訂單拆分的詳細說明：
-        //基本概念：
-        //訂單拆分是指當一個買家在結帳時，他的購物車中的商品來自多個賣家，系統會為每個賣家生成一個獨立的訂單，而不是將所有商品放在一個訂單中。
-
-        //操作流程：
-
-        //買家選擇商品加入購物車。
-        //結帳時，系統檢查購物車中的商品，確定有多少個賣家。
-        //對於購物車中的每個賣家，系統生成一個新的訂單編號。
-        //買家結帳完成後，將會看到多個訂單確認信息，每個賣家一個訂單。
-        //舉例：
-        //假設買家小王的購物車中有以下商品：
-
-        //商品A，賣家：張三
-        //商品B，賣家：張三
-        //商品C，賣家：李四
-        //當小王進行結帳時，系統會生成兩個訂單：
-
-        //訂單#001：
-        //商品A
-        //商品B
-        //賣家：張三
-        //訂單#002：
-        //商品C
-        //賣家：李四
-        //好處：
-        //賣家管理：張三和李四都會收到與他們商品相關的訂單通知。張三不需要關心商品C，李四也不需要關心商品A和商品B。這減少了混淆和管理上的困難。
-
-        //出貨與配送：由於每個訂單都是獨立的，所以每個賣家都可以獨立處理配送。如果所有商品都在同一個訂單中，則可能需要集中配送，這會增加復雜性。
-
-        //追踪與管理：對於買家來說，他們可以單獨追踪每個賣家的訂單。例如，如果商品C配送延遲，小王可以只關心訂單#002，而不需要擔心整個購物車的訂單。
-
-        //退貨與售後：在售後服務方面，如果小王想退貨商品C，他可以直接與李四聯繫，而不影響訂單#001。
-
-        //這種設計策略已經在很多大型的電商平台上得到了應用，尤其是在多供應商或多賣家的平台中。
     }
 }

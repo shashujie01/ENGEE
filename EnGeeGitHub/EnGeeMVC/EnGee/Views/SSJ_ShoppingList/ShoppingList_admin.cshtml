@@ -1,5 +1,4 @@
 ﻿@model EnGee.ViewModel.SSJ_ShoppingListCombinedViewModel
-
 @{
     Layout = "_LayoutAdmin";
     ViewData["Title"] = "ShoppingList_admin";
@@ -9,6 +8,39 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <meta charset="UTF-8">
 <style>
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+        .pagination-container a, .pagination-container span {
+            padding: 5px 10px;
+            margin: 0 2px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .pagination-container span {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        .pagination-container a:hover {
+            background-color: #f5f5f5;
+        }
+
+    .pagination .page-item.active .page-link {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .pagination .page-item:not(.disabled) .page-link:hover {
+        background-color: #74b4f4;
+        border-color: #74b4f4;
+    }
     .swal2-popup.swal2-modal {
         font-size: 12pt;
     }
@@ -194,7 +226,29 @@
         }
     </tbody>
 </table>
-</div>
+
+    @{
+        int totalPages = ViewBag.TotalPages;
+        int currentPage = ViewBag.PageIndex;
+    }
+
+    <nav class="m-3" aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("ShoppingList_admin", new { page = currentPage - 1 })">上一頁</a>
+            </li>
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("ShoppingList_admin", new { page = i })">@i</a>
+                </li>
+            }
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("ShoppingList_admin", new { page = currentPage + 1 })">下一頁</a>
+            </li>
+        </ul>
+    </nav>
+
 @section Scripts {
     <script>
 
@@ -319,7 +373,6 @@
                                 <input type="text" id="swal-input-deliveryFee" value="${data.orders[0].deliveryFee}"><br><hr><br><hr>
                                          <div class="">訂單明細資料: </div>
             `;
-
             data.orderDetails.forEach(detail =>
             {  
                 htmlContent += `

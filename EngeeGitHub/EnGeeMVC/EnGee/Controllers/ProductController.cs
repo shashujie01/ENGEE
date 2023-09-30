@@ -158,6 +158,17 @@ namespace prjEnGeeDemo.Controllers
             int deliveryTypeId = product.DeliveryTypeId;
             return Json(deliveryTypeId);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetProductRemainingQuantityForProduct(int productId)
+        {
+            var product = await db.TProducts.FirstOrDefaultAsync(t => t.ProductId == productId);
+            if (product == null)
+            {
+                return NotFound("Product not found.");
+            }
+            int ProductRemainingQuantity = product.ProductRemainingQuantity;
+            return Json(ProductRemainingQuantity);
+        }
     }
 }
 

@@ -204,6 +204,27 @@
         }
     </tbody>
 </table>
+    @{
+        int totalPages = ViewBag.TotalPages;
+        int currentPage = ViewBag.PageIndex;
+    }
+
+    <nav class="m-3"aria-label ="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("ShoppingList_member", new { page = currentPage - 1 })">上一頁</a>
+            </li>
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("ShoppingList_member", new { page = i })">@i</a>
+                </li>
+            }
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("ShoppingList_member", new { page = currentPage + 1 })">下一頁</a>
+            </li>
+        </ul>
+    </nav>
 </main>
 @section Scripts {
     <script>
