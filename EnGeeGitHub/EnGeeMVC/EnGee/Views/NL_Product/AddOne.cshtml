@@ -21,18 +21,23 @@
 <div class="container">
 <br />
 <div class="row">
-    <div class="col-lg-3">
-        <button class="btn shadow-none d-flex align-items-center justify-content-between bg-danger text-white w-100" data-bs-toggle="collapse" data-bs-target="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-            <h6 class="m-0">商品上架表單類別</h6>
-            <i class="fa fa-angle-down text-dark"></i>
-        </button>
-        <nav class="collapse navbar-vertical navbar-light align-items-center p-0  border border-top-0 border-bottom-3 bg-light" id="navbar-vertical">
-            <div class="navbar-nav w-100 overflow-hidden" style="height: auto; transition: max-height 0.3s ease;">
-                <a asp-action="Add" class="nav-item nav-link">二手商品</a>
-                <a asp-action="AddOne" class="nav-item nav-link">一點捐贈</a>
-            </div>
-        </nav>
-    </div>
+        <div class="col-lg-3">
+            <h3 class="pb-4">商品上架表單分類</h3>
+            <li class="pb-3" style="list-style-type: none;">
+                <a id="selectform" name="formId" class="collapsed d-flex justify-content-between h5 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse">
+                    請選擇上架商品型式
+                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                </a>
+                <ul class="collapse list-unstyled ps-3" id="collapse">
+                    <li>
+                        <a asp-action="Add" class="nav-item nav-link">二手商品</a>
+                    </li>
+                    <li>
+                        <a asp-action="AddOne" class="nav-item nav-link">一點捐贈</a>
+                    </li>
+                </ul>
+            </li>
+        </div>
     <div class="col-lg-7 d-flex justify-content-center">
         <form id="productForm" asp-action="Add" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -86,7 +91,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ProductDescribe" class="control-label"></label>
-                <input asp-for="ProductDescribe" class="form-control" />
+                    <textarea asp-for="ProductDescribe" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="ProductDescribe" class="text-danger"></span>
             </div>
             <div class="form-group" style="display: none;">
@@ -143,9 +148,9 @@
                 <span asp-validation-for="ProductSaleStatus" class="text-danger"></span>
             </div>
             <div class="form-group mt-3 d-flex justify-content-center">
-                <input type="reset" value="取消" class="btn btn-info me-5" />
+                <input type="reset" value="清空" class="btn btn-info me-5" />
                 <button type="button" class="btn btn-success ms-5 me-5" id="submitBtn">上架</button>
-                    <button type="button" class="btn btn-danger ms-5" onclick="location.href='@Url.Action("Index")'">返回</button>
+                <button type="button" class="btn btn-danger ms-5" onclick="location.href='@Url.Action("Index")'">返回</button>
             </div>
         </form>
     </div>
