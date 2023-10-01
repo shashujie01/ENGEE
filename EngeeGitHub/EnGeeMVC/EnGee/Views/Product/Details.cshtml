@@ -12,9 +12,43 @@
         max-height: 250px;
     }
 
-    .product-Detail-section {
+    input:disabled {
+        opacity: 0.5; /* 使元素半透明 */
+        cursor: not-allowed; /* 顯示不允許的光標 */
     }
 </style>
+<script>
+    $.ajax({
+        type: "GET",
+        url: "/Product/GetDeliveryTypeIdForProduct",
+            data: { productId: @Model.ProductId },
+        success: function (deliveryTypeId)
+        {
+            // 預設禁用所有選項
+            $('input[name="deliverytypeid"]').prop('disabled', true).addClass('disabled-input');
+
+            switch (deliveryTypeId)
+            {
+                case 1:
+                    $('input[data-delivery-type="宅配"]').prop('disabled', false).removeClass('disabled-input').prop('checked', true);
+                    break;
+                case 2:
+                    $('input[data-delivery-type="超商門市取貨"]').prop('disabled', false).removeClass('disabled-input').prop('checked', true);
+                    break;
+                case 3:
+                    $('input[name="deliverytypeid"]').prop('disabled', false).removeClass('disabled-input');
+                    $('input[data-delivery-type="宅配"]').prop('checked', true);
+                    break;
+                default:
+                    console.error("Unknown DeliveryTypeId for product:", productId, " DeliveryTypeId:", deliveryTypeId);
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            console.error("Ajax request failed:", textStatus, errorThrown);
+        }
+    });
+</script>
 <main>
     <div class="container py-5">
         <div class="row border-0 ">
@@ -66,8 +100,9 @@
                                 <div class="choose-product-delivery-section d-flex flex-wrap">
                                     <div id="delyTitle">配送方式:</div>
                                     <div class="shippingList">
-                                       @*  <label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="checked">宅配</label>
-                                        <label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label> *@
+                                        <label><input type="radio" name="deliverytypeid" data-delivery-type="宅配" value="1" id="homeDelivery" checked="checked">宅配</label>
+                                        <label><input type="radio" name="deliverytypeid" data-delivery-type="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>
+
                                     </div>
                                 </div>
 
@@ -87,44 +122,18 @@
 <script>
     $(document).ready(function ()
     {
-        $.ajax({
-            type: "GET",
-            url: "/Product/GetDeliveryTypeIdForProduct",
-            data: { productId: @Model.ProductId },
-            success: function (deliveryTypeId)
-            {
-                switch (deliveryTypeId)
-                {
-                    case 1:
-                        $('.shippingList').append('<label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="checked">宅配</label>');
-                        break;
-                    case 2:
-                        $('.shippingList').append('<label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup" checked="checked">超商門市取貨</label>');
-                        break;
-                    case 3:
-                        $('.shippingList').append('<label><input type="radio" name="deliverytypeid" delytype="宅配" value="1" id="homeDelivery" checked="checked">宅配</label>');
-                        $('.shippingList').append('<label><input type="radio" name="deliverytypeid" delytype="超商門市取貨" value="2" id="StorePickup">超商門市取貨</label>');
-                        break;
-                    default:
-                        console.error("Unknown DeliveryTypeId:", deliveryTypeId);
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                console.error("Ajax request failed:", textStatus, errorThrown);
-            }
-        });
+       
         // 初始化設置
         var maxQuantity = parseInt($(".product-remaining-quantity").text().replace("剩餘數量: ", ""), 10);
-        var initialDelivery = $("input[name='deliverytypeid']:checked").attr("delytype");
-        $(".deliveryOptionInput").val(initialDelivery);
+        // var initialDelivery = $("input[name='deliverytypeid']:checked").attr("data-delivery-type");
+        // $(".deliveryOptionInput").val(initialDelivery);
 
-        // 當選擇配送方式時
-        $("input[name='deliverytypeid']").on("change", function ()
-        {
-            var selectedDelivery = $(this).attr("delytype");
-            $(".deliveryOptionInput").val(selectedDelivery);
-        });
+        // // 當選擇配送方式時
+        // $("input[name='deliverytypeid']").on("change", function ()
+        // {
+        //     var selectedDelivery = $(this).attr("data-delivery-type");
+        //     $(".deliveryOptionInput").val(selectedDelivery);
+        // });
 
         // 當點擊 "增加" 按鈕
         $("#btnPlus").on("click", function ()

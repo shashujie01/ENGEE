@@ -37,5 +37,8 @@
         //public string ConvienenNum { get; set; }
         public int DeliveryFee { get; set; }
         public int OrderTotalUsagePoints { get; set; }
+
+        public string ReceiverName { get; set; }
+        public string ReceiverTEL { get; set; }
     }
 }

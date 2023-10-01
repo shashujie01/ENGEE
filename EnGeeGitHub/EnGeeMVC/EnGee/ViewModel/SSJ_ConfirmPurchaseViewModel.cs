@@ -46,7 +46,7 @@ namespace EnGee.ViewModel
         public int OrderTotalUsagePoints { get; set; }
         public int DeliveryFee { get; set; }
         public string ReceiverName { get; set; }
-        public int ReceiverTEL { get; set; }
+        public string ReceiverTEL { get; set; }
 
 
     }
