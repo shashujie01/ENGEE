@@ -19,9 +19,9 @@
                 <td>@favorite.AddFavoriteDate.ToString("yyyy-MM-dd")</td>
                 <td>
                     <div style="display: flex; align-items: center;">
-                        <form id="deleteForm" method="post" action="@Url.Action("RemoveFromFavorites", "Favorite")" style="margin-right: 10px;">
-                            <input type="hidden" name="favoriteId" value="@favorite.FavoriteId" />
-                            <button type="button" class="btn btn-danger" onclick="showDeleteConfirmation()">刪除</button>
+                        <form method="post" action="@Url.Action("RemoveFromFavorites", "Favorite")" style="margin-right: 10px;">
+                            <input type="hidden" name="favoriteId" id="favoriteId-@favorite.FavoriteId" value="@favorite.FavoriteId" />
+                            <button type="button" class="btn btn-danger" onclick="showDeleteConfirmation(@favorite.FavoriteId)">刪除</button>
                         </form>
                         <button onclick="location.href='@Url.Action("DetailsJING", "JING_Product", new { id = favorite.ProductId })'" class="btn btn-danger">商品頁面</button>
                     </div>
@@ -33,7 +33,7 @@
 
 
 <script>
-    function showDeleteConfirmation() {
+    function showDeleteConfirmation(favoriteId) {
         Swal.fire({
             title: '您確定要刪除嗎？',
             text: "您將無法還原此操作！",
@@ -44,7 +44,23 @@
             confirmButtonText: '確定，刪除！'
         }).then((result) => {
             if (result.isConfirmed) {
-                document.getElementById('deleteForm').submit(); // 提交表单
+                // 創建一個表單並設置屬性
+                var form = document.createElement('form');
+                form.method = 'post';
+                form.action = '@Url.Action("RemoveFromFavorites", "Favorite")';
+
+                // 創建一個隱藏的 input 元素並設置其值為 favoriteId
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'favoriteId';
+                input.value = favoriteId;
+
+                // 將 input 元素添加到表單
+                form.appendChild(input);
+
+                // 將表單添加到 body，並提交表單
+                document.body.appendChild(form);
+                form.submit();
             }
         });
     }
