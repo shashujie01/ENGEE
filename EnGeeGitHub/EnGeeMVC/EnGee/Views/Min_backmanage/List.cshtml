@@ -23,10 +23,10 @@
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
 <h2 style="text-align:center " class="mt-3">會員中心管理</h2>
 
-<div id="contentToPrint">
+
 	<div class="container py-5 ">
 		@using (Html.BeginForm())
 		{
@@ -71,6 +71,7 @@
 			</div>
 
 		}
+	<div id="contentToPrint">
 		<div class="row">
 			<div class="d-flex justify-content-center align-items-center">
 				<table id="managetable" class="table table-hover text-center align-middle">
@@ -251,18 +252,45 @@
 
 	</div>
 </div>
-
-
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 <script>
+	async function generatePdf() {
+		console.log('Generating PDF...');
+		const element = document.getElementById('contentToPrint');
+		const options = {
+			margin: 0.5,
+			filename: 'member_list.pdf',
+			image: { type: 'jpeg', quality: 0.98 },
+			html2canvas: { scale: window.devicePixelRatio },
+			jsPDF: { unit: 'in', format: 'A2', orientation: 'landscape' }
+		};
+
+		try {
+			// Specify the width of the PDF
+			options.jsPDF.format[0] = 25;/* element.offsetWidth / window.devicePixelRatio; */
+
+			const pdf = await html2pdf().set(options).from(element).save();
+			console.log('PDF generated successfully.');
+		} catch (error) {
+			console.error('Error generating PDF:', error);
+		}
+	}
+
+	const printButton = document.getElementById('printButton');
+	printButton.addEventListener('click', generatePdf);
+</script>
+
+
+
+@* <script>
 	function generatePdf() {
 		const element = document.getElementById('contentToPrint');
 		const options = {
 			margin: 0.5,  // 例如，設定邊界為0.5英寸
 			filename: 'myfile.pdf',  // 檔案名稱
 			image: { type: 'jpeg', quality: 0.98 },  // 圖片品質
-			html2canvas: { scale: 2 },  // html2canvas 配置
+			
+			html2canvas: { scale: window.devicePixelRatio },
 			jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }  // PDF 文件配置，這裡設定為直向，可以改為 'landscape' 以設定為橫向
 		};
 
@@ -271,7 +299,7 @@
 
 	const printButton = document.getElementById('printButton');
 	printButton.addEventListener('click', generatePdf);
-</script>
+</script> *@
 
 
 @* <script>
