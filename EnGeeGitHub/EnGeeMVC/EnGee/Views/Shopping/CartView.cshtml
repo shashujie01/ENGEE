@@ -10,12 +10,18 @@
 }
 
 @{
-    if (TempData["ErrorMessage"] != null)
+    if (TempData["ErrorMessage_PointsInsufficient"] != null)
     {
     <script>
-                alert("您的點數不足");
+            alert('@Html.Raw(TempData["ErrorMessage_PointsInsufficient"])');
     </script>
     }
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        alert('@Html.Raw(TempData["ErrorMessage"])');
+    </script>
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
@@ -471,29 +477,44 @@
     var jsonData = @Html.Raw(Json.Serialize(ViewBag.userFromDatabase ?? new {}));
     document.getElementById('defaultCheck_memberInformation').addEventListener('change', function ()
     {  let isHomeDeliverySelected = $(".delivery-radio[data-delivery-type='宅配']:checked").length > 0;
-    // 更新宅配地址欄位
+       let isStorePickupSelected = $(".delivery-radio[data-delivery-type='超商門市取貨']:checked").length > 0;
+    // 因確認結帳時會判斷所有欄位是否都有填寫，所以不需要填寫的欄位也需要給值，以下為填寫邏輯控制
         if (this.checked)
         {
             if (jsonData)
             {
-                if (isHomeDeliverySelected)
+                if (isHomeDeliverySelected && !isStorePickupSelected)
                 {
                     document.querySelector("input[name='ReceiverName']").value = '@Html.Raw(ViewBag.userFromDatabase.Fullname)';
                     document.querySelector("input[name='ReceiverTEL']").value = '@Html.Raw(ViewBag.userFromDatabase.Phone)';
                     document.querySelector("input[name='DeliveryAddress_homeDelivery']").value = '@Html.Raw(ViewBag.userFromDatabase.Address)';
-                } else
+                    document.querySelector("input[name='DeliveryStoreID_storePickup']").value = "超商門市取貨未選擇";
+                    document.querySelector("input[name='DeliveryStoreName_storePickup']").value = "超商門市取貨未選擇";
+                    document.querySelector("input[name='DeliveryAddress_storePickup']").value = "超商門市取貨未選擇";
+                }
+
+                else if (isStorePickupSelected && !isHomeDeliverySelected)
                 {
                     document.querySelector("input[name='ReceiverName']").value = '@Html.Raw(ViewBag.userFromDatabase.Fullname)';
                     document.querySelector("input[name='ReceiverTEL']").value = '@Html.Raw(ViewBag.userFromDatabase.Phone)';
                     document.querySelector("input[name='DeliveryAddress_homeDelivery']").value = "宅配未選擇";
                 }
-              
+
+                else if (isStorePickupSelected && isHomeDeliverySelected)
+                {
+                    document.querySelector("input[name='ReceiverName']").value = '@Html.Raw(ViewBag.userFromDatabase.Fullname)';
+                    document.querySelector("input[name='ReceiverTEL']").value = '@Html.Raw(ViewBag.userFromDatabase.Phone)';
+                    document.querySelector("input[name='DeliveryAddress_homeDelivery']").value = '@Html.Raw(ViewBag.userFromDatabase.Address)';
+                }
             }
         } else
         {
             document.querySelector("input[name='ReceiverName']").value = "";
             document.querySelector("input[name='ReceiverTEL']").value = "";
             document.querySelector("input[name='DeliveryAddress_homeDelivery']").value = "";
+            document.querySelector("input[name='DeliveryStoreID_storePickup']").value = "";
+            document.querySelector("input[name='DeliveryStoreName_storePickup']").value = "";
+            document.querySelector("input[name='DeliveryAddress_storePickup']").value = "";
         }
     });
     // -------------------------
