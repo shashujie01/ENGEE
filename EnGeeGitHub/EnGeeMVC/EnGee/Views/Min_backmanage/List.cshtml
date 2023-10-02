@@ -21,247 +21,289 @@
 	}
 
 </style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 <h2 style="text-align:center " class="mt-3">會員中心管理</h2>
 
+<div id="contentToPrint">
+	<div class="container py-5 ">
+		@using (Html.BeginForm())
+		{
 
-<div class="container py-5 ">
-	@using (Html.BeginForm())
-	{
+			<div class="mb-5">
 
-		<div class="mb-5">
-			
-			查詢類別:
-			<select name="txtkeywordfor">
-				<option value="">全部</option>
-				<option value="0">帳號</option>
-				<option value="1">信箱</option>
-				<option value="2">全名</option>
-				<option value="3">地址</option>
-				<option value="4">電話</option>
-				<option value="5">註冊時間</option>
-				<option value="6">生日</option>
-			</select>
-			|
-			關鍵字查詢: @Html.TextBox("txtKeyword")
-			|
-			查詢點數範圍：
-			@Html.TextBox("minPoint", null, new { placeholder = "最小值" , style="width:60px; margin-right: 8px;" })
-			@Html.TextBox("maxPoint", null, new { placeholder = "最大值" , style="width:60px; margin-right: 8px;" })
-			|
-			篩選性別：
-			<select name="genderFilter">
-				<option value="">全部</option>
-				<option value="0">男</option>
-				<option value="1">女</option>
-				<option value="2">未透漏</option>
-			</select>
-			|
-			篩選使用權限:
-			<select name="accessFilter">
-				<option value="">全部</option>
-				<option value="0">網站管理員</option>
-				<option value="1">一般使用者</option>
-				<option value="2">員工</option>
-				<option value="3">公益團體</option>
-			</select>
-			<input type="submit" value="查詢" style="margin-right:10px; background-color:white; " />
-		</div>
+				查詢類別:
+				<select name="txtkeywordfor">
+					<option value="">全部</option>
+					<option value="0">帳號</option>
+					<option value="1">信箱</option>
+					<option value="2">全名</option>
+					<option value="3">地址</option>
+					<option value="4">電話</option>
+					<option value="5">註冊時間</option>
+					<option value="6">生日</option>
+				</select>
+				|
+				關鍵字查詢: @Html.TextBox("txtKeyword")
+				|
+				查詢點數範圍：
+				@Html.TextBox("minPoint", null, new { placeholder = "最小值" , style="width:60px; margin-right: 8px;" })
+				@Html.TextBox("maxPoint", null, new { placeholder = "最大值" , style="width:60px; margin-right: 8px;" })
+				|
+				篩選性別：
+				<select name="genderFilter">
+					<option value="">全部</option>
+					<option value="0">男</option>
+					<option value="1">女</option>
+					<option value="2">未透漏</option>
+				</select>
+				|
+				篩選使用權限:
+				<select name="accessFilter">
+					<option value="">全部</option>
+					<option value="0">網站管理員</option>
+					<option value="1">一般使用者</option>
+					<option value="2">員工</option>
+					<option value="3">公益團體</option>
+				</select>
+				<input type="submit" value="查詢" style="margin-right:10px; background-color:white; " />
+			</div>
 
-	}
-	<div class="row">
-		<div class="d-flex justify-content-center align-items-center">
-			<table id="managetable" class="table table-hover text-center align-middle">
-				<thead class="fz-color2">
+		}
+		<div class="row">
+			<div class="d-flex justify-content-center align-items-center">
+				<table id="managetable" class="table table-hover text-center align-middle">
+					<thead class="fz-color2">
 
-					<tr>
-						<th style="white-space: nowrap;text-align: center">
-							編號
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.Username)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
+						<tr>
+							<th style="white-space: nowrap;text-align: center">
+								編號
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.Username)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
 
-							@Html.DisplayNameFor(model => model.Email)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.Fullname)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.Gender)
-						</th>
+								@Html.DisplayNameFor(model => model.Email)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.Fullname)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.Gender)
+							</th>
 
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.Address)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.Phone)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.RegistrationDate)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.Birth)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.Access)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.Point)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.PhotoPath)
-						</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.Address)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.Phone)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.RegistrationDate)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.Birth)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.Access)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.Point)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.PhotoPath)
+							</th>
 
-						<th style="white-space: nowrap;text-align: center">
-							@Html.DisplayNameFor(model => model.IsValidCharity)
-						</th>
-						<th style="white-space: nowrap;text-align: center">
-							編輯
-						</th>
+							<th style="white-space: nowrap;text-align: center">
+								@Html.DisplayNameFor(model => model.IsValidCharity)
+							</th>
+							<th style="white-space: nowrap;text-align: center">
+								編輯
+							</th>
 
-					</tr>
-				</thead>
-				<tbody>
-					@{
-						int count = 0;
-						string displayAccess = "";
-						string displayGender = "";
-						
-						foreach (var item in Model)
-						{
-							count++;
 
-							if (item.Gender == 0)
+						</tr>
+					</thead>
+					<tbody>
+						@{
+							int count = 0;
+							string displayAccess = "";
+							string displayGender = "";
+
+							foreach (var item in Model)
 							{
-								displayGender = "男生";
+								count++;
+
+								if (item.Gender == 0)
+								{
+									displayGender = "男生";
+								}
+								else if (item.Gender == 1)
+								{
+									displayGender = "女生";
+								}
+								else if (item.Gender == 2)
+								{
+									displayGender = "未透漏";
+								}
+
+
+								if (item.Access == 0)
+								{
+									displayAccess = "網站管理員";
+								}
+								else if (item.Access == 1)
+								{
+									displayAccess = "一般使用者";
+								}
+								else if (item.Access == 2)
+								{
+									displayAccess = "員工";
+								}
+								else if (item.Access == 3)
+								{
+									displayAccess = "公益團體";
+								}
+
+
+
+
+								<tr>
+									<td style="white-space: nowrap;text-align: center">
+										@count
+									</td>
+
+									<td style="white-space: nowrap;text-align: center">
+										@Html.DisplayFor(modelItem => item.Username)
+									</td>
+
+									<td style="white-space: nowrap;text-align: center">
+										@Html.DisplayFor(modelItem => item.Email)
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@Html.DisplayFor(modelItem => item.Fullname)
+									</td>
+
+									<td style="white-space: nowrap;text-align: center">
+										@displayGender
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@Html.DisplayFor(modelItem => item.Address)
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@Html.DisplayFor(modelItem => item.Phone)
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@Html.DisplayFor(modelItem => item.RegistrationDate)
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@Html.DisplayFor(modelItem => item.Birth)
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@displayAccess
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@Html.DisplayFor(modelItem => item.Point)
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@if (item.PhotoPath != null)
+										{
+											<img src="~/images/UserImage/@item.PhotoPath" alt="User Photo" width="70Px" height="60Px" />
+										}
+										else
+										{
+
+											<img src="~/images/UserImage/preUserphoto.png" alt="User Photo" width="70Px" height="60Px" />
+										}
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+
+										@if (item.Access == 3 && item.IsValidCharity == true)
+										{
+											<i class="fa-solid fa-check-to-slot" style="font-size:30px; color:	#00CACA"></i>
+										}
+										else if (item.Access == 3 && item.IsValidCharity == null)
+										{
+											item.IsValidCharity = false;
+											<i class="fa-regular fa-circle-xmark" style="font-size:30px;"></i>
+										}
+
+									</td>
+									<td style="white-space: nowrap;text-align: center">
+										@Html.ActionLink("修改", "Edit","Min_backmanage", new { id=item.MemberId},new { @class = "btn btn-outline-info" })
+
+										@Html.ActionLink("刪除", "Delete", "Min_backmanage", new { id = item.MemberId }, new { @class = "btn btn-outline-info", onclick = "return confirm('確定要刪除嗎?');" })
+										
+									</td>
+
+								</tr>
 							}
-							else if (item.Gender == 1)
-							{
-								displayGender = "女生";
-							}
-							else if (item.Gender == 2)
-							{
-								displayGender = "未透漏";
-							}
-
-
-							if (item.Access == 0)
-							{
-								displayAccess = "網站管理員";
-							}
-							else if (item.Access == 1)
-							{
-								displayAccess = "一般使用者";
-							}
-							else if (item.Access == 2)
-							{
-								displayAccess = "員工";
-							}
-							else if (item.Access == 3)
-							{
-								displayAccess = "公益團體";
-							}
-
-							
-
-							
-							<tr>
-								<td style="white-space: nowrap;text-align: center">
-									@count
-								</td>
-
-								<td style="white-space: nowrap;text-align: center">
-									@Html.DisplayFor(modelItem => item.Username)
-								</td>
-
-								<td style="white-space: nowrap;text-align: center">
-									@Html.DisplayFor(modelItem => item.Email)
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@Html.DisplayFor(modelItem => item.Fullname)
-								</td>
-
-								<td style="white-space: nowrap;text-align: center">
-									@displayGender
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@Html.DisplayFor(modelItem => item.Address)
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@Html.DisplayFor(modelItem => item.Phone)
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@Html.DisplayFor(modelItem => item.RegistrationDate)
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@Html.DisplayFor(modelItem => item.Birth)
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@displayAccess
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@Html.DisplayFor(modelItem => item.Point)
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@if (item.PhotoPath != null)
-									{
-										<img src="~/images/UserImage/@item.PhotoPath" alt="User Photo" width="70Px" height="60Px" />
-									}
-									else
-									{
-
-										<img src="~/images/UserImage/preUserphoto.png" alt="User Photo" width="70Px" height="60Px" />
-									}
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-
-									@if (item.Access == 3 && item.IsValidCharity == true)
-									{
-										<i class="fa-solid fa-check-to-slot" style="font-size:30px; color:	#00CACA"></i>
-									}
-									else if (item.Access == 3 && item.IsValidCharity==null)
-									{
-										item.IsValidCharity = false;
-										<i class="fa-regular fa-circle-xmark" style="font-size:30px;"></i>
-									}
-
-								</td>
-								<td style="white-space: nowrap;text-align: center">
-									@Html.ActionLink("修改", "Edit","Min_backmanage", new { id=item.MemberId},new { @class = "btn btn-outline-info" })
-
-									@Html.ActionLink("刪除", "Delete", "Min_backmanage", new { id = item.MemberId }, new { @class = "btn btn-outline-info", onclick = "return confirm('確定要刪除嗎?');" })
-
-								</td>
-
-							</tr>
 						}
-					}
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
+			<button id="printButton" class="btn ">列印成 PDF</button>
+
 		</div>
+		
 
 	</div>
-	<script>
-		var jq = jQuery.noConflict();
-		jq(document).ready(function () {
-			jq('#managetable').DataTable({
-				paging: false,
-				scrollCollapse: true,
-				scrollY: "1000px",
-				Info: true,
-				language: {
-					sInfo: "共有 _TOTAL_ 筆資料",
-				},
-				searching: false,
-				ordering: true,
-				columnDefs: [
-					{
-						orderable: false,
-						targets: [-2, -1],
-					}
-				]
-			});
-		});
-	</script>
 </div>
+
+
+
+
+<script>
+	function generatePdf() {
+		const element = document.getElementById('contentToPrint');
+		const options = {
+			margin: 0.5,  // 例如，設定邊界為0.5英寸
+			filename: 'myfile.pdf',  // 檔案名稱
+			image: { type: 'jpeg', quality: 0.98 },  // 圖片品質
+			html2canvas: { scale: 2 },  // html2canvas 配置
+			jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }  // PDF 文件配置，這裡設定為直向，可以改為 'landscape' 以設定為橫向
+		};
+
+		html2pdf().set(options).from(element).save();
+	}
+
+	const printButton = document.getElementById('printButton');
+	printButton.addEventListener('click', generatePdf);
+</script>
+
+
+@* <script>
+	function generatePdf() {
+		const element = document.getElementById('contentToPrint');
+		html2pdf(element);
+	}
+
+	const printButton = document.getElementById('printButton');
+	printButton.addEventListener('click', generatePdf);
+</script> *@
+
+
+@* <script>
+			var jq = jQuery.noConflict();
+			jq(document).ready(function () {
+				jq('#managetable').DataTable({
+					paging: false,
+					scrollCollapse: true,
+					scrollY: "1000px",
+					Info: true,
+					language: {
+						sInfo: "共有 _TOTAL_ 筆資料",
+					},
+					searching: false,
+					ordering: true,
+					columnDefs: [
+						{
+							orderable: false,
+							targets: [-2, -1],
+						}
+					]
+				});
+			});
+		</script> *@
