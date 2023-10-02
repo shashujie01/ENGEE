@@ -165,6 +165,10 @@ namespace EnGee.Controllers
 		public IActionResult Edit(TMember model,   bool IsValidCharity)
 		{
 			model.IsValidCharity = IsValidCharity;
+			if (IsValidCharity==true)
+			{
+				model.Access = 3;
+			}
 
 			using (var db = new EngeeContext())
 			{
@@ -180,6 +184,7 @@ namespace EnGee.Controllers
 						checkDbId.Address = model.Address;
 						checkDbId.Birth = model.Birth;
 						checkDbId.IsValidCharity = model.IsValidCharity;
+						checkDbId.Access=model.Access;
 				}
 				
 

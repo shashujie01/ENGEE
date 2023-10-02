@@ -147,7 +147,7 @@
 					</div>
 				</div>
 				<div class="col-md-6">
-					@if (Model.Access == 3 && Model.CharityProof != null && Model.IsValidCharity != true)
+					@if (Model.CharityProof != null && Model.IsValidCharity != true)
 					{	
 						<div>
 							公益團體認證照片
@@ -166,7 +166,7 @@
 					
 
 
-					@if (Model.Access == 3 && Model.CharityProof != null && Model.IsValidCharity == true)
+					@if (Model.CharityProof != null && Model.IsValidCharity == true)
 					{
 						<div>
 							公益團體認證照片
@@ -182,7 +182,7 @@
 
 
 					}
-					else if (Model.Access == 0)
+					else if (Model.Access == 0 && Model.CharityProof==null)
 					{
 
 						<div>
@@ -192,7 +192,7 @@
 							<img src="~/images/UserImage/@Model.PhotoPath" width="300px" height="350px" />
 						</div>
 					}
-					else if (Model.Access == 1)
+					else if (Model.Access == 1 && Model.CharityProof==null)
 					{
 						<div>
 							會員照片
