@@ -162,29 +162,16 @@ namespace EnGee.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Edit(TMember model)
+		public IActionResult Edit(TMember model,   bool IsValidCharity)
 		{
+			model.IsValidCharity = IsValidCharity;
 
 			using (var db = new EngeeContext())
 			{
 				var checkDbId = db.TMembers.FirstOrDefault(t => t.MemberId == model.MemberId);
 				if (checkDbId != null)
 				{
-					if (model.Access == 3)
-					{
 
-						checkDbId.Username = model.UsernameAccess3;
-						checkDbId.Phone = model.PhoneAccess3;
-						checkDbId.Email = model.Email;
-						checkDbId.Fullname = model.Fullname;
-						checkDbId.Gender = model.Gender;
-						checkDbId.Address = model.Address;
-						checkDbId.Birth = model.Birth;
-						checkDbId.IsValidCharity = model.IsValidCharity;
-
-					}
-					else
-					{
 						checkDbId.Username = model.Username;
 						checkDbId.Phone = model.Phone;
 						checkDbId.Email = model.Email;
@@ -192,16 +179,11 @@ namespace EnGee.Controllers
 						checkDbId.Gender = model.Gender;
 						checkDbId.Address = model.Address;
 						checkDbId.Birth = model.Birth;
-						
-					}
-					
-
-					
-
-
+						checkDbId.IsValidCharity = model.IsValidCharity;
+				}
+				
 
 					db.SaveChanges();
-				}
 
 			}
 			return RedirectToAction("List");

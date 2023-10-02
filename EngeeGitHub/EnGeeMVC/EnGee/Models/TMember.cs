@@ -11,18 +11,6 @@ public partial class TMember
 
 {
 
-	[NotMapped]
-	[DisplayName("會員帳號")]
-	[Required(ErrorMessage = "會員帳號必填")]
-	public  string UsernameAccess3 { get; set; }
-	[NotMapped]
-	[DisplayName("手機號碼")]
-	[Required(ErrorMessage = ("手機號碼必填"))]
-	[RegularExpression(@"^\d{9}$", ErrorMessage = "請輸入機構電話(9碼)")]
-	public string PhoneAccess3 { get; set; } = null!;
-
-
-
 	public int MemberId { get; set; }
     [DisplayName("註冊帳號")]
     [Required(ErrorMessage = ("註冊帳號必填"))]

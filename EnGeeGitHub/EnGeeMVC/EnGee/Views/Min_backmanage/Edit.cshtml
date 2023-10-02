@@ -147,7 +147,7 @@
 					</div>
 				</div>
 				<div class="col-md-6">
-					@if (Model.Access == 3)
+					@if (Model.Access == 3 && Model.CharityProof != null && Model.IsValidCharity != true)
 					{	
 						<div>
 							公益團體認證照片
@@ -155,12 +155,32 @@
 						<div>
 							<img src="~/images/CharityProof/@Model.CharityProof" width="300px" height="350px" />
 							<div>
-								<input type="checkbox" id="charityCheckbox" name="IsValidCharity" value="true" />
-								<label for="charityCheckbox">確定為公益團體</label>
+								<input type="checkbox" id="charityCheckbox" onchange="updateIsValidCharity(this)" />
+								<label for="charityCheckbox">已經是公益團體身分</label>
+								<input type="hidden" id="hiddenIsValidCharity" name="IsValidCharity" />
 							</div>
 						</div>
 						
 						
+					}
+					
+
+
+					@if (Model.Access == 3 && Model.CharityProof != null && Model.IsValidCharity == true)
+					{
+						<div>
+							公益團體認證照片
+						</div>
+						<div>
+							<img src="~/images/CharityProof/@Model.CharityProof" width="300px" height="350px" />
+							<div>
+								<input type="checkbox" id="charityCheckbox" onchange="updateIsValidCharity(this)" checked />
+								<label for="charityCheckbox">已經是公益團體身分</label>
+								<input type="hidden" id="hiddenIsValidCharity" name="IsValidCharity" value="true"/>
+							</div>
+						</div>
+
+
 					}
 					else if (Model.Access == 0)
 					{
@@ -185,11 +205,11 @@
 					
 
 				</div>
-				ToLower()" />
+				
 
 
 
-
+			</div>
 			<div class="d-flex justify-content-center align-items-center btn btn-outline-dark">
 				<input type="submit" value="送出修改" class="custom-button" />
 			</div>
@@ -198,22 +218,25 @@
 			</div>
 
 		</main>
-		@* <input type="hidden" id="isValidCharityHidden" name="IsValidCharity" value="@Model.IsValidCharity" /> *@
+		
 	</form>
 </div>
 
-<script>
-	function toggleCharityInfo() {
-		const charityCheckbox = document.getElementById('charityCheckbox');
 
-		if (charityCheckbox.checked) {
-			charityCheckbox.value = 'true';
-			alert('已確認為公益團體');
+<script>
+	function updateIsValidCharity(checkbox) {
+		var hiddenIsValidCharity = document.getElementById('hiddenIsValidCharity');
+		hiddenIsValidCharity.value = checkbox.checked; // 更新為 checkbox 的狀態（true 或 false）
+		if (checkbox.checked) {
+			alert("核准變更為公益團體帳號");
 		} else {
-			charityCheckbox.value = 'false';
+			alert("確定要取消公益團體帳號");
 		}
 	}
 </script>
+
+
+
 
 <script>
 	function phoneInputAccess3() {
