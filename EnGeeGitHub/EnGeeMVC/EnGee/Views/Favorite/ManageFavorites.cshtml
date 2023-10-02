@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<EnGee.Models.TMemberFavorite>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@{
+    Layout = "_LayoutAdmin";   
+}
+<div class="container">
 <h2>我的最愛</h2>
 
 
@@ -30,7 +34,7 @@
         }
     </tbody>
 </table>
-
+</div>
 
 <script>
     function showDeleteConfirmation(favoriteId) {
