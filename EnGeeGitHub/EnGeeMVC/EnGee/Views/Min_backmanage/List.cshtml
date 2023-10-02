@@ -1,4 +1,6 @@
 ﻿@model IEnumerable<EnGee.Models.TMember>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
 
 @{
 	Layout = "_LayoutAdmin";
@@ -27,50 +29,65 @@
 <h2 style="text-align:center " class="mt-3">會員中心管理</h2>
 
 
-	<div class="container py-5 ">
-		@using (Html.BeginForm())
-		{
+<div class="container py-5 ">
+	@using (Html.BeginForm())
+	{
 
-			<div class="mb-5">
+		<div class="mb-5">
 
-				查詢類別:
-				<select name="txtkeywordfor">
-					<option value="">全部</option>
-					<option value="0">帳號</option>
-					<option value="1">信箱</option>
-					<option value="2">全名</option>
-					<option value="3">地址</option>
-					<option value="4">電話</option>
-					<option value="5">註冊時間</option>
-					<option value="6">生日</option>
-				</select>
-				|
-				關鍵字查詢: @Html.TextBox("txtKeyword")
-				|
-				查詢點數範圍：
-				@Html.TextBox("minPoint", null, new { placeholder = "最小值" , style="width:60px; margin-right: 8px;" })
-				@Html.TextBox("maxPoint", null, new { placeholder = "最大值" , style="width:60px; margin-right: 8px;" })
-				|
-				篩選性別：
-				<select name="genderFilter">
-					<option value="">全部</option>
-					<option value="0">男</option>
-					<option value="1">女</option>
-					<option value="2">未透漏</option>
-				</select>
-				|
-				篩選使用權限:
-				<select name="accessFilter">
-					<option value="">全部</option>
-					<option value="0">網站管理員</option>
-					<option value="1">一般使用者</option>
-					<option value="2">員工</option>
-					<option value="3">公益團體</option>
-				</select>
-				<input type="submit" value="查詢" style="margin-right:10px; background-color:white; " />
+			查詢類別:
+			<select name="txtkeywordfor">
+				<option value="">全部</option>
+				<option value="0">帳號</option>
+				<option value="1">信箱</option>
+				<option value="2">全名</option>
+				<option value="3">地址</option>
+				<option value="4">電話</option>
+				<option value="5">註冊時間</option>
+				<option value="6">生日</option>
+			</select>
+			|
+			關鍵字查詢: @Html.TextBox("txtKeyword")
+			|
+			查詢點數範圍：
+			@Html.TextBox("minPoint", null, new { placeholder = "最小值" , style="width:60px; margin-right: 8px;" })
+			@Html.TextBox("maxPoint", null, new { placeholder = "最大值" , style="width:60px; margin-right: 8px;" })
+			|
+			篩選性別：
+			<select name="genderFilter">
+				<option value="">全部</option>
+				<option value="0">男</option>
+				<option value="1">女</option>
+				<option value="2">未透漏</option>
+			</select>
+			|
+			篩選使用權限:
+			<select name="accessFilter">
+				<option value="">全部</option>
+				<option value="0">網站管理員</option>
+				<option value="1">一般使用者</option>
+				<option value="2">員工</option>
+				<option value="3">公益團體</option>
+			</select>
+			<input type="submit" value="查詢" style="margin-right:10px; background-color:white; " />
+			<div class="btn-group" style="color:#1C4C9B" id="my-dropdown">
+				<button type="button" class="btn btn-info dropdown-toggle me-3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="bi bi-app-indicator"></i><span id="notification-count" class=" ms-1"></span>
+				</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					@{
+						foreach (var item in Model)
+							if (item.CharityProof != null && item.IsValidCharity != true)
+							{
+								<a class="dropdown-item" href="#">MemberId:@item.Fullname 已提出公益團體身分文件，請管理員確認資格</a>
+							}
+
+					}
+				</div>
 			</div>
+		</div>
 
-		}
+	}
 	<div id="contentToPrint">
 		<div class="row">
 			<div class="d-flex justify-content-center align-items-center">
@@ -221,11 +238,11 @@
 									</td>
 									<td style="white-space: nowrap;text-align: center">
 
-										@if (item.CharityProof!=null && item.IsValidCharity == true)
+										@if (item.CharityProof != null && item.IsValidCharity == true)
 										{
 											<i class="fa-solid fa-check-to-slot" style="font-size:30px; color:	#00CACA"></i>
 										}
-										else if (item.CharityProof!=null && item.IsValidCharity != true)
+										else if (item.CharityProof != null && item.IsValidCharity != true)
 										{
 											item.IsValidCharity = false;
 											<i class="fa-regular fa-circle-xmark" style="font-size:30px;"></i>
@@ -236,7 +253,7 @@
 										@Html.ActionLink("修改", "Edit","Min_backmanage", new { id=item.MemberId},new { @class = "btn btn-outline-info" })
 
 										@Html.ActionLink("刪除", "Delete", "Min_backmanage", new { id = item.MemberId }, new { @class = "btn btn-outline-info", onclick = "return confirm('確定要刪除嗎?');" })
-										
+
 									</td>
 
 								</tr>
@@ -248,7 +265,7 @@
 			<button id="printButton" class="btn ">列印成 PDF</button>
 
 		</div>
-		
+
 
 	</div>
 </div>
@@ -280,37 +297,24 @@
 	printButton.addEventListener('click', generatePdf);
 </script>
 
+<script>
+	// Update the notification count based on the number of dropdown items
+	function updateNotificationCount() {
+		const dropdown = document.getElementById('my-dropdown');
+		const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+		const notificationCount = dropdownItems.length;
 
-
-@* <script>
-	function generatePdf() {
-		const element = document.getElementById('contentToPrint');
-		const options = {
-			margin: 0.5,  // 例如，設定邊界為0.5英寸
-			filename: 'myfile.pdf',  // 檔案名稱
-			image: { type: 'jpeg', quality: 0.98 },  // 圖片品質
-			
-			html2canvas: { scale: window.devicePixelRatio },
-			jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }  // PDF 文件配置，這裡設定為直向，可以改為 'landscape' 以設定為橫向
-		};
-
-		html2pdf().set(options).from(element).save();
+		const notificationCountSpan = dropdown.querySelector('#notification-count');
+		if (notificationCountSpan) {
+			notificationCountSpan.innerText = `${notificationCount}`;
+		}
 	}
 
-	const printButton = document.getElementById('printButton');
-	printButton.addEventListener('click', generatePdf);
-</script> *@
+	// Call the function to update the notification count initially
+	updateNotificationCount();
+</script>
 
 
-@* <script>
-	function generatePdf() {
-		const element = document.getElementById('contentToPrint');
-		html2pdf(element);
-	}
-
-	const printButton = document.getElementById('printButton');
-	printButton.addEventListener('click', generatePdf);
-</script> *@
 
 
 @* <script>
@@ -335,3 +339,4 @@
 				});
 			});
 		</script> *@
+
