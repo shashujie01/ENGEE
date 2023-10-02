@@ -169,6 +169,10 @@ namespace EnGee.Controllers
 			{
 				model.Access = 3;
 			}
+			else if (IsValidCharity !=true)
+			{
+				model.Access = 1;
+			}
 
 			using (var db = new EngeeContext())
 			{

@@ -221,11 +221,11 @@
 									</td>
 									<td style="white-space: nowrap;text-align: center">
 
-										@if (item.Access == 3 && item.IsValidCharity == true)
+										@if (item.CharityProof!=null && item.IsValidCharity == true)
 										{
 											<i class="fa-solid fa-check-to-slot" style="font-size:30px; color:	#00CACA"></i>
 										}
-										else if (item.Access == 3 && item.IsValidCharity == null)
+										else if (item.CharityProof!=null && item.IsValidCharity != true)
 										{
 											item.IsValidCharity = false;
 											<i class="fa-regular fa-circle-xmark" style="font-size:30px;"></i>
