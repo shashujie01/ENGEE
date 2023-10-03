@@ -7,22 +7,27 @@
 <div class="container">
 <br />
 <div class="row">
-    <div class="col-lg-3">
-        <button class="btn shadow-none d-flex align-items-center justify-content-between bg-danger text-white w-100" data-bs-toggle="collapse" data-bs-target="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-            <h6 class="m-0">商品上架表單類別</h6>
-            <i class="fa fa-angle-down text-dark"></i>
-        </button>
-        <nav class="collapse navbar-vertical navbar-light align-items-center p-0  border border-top-0 border-bottom-3 bg-light" id="navbar-vertical">
-            <div class="navbar-nav w-100 overflow-hidden" style="height: auto; transition: max-height 0.3s ease;">
-                <a asp-action="Add" class="nav-item nav-link">二手商品</a>
-                <a asp-action="AddOne" class="nav-item nav-link">一點捐贈</a>
-            </div>
-        </nav>
-    </div>
-    <div class="col-lg-7">
-        <div class="d-flex justify-content-center">
-            <h2 class="text-danger">請選擇商品上架表單類型</h2>
+        <div class="col-lg-3">
+            <h3 class="pb-4">商品上架表單分類</h3>
+            <li class="pb-3" style="list-style-type: none;">
+                <a id="selectform" name="formId" class="collapsed d-flex justify-content-between h5 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse">
+                    請選擇上架商品型式
+                    <i class="fa-solid fa-chevron-down down-arrow"></i>
+                </a>
+                <ul class="collapse list-unstyled ps-3" id="collapse">
+                    <li>
+                        <a asp-action="Add" class="nav-item nav-link">二手商品</a>
+                    </li>
+                    <li>
+                        <a asp-action="AddOne" class="nav-item nav-link">一點捐贈</a>
+                    </li>
+                </ul>
+            </li>
         </div>
+    <div class="col-lg-7">
+       @*  <div class="d-flex justify-content-center">
+            <h2 class="text-danger">請選擇商品上架表單類型</h2>
+        </div> *@
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -33,25 +38,13 @@
                 <!-- 添加 data-bs-ride 和 data-bs-interval 属性 -->
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="~/images/ad/ad1.jpg" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5 style="color:black; background-color:white">環保美麗，優質二手化妝品，搶先一嚐！</h5>
-                            <p style="color:black; background-color:white">尋找高品質的二手化妝品？立即探索，為您美麗護膚注入環保元素！</p>
-                        </div>
+                        <img src="~/images/ad/ad4.jpg" class="d-block w-100" alt="...">                        
                     </div>
                     <div class="carousel-item">
-                        <img src="~/images/ad/ad2.jpg" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5 style="color:black; background-color:white">環保時尚，選擇二手美妝，同時愛護地球！</h5>
-                            <p style="color:black; background-color:white">綠色美麗，盡在我們的二手美妝選擇中，為地球出一分力！</p>
-                        </div>
+                        <img src="~/images/ad/ad5.jpg" class="d-block w-100" alt="...">                       
                     </div>
                     <div class="carousel-item">
-                        <img src="~/images/ad/ad3.jpg" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5 style="color:black; background-color:white">二手美妝寶庫，驚喜不斷，價格驚人優惠！</h5>
-                            <p style="color:black; background-color:white">發現驚人優惠，購買高品質的二手美妝，為自己加添更多光采！</p>
-                        </div>
+                        <img src="~/images/ad/ad6.jpg" class="d-block w-100" alt="...">                        
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">

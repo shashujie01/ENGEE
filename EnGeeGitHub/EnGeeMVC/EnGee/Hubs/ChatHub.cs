@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EnGee.Hubs
 {
@@ -56,6 +60,9 @@ namespace EnGee.Hubs
             {
                 string userId = UserIdDictionary[Context.ConnectionId];
                 UserIdDictionary.Remove(Context.ConnectionId);
+
+                // 釋放使用者名稱
+                UsedUserNames.Remove(userId);
 
                 // 更新使用者 ID 列表
                 string jsonString = JsonConvert.SerializeObject(UserIdDictionary.Values);
