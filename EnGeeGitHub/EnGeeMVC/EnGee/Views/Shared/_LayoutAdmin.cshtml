@@ -2,6 +2,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @using System.Text.Json
 @using prjMvcCoreDemo.Models
+@model IEnumerable<EnGee.Models.TMember>
 
 ﻿@{
     ViewData["Title"] = "Login";
@@ -72,7 +73,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1 border-0">                   
+                <ul class="navbar-nav flex-grow-1 border-0">
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="SSJ_ShoppingList" asp-action="ShoppingList_admin">訂單管理</a>
                     </li>
@@ -86,11 +87,8 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Collect" asp-action="DonationManagement">捐贈訂單管理</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Favorite" asp-action="ManageFavorites">我的最愛管理</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Min_backmanage" asp-action="List">會員管理</a>
-                    </li>                
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" target="_blank" href="https://pay.line.me/portal/tw/auth/login">儲值管理</a>
                     </li>
@@ -119,9 +117,11 @@
                                     Hello~@loggedInUser.Username
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">返回EnGee前台</a>                                    
+                                    <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">返回EnGee前台</a>
                                 </div>
                             </div>
+
+                           
                             <form asp-controller="Home" asp-action="Logout" method="post">
                                 <button type="submit" class="nav-link btn bg-color2 btn-sm text-white">
                                     登出
@@ -149,14 +149,14 @@
     </nav>
 
     @*<header>
-        <div class="headerimg">
-            <div class="overlay">
-                <div class="d-flex align-items-center justify-content-center text-white fz-size32px"
-                     style="height: 100%">
-                    @ViewBag.HeaderTitle
-                </div>
-            </div>
-        </div>
+    <div class="headerimg">
+    <div class="overlay">
+    <div class="d-flex align-items-center justify-content-center text-white fz-size32px"
+    style="height: 100%">
+    @ViewBag.HeaderTitle
+    </div>
+    </div>
+    </div>
     </header>*@
 
     @*         <div class="container"> *@
@@ -184,4 +184,10 @@
 
 <!-- Template Javascript -->
 <script src="~/js/main.js"></script>
+
+
+
+
+
+
 @await RenderSectionAsync("Scripts", required: false)
