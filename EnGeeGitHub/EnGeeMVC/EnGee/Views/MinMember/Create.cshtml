@@ -1,24 +1,25 @@
 ﻿@model EnGee.Models.TMember
 
 <style>
-    .spanvaildation {
-        font-size: 10px;
-        color: red;
-        opacity: 0.5;
-    }
+	.spanvaildation {
+		font-size: 10px;
+		color: red;
+		opacity: 0.5;
+	}
 
-    ::placeholder {
-        font-size: 10px;
-        color: tomato;
-    }
+	::placeholder {
+		font-size: 10px;
+		color: tomato;
+	}
 
-    .displayinline {
-        display: inline;
-    }
+	.displayinline {
+		display: inline;
+	}
 
-    .W550 {
-        width: 550px;
-    }
+	.W550 {
+		width: 550px;
+	}
+
 </style>
 
 
@@ -29,136 +30,193 @@
 <form asp-action="Create" class=" container-md W550">
 
 
-    <main>
-        <div class="row">
+	<main>
+		<div class="row">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" />
-                <span asp-validation-for="Username" class="spanvaildation"></span>
-            </div>
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <div class="input-group">
-                    <input asp-for="Password" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" type="password" id="passwordInput" name="password" />  <!--新增模型綁定name，傳給控制器-->
-                    <span class="input-group-text" onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
-                        <i id="passwordIcon" class="fa fa-eye"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
-                    </span>
-                </div>
-                <span asp-validation-for="Password" class="spanvaildation"></span>
-
-            </div>
-
-
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control " placeholder="此欄位必塡" name="email" />   <!--新增模型綁定name，傳給控制器-->
-                <span asp-validation-for="Email" class="spanvaildation"></span>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="Fullname" class="control-label"></label>
-                <input asp-for="Fullname" class="form-control" />
-                <span asp-validation-for="Fullname" class="spanvaildation"></span>
-            </div>
-
-            <div class="form-group mt-3">
-                <input type="radio" name="gender" value="0"> Male
-                <input type="radio" name="gender" value="1"> Female
-                <input type="radio" name="gender" value="2"> 不透漏
-
-                <span asp-validation-for="Gender" class="spanvaildation"></span>
-
-            </div>
+			<div class="form-group">
+				<label asp-for="Username" class="control-label"></label>
+				<div class="input-group">
+					<input asp-for="Username" class="form-control" placeholder="此欄位必塡(英數混合，5-10位數)" id="usernameinput" oninput="validateInputname()" />
+					<span class="input-group-addon" id="iconnameX">
+						<i class="fa-regular fa-circle-xmark fa-lg ms-3 mt-3" style="color: #ff2424;"></i>
+					</span>
+					<span class="input-group-addon" id="iconnameO" style="display: none; padding: 10px;">
+						<i class="fa-regular fa-face-smile fa-lg ms-3 mt-3" style="color: #3dba3b; "></i>
+					</span>
+				</div>
+				<span asp-validation-for="Username" class="spanvaildation"></span>
+			</div>
 
 
 
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control " placeholder="此欄位必塡" />
-                <span asp-validation-for="Address" class="spanvaildation"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" placeholder="此欄位必塡" />
-                <span asp-validation-for="Phone" class="spanvaildation"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Birth" class="control-label"></label>
-                <input asp-for="Birth" class="form-control" type="date" />
-                <span asp-validation-for="Birth" class=" spanvaildation"></span>
-            </div>
+			<div class="form-group">
+				<label asp-for="Password" class="control-label"></label>
+				<div class="input-group">
+					<input asp-for="Password" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" type="password" id="passwordInput" name="password" />  <!--新增模型綁定name，傳給控制器-->
+					<span class="input-group-text" onclick="togglePasswordVisibility('passwordInput', 'passwordIcon')">
+						<i id="passwordIcon" class="fa fa-eye"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
+					</span>
+				</div>
+				<span asp-validation-for="Password" class="spanvaildation"></span>
 
-            <div class="form-group">
-                <label asp-for="PhotoPath" class="control-label"></label>
-                <input asp-for="PhotoPath" class="form-control form-control" type="file" />
-                <span asp-validation-for="PhotoPath" class="spanvaildation"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Introduction" class="control-label"></label>
-                <input asp-for="Introduction" class="form-control" />
-                <span asp-validation-for="Introduction" class=" spanvaildation"></span>
-            </div>
+			</div>
+			<div class="form-group">
+				<label asp-for="RePassword" class="control-label"></label>
+				<div class="input-group">
+					<input asp-for="RePassword" class="form-control " placeholder="此欄位必塡(英文數字共5-10字元)" type="password" id="rePasswordInput" />
+					<span class="input-group-text" onclick="togglePasswordVisibility('rePasswordInput', 'rePasswordIcon')">
+						<i id="rePasswordIcon" class="fa fa-eye"></i>    <!--javascript建立事件/眼睛icon查看輸入的密碼-->
+					</span>
+				</div>
+				<span asp-validation-for="RePassword" class="spanvaildation"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="Email" class="control-label"></label>
+				<input asp-for="Email" class="form-control " placeholder="此欄位必塡" name="email" id="emailInput" />   <!--新增模型綁定name，傳給控制器-->
+				<span asp-validation-for="Email" class="spanvaildation"></span>
+
+			</div>
+			<div class="form-group">
+				<label asp-for="Fullname" class="control-label"></label>
+				<input asp-for="Fullname" class="form-control" id="fullnameInput" />
+				<span asp-validation-for="Fullname" class="spanvaildation"></span>
+			</div>
+
+			<div class="form-group mt-3">
+				<input type="radio" name="gender" value="0" id="genderMale"> Male
+				<input type="radio" name="gender" value="1" id="genderFemale"> Female
+				<input type="radio" name="gender" value="2" id="genderNotReveal"> 不透漏
+
+				<span asp-validation-for="Gender" class="spanvaildation"></span>
+
+			</div>
 
 
-        </div>
 
-        <div style="text-align: center ;" class="mt-3">
-            <div style="display: inline-block; margin-right: 10px;">
-                <input type="submit" value="送出新增" class="btn btn-primary" />
-            </div>
-            <div style="display: inline-block;">
-                <a asp-action="Index" asp-controller="Home" class="btn btn-primary">取消</a>
-            </div>
-        </div>
+			<div class="form-group">
+				<label asp-for="Address" class="control-label"></label>
+				<input asp-for="Address" class="form-control " placeholder="此欄位必塡" id="addressInput" />
+				<span asp-validation-for="Address" class="spanvaildation"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="Phone" class="control-label"></label>
+				<div class="input-group">
+					<input asp-for="Phone" class="form-control" placeholder="此欄位必塡" id="phoneInput" oninput="validateInputphone()" />
+					<span class="input-group-addon" id="iconphoneX">
+						<i class="fa-regular fa-circle-xmark fa-lg ms-3 mt-3" style="color: #ff2424;"></i>
+					</span>
+					<span class="input-group-addon" id="iconphoneO" style="display: none; padding: 10px;">
+						<i class="fa-regular fa-face-smile fa-lg ms-3 mt-3" style="color: #3dba3b; "></i>
+					</span>
+				</div>
+				<span asp-validation-for="Phone" class="spanvaildation"></span>
+			</div>
 
 
-    </main>
+			<div class="form-group">
+				<label asp-for="Birth" class="control-label"></label>
+				<input asp-for="Birth" class="form-control" type="date" id="birthInput" />
+				<span asp-validation-for="Birth" class=" spanvaildation"></span>
+			</div>
+			<div style="text-align: center ;" class="mt-3">
+				<div style="display: inline-block; margin-right: 10px;">
+					<input type="submit" value="送出新增" class="btn btn-primary" />
+				</div>
+				<div style="display: inline-block;">
+					<a asp-action="Index" asp-controller="Home" class="btn btn-primary">取消</a>
+				</div>
+				<button id="setDefaultValuesButton" class="btn btn-close-white" onclick="setDefaultValues()">設定預設值</button>
+			</div>
+
+
+	</main>
 
 
 </form>
 
 
-@* 新增radio單選功能 *@
-@* <script>
-        Vue.createApp({
-            data() {
-                return {
+<script>
+	function validateInputname() {
+		const usernameInput = document.getElementById('usernameinput');
+		const iconnameX = document.getElementById('iconnameX');
+		const iconnameO = document.getElementById('iconnameO');
 
-                    gender: '', // 不預設
-                }
-            },
+		const usernameValue = usernameInput.value.trim();
+		const Regex = /^[a-zA-Z0-9]{5,10}$/;  // 英文數字混合，5-10位
 
-    }).mount('#app')console.log('Vue app mounted')
+		if (Regex.test(usernameValue)) {
+			iconnameX.style.display = 'none';
+			iconnameO.style.display = 'inline-block';
+		} else {
+			iconnameX.style.display = 'inline-block';
+			iconnameO.style.display = 'none';
+		}
+	}
+</script>
 
- </script> *@
+<script>
+	function validateInputphone() {
+		const phoneInput = document.getElementById('phoneInput');
+		const iconphoneX = document.getElementById('iconphoneX');
+		const iconphoneO = document.getElementById('iconphoneO');
 
+		const phoneValue = phoneInput.value.trim();
+		const Regex = /^\d{9,10}$/;  // 正規表達式，檢查是否為 9-10 位數的數字
+
+		if (Regex.test(phoneValue)) {
+			iconphoneX.style.display = 'none';  // 隱藏 iconphoneX
+			iconphoneO.style.display = 'inline-block';  // 顯示 iconphoneO
+		} else {
+			iconphoneX.style.display = 'inline-block';  // 顯示 iconphoneX
+			iconphoneO.style.display = 'none';  // 隱藏 iconphoneO
+		}
+	}
+</script>
 
 
 @*  新增一個眼睛icon，可以讓密碼type="password"互相切換type="test" *@
 <script>
-    function togglePasswordVisibility(inputId, iconId) {
-        //綁定id//
-        const passwordInput = document.getElementById(inputId);
-        const icon = document.getElementById(iconId);
-        //建立規則
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            passwordInput.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    }
+	function togglePasswordVisibility(inputId, iconId) {
+		//綁定id//
+		const passwordInput = document.getElementById(inputId);
+		const icon = document.getElementById(iconId);
+		//建立規則
+		if (passwordInput.type === 'password') {
+			passwordInput.type = 'text';
+			icon.classList.remove('fa-eye');
+			icon.classList.add('fa-eye-slash');
+		} else {
+			passwordInput.type = 'password';
+			icon.classList.remove('fa-eye-slash');
+			icon.classList.add('fa-eye');
+		}
+	}
+</script>
+
+<script>
+	function setDefaultValues() {
+		document.getElementById('usernameinput').value = 'Pand';
+		document.getElementById('passwordInput').value = 'pandorapw';
+		document.getElementById('rePasswordInput').value = 'pandora';
+		document.getElementById('emailInput').value = 'ivy1101238@yahoo.com.tw';
+		document.getElementById('fullnameInput').value = '潘朵拉';		
+		document.getElementById('addressInput').value = '台南市中西區西門路一段658號';
+		document.getElementById('phoneInput').value = '06303588';
+
+
+		document.getElementById('genderFemale').checked = true;
+		document.getElementById('birthInput').value = '2002-10-18'
+
+	}
 </script>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }
