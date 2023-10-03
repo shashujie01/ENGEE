@@ -46,7 +46,7 @@ public partial class TMember
     [DisplayName("通訊地址")]
     [Required(ErrorMessage = ("通訊地址必填"))]
     public string Address { get; set; } = null!;
-    [DisplayName("手機號碼")]
+    [DisplayName("通訊電話")]
     [Required(ErrorMessage = ("手機號碼必填"))]
 	[StringLength(10, ErrorMessage = ("密碼格式:英文數字共5-10字元"), MinimumLength = 9)]
 
