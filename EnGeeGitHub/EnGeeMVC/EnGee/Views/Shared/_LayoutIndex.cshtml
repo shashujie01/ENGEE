@@ -129,6 +129,7 @@
                                     <a class="dropdown-item" asp-area="" asp-controller="NL_Product" asp-action="List">商品管理</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="SSJ_ShoppingList" asp-action="ShoppingList_member">購物清單</a>
                                     <a class="dropdown-item" asp-area="" asp-controller="Shopping" asp-action="CartView">購物車</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="NL_Product" asp-action="List">我的最愛</a>
                                     @if (loggedInUser.Access == 0 || loggedInUser.Access == 3)
                                     {
                                         <hr />
