@@ -23,5 +23,5 @@ public partial class TOrder
 
     public string? ReceiverName { get; set; }
 
-    public string? ReceiverTEL { get; set; }
+    public string? ReceiverTel { get; set; }
 }

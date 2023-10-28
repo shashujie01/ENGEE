@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnGee.Models;
 
-public partial class EngeeContext : DbContext
+public partial class EnGeeContext : DbContext
 {
-    public EngeeContext()
+    public EnGeeContext()
     {
     }
 
-    public EngeeContext(DbContextOptions<EngeeContext> options)
+    public EnGeeContext(DbContextOptions<EnGeeContext> options)
         : base(options)
     {
     }
@@ -53,12 +53,10 @@ public partial class EngeeContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=engee.database.windows.net;Initial Catalog=Engee;User ID=Fuen2901;Password=EnGee2023;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=EnGee;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Chinese_Taiwan_Stroke_CI_AS");
-
         modelBuilder.Entity<TBrand>(entity =>
         {
             entity.HasKey(e => e.BrandId).HasName("PK_Table_1");
@@ -368,8 +366,11 @@ public partial class EngeeContext : DbContext
             entity.Property(e => e.OrderStatus)
                 .HasMaxLength(1)
                 .IsFixedLength();
-            entity.Property(e => e.ReceiverName).HasMaxLength(100); 
-            entity.Property(e => e.ReceiverTEL).HasMaxLength(10);  
+            entity.Property(e => e.ReceiverName).HasMaxLength(100);
+            entity.Property(e => e.ReceiverTel)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("ReceiverTEL");
         });
 
         modelBuilder.Entity<TOrderDetail>(entity =>
